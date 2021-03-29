@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="login_register_textedit" parent="Widget.MaterialComponents.TextView">
+        <item name="android:layout_width">300dp</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:background">@drawable/login_register_box</item>
+        <item name="android:drawableLeft">@drawable/ic_menu_send</item>
+    </style>
+
+    <style name="login_register_button">
+        <item name="android:layout_width">250dp</item>
+        <item name="android:layout_height">54dp</item>
+        <item name="cornerRadius">30dp</item>
+    </style>
+</resources>
