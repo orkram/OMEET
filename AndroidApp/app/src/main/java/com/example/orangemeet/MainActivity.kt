@@ -2,6 +2,7 @@ package com.example.orangemeet
 
 import android.os.Bundle
 import android.view.Menu
+import android.widget.ImageView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_home, R.id.nav_contacts, R.id.nav_settings, R.id.nav_meetings, R.id.nav_video, R.id.nav_login), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -45,4 +47,6 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
+
 }
