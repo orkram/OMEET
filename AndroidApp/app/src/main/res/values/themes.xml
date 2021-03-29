@@ -5,6 +5,7 @@
         <item name="colorPrimaryVariant">@color/orange_secondary</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="loginRegisterButtonBG">#FFFF0000</item>
     </style>
 
     <style name="Theme.OrangeMeet.NoActionBar" >
