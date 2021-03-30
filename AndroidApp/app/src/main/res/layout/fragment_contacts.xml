@@ -5,9 +5,63 @@
     android:layout_height="match_parent"
     tools:context=".ContactsFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:text="@string/fragment_contacts" />
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/light_gray"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:src="@android:drawable/ic_input_add" />
+
+            <EditText
+                android:id="@+id/editTextTextPersonName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/prompt_search"
+                android:inputType="textPersonName" />
+
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:src="@android:drawable/ic_delete" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/contacts_list_item"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/contacts_list_item_height" />
+
+            <include
+                layout="@layout/contacts_list_item"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/contacts_list_item_height" />
+
+            <include
+                layout="@layout/contacts_list_item"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/contacts_list_item_height" />
+        </LinearLayout>
+    </LinearLayout>
 </androidx.core.widget.NestedScrollView>
