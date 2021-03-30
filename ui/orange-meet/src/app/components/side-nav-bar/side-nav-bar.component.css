@@ -1,0 +1,13 @@
+.sidemenu {
+  flex: 0.5 0 auto;
+  height: 100%;
+  width: 300px;
+  background: #E0DFDF;
+}
+
+.example-container {
+  width: 400px;
+  height: 200px;
+  margin: 10px;
+  border: 1px solid #555;
+}

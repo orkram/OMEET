@@ -1,0 +1,39 @@
+.info-holder{
+  flex-wrap: wrap;
+  display: flex;
+
+}
+.image-holder{
+  position: relative;
+  flex: 1 1 auto;
+  height: 120px;
+  width: 100%;
+}
+.user-image{
+  margin: 5px;
+  flex: 1 1 auto;
+  left:5%;
+  position: relative;
+  background: black;
+  content: url("../../../../assets/images/placeholder-image.png");
+  max-height: 100%;
+  border-radius: 50%;
+}
+
+.name-text{
+  left:5%;
+  position: relative;
+  width: 100%;
+}
+
+.email-text{
+  left:5%;
+  position: relative;
+  width: 100%;
+}
+
+.info-space{
+  height: 30px;
+  flex: 1 1 auto;
+  width: 100%;
+}

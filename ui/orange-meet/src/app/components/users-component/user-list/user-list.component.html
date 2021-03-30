@@ -1,0 +1,9 @@
+<mat-selection-list #personsList>
+  <mat-list-option *ngFor="let person of persons">
+    {{person}}
+  </mat-list-option>
+</mat-selection-list>
+
+<p>
+  Options selected: {{personsList.selectedOptions.selected.length}}
+</p>

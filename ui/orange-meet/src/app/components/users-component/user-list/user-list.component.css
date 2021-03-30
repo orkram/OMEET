@@ -1,0 +1,12 @@
+
+.mat-selection-list{
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.mat-list-option{
+  width: 100%;
+  flex-grow: 1;
+}

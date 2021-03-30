@@ -1,0 +1,16 @@
+.spacer {
+  flex: 0.95 1 auto;
+}
+.button-spacer{
+  flex: 0.025 0 auto;
+}
+
+.logo-icon{
+  content: url("../../../assets/images/small-logo.png");
+  max-height: 80px;
+  z-index: 2;
+}
+
+.mat-toolbar{
+  height: 80px;
+}

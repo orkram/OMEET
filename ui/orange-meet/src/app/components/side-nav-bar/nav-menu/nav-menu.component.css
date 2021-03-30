@@ -1,0 +1,42 @@
+.menu-icon-spacer{
+  display: inline-flex;
+  width: 5%;
+}
+
+.menu-item-spacer{
+  display: inline-flex;
+  width: 10%;
+}
+
+.mdc-drawer{
+  flex-wrap: wrap;
+  flex-direction: column;
+  display:  flex;
+  width: 100%;
+}
+
+.mdc-drawer__content{
+  flex-wrap: wrap;
+}
+
+.mdc-list-item {
+  width: 100%;
+  color: black;
+  height: 50px;
+  display: table;
+  flex-direction: row;
+  font-weight: normal;
+  line-height: 24px;
+  text-decoration: none;
+}
+
+.mdc-list-item__text{
+  position: relative;
+  top: 10px;
+}
+
+.mdc-list-item__graphic{
+  vertical-align: bottom;
+  position: relative;
+  top: 10px;
+}
