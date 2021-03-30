@@ -11,4 +11,5 @@
     <dimen name="fragment_horizontal_margin">16dp</dimen>
     <dimen name="fragment_vertical_margin">16dp</dimen>
     <dimen name="contacts_list_item_height">64dp</dimen>
+    <dimen name="contacts_list_item_ex_height">160dp</dimen>
 </resources>

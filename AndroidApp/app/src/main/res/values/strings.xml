@@ -148,5 +148,12 @@
     <string name="menu_login">Logowanie</string>
     <string name="menu_register">Rejestracja</string>
     <string name="account_creation">Tworzenie nowego konta</string>
+    <string name="meeting_title">Spotkanie x</string>
+    <string name="meeting_subtitle">Rozwiń, aby zobaczyć szczegóły</string>
+    <string name="example_date">20/02/2020</string>
+    <string name="inactive">Nieaktywne</string>
+    <string name="id_val">Id:</string>
+    <string name="participants_val">Uczestnicy:</string>
+    <string name="join_create">Dołącz / Stwórz</string>
 
 </resources>

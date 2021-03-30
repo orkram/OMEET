@@ -4,5 +4,5 @@
         <attr name="typeface" format="reference" />
         <attr name="fontsize" format="dimension"/>
     </declare-styleable>
-    <attr name="loginRegisterButtonBG" format="color"/>
+    <attr name="secondaryBackground" format="color"/>
 </resources>
