@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-find-user-field',
@@ -9,7 +9,15 @@ export class FindUserFieldComponent implements OnInit {
 
   constructor() { }
 
+  searchKey: string = '';
+
   ngOnInit(): void {
+  }
+
+  @Output() applyFilter:EventEmitter<any> = new EventEmitter()
+
+  getInput(){
+    this.applyFilter.emit(this.searchKey);
   }
 
 }

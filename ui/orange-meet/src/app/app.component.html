@@ -1,4 +1,8 @@
 <div>
+
+  <a  href="/contacts" routerLinkActive="active"  >
+test link
+  </a>
   <app-header></app-header>
 
 
@@ -6,9 +10,7 @@
     <app-side-nav-bar></app-side-nav-bar>
 
     <div class="right-side">
-      <app-add-user> </app-add-user>
-
-      <app-users-component></app-users-component>
+      <router-outlet></router-outlet>
     </div>
   </div>
 

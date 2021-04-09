@@ -10,14 +10,17 @@
   width: 100%;
 }
 .user-image{
-  margin: 5px;
-  flex: 1 1 auto;
+  margin: 10px 0 0 10px;
   left:5%;
-  position: relative;
-  background: black;
-  content: url("../../../../assets/images/placeholder-image.png");
+  background-image: url("../../../../assets/images/small-user-image.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 3;
+  width: 130px;
+  height: 130px;
   max-height: 100%;
   border-radius: 50%;
+  position: center;
 }
 
 .name-text{

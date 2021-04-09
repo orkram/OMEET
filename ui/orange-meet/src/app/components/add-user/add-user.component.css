@@ -1,10 +1,11 @@
 .add-user{
   display: flex;
-  margin: 20px;
+  margin: 25px;
   width: 100%;
   flex-direction: row;
 }
 .add-button{
   position: relative;
   top: 13%;
+  margin-left: 10px;
 }

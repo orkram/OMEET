@@ -1,9 +1,47 @@
-<mat-selection-list #personsList>
-  <mat-list-option *ngFor="let person of persons">
-    {{person}}
-  </mat-list-option>
-</mat-selection-list>
+<app-find-user-field (applyFilter)="applyFilter($event)"> </app-find-user-field>
 
-<p>
-  Options selected: {{personsList.selectedOptions.selected.length}}
+<mat-table [dataSource]="dataSource" matSort >
+
+  <ng-container matColumnDef="image">
+    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+    <mat-cell *matCellDef="let contact">
+      <img class="table-image" src="{{contact.image}}"/>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef  mat-sort-header> Name </mat-header-cell>
+      <mat-cell *matCellDef="let contact">{{contact.name}}
+      </mat-cell>
+  </ng-container>
+
+
+  <ng-container matColumnDef="email">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+    <mat-cell *matCellDef="let contact">{{contact.email}}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="checked">
+    <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+    <mat-cell *matCellDef="let contact">
+      <mat-checkbox [(ngModel)]="contact.checked"></mat-checkbox>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="headerRow"></mat-header-row>
+  <mat-row *matRowDef="let row;  columns: headerRow;"> </mat-row>
+</mat-table>
+
+
+<mat-paginator [length]="contacts.length"
+               [pageSizeOptions]="[9]"
+               [hidePageSize]="true">
+  <!-- TODO relate pagesizeoptions and screen size-->
+</mat-paginator>
+
+<p class="persons-counter">
+  Options selected: {{selectedContacts()}}
 </p>
+
+

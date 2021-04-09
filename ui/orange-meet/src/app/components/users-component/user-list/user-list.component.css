@@ -4,9 +4,47 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 50%;
 }
 
 .mat-list-option{
   width: 100%;
   flex-grow: 1;
+  border-bottom: solid 2px #E0DFDF;
+}
+
+.contact-list-hr{
+  width: 100%
+}
+
+.persons-counter{
+  margin-left: 10px;
+}
+
+.mat-checkbox{
+  margin: 13px;
+  position: absolute;
+  left: 94%;
+}
+
+.table-image{
+  position: relative;
+  background: black;
+  width: 45px;
+  border-radius: 50%;
+}
+
+.mat-column-image{
+  white-space: unset !important;
+  flex: 0 0 8% !important;
+  width: 8% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
