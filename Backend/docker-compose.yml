@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  keycloak:
+    container_name: keycloak
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    image: jboss/keycloak:latest
+    volumes: 
+      - ./Keycloak_conf/:/opt/jboss/keycloak/imports
+    command: 
+      - "-b 0.0.0.0 -Dkeycloak.import=/opt/jboss/keycloak/imports/realm-export.json"
+    ports:
+      - '8100:8080'
+      - '8443:8443'
+    networks: 
+      - internal
+
+  backend:
+    container_name: backend
+    build:
+      context: "./"
+    depends_on: 
+      - "keycloak"
+      - "postgresqldb"
+    ports:
+      - "9000:9000"
+    links: 
+      - "keycloak:keycloak"
+    networks: 
+      - internal
+  
+
+  postgresqldb:
+    container_name: postgresqldb
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=Omeet
+    #links:
+      #- "postgresqldb:postgresqldb"
+    networks: 
+      - internal
+
+
+networks: 
+  internal: 
+    driver: bridge
