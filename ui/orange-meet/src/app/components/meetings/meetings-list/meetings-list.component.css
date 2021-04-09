@@ -1,0 +1,41 @@
+.example-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 500px;
+  min-width: 300px;
+}
+
+.mat-table {
+  overflow: auto;
+  max-height: 500px;
+}
+
+.element-row {
+  position: relative;
+}
+
+.element-row:not(.expanded) {
+  cursor: pointer;
+}
+
+.element-row:not(.expanded):hover {
+  background: #f5f5f5;
+}
+
+.element-row.expanded {
+  border-bottom-color: transparent;
+}
+
+.expanded-description{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.description-spacer{
+  flex: 0 0 75%;
+}
+.mat-raised-button{
+  height: 32px;
+  position: relative;
+  top: 5%;
+}

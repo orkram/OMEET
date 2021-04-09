@@ -1,0 +1,22 @@
+.meetings-style{
+  display: flex;
+  flex-direction: column;
+}
+
+.create-meeting{
+  display: flex;
+  flex-direction: row;
+  width:100%;
+  margin: 20px;
+}
+.create-spacer{
+  flex: 0 0 85%;
+}
+
+.create-button{
+  width: 80%;
+}
+
+.text-button{
+  text-decoration: underline;
+}

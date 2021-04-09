@@ -1,0 +1,62 @@
+<app-find-meeting (applyFilter)="applyFilter($event)"> </app-find-meeting>
+
+<div class="example-container mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> id </mat-header-cell>
+      <mat-cell *matCellDef="let meeting"> {{meeting.id}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let meeting"> {{meeting.name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+      <mat-cell *matCellDef="let meeting">
+        <mat-chip color="primary"> {{meeting.status}} </mat-chip>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="date">
+      <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+      <mat-cell *matCellDef="let meeting">
+        {{meeting.date}}
+      </mat-cell>
+    </ng-container>
+
+
+    <!-- Expanded Content Column - The detail row is made up of this one column -->
+    <ng-container matColumnDef="expandedMeeting">
+      <mat-cell *matCellDef="let detail">
+        <div class="expanded-description">
+
+          <div class="text-description">
+
+            {{detail.meeting.description}}
+            <br>
+            {{detail.meeting.date | date:'yyyy-MM-dd'}}
+          </div>
+
+
+         <span class="description-spacer"></span>
+
+        <button mat-raised-button color="primary">Join</button>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"
+             matRipple
+             class="element-row"
+             [class.expanded]="expandedMeeting == row"
+             (click)="expandedMeeting = row"></mat-row>
+    <mat-row *matRowDef="let row; columns: ['expandedMeeting']; when: isExpansionDetailRow"
+             [@detailExpand]="row.meeting == expandedMeeting ? 'expanded' : 'collapsed'"
+             style="overflow: hidden">
+    </mat-row>
+  </mat-table>
+</div>

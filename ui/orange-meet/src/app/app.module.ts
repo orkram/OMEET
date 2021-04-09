@@ -26,6 +26,13 @@ import {FormsModule} from "@angular/forms";
 import {MatSortModule} from "@angular/material/sort";
 import { StartMeetingComponent } from './components/users-component/start-meeting/start-meeting.component';
 import {MatCardModule} from "@angular/material/card";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import { MeetingsListComponent } from './components/meetings/meetings-list/meetings-list.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatRippleModule} from "@angular/material/core";
+import {A11yModule} from "@angular/cdk/a11y";
+import { FindMeetingComponent } from './components/meetings/meetings-list/find-meeting/find-meeting.component';
+import { MatChipsModule} from "@angular/material/chips";
 
 
 @NgModule({
@@ -39,7 +46,9 @@ import {MatCardModule} from "@angular/material/card";
     UserListComponent,
     FindUserFieldComponent,
     StartMeetingComponent,
-    routingComponents
+    routingComponents,
+    MeetingsListComponent,
+    FindMeetingComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +67,12 @@ import {MatCardModule} from "@angular/material/card";
     MatCheckboxModule,
     FormsModule,
     MatSortModule,
-    MatCardModule
+    MatCardModule,
+    MatSlideToggleModule,
+    MatExpansionModule,
+    MatRippleModule,
+    A11yModule,
+    MatChipsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,42 @@
+.settings{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.default-spacer{
+  flex: 0 0 83%;
+}
+
+.output-device-spacer{
+  flex: 0 0 75%;
+}
+
+.bottom-bar-spacer{
+  flex: 0 0 80%;
+}
+.change-picture-spacer{
+  flex: 0 0 74.35%;
+}
+
+.bottom-bar{
+  display: flex;
+  flex-direction: row;
+}
+.mat-list-item{
+  border-bottom-color: #E0DFDF;
+  border-bottom-width: 1px ;
+  border-bottom-style: solid ;
+}
+
+.save-button{
+  margin: 30px;
+}
+
+.mat-raised-button{
+  width: 200px;
+}
+
+.mat-ripple-element {
+  background-color: #FEC994;
+}
