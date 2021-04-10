@@ -35,9 +35,4 @@
         android:label="@string/menu_video"
         tools:layout="@layout/fragment_video" />
 
-    <fragment
-        android:id="@+id/nav_register"
-        android:name="com.example.orangemeet.RegisterFragment"
-        android:label="@string/menu_register"
-        tools:layout="@layout/fragment_register" />
 </navigation>

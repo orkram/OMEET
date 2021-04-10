@@ -21,6 +21,7 @@ import androidx.appcompat.widget.Toolbar
 import com.example.orangemeet.MainActivity
 
 import com.example.orangemeet.R
+import com.example.orangemeet.RegisterActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -36,7 +37,12 @@ class LoginActivity : AppCompatActivity() {
         val usernameEditText = findViewById<EditText>(R.id.username)
         val passwordEditText = findViewById<EditText>(R.id.password)
         val loginButton = findViewById<Button>(R.id.login)
+        val registerButton = findViewById<Button>(R.id.register)
         //val loadingProgressBar = findViewById<ProgressBar>(R.id.loading)
+
+        registerButton.setOnClickListener {
+            goToRegisterActivity()
+        }
 
         loginViewModel.loginFormState.observe(this,
             Observer { loginFormState ->
@@ -107,6 +113,12 @@ class LoginActivity : AppCompatActivity() {
     private fun goToMainActivity()
     {
         val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun goToRegisterActivity()
+    {
+        val intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)
     }
 

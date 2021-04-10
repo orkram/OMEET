@@ -24,10 +24,5 @@
             android:id="@+id/nav_settings"
             android:icon="@android:drawable/ic_menu_save"
             android:title="@string/menu_settings" />
-
-        <item
-            android:id="@+id/nav_register"
-            android:icon="@android:drawable/ic_menu_save"
-            android:title="@string/menu_register" />
     </group>
 </menu>

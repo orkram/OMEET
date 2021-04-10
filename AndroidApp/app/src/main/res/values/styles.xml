@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="login_register_textedit" parent="Widget.MaterialComponents.TextView">
-        <item name="android:layout_width">300dp</item>
-        <item name="android:layout_height">45dp</item>
-        <item name="android:background">@drawable/outline_box_rounded</item>
-    </style>
-
+    
     <style name="input_field_box" parent="Widget.MaterialComponents.TextView">
         <item name="android:layout_width">320dp</item>
         <item name="android:layout_height">50dp</item>
@@ -37,7 +32,7 @@
     <style name="input_field_box_icon_box_icon">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_margin">5dp</item>
+        <item name="android:layout_margin">8dp</item>
     </style>
 
     <style name="input_field_textedit">

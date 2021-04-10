@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="180dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/orangemeet_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.555"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/account_creation_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/abeezee"
+            android:text="@string/account_creation"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5" />
+
+        <LinearLayout style="@style/input_field_box">
+
+            <FrameLayout style="@style/input_field_box_icon_box">
+
+                <ImageView style="@style/input_field_box_icon_box_bg" />
+
+                <ImageView
+                    style="@style/input_field_box_icon_box_icon"
+                    app:srcCompat="@drawable/email_icon" />
+
+            </FrameLayout>
+
+            <EditText
+                android:id="@+id/email"
+                style="@style/input_field_textedit"
+                android:hint="@string/prompt_email"
+                android:inputType="textEmailAddress"
+                android:selectAllOnFocus="true" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <LinearLayout style="@style/input_field_box">
+
+            <FrameLayout style="@style/input_field_box_icon_box">
+
+                <ImageView style="@style/input_field_box_icon_box_bg" />
+
+                <ImageView
+                    style="@style/input_field_box_icon_box_icon"
+                    app:srcCompat="@drawable/username_icon" />
+
+            </FrameLayout>
+
+            <EditText
+                android:id="@+id/username"
+                style="@style/input_field_textedit"
+                android:hint="@string/prompt_username"
+                android:inputType="textEmailAddress"
+                android:selectAllOnFocus="true" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <LinearLayout style="@style/input_field_box">
+
+            <FrameLayout style="@style/input_field_box_icon_box">
+
+                <ImageView style="@style/input_field_box_icon_box_bg" />
+
+                <ImageView
+                    style="@style/input_field_box_icon_box_icon"
+                    app:srcCompat="@drawable/password_star" />
+
+            </FrameLayout>
+
+            <EditText
+                android:id="@+id/password"
+                style="@style/input_field_textedit"
+                android:hint="@string/prompt_password"
+                android:imeActionLabel="@string/action_sign_in"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:selectAllOnFocus="true" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <LinearLayout style="@style/input_field_box">
+
+            <FrameLayout style="@style/input_field_box_icon_box">
+
+                <ImageView style="@style/input_field_box_icon_box_bg" />
+
+                <ImageView
+                    style="@style/input_field_box_icon_box_icon"
+                    app:srcCompat="@drawable/password_star" />
+
+            </FrameLayout>
+
+            <EditText
+                android:id="@+id/password_repeat"
+                style="@style/input_field_textedit"
+                android:hint="@string/prompt_password_repeat"
+                android:imeActionLabel="@string/action_sign_in"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:selectAllOnFocus="true" />
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="64dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="64dp"
+            android:visibility="gone" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5" />
+
+        <Button
+            android:id="@+id/register"
+            style="@style/login_register_button"
+            android:enabled="true"
+            android:text="@string/action_register" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="3" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
