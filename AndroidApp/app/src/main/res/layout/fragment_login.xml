@@ -43,7 +43,9 @@
 
                 <ImageView style="@style/input_field_box_icon_box_bg" />
 
-                <ImageView style="@style/input_field_box_icon_box_icon" />
+                <ImageView
+                    style="@style/input_field_box_icon_box_icon"
+                    app:srcCompat="@drawable/username_icon" />
 
             </FrameLayout>
 
@@ -65,7 +67,9 @@
 
                 <ImageView style="@style/input_field_box_icon_box_bg" />
 
-                <ImageView style="@style/input_field_box_icon_box_icon" />
+                <ImageView
+                    style="@style/input_field_box_icon_box_icon"
+                    app:srcCompat="@drawable/password_star" />
 
             </FrameLayout>
 
