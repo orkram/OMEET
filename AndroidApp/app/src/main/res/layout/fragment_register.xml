@@ -11,7 +11,7 @@
     android:paddingBottom="@dimen/fragment_vertical_margin">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/logo"
         android:layout_width="180dp"
         android:layout_height="100dp"
         android:layout_marginTop="52dp"
@@ -34,7 +34,7 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
 
     <EditText
         android:id="@+id/email"

@@ -5,7 +5,7 @@
         <item name="colorPrimaryVariant">@color/orange_secondary</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <item name="secondaryBackground">@color/dim_orange</item>
+        <item name="secondaryBackground">@color/white_secondary</item>
     </style>
 
     <style name="Theme.OrangeMeet.NoActionBar" >
