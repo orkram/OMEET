@@ -12,6 +12,10 @@
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
+    <string name="test_header">Testowanie</string>
+
+    <!-- Test preferences -->
+    <string name="day_night_theme">Tryb jasny/ciemny</string>
 
     <!-- Messages Preferences -->
     <string name="signature_title">Your signature</string>
