@@ -7,7 +7,7 @@
     android:background="@drawable/outline_box"
     android:gravity="clip_vertical"
     android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:paddingBottom="8dp" >
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -21,13 +21,13 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/userNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/meeting_title" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/emailTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/meeting_subtitle" />

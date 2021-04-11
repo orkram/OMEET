@@ -2,18 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/box"
     android:layout_width="match_parent"
     android:layout_height="@dimen/contacts_list_item_height"
     android:background="@drawable/outline_box"
-    android:gravity="clip_vertical"
     android:padding="8dp">
 
 
     <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="50dp"
+        android:id="@+id/avatar"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:layout_weight="1"
+        app:srcCompat="@drawable/profile" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -22,18 +23,18 @@
         android:layout_marginLeft="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
-        android:layout_weight="1"
+        android:layout_weight="9"
         android:gravity="center_vertical"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/userNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nav_header_title" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/emailTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/nav_header_subtitle" />
@@ -41,9 +42,11 @@
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/imageButton3"
-        android:layout_width="50dp"
+        android:id="@+id/information"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:background="@color/transparent"
-        app:srcCompat="@android:drawable/ic_dialog_info" />
+        app:srcCompat="@drawable/information" />
+
 </LinearLayout>
