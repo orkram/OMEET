@@ -1,3 +1,5 @@
+com\orange\OrangeCommunicatorBackend\api\v1\account\responseBody\AccountTokenBody.class
+com\orange\OrangeCommunicatorBackend\api\v1\account\requestBody\AccountLoginRequestBody.class
 com\orange\OrangeCommunicatorBackend\dbEntities\FriendshipId.class
 com\orange\OrangeCommunicatorBackend\dbRepositories\SettingsRepository.class
 com\orange\OrangeCommunicatorBackend\api\v1\meetings\MeetingsApi.class
