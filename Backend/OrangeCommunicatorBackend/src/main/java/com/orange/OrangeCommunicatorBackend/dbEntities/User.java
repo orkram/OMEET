@@ -26,6 +26,9 @@ public class User {
     @Column(name="img_url", nullable=true)
     private String img_url;
 
+    @Column(name="keycloak_id", nullable = false)
+    private String keycloak_id;
+
 
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
@@ -47,7 +50,23 @@ public class User {
 
     }
 
+    public User(String user_name, String e_mail, String first_name, String last_name, String img_url, String keycloak_id) {
+        this.user_name = user_name;
+        this.e_mail = e_mail;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.img_url = img_url;
+        this.keycloak_id = keycloak_id;
+    }
 
+    public User(String user_name, String e_mail, String first_name, String last_name, String img_url) {
+        this.user_name = user_name;
+        this.e_mail = e_mail;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.img_url = img_url;
+        this.keycloak_id = null;
+    }
 
     public String getE_mail() {
         return e_mail;
@@ -87,5 +106,13 @@ public class User {
 
     public void setImg_url(String img_url) {
         this.img_url = img_url;
+    }
+
+    public String getKeycloak_id() {
+        return keycloak_id;
+    }
+
+    public void setKeycloak_id(String keycloak_id) {
+        this.keycloak_id = keycloak_id;
     }
 }

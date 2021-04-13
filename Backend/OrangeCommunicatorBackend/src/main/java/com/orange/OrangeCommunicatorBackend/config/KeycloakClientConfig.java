@@ -31,6 +31,21 @@ public class KeycloakClientConfig {
         KeycloakClientConfig.realm = realm;
     }
 
+    public static String getSecretKey() {
+        return secretKey;
+    }
+
+    public static String getClientId() {
+        return clientId;
+    }
+
+    public static String getAuthUrl() {
+        return authUrl;
+    }
+
+    public static String getRealm() {
+        return realm;
+    }
 
     @Bean
     public static Keycloak keycloak() {

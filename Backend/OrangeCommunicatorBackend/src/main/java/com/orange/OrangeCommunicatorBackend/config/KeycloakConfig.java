@@ -43,12 +43,13 @@ public class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
         return new KeycloakSpringBootConfigResolver();
     }
 
-    //@Override
-    //public void configure(WebSecurity web) throws Exception {
-        //web.ignoring().antMatchers("/v2/api-docs",
-        //        "/swagger-ui.html",
-         //       "/swagger-ui/**");
-    //}
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+       // web.ignoring().antMatchers("/v2/api-docs",
+                //"/swagger-ui.html",
+               // "/swagger-ui/**");
+        web.ignoring().antMatchers("api/v1/account/**");
+    }
 
     @Override
     protected void configure(final HttpSecurity httpSecurity) throws Exception {
