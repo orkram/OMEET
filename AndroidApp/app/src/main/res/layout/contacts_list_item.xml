@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/box"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/contacts_list_item_height"
-    android:background="@drawable/outline_box"
+    android:layout_height="@dimen/contacts_meetings_list_item_height"
+    android:background="?attr/secondaryBackground"
     android:padding="8dp">
 
 
@@ -28,7 +28,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/userNameTextView"
+            android:id="@+id/meetingId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nav_header_title" />

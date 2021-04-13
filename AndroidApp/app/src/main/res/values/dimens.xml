@@ -10,7 +10,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="fragment_horizontal_margin">16dp</dimen>
     <dimen name="fragment_vertical_margin">16dp</dimen>
-    <dimen name="contacts_list_item_height">80dp</dimen>
-    <dimen name="contacts_list_item_ex_height">160dp</dimen>
+    <dimen name="contacts_meetings_list_item_height">60dp</dimen>
+    <dimen name="contacts_meetings_list_item_ex_height">140dp</dimen>
     <dimen name="input_field_corner_radius">8dp</dimen>
 </resources>

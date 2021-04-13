@@ -2,12 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/box"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/contacts_list_item_height"
-    android:background="@drawable/outline_box"
+    android:layout_height="@dimen/contacts_meetings_list_item_height"
+    android:background="?attr/secondaryBackground"
     android:gravity="clip_vertical"
     android:paddingTop="8dp"
-    android:paddingBottom="8dp" >
+    android:paddingBottom="8dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -16,18 +17,19 @@
         android:layout_marginLeft="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
-        android:layout_weight="1"
+        android:layout_weight="9"
         android:gravity="center_vertical"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/userNameTextView"
+            android:id="@+id/meetingId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/meeting_title" />
+            android:text="@string/meeting_title"
+            android:textColor="?attr/colorOnBackground"
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/emailTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/meeting_subtitle" />
@@ -35,10 +37,12 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView7"
-        android:layout_width="90dp"
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:gravity="center"
-        android:text="@string/example_date" />
+        android:text="@string/example_date"
+        android:textColor="?attr/colorOnBackground" />
 
 </LinearLayout>

@@ -34,7 +34,7 @@ class ContactsFragment : Fragment() {
                     else
                         secondaryColor.resourceId))
 
-            val view = Contact.createView(inflater, contactsListView, Contact(), color)
+            val view = Contact.createView(inflater, contactsListView, it, color)
 
             contactsListView.addView(view)
             useSecondaryColor = !useSecondaryColor

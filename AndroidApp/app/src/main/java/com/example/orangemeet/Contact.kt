@@ -1,18 +1,12 @@
 package com.example.orangemeet
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import org.json.JSONObject
-import org.w3c.dom.Text
-import java.util.zip.Inflater
-import kotlin.jvm.internal.Intrinsics
 
 
 class Contact {
@@ -36,15 +30,15 @@ class Contact {
             return contact
         }
 
-        fun createView(inflater : LayoutInflater, root : ViewGroup,  contact: Contact, drawable: Drawable) : View{
+        fun createView(inflater : LayoutInflater, root : ViewGroup, contact: Contact, background: Drawable) : View{
             val view = inflater.inflate(R.layout.contacts_list_item, root, false)
 
-            val userNameTextView = view.findViewById<TextView>(R.id.userNameTextView)
+            val userNameTextView = view.findViewById<TextView>(R.id.meetingId)
             val emailTextView = view.findViewById<TextView>(R.id.emailTextView)
             val box = view.findViewById<View>(R.id.box)
             userNameTextView.text = contact.username
             emailTextView.text = contact.email
-            box.background = drawable
+            box.background = background
             System.out.println(userNameTextView.text.toString())
             return view
         }
