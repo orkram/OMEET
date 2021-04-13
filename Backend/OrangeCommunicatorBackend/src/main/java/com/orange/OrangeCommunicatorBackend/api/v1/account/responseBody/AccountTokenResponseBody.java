@@ -2,7 +2,7 @@ package com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-public class AccountTokenBody {
+public class AccountTokenResponseBody {
 
     private final String access_token;
     private final long expires_in;
@@ -14,9 +14,9 @@ public class AccountTokenBody {
     private final String scope;
 
     @JsonCreator
-    public AccountTokenBody(String access_token, long expires_in, long refresh_expires_in,
-                            String refresh_token, String token_type, long not_before_policy,
-                            String session_state, String scope) {
+    public AccountTokenResponseBody(String access_token, long expires_in, long refresh_expires_in,
+                                    String refresh_token, String token_type, long not_before_policy,
+                                    String session_state, String scope) {
         this.access_token = access_token;
         this.expires_in = expires_in;
         this.refresh_expires_in = refresh_expires_in;
