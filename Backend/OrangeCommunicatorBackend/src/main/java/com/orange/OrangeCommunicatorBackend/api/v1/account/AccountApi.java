@@ -1,8 +1,10 @@
 package com.orange.OrangeCommunicatorBackend.api.v1.account;
 
 
+import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountLoginRequestBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountRegisterRequestBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountRegisterResponseBody;
+import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountTokenBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +35,9 @@ public class AccountApi {
 
     @PostMapping("/login")
     @ApiOperation("Login user and get tokens")
-    public String login(@RequestBody String s) {
-        return "/login POST endpoint";
+    public ResponseEntity<AccountTokenBody> login(@RequestBody AccountLoginRequestBody accountLoginRequestBody) {
+        AccountTokenBody accountTokenBody = accountService.login(accountLoginRequestBody);
+        return ResponseEntity.status(HttpStatus.OK).body(accountTokenBody);
     }
 
     @PostMapping("/{username}/refresh-token")
