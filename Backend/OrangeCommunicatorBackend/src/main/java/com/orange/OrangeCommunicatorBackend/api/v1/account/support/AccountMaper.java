@@ -2,7 +2,7 @@ package com.orange.OrangeCommunicatorBackend.api.v1.account.support;
 
 import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountRegisterRequestBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountRegisterResponseBody;
-import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountTokenBody;
+import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountTokenResponseBody;
 import com.orange.OrangeCommunicatorBackend.dbEntities.User;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +19,7 @@ public class AccountMaper {
                 user.getFirst_name(), user.getLast_name(), user.getImg_url());
     }
 
-    public AccountTokenBody toAccountTokenBody(String resp){
+    public AccountTokenResponseBody toAccountTokenBody(String resp){
 
         resp = resp.substring(1);
         resp = resp.substring(0, resp.length() - 1);
@@ -35,7 +35,7 @@ public class AccountMaper {
             out[i] = out[i].replace("\"", "");
         }
 
-        return new AccountTokenBody(out[0], Integer.parseInt(out[1]), Integer.parseInt(out[2]),
+        return new AccountTokenResponseBody(out[0], Integer.parseInt(out[1]), Integer.parseInt(out[2]),
                 out[3], out[4], Integer.parseInt(out[5]), out[6], out[7]);
 
     }

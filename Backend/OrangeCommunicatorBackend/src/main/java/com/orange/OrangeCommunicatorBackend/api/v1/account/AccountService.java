@@ -3,8 +3,9 @@ package com.orange.OrangeCommunicatorBackend.api.v1.account;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountLoginRequestBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountRefreshTokenRequestBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountRegisterRequestBody;
+import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountLogoutResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountRegisterResponseBody;
-import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountTokenBody;
+import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountTokenResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.support.AccountMaper;
 import com.orange.OrangeCommunicatorBackend.config.KeycloakClientConfig;
 import com.orange.OrangeCommunicatorBackend.dbEntities.User;
@@ -22,7 +23,6 @@ import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
-import org.springframework.jdbc.datasource.UserCredentialsDataSourceAdapter;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;
@@ -31,6 +31,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountService {
@@ -42,15 +43,25 @@ public class AccountService {
         this.accountMaper = accountMaper;
     }
 
-    public AccountTokenBody login(AccountLoginRequestBody accountLoginRequestBody){
+    public AccountTokenResponseBody login(AccountLoginRequestBody accountLoginRequestBody){
         String stringResponse = getToken(accountLoginRequestBody);
 
         return accountMaper.toAccountTokenBody(stringResponse);
     }
 
-    public AccountTokenBody refresh(AccountRefreshTokenRequestBody accountRefreshTokenRequestBody){
+    public AccountTokenResponseBody refresh(AccountRefreshTokenRequestBody accountRefreshTokenRequestBody){
         String stringResponse = getRefreshToken(accountRefreshTokenRequestBody);
         return accountMaper.toAccountTokenBody(stringResponse);
+    }
+
+    public AccountLogoutResponseBody logout(String userName){
+
+        // dodać wyjątki
+        User user = userRepository.findById(userName).orElseThrow();
+        Keycloak keycloak = KeycloakClientConfig.keycloak();
+        UsersResource userResource = keycloak.realm(KeycloakClientConfig.getRealm()).users();
+        userResource.get(user.getKeycloak_id()).logout();
+        return new AccountLogoutResponseBody("true");
     }
 
     public AccountRegisterResponseBody register(AccountRegisterRequestBody accountRegisterRequestBody){
@@ -58,10 +69,10 @@ public class AccountService {
         int statusId = 0;
         try {
             Keycloak keycloak = KeycloakClientConfig.keycloak();
-            UsersResource usersRessource = keycloak.realm(KeycloakClientConfig.getRealm()).users();
+            UsersResource usersResource = keycloak.realm(KeycloakClientConfig.getRealm()).users();
 
             UserRepresentation user = createUserRepresenatation(accountRegisterRequestBody.getUserName());
-            Response result = usersRessource.create(user);
+            Response result = usersResource.create(user);
 
             statusId = result.getStatus();
 
@@ -69,7 +80,7 @@ public class AccountService {
 
                 String userId = result.getLocation().getPath().replaceAll(".*/([^/]+)$", "$1");
 
-                usersRessource.get(userId).resetPassword(createPasswordCredentials(accountRegisterRequestBody.
+                usersResource.get(userId).resetPassword(createPasswordCredentials(accountRegisterRequestBody.
                         getPassword()));
 
 
@@ -99,7 +110,6 @@ public class AccountService {
         }
 
         return null;
-
     }
 
 
@@ -176,9 +186,7 @@ public class AccountService {
             e.printStackTrace();
 
         }
-
         return responseToken;
-
     }
 
 }
