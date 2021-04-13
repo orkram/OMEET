@@ -1,6 +1,7 @@
 package com.orange.OrangeCommunicatorBackend.api.v1.account;
 
 
+import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountChangePasswordRequestBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountLoginRequestBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountRefreshTokenRequestBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountRegisterRequestBody;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api/v1/account")
-@Api(tags = "logging, registration, nad token management")
+@Api(tags = "logging, registration, and token management")
 @Slf4j
 public class AccountApi {
 
@@ -54,6 +55,14 @@ public class AccountApi {
     public ResponseEntity<AccountLogoutResponseBody> logout(@PathVariable String username) {
         AccountLogoutResponseBody accountLogoutResponseBody = accountService.logout(username);
         return ResponseEntity.status(HttpStatus.OK).body(accountLogoutResponseBody);
+    }
+
+    @PostMapping("/{username}/change-password")
+    @ApiOperation("Change password of user")
+    public ResponseEntity<Void> logout(@PathVariable String username,
+                @RequestBody AccountChangePasswordRequestBody accountChangePasswordRequestBody) {
+                accountService.changePassword(accountChangePasswordRequestBody, username);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }
