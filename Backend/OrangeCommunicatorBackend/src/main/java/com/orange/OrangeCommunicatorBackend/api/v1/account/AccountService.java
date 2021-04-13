@@ -1,6 +1,7 @@
 package com.orange.OrangeCommunicatorBackend.api.v1.account;
 
 import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountLoginRequestBody;
+import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountRefreshTokenRequestBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountRegisterRequestBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountRegisterResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountTokenBody;
@@ -44,6 +45,11 @@ public class AccountService {
     public AccountTokenBody login(AccountLoginRequestBody accountLoginRequestBody){
         String stringResponse = getToken(accountLoginRequestBody);
 
+        return accountMaper.toAccountTokenBody(stringResponse);
+    }
+
+    public AccountTokenBody refresh(AccountRefreshTokenRequestBody accountRefreshTokenRequestBody){
+        String stringResponse = getRefreshToken(accountRefreshTokenRequestBody);
         return accountMaper.toAccountTokenBody(stringResponse);
     }
 
@@ -133,7 +139,7 @@ public class AccountService {
 
     }
 
-    public String sendPost(List<NameValuePair> urlParameters) throws Exception {
+    private String sendPost(List<NameValuePair> urlParameters) throws Exception {
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(KeycloakClientConfig.getAuthUrl() + "/realms/" +
                 KeycloakClientConfig.getRealm() + "/protocol/openid-connect/token");
@@ -151,6 +157,28 @@ public class AccountService {
         }
 
         return result.toString();
+    }
+
+    private String getRefreshToken(AccountRefreshTokenRequestBody accountRefreshTokenRequestBody) {
+
+        String responseToken = null;
+        try {
+
+            List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+            urlParameters.add(new BasicNameValuePair("grant_type", "refresh_token"));
+            urlParameters.add(new BasicNameValuePair("client_id", accountRefreshTokenRequestBody.getClient_id()));
+            urlParameters.add(new BasicNameValuePair("refresh_token", accountRefreshTokenRequestBody.getRefresh_token()));
+            urlParameters.add(new BasicNameValuePair("client_secret", accountRefreshTokenRequestBody.getClient_secret()));
+
+            responseToken = sendPost(urlParameters);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+        return responseToken;
+
     }
 
 }
