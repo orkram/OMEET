@@ -10,6 +10,7 @@ com\orange\OrangeCommunicatorBackend\config\KeycloakClientConfig.class
 com\orange\OrangeCommunicatorBackend\api\v1\account\AccountService.class
 com\orange\OrangeCommunicatorBackend\dbRepositories\ListOfFriendsRepository.class
 com\orange\OrangeCommunicatorBackend\dbEntities\Meeting.class
+com\orange\OrangeCommunicatorBackend\api\v1\account\requestBody\AccountRefreshTokenRequestBody.class
 com\orange\OrangeCommunicatorBackend\api\v1\account\requestBody\AccountRegisterRequestBody.class
 com\orange\OrangeCommunicatorBackend\api\v1\account\support\AccountMaper.class
 com\orange\OrangeCommunicatorBackend\dbRepositories\MeetingRepository.class

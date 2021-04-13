@@ -2,6 +2,7 @@ package com.orange.OrangeCommunicatorBackend.api.v1.account;
 
 
 import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountLoginRequestBody;
+import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountRefreshTokenRequestBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountRegisterRequestBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountRegisterResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountTokenBody;
@@ -42,8 +43,9 @@ public class AccountApi {
 
     @PostMapping("/{username}/refresh-token")
     @ApiOperation("Refresh token for user")
-    public String refresh() {
-        return "//{username}/refresh-token POST endpoint";
+    public ResponseEntity<AccountTokenBody> refresh(@PathVariable String username, @RequestBody AccountRefreshTokenRequestBody accountRefreshTokenRequestBody) {
+        AccountTokenBody accountTokenBody = accountService.refresh(accountRefreshTokenRequestBody);
+        return ResponseEntity.status(HttpStatus.OK).body(accountTokenBody);
     }
 
     @PostMapping("/{username}/logout")
