@@ -15,6 +15,7 @@ com\orange\OrangeCommunicatorBackend\api\v1\account\requestBody\AccountRegisterR
 com\orange\OrangeCommunicatorBackend\api\v1\account\support\AccountMaper.class
 com\orange\OrangeCommunicatorBackend\dbRepositories\MeetingRepository.class
 com\orange\OrangeCommunicatorBackend\api\v1\account\responseBody\AccountTokenResponseBody.class
+com\orange\OrangeCommunicatorBackend\api\v1\account\requestBody\AccountChangePasswordRequestBody.class
 com\orange\OrangeCommunicatorBackend\api\v1\meetings\participants\ParticipantsApi.class
 com\orange\OrangeCommunicatorBackend\dbEntities\MeetingUserList.class
 com\orange\OrangeCommunicatorBackend\dbRepositories\UserRepository.class

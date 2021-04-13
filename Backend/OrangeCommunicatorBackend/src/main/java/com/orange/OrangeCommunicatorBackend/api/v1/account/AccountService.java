@@ -1,5 +1,6 @@
 package com.orange.OrangeCommunicatorBackend.api.v1.account;
 
+import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountChangePasswordRequestBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountLoginRequestBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountRefreshTokenRequestBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountRegisterRequestBody;
@@ -43,6 +44,8 @@ public class AccountService {
         this.accountMaper = accountMaper;
     }
 
+
+
     public AccountTokenResponseBody login(AccountLoginRequestBody accountLoginRequestBody){
         String stringResponse = getToken(accountLoginRequestBody);
 
@@ -62,6 +65,15 @@ public class AccountService {
         UsersResource userResource = keycloak.realm(KeycloakClientConfig.getRealm()).users();
         userResource.get(user.getKeycloak_id()).logout();
         return new AccountLogoutResponseBody("true");
+    }
+
+    public void changePassword(AccountChangePasswordRequestBody accountChangePasswordRequestBody, String userName){
+        Keycloak keycloak = KeycloakClientConfig.keycloak();
+        User user = userRepository.findById(userName).orElseThrow();
+
+        UsersResource usersResource = keycloak.realm(KeycloakClientConfig.getRealm()).users();
+        usersResource.get(user.getKeycloak_id()).resetPassword(createPasswordCredentials(accountChangePasswordRequestBody.
+                getPassword()));
     }
 
     public AccountRegisterResponseBody register(AccountRegisterRequestBody accountRegisterRequestBody){
@@ -125,7 +137,7 @@ public class AccountService {
         passwordCred.setTemporary(false);
         passwordCred.setType(CredentialRepresentation.PASSWORD);
         passwordCred.setValue(password);
-        return  passwordCred;
+        return passwordCred;
     }
 
     private String getToken(AccountLoginRequestBody accountLoginRequestBody){

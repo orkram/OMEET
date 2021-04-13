@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class AccountLoginRequestBody {
     private final String client_id;
-    private final String  username;
+    private final String username;
     private final String password;
     private final String client_secret;
 
