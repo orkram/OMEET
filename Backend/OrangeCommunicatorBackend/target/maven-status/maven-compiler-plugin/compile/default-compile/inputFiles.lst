@@ -28,4 +28,5 @@ C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\dbEntities\Settings.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\OrangeCommunicatorBackendApplication.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\config\KeycloakConfig.java
+C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\account\requestBody\AccountChangePasswordRequestBody.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\config\KeycloakClientConfig.java
