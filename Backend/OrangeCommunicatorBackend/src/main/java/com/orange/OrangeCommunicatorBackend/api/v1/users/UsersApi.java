@@ -1,5 +1,6 @@
 package com.orange.OrangeCommunicatorBackend.api.v1.users;
 
+import com.orange.OrangeCommunicatorBackend.api.v1.users.requestBody.UserUpdateRequestBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody.UserResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,9 +29,10 @@ public class UsersApi {
     }
 
     @PutMapping("/{username}")
-    @ApiOperation("Update user")
-    public String update(@RequestBody String s) {
-        return "/users PUT endpoint";
+    @ApiOperation("Update user's data")
+    public ResponseEntity<UserResponseBody> update(@PathVariable String username, @RequestBody UserUpdateRequestBody userUpdateRequestBody) {
+        UserResponseBody userResponseBody = userService.updateUser(username, userUpdateRequestBody);
+        return ResponseEntity.status(HttpStatus.OK).body(userResponseBody);
     }
 
     @GetMapping
