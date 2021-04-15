@@ -1,0 +1,42 @@
+# application configuration
+server:
+  port: 9000
+# keycloak configuration
+keycloak:
+  # name of the created realm
+  #enabled: false
+  realm: OrngAuth
+  # name of the created client
+  resource: admin-backend
+  #resource: orange-backend
+  # indicates that our service has been created as a bearer-only (by default it is false)
+  # bearer-only: true
+  # url of our Keycloak server
+  #auth-server-url: http://130.61.186.61:8100/auth
+  auth-server-url: http://localhost:8100/auth
+  ssl-required: none
+  #public-client: true
+  credentials:
+    secret: 7cf7873c-298d-4bdd-976e-59258a52507e
+
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/Omeet
+    #url: jdbc:postgresql://postgresqldb:5432/Omeet
+    username: postgres
+    password: postgres
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
+  #autoconfigure:
+    #exclude:
+      #- org.keycloak.adapters.springboot.KeycloakSpringBootConfiguration
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
