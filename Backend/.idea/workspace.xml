@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d311655a-3e36-4573-b02d-e0b0079ef786" name="Default Changelist" comment="fix for project structure" />
+    <list default="true" id="d311655a-3e36-4573-b02d-e0b0079ef786" name="Default Changelist" comment="Removed libraries">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,7 +38,7 @@
   <component name="RunManager">
     <configuration name="OrangeCommunicatorBackendApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.orange.OrangeCommunicatorBackend.OrangeCommunicatorBackendApplication" />
-      <module name="orange_communicator_backend" />
+      <module name="OrangeCommunicatorBackend" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.orange.OrangeCommunicatorBackend.*" />
@@ -81,6 +85,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix for project structure" />

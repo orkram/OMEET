@@ -11,9 +11,9 @@
 	</parent>
 
 	<groupId>com.orange</groupId>
-	<artifactId>orange_communicator_backend</artifactId>
+	<artifactId>OrangeCommunicatorBackend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>orange_communicator_backend</name>
+	<name>OrangeCommunicatorBackend</name>
 	<description></description>
 
 	<properties>
