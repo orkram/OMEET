@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Backend.iml" filepath="$PROJECT_DIR$/Backend.iml" />
-      <module fileurl="file://$PROJECT_DIR$/OrangeCommunicatorBackend/orange_communicator_backend.iml" filepath="$PROJECT_DIR$/OrangeCommunicatorBackend/orange_communicator_backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/OrangeCommunicatorBackend/orangeCommunicatorBackend.iml" filepath="$PROJECT_DIR$/OrangeCommunicatorBackend/orangeCommunicatorBackend.iml" />
     </modules>
   </component>
 </project>
