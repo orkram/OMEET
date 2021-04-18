@@ -20,3 +20,7 @@
 .text-button{
   text-decoration: underline;
 }
+
+.meetings-style h1{
+  margin: 15px;
+}
