@@ -1,12 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatPaginator} from "@angular/material/paginator";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatSort} from "@angular/material/sort";
+import {MatPaginator} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
+import {MatSort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.css']
+  styleUrls: ['./user-list.component.scss']
 })
 
 export class UserListComponent implements OnInit {
@@ -15,7 +15,7 @@ export class UserListComponent implements OnInit {
     this.dataSource = new MatTableDataSource<any>();
   }
 
-  headerRow: string[] = ['image','name','email','checked'];
+  headerRow: string[] = ['image', 'name', 'email', 'checked'];
 
   dataSource: MatTableDataSource<any> ;
 
@@ -25,23 +25,24 @@ export class UserListComponent implements OnInit {
   @ViewChild(MatSort, {static: false}) set content(sort: MatSort) {
     this.dataSource.sort = sort;
   }
-  imagePlaceholder: string = '../../../../assets/images/small-user-image.png';
+  imagePlaceholder = '../../../../assets/images/small-user-image.png';
 
   contacts: Contact[] = [
-    new Contact(this.imagePlaceholder,'John Doe', 'johnDoe@mail.com'),
-    {image: this.imagePlaceholder, name: 'Carnegie Mondover',email: 'CarnegieMondover@mail.com', checked: false},
-    {image: this.imagePlaceholder,name: 'Lance Bogrol',email: 'LanceBogrol@mail.com', checked: false},
-    {image: this.imagePlaceholder,name: 'Lance Bogrol',email: 'LanceBogrol@mail.com', checked: false},
-    {image: this.imagePlaceholder,name: 'Lance Bogrol',email: 'LanceBogrol@mail.com', checked: false},
-    {image: this.imagePlaceholder,name: 'Lance Bogrol',email: 'LanceBogrol@mail.com', checked: false},
-    {image: this.imagePlaceholder,name: 'Lance Bogrol',email: 'LanceBogrol@mail.com', checked: false},
-    {image: this.imagePlaceholder,name: 'Lance Bogrol',email: 'LanceBogrol@mail.com', checked: false},
-    {image: this.imagePlaceholder,name: 'Lance Bogrol',email: 'LanceBogrol@mail.com', checked: false},
-    {image: this.imagePlaceholder,name: 'Lance Bogrol',email: 'LanceBogrol@mail.com', checked: false}
+    new Contact(this.imagePlaceholder, 'John Doe', 'johnDoe@mail.com'),
+    {image: this.imagePlaceholder, name: 'Carnegie Mondover', email: 'CarnegieMondover@mail.com', checked: false},
+    {image: this.imagePlaceholder, name: 'Lance Bogrol', email: 'LanceBogrol@mail.com', checked: false},
+    {image: this.imagePlaceholder, name: 'Lance Bogrol', email: 'LanceBogrol@mail.com', checked: false},
+    {image: this.imagePlaceholder, name: 'Lance Bogrol', email: 'LanceBogrol@mail.com', checked: false},
+    {image: this.imagePlaceholder, name: 'Lance Bogrol', email: 'LanceBogrol@mail.com', checked: false},
+    {image: this.imagePlaceholder, name: 'Lance Bogrol', email: 'LanceBogrol@mail.com', checked: false},
+    {image: this.imagePlaceholder, name: 'Lance Bogrol', email: 'LanceBogrol@mail.com', checked: false},
+    {image: this.imagePlaceholder, name: 'Lance Bogrol', email: 'LanceBogrol@mail.com', checked: false},
+    {image: this.imagePlaceholder, name: 'Lance Bogrol', email: 'LanceBogrol@mail.com', checked: false}
   ];
 
+  // tslint:disable-next-line:typedef
   selectedContacts(){
-    return this.dataSource.data.filter(contact => contact.checked).length
+    return this.dataSource.data.filter(contact => contact.checked).length;
   }
 
   ngOnInit(): void {
@@ -50,6 +51,7 @@ export class UserListComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
+  // tslint:disable-next-line:typedef
   applyFilter(key: string){
       console.log(key);
       this.dataSource.filter = key.trim().toLocaleLowerCase();
@@ -61,9 +63,9 @@ export class Contact {
   image: string;
   name: string;
   email: string;
-  checked: boolean = false;
+  checked = false;
 
-  constructor(image:string,name:string, email:string){
+  constructor(image: string, name: string, email: string){
     this.image = image;
     this.name = name;
     this.email = email;

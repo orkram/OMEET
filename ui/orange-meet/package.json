@@ -25,6 +25,7 @@
     "@material/menu": "^10.0.0",
     "@material/textfield": "^10.0.0",
     "rxjs": "~6.6.0",
+    "schematics-scss-migrate": "^1.3.13",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"
   },
