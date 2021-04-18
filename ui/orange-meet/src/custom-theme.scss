@@ -2,11 +2,11 @@
 @import '~@angular/material/theming';
 @include mat-core();
 
-$orange-meet-primary: mat-palette($mat-deep-orange,  A200, A100, A600);
+$orange-meet-primary: mat-palette($mat-deep-orange,  500, A100, A600);
 $mat-ripple-color: mat-palette($mat-orange,  A100, A100, A400);
 $orange-meet-accent: mat-palette($mat-deep-orange, A200, A100, A400);
 $orange-meet-warn: mat-palette($mat-red);
-$orange-meet-success: mat-palette($mat-green);
+$orange-meet-success: mat-palette($mat-light-green, 600);
 
 $primary: mat-color($orange-meet-primary);
 $accent: mat-color($orange-meet-accent);
@@ -24,8 +24,5 @@ $orange-meet-theme: mat-light-theme((
   )
 ));
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
 @include angular-material-theme($orange-meet-theme);
 

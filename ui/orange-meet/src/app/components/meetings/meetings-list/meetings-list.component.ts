@@ -1,7 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable, of} from 'rxjs';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {MatPaginator} from "@angular/material/paginator";
+import {catchError, finalize} from "rxjs/operators";
 
 @Component({
   selector: 'app-meetings-list',
@@ -24,9 +26,11 @@ export class MeetingsListComponent implements OnInit {
   displayedColumns = ['id', 'name', 'status', 'date'];
   dataSource = new ExampleDataSource();
 
+  @ViewChild(MatPaginator, {static: true})
+  paginator!: MatPaginator;
 
   ngOnInit(): void {
-
+    this.dataSource.paginator = this.paginator;
   }
 
   // tslint:disable-next-line:typedef
@@ -49,7 +53,7 @@ export class Meeting {
   status: Status = Status.Inactive;
   listOfParticipants: string[] = [];
   description = 'Short meeting description(Optional)';
-  date: Date = new Date();
+  date = new Date().toISOString();
 
   constructor(id: string, name: string, status: Status) {
     this.id = id;
@@ -75,13 +79,31 @@ const data: Meeting[] = [
 ];
 
 export class ExampleDataSource extends DataSource<any> {
+
+  private lessonsSubject = new BehaviorSubject<Meeting[]>([]);
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+
+  public loading$ = this.loadingSubject.asObservable();
+
   connect(): Observable<Meeting[]> {
     const rows: any[] = [];
     data.forEach(meeting => rows.push(meeting, { detailRow: true, meeting }));
     console.log(rows);
     return of(rows);
   }
+  length(): number{
+    return data.length;
+  }
 
   disconnect(collectionViewer: CollectionViewer): void {
+  }
+
+  // tslint:disable-next-line:typedef
+  loadLessons(courseId: number, filter = '',
+              sortDirection = 'asc', pageIndex = 0, pageSize = 3) {
+
+    this.loadingSubject.next(true);
+
+    this.subscribe(lessons => this.lessonsSubject.next(lessons));
   }
 }
