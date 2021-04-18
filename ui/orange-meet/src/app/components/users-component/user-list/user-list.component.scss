@@ -18,7 +18,7 @@
 }
 
 .persons-counter{
-  margin-left: 10px;
+  margin: 10px;
 }
 
 .mat-checkbox{
@@ -47,4 +47,12 @@
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
+}
+.contact-table {
+  margin-top: 10px;
+  margin-left: 20px;
+}
+.contact-paginator{
+  margin-left: 20px;
+  margin-right: 20px;
 }

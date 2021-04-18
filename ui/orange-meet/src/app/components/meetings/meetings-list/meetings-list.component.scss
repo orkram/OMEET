@@ -1,8 +1,12 @@
+@import "../../../../custom-theme.scss";
+
 .example-container {
   display: flex;
   flex-direction: column;
   max-height: 500px;
   min-width: 300px;
+  margin-top: 10px;
+  margin-left: 20px;
 }
 
 .mat-table {
@@ -38,4 +42,8 @@
   height: 32px;
   position: relative;
   top: 5%;
+}
+
+.mat-chip.mat-standard-chip{
+  background-color: rgba($success, 0.7);
 }

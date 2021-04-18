@@ -1,6 +1,6 @@
 <app-find-meeting (applyFilter)="applyFilter($event)"> </app-find-meeting>
 
-<div class="example-container mat-elevation-z8">
+<div class="example-container">
   <mat-table #table [dataSource]="dataSource">
 
     <ng-container matColumnDef="id">
@@ -16,7 +16,11 @@
     <ng-container matColumnDef="status">
       <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
       <mat-cell *matCellDef="let meeting">
-        <mat-chip color="primary"> {{meeting.status}} </mat-chip>
+
+        <mat-chip-list>
+        <mat-chip class="chip" color="$success" selected> {{meeting.status}}
+        </mat-chip>
+        </mat-chip-list>
       </mat-cell>
     </ng-container>
 

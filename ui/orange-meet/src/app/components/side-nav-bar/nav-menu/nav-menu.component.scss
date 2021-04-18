@@ -1,3 +1,4 @@
+@import "../../../../custom-theme.scss";
 
 .menu-icon-spacer{
   display: inline-flex;
@@ -29,6 +30,17 @@
   font-weight: normal;
   line-height: 24px;
   text-decoration: none;
+  border-radius: 15px;
+  --mdc-ripple-fg-size: 285px;
+  --mdc-ripple-fg-scale: 1.71373;
+  --mdc-ripple-fg-translate-start: -73px, -106.5px;
+  --mdc-ripple-fg-translate-end: 95.5px, -118.5px;
+  --mdc-ripple-fg-opacity: 0.12;
+  overflow: hidden;
+}
+.mdc-list-item__ripple{
+  width: 100%;
+  height: 50px;
 }
 
 .mdc-list-item__text{
@@ -43,5 +55,6 @@
 }
 
 .active{
-  background: #FEC010;
+  color: $primary;
+  background-color: rgba($ripple, 0.5);
 }

@@ -5,7 +5,9 @@
 
   <mat-list role="list">
     <mat-list-item role="listitem">
-      Select output device:
+        <div class="setting-text">
+            Select output device:
+        </div>
       <span class="output-device-spacer"></span>
       <mat-form-field>
         <mat-label>Output device</mat-label>
@@ -18,13 +20,17 @@
 
     </mat-list-item>
     <mat-list-item role="listitem">
-      Change profile picture:
+      <div class="setting-text">
+        Change profile picture:
+      </div>
       <span class="change-picture-spacer"></span>
       <button type="button" mat-raised-button (click)="fileInput.click()">{{fileInput.name}}</button>
       <input hidden (change)="onFileSelected()" #fileInput type="file" id="file" name="Choose File">
     </mat-list-item>
     <mat-list-item role="listitem">
-      Setting 3
+      <div class="setting-text">
+        Setting 3:
+      </div>
       <span class="default-spacer"></span>
       <mat-slide-toggle
         color="primary"

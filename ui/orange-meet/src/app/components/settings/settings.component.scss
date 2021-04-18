@@ -5,7 +5,7 @@
 }
 
 .default-spacer{
-  flex: 0 0 83%;
+  flex: 0 0 80%;
 }
 
 .output-device-spacer{
@@ -24,6 +24,8 @@
   flex-direction: row;
 }
 .mat-list-item{
+  display: flex;
+  flex-direction: row;
   border-bottom-color: #E0DFDF;
   border-bottom-width: 1px ;
   border-bottom-style: solid ;
@@ -42,4 +44,8 @@
 }
 .settings h1{
   margin: 15px;
+  font: 400 32px/32px Roboto, "Helvetica Neue", sans-serif;
+}
+.setting-text{
+  min-width: 120px;
 }
