@@ -1,7 +1,20 @@
-<app-find-meeting (applyFilter)="applyFilter($event)"> </app-find-meeting>
+<div class="find-meeting">
+  <p>
+    <mat-form-field appearance="outline" >
+      <mat-label>Find meeting</mat-label>
+      <input matInput placeholder="Search" autocomplete="off" #input >
+    </mat-form-field>
+  </p>
+</div>
 
 <div class="example-container" >
-  <mat-table #table [dataSource]="dataSource">
+
+  <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <mat-table #table [dataSource]="dataSource" matSort
+             matSortActive="id" matSortDirection="asc" matSortDisableClear>
 
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef> id </mat-header-cell>
@@ -9,12 +22,12 @@
     </ng-container>
 
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-      <mat-cell *matCellDef="let meeting"> {{meeting.name}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef > Name </mat-header-cell>
+      <mat-cell *matCellDef="let meeting"> {{meeting.title}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="status">
-      <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef > Status </mat-header-cell>
       <mat-cell *matCellDef="let meeting">
 
         <mat-chip-list>
@@ -69,10 +82,12 @@
     </mat-row>
   </mat-table>
 
-  <mat-paginator class = "contact-paginator " [length]="dataSource.length()"
-                 [pageSizeOptions]="[6]"
+  <mat-paginator class = "contact-paginator"
+                 [length]=10
+                 [pageSize]="3"
+                 [pageSizeOptions]="[3,6]"
                  [hidePageSize]="true">
-    <!-- TODO relate pagesizeoptions and screen size, rebuild paginator for backend pagination-->
+    <!-- TODO length, relate pagesizeoptions and screen size,-->
   </mat-paginator>
 
 </div>

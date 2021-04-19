@@ -1,9 +1,12 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {BehaviorSubject, Observable, of} from 'rxjs';
-import {CollectionViewer, DataSource} from '@angular/cdk/collections';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {fromEvent, merge} from 'rxjs';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {MatPaginator} from "@angular/material/paginator";
-import {catchError, finalize} from "rxjs/operators";
+import {MatPaginator} from '@angular/material/paginator';
+import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
+import {MatSort} from '@angular/material/sort';
+import {ActivatedRoute} from '@angular/router';
+import {MeetingsDataSource} from '../../../services/meetings.datasource';
+import {MeetingsService} from '../../../services/meetings.service';
 
 @Component({
   selector: 'app-meetings-list',
@@ -17,93 +20,63 @@ import {catchError, finalize} from "rxjs/operators";
     ]),
   ]
 })
-export class MeetingsListComponent implements OnInit {
+export class MeetingsListComponent implements OnInit, AfterViewInit{
 
-  constructor() { }
+  constructor(private route: ActivatedRoute, private meetingsService: MeetingsService) {}
 
   expandedMeeting: any;
 
   displayedColumns = ['id', 'name', 'status', 'date'];
-  dataSource = new ExampleDataSource();
 
-  @ViewChild(MatPaginator, {static: true})
-  paginator!: MatPaginator;
+  dataSource!: MeetingsDataSource;
+
+  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
+
+  @ViewChild(MatSort, { static: true }) sort!: MatSort;
+
+  @ViewChild('input', { static: true }) input!: ElementRef;
+
 
   ngOnInit(): void {
-    this.dataSource.paginator = this.paginator;
+    this.dataSource = new MeetingsDataSource(this.meetingsService);
+    this.dataSource.loadMeetings('', 'asc', 0, 6);
   }
 
-  // tslint:disable-next-line:typedef
-  applyFilter(key: string){
-    console.log(key);
+  ngAfterViewInit(): void {
+
+    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+    console.log(this.input.nativeElement);
+
+    fromEvent(this.input.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged(),
+        tap(() => {
+          this.paginator.pageIndex = 0;
+
+          this.loadMeetingsPage();
+        })
+      )
+      .subscribe();
+
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(
+        tap(() => this.loadMeetingsPage())
+      )
+      .subscribe();
   }
 
+  loadMeetingsPage(): void {
+    this.dataSource.loadMeetings(
+      '',
+      'asc',
+      this.paginator.pageIndex,
+      this.paginator.pageSize
+    );
+  }
 
   isExpansionDetailRow = (i: number, row: object) => row.hasOwnProperty('detailRow');
 
 }
 
-export enum Status{
-  Active = 'Active',
-  Inactive = 'Inactive'
-}
-export class Meeting {
-  id: string;
-  name: string;
-  status: Status = Status.Inactive;
-  listOfParticipants: string[] = [];
-  description = 'Short meeting description(Optional)';
-  date = new Date().toISOString();
 
-  constructor(id: string, name: string, status: Status) {
-    this.id = id;
-    this.name = name;
-    this.status = status;
-  }
-}
-
-const data: Meeting[] = [
-  new Meeting('1', 'Test meeting 1', Status.Active),
-  new Meeting('2', 'Test meeting 2', Status.Active),
-
-  new Meeting('3', 'Test meeting 3', Status.Active),
-
-  new Meeting('4', 'Test meeting 4', Status.Active),
-
-  new Meeting('5', 'Test meeting 5', Status.Active),
-
-  new Meeting('6', 'Test meeting 6', Status.Active),
-
-  new Meeting('7', 'Test meeting 7', Status.Active),
-
-];
-
-export class ExampleDataSource extends DataSource<any> {
-
-  private lessonsSubject = new BehaviorSubject<Meeting[]>([]);
-  private loadingSubject = new BehaviorSubject<boolean>(false);
-
-  public loading$ = this.loadingSubject.asObservable();
-
-  connect(): Observable<Meeting[]> {
-    const rows: any[] = [];
-    data.forEach(meeting => rows.push(meeting, { detailRow: true, meeting }));
-    console.log(rows);
-    return of(rows);
-  }
-  length(): number{
-    return data.length;
-  }
-
-  disconnect(collectionViewer: CollectionViewer): void {
-  }
-
-  // tslint:disable-next-line:typedef
-  loadLessons(courseId: number, filter = '',
-              sortDirection = 'asc', pageIndex = 0, pageSize = 3) {
-
-    this.loadingSubject.next(true);
-
-    this.subscribe(lessons => this.lessonsSubject.next(lessons));
-  }
-}
