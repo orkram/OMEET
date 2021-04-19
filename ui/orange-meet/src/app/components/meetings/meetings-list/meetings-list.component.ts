@@ -1,9 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {BehaviorSubject, Observable, of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {MatPaginator} from "@angular/material/paginator";
-import {catchError, finalize} from "rxjs/operators";
+import {MatPaginator} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-meetings-list',
@@ -30,7 +29,6 @@ export class MeetingsListComponent implements OnInit {
   paginator!: MatPaginator;
 
   ngOnInit(): void {
-    this.dataSource.paginator = this.paginator;
   }
 
   // tslint:disable-next-line:typedef
@@ -80,11 +78,6 @@ const data: Meeting[] = [
 
 export class ExampleDataSource extends DataSource<any> {
 
-  private lessonsSubject = new BehaviorSubject<Meeting[]>([]);
-  private loadingSubject = new BehaviorSubject<boolean>(false);
-
-  public loading$ = this.loadingSubject.asObservable();
-
   connect(): Observable<Meeting[]> {
     const rows: any[] = [];
     data.forEach(meeting => rows.push(meeting, { detailRow: true, meeting }));
@@ -96,14 +89,5 @@ export class ExampleDataSource extends DataSource<any> {
   }
 
   disconnect(collectionViewer: CollectionViewer): void {
-  }
-
-  // tslint:disable-next-line:typedef
-  loadLessons(courseId: number, filter = '',
-              sortDirection = 'asc', pageIndex = 0, pageSize = 3) {
-
-    this.loadingSubject.next(true);
-
-    this.subscribe(lessons => this.lessonsSubject.next(lessons));
   }
 }
