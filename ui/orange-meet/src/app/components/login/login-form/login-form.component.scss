@@ -1,0 +1,24 @@
+.main-container{
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+
+}
+
+.spacer{
+  width: 100%;
+  height: 40px;
+}
+
+.mat-form-field{
+  width: 50%;
+}
+
+.mat-raised-button{
+  width: 50%;
+  border-radius: 15px;
+}
+
+.mat-button{
+  font-weight: 400;
+}
