@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,14 +28,49 @@ class VideoFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        ////
+        val view = inflater!!.inflate(R.layout.fragment_video, container, false)
+
+        val mic_icon = view.findViewById(R.id.mic_icon) as ImageView
+        mic_icon.setTag("turned_on")
+        mic_icon.setOnClickListener{
+            if (mic_icon.getTag().equals("turned_on"))
+            {
+                mic_icon.setImageResource(R.drawable.ic_mic_off)
+                mic_icon.setTag("turned_off")
+            }
+            else
+            {
+                mic_icon.setImageResource(R.drawable.ic_mic_on)
+                mic_icon.setTag("turned_on")
+            }
+        }
+
+        val cam_icon = view.findViewById(R.id.cam_icon) as ImageView
+        cam_icon.setTag("turned_on")
+        cam_icon.setOnClickListener{
+            if (cam_icon.getTag().equals("turned_on"))
+            {
+                cam_icon.setImageResource(R.drawable.ic_videocam_off)
+                cam_icon.setTag("turned_off")
+            }
+            else
+            {
+                cam_icon.setImageResource(R.drawable.ic_videocam_on)
+                cam_icon.setTag("turned_on")
+            }
+        }
+        return view
+        ////
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_video, container, false)
+        //return inflater.inflate(R.layout.fragment_video, container, false)
     }
 
     companion object {

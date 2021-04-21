@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <style name="input_field_box" parent="Widget.MaterialComponents.TextView">
+        <item name="android:layout_width">320dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:foreground">@drawable/outline_box_rounded</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="input_field_box_icon_box" parent="Widget.MaterialComponents.TextView">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">match_parent</item>
+
+    </style>
+
+    <style name="login_register_button">
+        <item name="android:layout_width">320dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+
+    <style name="input_field_box_icon_box_bg">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="srcCompat">@drawable/input_field_icon_box</item>
+    </style>
+
+    <style name="input_field_box_icon_box_icon">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_margin">8dp</item>
+    </style>
+
+    <style name="input_field_textedit">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:selectAllOnFocus">true</item>
+        <item name="android:background">@color/transparent</item>
+    </style>
+</resources>

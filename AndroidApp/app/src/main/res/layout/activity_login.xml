@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.login.LoginActivity">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="180dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/orangemeet_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            style="@style/input_field_box">
+
+            <FrameLayout style="@style/input_field_box_icon_box">
+
+                <ImageView style="@style/input_field_box_icon_box_bg" />
+
+                <ImageView
+                    style="@style/input_field_box_icon_box_icon"
+                    app:srcCompat="@drawable/username_icon" />
+
+            </FrameLayout>
+
+            <EditText
+                android:id="@+id/username"
+                style="@style/input_field_textedit"
+                android:hint="@string/prompt_username"
+                android:inputType="textEmailAddress" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3" />
+
+        <LinearLayout style="@style/input_field_box">
+
+            <FrameLayout style="@style/input_field_box_icon_box">
+
+                <ImageView style="@style/input_field_box_icon_box_bg" />
+
+                <ImageView
+                    style="@style/input_field_box_icon_box_icon"
+                    app:srcCompat="@drawable/password_star" />
+
+            </FrameLayout>
+
+            <EditText
+                android:id="@+id/password"
+                style="@style/input_field_textedit"
+                android:hint="@string/prompt_password"
+                android:imeActionLabel="@string/action_sign_in"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5" />
+
+        <Button
+            android:id="@+id/login"
+            style="@style/login_register_button"
+            android:enabled="true"
+            android:text="@string/action_sign_in" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3" />
+
+        <Button
+            android:id="@+id/register"
+            style="@style/login_register_button"
+            android:enabled="true"
+            android:text="@string/action_register" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
