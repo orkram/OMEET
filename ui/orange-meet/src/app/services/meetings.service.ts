@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {Observable, of} from 'rxjs';
-import {Meeting, Status} from '../model/meeting';
+import {Observable} from 'rxjs';
+import {Meeting} from '../model/meeting';
 
 
 @Injectable()
@@ -20,22 +20,9 @@ export class MeetingsService {
         .set('sortOrder', sortOrder)
         .set('pageNumber', pageNumber.toString())
         .set('pageSize', pageSize.toString())
-
     });
-
     // @ts-ignore
-    // return response.pipe( map(res =>  res[this.payload] ));
-
-    let rows: any[];
-    rows = [];
-    data.forEach(meeting => rows.push(meeting, { detailRow: true, meeting }));
-    return of(rows);
+    return response;
   }
 }
 
-const data: Meeting[] = [
-  new Meeting('1', 'Test meeting 1', Status.Active),
-  new Meeting('2', 'Test meeting 2', Status.Active),
-
-  new Meeting('3', 'Test meeting 3', Status.Active),
-];
