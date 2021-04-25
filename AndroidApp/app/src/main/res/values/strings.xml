@@ -162,4 +162,9 @@
     <string name="participants_val">Uczestnicy:</string>
     <string name="join_create">Dołącz / Stwórz</string>
 
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="delete_contacts_dialog">Czy na pewno chcesz usunąć wybrane kontakty?</string>
+    <string name="contacts_deleted_toast">Usunięto wybrane kontakty</string>
+
 </resources>

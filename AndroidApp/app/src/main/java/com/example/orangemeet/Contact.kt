@@ -7,15 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import org.json.JSONObject
+import java.nio.charset.Charset
+import java.util.*
 
 
 class Contact {
     lateinit var username : String
     lateinit var email : String
     lateinit var avatar : Image
+    var selected = false
 
     constructor(){
-        username = "TestUsername"
+        username = "TestUsername" + Util.GenerateRandomString(8)
         email = "Test@Email.com"
     }
 

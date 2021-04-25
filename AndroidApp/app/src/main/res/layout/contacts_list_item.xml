@@ -6,6 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/contacts_meetings_list_item_height"
     android:background="?attr/secondaryBackground"
+    android:clickable="true"
+    android:foreground="@drawable/selected_overlay"
+    android:longClickable="true"
     android:padding="8dp">
 
 
