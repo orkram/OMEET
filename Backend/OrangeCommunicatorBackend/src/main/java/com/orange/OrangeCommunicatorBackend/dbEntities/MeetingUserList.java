@@ -11,10 +11,12 @@ import javax.persistence.*;
 public class MeetingUserList {
 
     @Id
-    private long id_meeting;
+    @Column(name = "id_meeting")
+    private long idMeeting;
 
     @Id
-    private String user_name;
+    @Column(name = "user_name")
+    private String userName;
 
 
 

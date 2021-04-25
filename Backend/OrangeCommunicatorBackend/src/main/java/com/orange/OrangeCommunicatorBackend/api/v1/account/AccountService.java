@@ -32,12 +32,14 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AccountService {
     private final UserRepository userRepository;
     private final AccountMaper accountMaper;
+
+    //@Value("${keycloak.public-client}")
+    //private boolean isPublic;
 
     public AccountService(UserRepository userRepository, AccountMaper accountMaper) {
         this.userRepository = userRepository;
@@ -63,7 +65,7 @@ public class AccountService {
         User user = userRepository.findById(userName).orElseThrow();
         Keycloak keycloak = KeycloakClientConfig.keycloak();
         UsersResource userResource = keycloak.realm(KeycloakClientConfig.getRealm()).users();
-        userResource.get(user.getKeycloak_id()).logout();
+        userResource.get(user.getKeycloakId()).logout();
         return new AccountLogoutResponseBody("true");
     }
 
@@ -72,7 +74,7 @@ public class AccountService {
         User user = userRepository.findById(userName).orElseThrow();
 
         UsersResource usersResource = keycloak.realm(KeycloakClientConfig.getRealm()).users();
-        usersResource.get(user.getKeycloak_id()).resetPassword(createPasswordCredentials(accountChangePasswordRequestBody.
+        usersResource.get(user.getKeycloakId()).resetPassword(createPasswordCredentials(accountChangePasswordRequestBody.
                 getPassword()));
     }
 
@@ -101,7 +103,7 @@ public class AccountService {
                 RoleRepresentation roleRepresentation = realmResource.roles().get("ROLE_USER").toRepresentation();
                 realmResource.users().get(userId).roles().realmLevel().add(Arrays.asList(roleRepresentation));
                 User u = accountMaper.toUser(accountRegisterRequestBody);
-                u.setKeycloak_id(userId);
+                u.setKeycloakId(userId);
                 userRepository.save(u);
 
                 return accountMaper.toAccountRegisterResponse(u);
@@ -150,6 +152,7 @@ public class AccountService {
             urlParameters.add(new BasicNameValuePair("username", accountLoginRequestBody.getUsername()));
             urlParameters.add(new BasicNameValuePair("password", accountLoginRequestBody.getPassword()));
             urlParameters.add(new BasicNameValuePair("client_secret", accountLoginRequestBody.getClient_secret()));
+
 
             responseToken = sendPost(urlParameters);
 

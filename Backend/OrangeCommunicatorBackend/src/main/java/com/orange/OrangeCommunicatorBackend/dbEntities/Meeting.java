@@ -12,13 +12,13 @@ public class Meeting {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private long id_meeting;
+    private long idMeeting;
 
     @Column(name="time", nullable=true)
     private java.sql.Timestamp sqlTimestamp;
 
     @Column(name="room_url", nullable=false)
-    private String room_url;
+    private String roomUrl;
 
 
 

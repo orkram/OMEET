@@ -48,7 +48,8 @@ public class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
        // web.ignoring().antMatchers("/v2/api-docs",
                 //"/swagger-ui.html",
                // "/swagger-ui/**");
-        web.ignoring().antMatchers("api/v1/account/**");
+        web.ignoring().antMatchers("/api/v1/account/login/**").antMatchers("/api/v1/account/register/**");
+        web.ignoring().antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**");
     }
 
     @Override
@@ -57,7 +58,11 @@ public class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
         httpSecurity
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v1/**").permitAll()
+                //.antMatchers("api/v1/account/login/**")
+                //.permitAll()
+                //.antMatchers("api/v1/account/register/**")
+                //.permitAll()
+                .antMatchers("/api/v1/**").fullyAuthenticated()
                 .anyRequest().fullyAuthenticated();
     }
 

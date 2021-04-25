@@ -15,8 +15,8 @@ public class AccountMaper {
     }
 
     public AccountRegisterResponseBody toAccountRegisterResponse(User user) {
-        return new AccountRegisterResponseBody(user.getUser_name(), user.getE_mail(),
-                user.getFirst_name(), user.getLast_name(), user.getImg_url());
+        return new AccountRegisterResponseBody(user.getUserName(), user.getEMail(),
+                user.getFirstName(), user.getLastName(), user.getImgUrl());
     }
 
     public AccountTokenResponseBody toAccountTokenBody(String resp){

@@ -18,7 +18,7 @@ public class UserUpdateRequestBody {
         this.last_name = lastName;
     }
 
-    public String geteMail() {
+    public String getEMail() {
         return e_mail;
     }
 

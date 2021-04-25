@@ -10,20 +10,22 @@ import javax.persistence.*;
 public class ListOfFriends {
 
     @Id
-    private String user_name_owner;
+    @Column(name="user_name_owner")
+    private String userNameOwner;
 
     @Id
-    private String user_name_frnd;
+    @Column(name="user_name_friend")
+    private String userNameFrnd;
 
 
     @ManyToOne
     @JoinColumn(name = "user_name_owner")
     @MapsId
-    private User user_o;
+    private User userOwn;
 
     @ManyToOne
-    @JoinColumn(name = "user_name_frnd")
+    @JoinColumn(name = "user_name_friend")
     @MapsId
-    private User user_f;
+    private User userFnd;
 
 }

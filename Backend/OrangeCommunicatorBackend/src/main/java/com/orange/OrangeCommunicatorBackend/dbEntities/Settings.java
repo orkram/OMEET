@@ -9,13 +9,14 @@ import javax.persistence.*;
 public class Settings {
 
     @Id
-    private String user_name;
+    @Column(name = "user_name")
+    private String userName;
 
-    private String setting_1;
+    private String setting1;
 
-    private String setting_2;
+    private String setting2;
 
-    private String setting_3;
+    private String setting3;
 
     @OneToOne
     @JoinColumn(name = "user_name")
@@ -26,44 +27,44 @@ public class Settings {
 
     }
 
-    public Settings(String user_name, String setting_1, String setting_2, String setting_3, User user) {
-        this.user_name = user_name;
-        this.setting_1 = setting_1;
-        this.setting_2 = setting_2;
-        this.setting_3 = setting_3;
+    public Settings(String userName, String setting1, String setting2, String setting3, User user) {
+        this.userName = userName;
+        this.setting1 = setting1;
+        this.setting2 = setting2;
+        this.setting3 = setting3;
         this.user = user;
     }
 
-    public String getId_user() {
-        return user_name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setId_user(String id_user) {
-        this.user_name = id_user;
+    public void setUserName(String id_user) {
+        this.userName = id_user;
     }
 
-    public String getSetting_1() {
-        return setting_1;
+    public String getSetting1() {
+        return setting1;
     }
 
-    public void setSetting_1(String setting_1) {
-        this.setting_1 = setting_1;
+    public void setSetting1(String setting1) {
+        this.setting1 = setting1;
     }
 
-    public String getSetting_2() {
-        return setting_2;
+    public String getSetting2() {
+        return setting2;
     }
 
-    public void setSetting_2(String setting_2) {
-        this.setting_2 = setting_2;
+    public void setSetting2(String setting2) {
+        this.setting2 = setting2;
     }
 
-    public String getSetting_3() {
-        return setting_3;
+    public String getSetting3() {
+        return setting3;
     }
 
-    public void setSetting_3(String setting_3) {
-        this.setting_3 = setting_3;
+    public void setSetting3(String setting3) {
+        this.setting3 = setting3;
     }
 
     public User getUser() {

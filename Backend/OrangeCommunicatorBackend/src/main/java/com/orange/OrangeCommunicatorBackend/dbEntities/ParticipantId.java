@@ -7,8 +7,8 @@ import java.io.Serializable;
 @Data
 public class ParticipantId implements Serializable {
 
-    private long id_meeting;
+    private long idMeeting;
 
-    private String user_name;
+    private String userName;
 
 }

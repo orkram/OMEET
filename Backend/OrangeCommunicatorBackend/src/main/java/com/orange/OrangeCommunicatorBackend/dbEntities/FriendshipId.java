@@ -8,9 +8,9 @@ import java.io.Serializable;
 @Data
 public class FriendshipId implements Serializable {
 
-    private String user_name_owner;
+    private String userNameOwner;
 
-    private String user_name_frnd;
+    private String userNameFrnd;
 
 
 
