@@ -1,4 +1,3 @@
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,14 +10,14 @@ class ContactsViewModel : ViewModel() {
 
     public val contactList : MutableLiveData<List<Contact>> = MutableLiveData()
 
-    private val testContactList = List<Contact>(13){i -> Contact() }
+    private var testContactList = List<Contact>(13){ i -> Contact() }
 
     public fun RemoveSelectedContactsFromBackend(){
 
         viewModelScope.launch(Dispatchers.IO){
             var removalConfirmed = true
             //TODO("Get confirmation from backend")
-            val testContactList = testContactList.filter { x -> !x.selected }
+            testContactList = testContactList.filter { x -> !x.selected }
             contactList.postValue(testContactList)
         }
     }

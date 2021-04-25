@@ -17,8 +17,8 @@ class Meeting {
 
 
     constructor(){
-        id = "TestId"
-        participants = listOf<Contact>(Contact(), Contact(), Contact())
+        id = "TestId" + Util.GenerateRandomString(8)
+        participants = List<Contact>(3){ i -> Contact()}
         date = Date()
     }
 

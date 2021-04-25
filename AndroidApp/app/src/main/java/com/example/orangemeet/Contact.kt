@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import org.json.JSONObject
-import java.nio.charset.Charset
-import java.util.*
 
 
 class Contact {
