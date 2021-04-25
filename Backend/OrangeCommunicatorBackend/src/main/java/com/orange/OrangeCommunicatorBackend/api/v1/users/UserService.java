@@ -76,6 +76,10 @@ public class UserService {
             size = 1;
         }
 
+        if(query.size() == 0){
+            query.add("");
+        }
+
         PageRequest pageRequest = PageRequest.of(pageNr - 1, size, sort);
         Specification<User> spec = nameContains(query);
         Page<User> page = userRepository.findAll(spec, pageRequest);
@@ -90,6 +94,10 @@ public class UserService {
         sort = Sort.by(nameColName).ascending();
         sort = sort.and(Sort.by(surnameColName).ascending());
         sort = sort.and(Sort.by(userColName).ascending());
+
+        if(query.size() == 0){
+            query.add("");
+        }
 
 
         Specification<User> spec = nameContains(query);
