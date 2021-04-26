@@ -41,7 +41,7 @@
         android:layout_height="168dp"
         android:fontFamily="@font/abeezee"
         android:gravity="center"
-        android:text="Welcome back, user !"
+        android:text="Welcome, user!"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

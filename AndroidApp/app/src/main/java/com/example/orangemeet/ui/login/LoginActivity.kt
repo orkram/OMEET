@@ -13,10 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
@@ -122,6 +119,7 @@ class LoginActivity : AppCompatActivity() {
                 },
                 Response.ErrorListener { Log.e("LoginActivity", "Login failed") }
             )
+
         }
     }
 
