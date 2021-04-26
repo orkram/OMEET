@@ -4,6 +4,7 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONObject
 
@@ -13,11 +14,10 @@ class BackendCommunication {
         val client_secret = "f0a42c65-a82a-431c-b4e6-36985039a434"
         val backendUrl = "http://130.61.186.61:9000"
 
-        var token : String? = null
-        lateinit var requestQueue: RequestQueue
+        private var token : String? = null
 
-        private fun GetToken(){
-
+        fun GetToken() : String?{
+            return token
         }
 
         fun Login(context : Context, username : String, password : String, listener: Response.Listener<JSONObject>?,
@@ -36,7 +36,7 @@ class BackendCommunication {
             val loginRequest = JsonObjectRequest(
                 Request.Method.POST, loginUrl, loginJson,
                 Response.Listener {response ->
-                    val token = response.getString("access_token")
+                    token = response.getString("access_token")
                     Log.i("BackendCommunication", "Token: " + token)
                     listener?.onResponse(response)
                 },

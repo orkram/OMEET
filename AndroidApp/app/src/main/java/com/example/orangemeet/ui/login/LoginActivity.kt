@@ -117,7 +117,9 @@ class LoginActivity : AppCompatActivity() {
                 passwordEditText.text.toString()
             )
             BackendCommunication.Login(this, "android-test", "android-test",
-                Response.Listener { Log.i("LoginActivity", "Login successful") },
+                Response.Listener {
+                    Log.i("LoginActivity", "Login successful")
+                },
                 Response.ErrorListener { Log.e("LoginActivity", "Login failed") }
             )
         }
