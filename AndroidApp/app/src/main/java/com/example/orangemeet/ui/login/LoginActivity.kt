@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.preference.PreferenceManager
+import com.android.volley.Response
+import com.android.volley.toolbox.Volley
 import com.example.orangemeet.MainActivity
 
 import com.example.orangemeet.R
@@ -112,6 +115,10 @@ class LoginActivity : AppCompatActivity() {
             loginViewModel.login(
                 usernameEditText.text.toString(),
                 passwordEditText.text.toString()
+            )
+            BackendCommunication.Login(this, "android-test", "android-test",
+                Response.Listener { Log.i("LoginActivity", "Login successful") },
+                Response.ErrorListener { Log.e("LoginActivity", "Login failed") }
             )
         }
     }

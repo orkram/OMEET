@@ -10,7 +10,6 @@ class Util {
                 if(array[i] < 0)
                     array[i] = (-array[i]).toByte()
                 array[i] = (array[i] % 26 + 97).toByte()
-                System.out.println(array[i])
             }
             return String(array, Charset.forName("UTF-8"))
         }

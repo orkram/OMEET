@@ -40,7 +40,6 @@ class Contact {
             userNameTextView.text = contact.username
             emailTextView.text = contact.email
             box.background = background
-            System.out.println(userNameTextView.text.toString())
             return view
         }
     }

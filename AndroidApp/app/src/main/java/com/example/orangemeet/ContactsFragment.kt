@@ -20,7 +20,7 @@ class ContactsFragment : Fragment() {
     lateinit var progressBar : ProgressBar
     lateinit var searchBar : TextView
 
-    val contactsViewModel = ContactsViewModel()
+    lateinit var contactsViewModel: ContactsViewModel
 
 
     lateinit var contactsListView : LinearLayout
@@ -30,6 +30,8 @@ class ContactsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        contactsViewModel = ContactsViewModel(context)
+
         val contactsFragment = inflater.inflate(R.layout.fragment_contacts, container, false)
         contactsListView = contactsFragment.findViewById<LinearLayout>(R.id.contactsList)
         progressBar = contactsFragment.findViewById(R.id.progressBar)
