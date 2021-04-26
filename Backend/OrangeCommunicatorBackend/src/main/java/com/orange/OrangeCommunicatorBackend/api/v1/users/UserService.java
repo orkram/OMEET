@@ -51,22 +51,7 @@ public class UserService {
 
     public FoundUsersPageResponseBody findPaginated(int pageNr, int size, List<String> query, boolean fNameAscending,
                                                     boolean lNameAscending, boolean uNameAscending){
-        Sort sort;
-        if(fNameAscending) {
-            sort = Sort.by(nameColName).ascending();
-        } else {
-            sort = Sort.by(nameColName).descending();
-        }
-        if (lNameAscending){
-            sort =  sort.and(Sort.by(surnameColName).ascending());
-        } else {
-            sort =  sort.and(Sort.by(surnameColName).descending());
-        }
-        if(uNameAscending) {
-            sort = sort.and(Sort.by(userColName).ascending());
-        } else {
-            sort = sort.and(Sort.by(userColName).descending());
-        }
+        Sort sort = getSort(fNameAscending, lNameAscending, uNameAscending);
 
         if(pageNr <= 0){
             pageNr = 1;
@@ -90,10 +75,8 @@ public class UserService {
     }
 
     public List<UserResponseBody> findUsers(List<String> query){
-        Sort sort;
-        sort = Sort.by(nameColName).ascending();
-        sort = sort.and(Sort.by(surnameColName).ascending());
-        sort = sort.and(Sort.by(userColName).ascending());
+
+        Sort sort = getSort(true, true, true);
 
         if(query.size() == 0){
             query.add("");
@@ -106,7 +89,7 @@ public class UserService {
         return usersResponse;
     }
 
-    private static Specification<User> nameContains(List<String> texts){
+    public static Specification<User> nameContains(List<String> texts){
 
         Specification<User> spec = new Specification<User>() {
             @Override
@@ -123,6 +106,27 @@ public class UserService {
             }
         };
         return spec;
+    }
+
+    public static Sort getSort(boolean fNameAscending,
+                               boolean lNameAscending, boolean uNameAscending){
+        Sort sort;
+        if(fNameAscending) {
+            sort = Sort.by(nameColName).ascending();
+        } else {
+            sort = Sort.by(nameColName).descending();
+        }
+        if (lNameAscending){
+            sort =  sort.and(Sort.by(surnameColName).ascending());
+        } else {
+            sort =  sort.and(Sort.by(surnameColName).descending());
+        }
+        if(uNameAscending) {
+            sort = sort.and(Sort.by(userColName).ascending());
+        } else {
+            sort = sort.and(Sort.by(userColName).descending());
+        }
+        return sort;
     }
 
 }

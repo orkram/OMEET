@@ -1,6 +1,7 @@
 package com.orange.OrangeCommunicatorBackend.dbEntities;
 
 import lombok.Data;
+import org.keycloak.jose.jwk.JWK;
 
 import javax.persistence.*;
 
@@ -28,4 +29,33 @@ public class ListOfFriends {
     @MapsId
     private User userFnd;
 
+    public ListOfFriends(User userO, User userF){
+        this.userOwn = userO;
+        this.userFnd = userF;
+
+        this.userNameOwner = userO.getUserName();
+        this.userNameFrnd = userF.getUserName();
+    }
+
+    public ListOfFriends(){
+
+    }
+
+    public User getUserOwn() {
+        return userOwn;
+    }
+
+    public void setUserOwn(User userOwn) {
+        this.userOwn = userOwn;
+        this.userNameOwner = userOwn.getUserName();
+    }
+
+    public User getUserFnd() {
+        return userFnd;
+    }
+
+    public void setUserFnd(User userFnd) {
+        this.userFnd = userFnd;
+        this.userNameFrnd = userFnd.getUserName();
+    }
 }

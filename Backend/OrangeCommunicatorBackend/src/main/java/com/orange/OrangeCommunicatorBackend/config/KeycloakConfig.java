@@ -48,7 +48,9 @@ public class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
        // web.ignoring().antMatchers("/v2/api-docs",
                 //"/swagger-ui.html",
                // "/swagger-ui/**");
-        web.ignoring().antMatchers("/api/v1/account/login/**").antMatchers("/api/v1/account/register/**");
+        web.ignoring().antMatchers("/api/v1/account/login/**")
+                .antMatchers("/api/v1/account/register/**")
+                .antMatchers("/api/v1/contacts/add/**");
         web.ignoring().antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**");
     }
 

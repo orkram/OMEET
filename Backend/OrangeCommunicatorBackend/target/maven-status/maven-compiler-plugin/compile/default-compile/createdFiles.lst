@@ -1,3 +1,4 @@
+com\orange\OrangeCommunicatorBackend\api\v1\contacts\support\AddErrorEnum.class
 com\orange\OrangeCommunicatorBackend\api\v1\account\requestBody\AccountLoginRequestBody.class
 com\orange\OrangeCommunicatorBackend\dbEntities\FriendshipId.class
 com\orange\OrangeCommunicatorBackend\api\v1\account\responseBody\AccountLogoutResponseBody.class
@@ -7,6 +8,7 @@ com\orange\OrangeCommunicatorBackend\dbEntities\ListOfFriends.class
 com\orange\OrangeCommunicatorBackend\api\v1\users\settings\SettingsApi.class
 com\orange\OrangeCommunicatorBackend\api\v1\users\UsersApi.class
 com\orange\OrangeCommunicatorBackend\config\KeycloakClientConfig.class
+com\orange\OrangeCommunicatorBackend\api\v1\contacts\ContactsService.class
 com\orange\OrangeCommunicatorBackend\api\v1\account\AccountService.class
 com\orange\OrangeCommunicatorBackend\dbRepositories\ListOfFriendsRepository.class
 com\orange\OrangeCommunicatorBackend\dbEntities\Meeting.class
@@ -17,9 +19,11 @@ com\orange\OrangeCommunicatorBackend\api\v1\users\UserService.class
 com\orange\OrangeCommunicatorBackend\dbRepositories\MeetingRepository.class
 com\orange\OrangeCommunicatorBackend\api\v1\account\responseBody\AccountTokenResponseBody.class
 com\orange\OrangeCommunicatorBackend\api\v1\account\requestBody\AccountChangePasswordRequestBody.class
+com\orange\OrangeCommunicatorBackend\generalServicies\MailService.class
 com\orange\OrangeCommunicatorBackend\api\v1\meetings\participants\ParticipantsApi.class
 com\orange\OrangeCommunicatorBackend\dbEntities\MeetingUserList.class
 com\orange\OrangeCommunicatorBackend\dbRepositories\UserRepository.class
+com\orange\OrangeCommunicatorBackend\api\v1\contacts\responseBody\SendInviteResponseBody.class
 com\orange\OrangeCommunicatorBackend\dbEntities\Settings.class
 com\orange\OrangeCommunicatorBackend\dbEntities\User.class
 com\orange\OrangeCommunicatorBackend\api\v1\account\AccountApi.class
@@ -31,6 +35,7 @@ com\orange\OrangeCommunicatorBackend\api\v1\contacts\ContactsApi.class
 com\orange\OrangeCommunicatorBackend\api\v1\users\support\UserMapper.class
 com\orange\OrangeCommunicatorBackend\api\v1\account\responseBody\AccountRegisterResponseBody.class
 com\orange\OrangeCommunicatorBackend\dbEntities\ParticipantId.class
+com\orange\OrangeCommunicatorBackend\api\v1\contacts\support\ContactMapper.class
 com\orange\OrangeCommunicatorBackend\config\KeycloakConfig.class
 com\orange\OrangeCommunicatorBackend\api\v1\users\UserService$1.class
 com\orange\OrangeCommunicatorBackend\dbRepositories\MeetingUserListRepository.class
