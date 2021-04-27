@@ -74,12 +74,15 @@ class LoginActivity : AppCompatActivity() {
                     showLoginFailed(it)
                 }
                 loginResult.success?.let {
-                    BackendCommunication.Login(this, "android-test", "android-test",
+                    BackendCommunication.Login(this, usernameEditText.text.toString(), passwordEditText.text.toString(),
                             Response.Listener {
                                 Log.i("LoginActivity", "Login successful")
                                 goToMainActivity()
                             },
-                            Response.ErrorListener { Log.e("LoginActivity", "Login failed") }
+                            Response.ErrorListener {
+                                Toast.makeText(applicationContext, R.string.login_failed, Toast.LENGTH_LONG).show()
+                                Log.e("LoginActivity", "Login failed")
+                            }
                     )
                     //updateUiWithUser(it)
                 }

@@ -150,7 +150,7 @@
     <string name="welcome">"Welcome!"</string>
     <string name="invalid_username">Nieprawidłowa nazwa użytkownika</string>
     <string name="invalid_password">Hasło musi mieć conajmniej 6 znaków</string>
-    <string name="login_failed">"Login failed"</string>
+    <string name="login_failed">Nie udało się zalogować</string>
     <string name="menu_login">Logowanie</string>
     <string name="menu_register">Rejestracja</string>
     <string name="account_creation">Tworzenie nowego konta</string>
@@ -170,5 +170,7 @@
     <string name="add_contact_dialog">Podaj nazwę kontaktu</string>
     <string name="add_contact_success">Pomyślnie dodano kontakt</string>
     <string name="add_contact_fail">Nie udało się dodać kontaktu</string>
-
+    <string name="registed_failed">Nie udało się zarejestrować</string>
+    <string name="fields_must_be_not_empty">Pola nie mogą być puste</string>
+    <string name="passwords_dont_match">Wpisane hasła różnią się od siebie</string>
 </resources>

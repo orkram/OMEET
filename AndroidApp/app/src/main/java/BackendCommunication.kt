@@ -29,8 +29,8 @@ class BackendCommunication {
             val loginUrl = backendUrl + "/api/v1/account/login"
 
             var loginJson = JSONObject()
-                .put("client_id", "orange-app")
-                .put("client_secret", "f0a42c65-a82a-431c-b4e6-36985039a434")
+                .put("client_id", client_id)
+                .put("client_secret", client_secret)
                 .put("username", username)
                 .put("password", password)
 
@@ -52,6 +52,31 @@ class BackendCommunication {
                      imgUrl : String, username : String, password : String,
                      listener: Response.Listener<JSONObject>?,
                      errorListener: Response.ErrorListener?){
+            val requestQueue = Volley.newRequestQueue(context)
+
+            val registerUrl = backendUrl + "/api/v1/account/register"
+
+            var registerJson = JSONObject()
+                    .put("eMail", email)
+                    .put("firstName", firstName)
+                    .put("lastName", lastName)
+                    .put("imgURL", imgUrl)
+                    .put("userName", username)
+                    .put("password", password)
+
+            val registerRequest = BackendRequestJsonObject(
+                    Request.Method.POST, registerUrl, registerJson,
+                    Response.Listener {response ->
+                        Log.i("BackendCommunication", "Register success")
+                        listener?.onResponse(response)
+                    },
+                    Response.ErrorListener {error ->
+                        Log.i("BackendCommunication", "Register failed: " + error.message)
+                        errorListener?.onErrorResponse(error)
+                    },
+                    null)
+
+            requestQueue.add(registerRequest)
         }
 
         fun GetContactsList(context: Context, listener: Response.Listener<List<Contact>>?,
