@@ -27,7 +27,10 @@ class Contact {
 
     companion object{
         fun createFromJson(jsonObject: JSONObject) : Contact{
-            val contact = Contact()
+            val str = jsonObject.toString()
+            val username = jsonObject.getString("userName")
+            val email = jsonObject.getString("eMail")
+            val contact = Contact(username, email)
             return contact
         }
 

@@ -165,6 +165,10 @@
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
     <string name="delete_contacts_dialog">Czy na pewno chcesz usunąć wybrane kontakty?</string>
-    <string name="contacts_deleted_toast">Usunięto wybrane kontakty</string>
+    <string name="contacts_deleted_success">Pomyślnie usunięto wybrane kontakty</string>
+    <string name="contacts_deleted_fail">Nie udało się usunąć wybranych kontaktów</string>
+    <string name="add_contact_dialog">Podaj nazwę kontaktu</string>
+    <string name="add_contact_success">Pomyślnie dodano kontakt</string>
+    <string name="add_contact_fail">Nie udało się dodać kontaktu</string>
 
 </resources>

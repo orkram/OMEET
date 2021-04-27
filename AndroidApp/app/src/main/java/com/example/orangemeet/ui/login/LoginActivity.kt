@@ -74,12 +74,18 @@ class LoginActivity : AppCompatActivity() {
                     showLoginFailed(it)
                 }
                 loginResult.success?.let {
-                    goToMainActivity()
+                    BackendCommunication.Login(this, "android-test", "android-test",
+                            Response.Listener {
+                                Log.i("LoginActivity", "Login successful")
+                                goToMainActivity()
+                            },
+                            Response.ErrorListener { Log.e("LoginActivity", "Login failed") }
+                    )
                     //updateUiWithUser(it)
                 }
             })
 
-        val afterTextChangedListener = object : TextWatcher {
+        /*val afterTextChangedListener = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
                 // ignore
             }
@@ -96,7 +102,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
         usernameEditText.addTextChangedListener(afterTextChangedListener)
-        passwordEditText.addTextChangedListener(afterTextChangedListener)
+        passwordEditText.addTextChangedListener(afterTextChangedListener)*/
         passwordEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 loginViewModel.login(
@@ -113,13 +119,10 @@ class LoginActivity : AppCompatActivity() {
                 usernameEditText.text.toString(),
                 passwordEditText.text.toString()
             )
-            BackendCommunication.Login(this, "android-test", "android-test",
-                Response.Listener {
-                    Log.i("LoginActivity", "Login successful")
-                },
-                Response.ErrorListener { Log.e("LoginActivity", "Login failed") }
+            loginViewModel.loginDataChanged(
+                    usernameEditText.text.toString(),
+                    passwordEditText.text.toString()
             )
-
         }
     }
 
