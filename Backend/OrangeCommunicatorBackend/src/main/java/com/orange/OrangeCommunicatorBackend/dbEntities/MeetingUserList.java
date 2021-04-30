@@ -34,4 +34,21 @@ public class MeetingUserList {
 
     }
 
+    public Meeting getMeeting() {
+        return meeting;
+    }
+
+    public void setMeeting(Meeting meeting) {
+        this.meeting = meeting;
+        this.idMeeting = meeting.getIdMeeting();
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        this.userName = user.getUserName();
+    }
 }
