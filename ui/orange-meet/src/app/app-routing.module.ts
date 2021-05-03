@@ -5,11 +5,12 @@ import {MeetingsComponent} from './components/meetings/meetings.component';
 import {UsersComponentComponent} from './components/users-component/users-component.component';
 import {LoginComponent} from './components/login/login.component';
 import {RegistrationComponent} from './components/registration/registration.component';
+import {AuthorizeGuard} from "./services/AuthorizeGuard";
 
 const routes: Routes = [
-  {path: 'settings', component: SettingsComponent},
-  {path: 'meetings', component: MeetingsComponent},
-  {path: 'contacts', component: UsersComponentComponent}, // TODO ComponentComponent
+  {path: 'settings', component: SettingsComponent, canActivate: [AuthorizeGuard]},
+  {path: 'meetings', component: MeetingsComponent, canActivate: [AuthorizeGuard]},
+  {path: 'contacts', component: UsersComponentComponent, canActivate: [AuthorizeGuard]}, // TODO ComponentComponent
   {path: 'login', component: LoginComponent},
   {path: 'registration', component: RegistrationComponent}
 ];

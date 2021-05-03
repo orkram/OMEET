@@ -37,7 +37,7 @@ export class LoginFormComponent implements OnInit {
   submit(): void {
     this.loginService.login(this.form.value.username, this.form.value.password)
       .subscribe(
-        () => { // parse messag
+        (response) => { // parse messag
           this.router.navigateByUrl('/meetings');
         }
       );

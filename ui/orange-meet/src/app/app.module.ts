@@ -36,9 +36,10 @@ import {MatChipsModule} from '@angular/material/chips';
 import {LoginComponent} from './components/login/login.component';
 import {RegistrationComponent} from './components/registration/registration.component';
 import {LoginFormComponent} from './components/login/login-form/login-form.component';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {LoginService} from './services/LoginService';
 import {RegistrationFormComponent} from './components/registration/registration-form/registration-form.component';
+import {AppInterceptor} from "./services/AppInterceptor";
 
 
 @NgModule({
@@ -87,7 +88,14 @@ import {RegistrationFormComponent} from './components/registration/registration-
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [LoginService],
+  providers: [
+    LoginService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AppInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
