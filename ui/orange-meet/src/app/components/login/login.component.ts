@@ -11,9 +11,10 @@ export class LoginComponent implements OnInit {
 
   langs: Lang[] = [
     {value: 'en', viewValue: 'English'},
-    {value: 'es', viewValue: 'Spanish'},
     {value: 'pl', viewValue: 'Polish'}
   ];
+
+  selected = 'English';
 
   ngOnInit(): void {
   }

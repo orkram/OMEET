@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-side-nav-bar',
@@ -6,8 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./side-nav-bar.component.scss']
 })
 export class SideNavBarComponent implements OnInit {
-  shouldRun = true;
   constructor() { }
+  isLoggedIn = false;
 
   ngOnInit(): void {
   }

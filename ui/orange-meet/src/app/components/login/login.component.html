@@ -8,7 +8,7 @@
     <div class="lang-selector">
     <mat-form-field  color="primary" appearance="outline">
       <mat-label >Language</mat-label>
-      <mat-select round>
+      <mat-select [(value)] = "selected" >
         <mat-option *ngFor="let lang of langs" [value]="lang.value">
           {{lang.viewValue}}
         </mat-option>
@@ -26,7 +26,6 @@
             </div>
 
             <div class="spacer"></div>
-
 
             <app-login-form></app-login-form>
         </div>

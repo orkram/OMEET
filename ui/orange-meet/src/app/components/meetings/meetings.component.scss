@@ -26,3 +26,10 @@
   margin: 15px;
   font: 400 32px/32px Roboto, "Helvetica Neue", sans-serif;
 }
+
+:host{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 100%;
+}

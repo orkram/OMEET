@@ -36,6 +36,9 @@ import {MatChipsModule} from '@angular/material/chips';
 import {LoginComponent} from './components/login/login.component';
 import {RegistrationComponent} from './components/registration/registration.component';
 import {LoginFormComponent} from './components/login/login-form/login-form.component';
+import {HttpClientModule} from '@angular/common/http';
+import {LoginService} from './services/LoginService';
+import {RegistrationFormComponent} from './components/registration/registration-form/registration-form.component';
 
 
 @NgModule({
@@ -54,7 +57,8 @@ import {LoginFormComponent} from './components/login/login-form/login-form.compo
     FindMeetingComponent,
     LoginComponent,
     RegistrationComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    RegistrationFormComponent
   ],
   imports: [
     BrowserModule,
@@ -80,9 +84,10 @@ import {LoginFormComponent} from './components/login/login-form/login-form.compo
     A11yModule,
     MatChipsModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

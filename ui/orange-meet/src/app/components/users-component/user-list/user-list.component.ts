@@ -40,23 +40,18 @@ export class UserListComponent implements OnInit {
     {image: this.imagePlaceholder, name: 'Lance Bogrol', email: 'LanceBogrol@mail.com', checked: false}
   ];
 
-  // tslint:disable-next-line:typedef
-  selectedContacts(){
+  selectedContacts(): number {
     return this.dataSource.data.filter(contact => contact.checked).length;
   }
 
   ngOnInit(): void {
-
     this.dataSource = new MatTableDataSource<Contact>(this.contacts);
     this.dataSource.paginator = this.paginator;
   }
 
-  // tslint:disable-next-line:typedef
-  applyFilter(key: string){
-      console.log(key);
+  applyFilter(key: string): void{
       this.dataSource.filter = key.trim().toLocaleLowerCase();
   }
-
 }
 
 export class Contact {

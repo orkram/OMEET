@@ -8,8 +8,17 @@ import {Component, OnInit} from '@angular/core';
 export class RegistrationComponent implements OnInit {
 
   constructor() { }
+  langs: Lang[] = [
+    {value: 'en', viewValue: 'English'},
+    {value: 'pl', viewValue: 'Polish'}
+  ];
 
+  selected = 'English';
   ngOnInit(): void {
   }
 
+}
+interface Lang {
+  value: string;
+  viewValue: string;
 }

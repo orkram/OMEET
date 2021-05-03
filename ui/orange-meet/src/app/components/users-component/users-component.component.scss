@@ -3,3 +3,10 @@
   flex-direction: column;
   flex-grow: 1;
 }
+
+:host{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 100%;
+}

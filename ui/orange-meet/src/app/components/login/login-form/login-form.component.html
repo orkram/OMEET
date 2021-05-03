@@ -10,14 +10,14 @@
     <p>
       <mat-form-field appearance="outline" >
         <mat-label>Password</mat-label>
-        <input matInput [type]="hide ? 'password' : 'text'">
-        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+        <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" (submit)="hide = !hide">
           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
       </mat-form-field>
     </p>
 
-    <p *ngIf="error" class="error">
+    <p *ngIf="error === ''" class="error">
       {{ error }}
     </p>
 
@@ -25,9 +25,17 @@
       <button type="submit" mat-raised-button color="primary">Sign up</button>
     </div>
     <div class="spacer"></div>
+
     <button mat-button>
       <div class="button-text">
       Forgot password?
+      </div>
+    </button>
+
+
+    <button mat-button>
+      <div class="button-text" (click)="goToCreateAccount()">
+        Create account
       </div>
     </button>
 

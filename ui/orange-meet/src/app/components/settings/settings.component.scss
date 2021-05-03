@@ -49,3 +49,10 @@
 .setting-text{
   min-width: 120px;
 }
+
+:host{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 100%;
+}
