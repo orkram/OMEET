@@ -11,7 +11,7 @@ import org.json.JSONObject
 class BackendCommunication {
     companion object{
         val client_id = "orange-app"
-        val client_secret = "f0a42c65-a82a-431c-b4e6-36985039a434"
+        val client_secret = "881f08d9-7da9-4654-a3b2-8987b7a17506"
         val backendUrl = "http://130.61.186.61:9000"
 
         private var username : String? = null
@@ -29,15 +29,15 @@ class BackendCommunication {
             val loginUrl = backendUrl + "/api/v1/account/login"
 
             var loginJson = JSONObject()
-                .put("client_id", client_id)
-                .put("client_secret", client_secret)
+                .put("clientId", client_id)
+                .put("clientSecret", client_secret)
                 .put("username", username)
                 .put("password", password)
 
             val loginRequest = JsonObjectRequest(
                 Request.Method.POST, loginUrl, loginJson,
                 Response.Listener {response ->
-                    token = response.getString("access_token")
+                    token = response.getString("accessToken")
                     Log.i("BackendCommunication", "Token: " + token)
                     this.username = username
                     listener?.onResponse(response)
