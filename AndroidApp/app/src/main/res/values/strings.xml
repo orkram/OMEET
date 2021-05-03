@@ -8,6 +8,7 @@
     <string name="menu_video">Konwersacja</string>
     <string name="menu_meetings">Spotkania</string>
     <string name="menu_logout">Wyloguj</string>
+    <string name="menu_find_contact">Znajdź znajomego</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>

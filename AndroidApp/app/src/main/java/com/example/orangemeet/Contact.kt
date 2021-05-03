@@ -34,7 +34,7 @@ class Contact {
             return contact
         }
 
-        fun createView(inflater : LayoutInflater, root : ViewGroup, contact: Contact, background: Drawable) : View{
+        fun createView(inflater : LayoutInflater, root : ViewGroup, contact: Contact, background: Drawable?) : View{
             val view = inflater.inflate(R.layout.contacts_list_item, root, false)
 
             val userNameTextView = view.findViewById<TextView>(R.id.meetingId)
