@@ -10,6 +10,8 @@ import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountR
 import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountTokenResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,9 @@ public class AccountApi {
 
     @PostMapping("/register")
     @ApiOperation("Register new account")
+    @ApiResponses(value = {
+            @ApiResponse(code = 409, message = "Account already exists")
+    })
     public ResponseEntity<AccountRegisterResponseBody> register(@RequestBody AccountRegisterRequestBody accountRegisterRequestBody) {
         AccountRegisterResponseBody accountRegisterResponseBody = accountService.register(accountRegisterRequestBody);
         return ResponseEntity.status(HttpStatus.CREATED).body(accountRegisterResponseBody);
@@ -45,7 +50,9 @@ public class AccountApi {
 
     @PostMapping("/{username}/refresh-token")
     @ApiOperation("Refresh token for user")
-    public ResponseEntity<AccountTokenResponseBody> refresh(@PathVariable String username, @RequestBody AccountRefreshTokenRequestBody accountRefreshTokenRequestBody) {
+    public ResponseEntity<AccountTokenResponseBody>
+                refresh(@PathVariable String username,
+                        @RequestBody AccountRefreshTokenRequestBody accountRefreshTokenRequestBody) {
         AccountTokenResponseBody accountTokenResponseBody = accountService.refresh(accountRefreshTokenRequestBody);
         return ResponseEntity.status(HttpStatus.OK).body(accountTokenResponseBody);
     }
@@ -62,7 +69,7 @@ public class AccountApi {
     public ResponseEntity<Void> logout(@PathVariable String username,
                 @RequestBody AccountChangePasswordRequestBody accountChangePasswordRequestBody) {
                 accountService.changePassword(accountChangePasswordRequestBody, username);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

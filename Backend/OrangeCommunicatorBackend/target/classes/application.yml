@@ -20,22 +20,22 @@ keycloak:
   ssl-required: none
   #public-client: false
   credentials:
-    #secret: 7cf7873c-298d-4bdd-976e-59258a52507e #localhost
     secret: ba0a99ad-340f-48f4-9538-89db097a9546 #server
+    #secret: 7cf7873c-298d-4bdd-976e-59258a52507e #localhost
 
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
-    #url: jdbc:postgresql://localhost:5432/Omeet
-    url: jdbc:postgresql://postgresqldb:5432/Omeet
+    url: jdbc:postgresql://postgresqldb:5432/Omeet #server
+    #url: jdbc:postgresql://localhost:5432/Omeet #localhost
     username: postgres
     password: postgres
   jpa:
     show-sql: true
     generate-ddl: true
     hibernate:
-      ddl-auto: update
-      #ddl-auto: create-drop
+      #ddl-auto: update
+      ddl-auto: create-drop
   #autoconfigure:
     #exclude:
       #- org.keycloak.adapters.springboot.KeycloakSpringBootConfiguration
@@ -65,5 +65,8 @@ logging:
       hibernate:
         SQL: DEBUG
 
-#orange-app secret: f0a42c65-a82a-431c-b4e6-36985039a434
+auth:
+  client: orange-app
+  secret: f0a42c65-a82a-431c-b4e6-36985039a434 #server
+  #secret: 3a9266bb-4ca5-4615-9f6d-934bd2a3afad #localhost
 

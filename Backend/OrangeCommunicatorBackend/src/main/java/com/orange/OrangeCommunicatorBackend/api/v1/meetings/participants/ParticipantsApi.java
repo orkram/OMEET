@@ -29,7 +29,7 @@ public class ParticipantsApi {
     @ApiOperation("Add participant to meeting")
     public ResponseEntity<Void> create(@RequestParam(name="meetingId") long id, @RequestParam(name="username") String username) {
         participantsService.create(id, username);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping

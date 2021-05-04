@@ -28,7 +28,7 @@ public class ContactsApi {
         this.contactsService = contactsService;
     }
 
-    @PostMapping("/add")
+    @PostMapping("/friends")
     @ApiOperation("Add friend")
     public String create(@RequestParam("user-o") String userO, @RequestParam("user-f") String userF) {
         AddErrorEnum addErrorEnum = contactsService.add(userO, userF);
@@ -42,7 +42,7 @@ public class ContactsApi {
         }
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/friends/{username}")
     @ApiOperation("Find friends of users")
     public ResponseEntity<List<UserResponseBody>> find(@PathVariable String username, @RequestParam(name="query", defaultValue="") List<String> query,
                                                        @RequestParam(name="firstNameSortAscending", defaultValue="true") boolean fNameAsc,
@@ -52,7 +52,7 @@ public class ContactsApi {
         return ResponseEntity.status(HttpStatus.OK).body(responseBodyList);
     }
 
-    @GetMapping("/{username}/page")
+    @GetMapping("/friends/{username}/page")
     @ApiOperation("Find friends of users paginated")
     public ResponseEntity<FoundUsersPageResponseBody> findPaginated(@PathVariable String username, @RequestParam("page") int page,
                                                                     @RequestParam("size")  int size,
@@ -64,7 +64,7 @@ public class ContactsApi {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @DeleteMapping("/{username}")
+    @DeleteMapping("/friends/{username}")
     @ApiOperation("Delete friend from friend's list")
     public ResponseEntity<Void> delete(@PathVariable String username, @RequestParam("friend") String friend) {
         contactsService.delete(username, friend);
@@ -77,11 +77,11 @@ public class ContactsApi {
             @ApiResponse(code = 302, message = "Friendship already exists"),
             @ApiResponse(code = 409, message = "Couldn't send an email")
     })
-    public ResponseEntity<SendInviteResponseBody> sendInvite(@RequestParam("from") String from, @RequestParam("to") String to) {
+    public ResponseEntity<Void> sendInvite(@RequestParam("from") String from, @RequestParam("to") String to) {
         boolean sendInviteOk = sendInviteOk = contactsService.sendInvite(from, to);
 
         if(sendInviteOk){
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } else {
             return ResponseEntity.status(HttpStatus.FOUND).build();
         }
@@ -92,7 +92,7 @@ public class ContactsApi {
     @ApiOperation("Check if two users are friends")
     public ResponseEntity<Void> checkFriendship(@RequestParam("from") String user1, @RequestParam("to") String user2) {
         contactsService.checkFriendship(user1, user2);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

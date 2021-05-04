@@ -3,6 +3,7 @@ package com.orange.OrangeCommunicatorBackend.api.v1.users.support;
 import com.orange.OrangeCommunicatorBackend.dbEntities.User;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -11,6 +12,7 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class UserSupport {
 
     private static final String userColName = "userName";

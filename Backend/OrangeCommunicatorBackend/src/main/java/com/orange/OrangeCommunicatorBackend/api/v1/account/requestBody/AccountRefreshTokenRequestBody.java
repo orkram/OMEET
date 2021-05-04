@@ -4,26 +4,15 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class AccountRefreshTokenRequestBody {
 
-    private final String clientId;
     private final String refreshToken;
-    private final String clientSecret;
 
     @JsonCreator
-    public AccountRefreshTokenRequestBody(String clientId, String refreshToken, String clientSecret) {
-        this.clientId = clientId;
+    public AccountRefreshTokenRequestBody(String refreshToken) {
         this.refreshToken = refreshToken;
-        this.clientSecret = clientSecret;
-    }
-
-    public String getClientId() {
-        return clientId;
     }
 
     public String getRefreshToken() {
         return refreshToken;
     }
 
-    public String getClientSecret() {
-        return clientSecret;
-    }
 }

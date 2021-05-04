@@ -7,11 +7,14 @@ import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountRe
 import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountLogoutResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountRegisterResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountTokenResponseBody;
+import com.orange.OrangeCommunicatorBackend.api.v1.account.support.AccountExceptionSupplier;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.support.AccountMaper;
+import com.orange.OrangeCommunicatorBackend.api.v1.users.support.UserExceptionSupplier;
 import com.orange.OrangeCommunicatorBackend.config.KeycloakClientConfig;
 import com.orange.OrangeCommunicatorBackend.dbEntities.User;
 import com.orange.OrangeCommunicatorBackend.dbRepositories.UserRepository;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -24,6 +27,7 @@ import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;
@@ -38,8 +42,10 @@ public class AccountService {
     private final UserRepository userRepository;
     private final AccountMaper accountMaper;
 
-    //@Value("${keycloak.public-client}")
-    //private boolean isPublic;
+    @Value("${auth.client}")
+    private String clientForAccounts;
+    @Value("${auth.secret}")
+    private String secretForAccounts;
 
     public AccountService(UserRepository userRepository, AccountMaper accountMaper) {
         this.userRepository = userRepository;
@@ -61,8 +67,7 @@ public class AccountService {
 
     public AccountLogoutResponseBody logout(String userName){
 
-        // dodać wyjątki
-        User user = userRepository.findById(userName).orElseThrow();
+        User user = userRepository.findById(userName).orElseThrow(UserExceptionSupplier.userNotFoundException(userName));
         Keycloak keycloak = KeycloakClientConfig.keycloak();
         UsersResource userResource = keycloak.realm(KeycloakClientConfig.getRealm()).users();
         userResource.get(user.getKeycloakId()).logout();
@@ -71,7 +76,7 @@ public class AccountService {
 
     public void changePassword(AccountChangePasswordRequestBody accountChangePasswordRequestBody, String userName){
         Keycloak keycloak = KeycloakClientConfig.keycloak();
-        User user = userRepository.findById(userName).orElseThrow();
+        User user = userRepository.findById(userName).orElseThrow(UserExceptionSupplier.userNotFoundException(userName));
 
         UsersResource usersResource = keycloak.realm(KeycloakClientConfig.getRealm()).users();
         usersResource.get(user.getKeycloakId()).resetPassword(createPasswordCredentials(accountChangePasswordRequestBody.
@@ -90,7 +95,7 @@ public class AccountService {
 
             statusId = result.getStatus();
 
-            if (statusId == 201) {
+            if (statusId == HttpStatus.SC_CREATED) {
 
                 String userId = result.getLocation().getPath().replaceAll(".*/([^/]+)$", "$1");
 
@@ -104,26 +109,25 @@ public class AccountService {
                 realmResource.users().get(userId).roles().realmLevel().add(Arrays.asList(roleRepresentation));
                 User u = accountMaper.toUser(accountRegisterRequestBody);
                 u.setKeycloakId(userId);
-                userRepository.save(u);
-
+                try {
+                    userRepository.save(u);
+                } catch (Exception e) {
+                    usersResource.get(userId).remove();
+                    throw AccountExceptionSupplier.creatingAccountException().get();
+                }
                 return accountMaper.toAccountRegisterResponse(u);
-
             }
 
-            else if (statusId == 409) {
-
-
+            else if (statusId == HttpStatus.SC_CONFLICT) {
+                throw AccountExceptionSupplier.accountExistsException().get();
             } else {
-
-
+                throw AccountExceptionSupplier.creatingAccountException().get();
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-
+            throw AccountExceptionSupplier.creatingAccountException().get();
         }
-
-        return null;
     }
 
 
@@ -148,16 +152,17 @@ public class AccountService {
 
             List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
             urlParameters.add(new BasicNameValuePair("grant_type", "password"));
-            urlParameters.add(new BasicNameValuePair("client_id", accountLoginRequestBody.getClient_id()));
+            urlParameters.add(new BasicNameValuePair("client_id", clientForAccounts));
             urlParameters.add(new BasicNameValuePair("username", accountLoginRequestBody.getUsername()));
             urlParameters.add(new BasicNameValuePair("password", accountLoginRequestBody.getPassword()));
-            urlParameters.add(new BasicNameValuePair("client_secret", accountLoginRequestBody.getClient_secret()));
+            urlParameters.add(new BasicNameValuePair("client_secret", secretForAccounts));
 
 
             responseToken = sendPost(urlParameters);
 
         } catch (Exception e) {
             e.printStackTrace();
+            throw AccountExceptionSupplier.tokenAcquireException().get();
         }
 
         return responseToken;
@@ -172,6 +177,10 @@ public class AccountService {
         post.setEntity(new UrlEncodedFormEntity(urlParameters));
 
         HttpResponse response = client.execute(post);
+
+        if(response.getStatusLine().getStatusCode() != HttpStatus.SC_OK){
+            throw AccountExceptionSupplier.tokenAcquireException().get();
+        }
 
         BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
@@ -191,15 +200,15 @@ public class AccountService {
 
             List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
             urlParameters.add(new BasicNameValuePair("grant_type", "refresh_token"));
-            urlParameters.add(new BasicNameValuePair("client_id", accountRefreshTokenRequestBody.getClientId()));
+            urlParameters.add(new BasicNameValuePair("client_id", clientForAccounts));
             urlParameters.add(new BasicNameValuePair("refresh_token", accountRefreshTokenRequestBody.getRefreshToken()));
-            urlParameters.add(new BasicNameValuePair("client_secret", accountRefreshTokenRequestBody.getClientSecret()));
+            urlParameters.add(new BasicNameValuePair("client_secret", secretForAccounts));
 
             responseToken = sendPost(urlParameters);
 
         } catch (Exception e) {
             e.printStackTrace();
-
+            throw AccountExceptionSupplier.tokenAcquireException().get();
         }
         return responseToken;
     }
