@@ -19,15 +19,15 @@ public class MeetingsPageResponseBody {
         this.found_meetings = found_meetings;
     }
 
-    public long getAll_found_users() {
+    public long getAllFoundUsers() {
         return allFoundMeetings;
     }
 
-    public long getAll_found_pages() {
+    public long getAllFoundPages() {
         return allFoundPages;
     }
 
-    public List<MeetingResponseBody> getFound_meetings() {
+    public List<MeetingResponseBody> getFoundMeetings() {
         return found_meetings;
     }
 }

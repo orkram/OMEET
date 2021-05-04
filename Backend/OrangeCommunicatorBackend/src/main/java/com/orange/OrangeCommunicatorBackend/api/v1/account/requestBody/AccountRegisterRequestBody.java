@@ -4,32 +4,32 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class AccountRegisterRequestBody {
     private final String username;
-    private final String e_mail;
-    private final String first_name;
-    private final String last_name;
-    private final String img_url;
+    private final String eMail;
+    private final String firstName;
+    private final String lastName;
+    private final String imgUrl;
     private final String password;
 
     @JsonCreator
     public AccountRegisterRequestBody(String userName, String eMail, String firstName, String lastName, String imgURL, String password) {
         this.username = userName;
-        this.e_mail = eMail;
-        this.first_name = firstName;
-        this.last_name = lastName;
-        this.img_url = imgURL;
+        this.eMail = eMail;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.imgUrl = imgURL;
         this.password = password;
     }
 
     public String geteMail() {
-        return e_mail;
+        return eMail;
     }
 
     public String getFirstName() {
-        return first_name;
+        return firstName;
     }
 
     public String getLastName() {
-        return last_name;
+        return lastName;
     }
 
     public String getPassword() {
@@ -37,7 +37,7 @@ public class AccountRegisterRequestBody {
     }
 
     public String getImgURL() {
-        return img_url;
+        return imgUrl;
     }
 
     public String getUserName() {

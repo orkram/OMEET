@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class AccountLogoutResponseBody {
 
-    private final String successful_logout;
+    private final String successfulLogout;
 
     @JsonCreator
     public AccountLogoutResponseBody(String successfulLogout) {
-        this.successful_logout = successfulLogout;
+        this.successfulLogout = successfulLogout;
     }
 
     public String getSuccessfulLogout() {
-        return successful_logout;
+        return successfulLogout;
     }
 }

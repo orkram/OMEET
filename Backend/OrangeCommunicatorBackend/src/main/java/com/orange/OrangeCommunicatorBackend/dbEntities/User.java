@@ -14,13 +14,13 @@ public class User {
     @Column(name="user_name")
     private String userName;
 
-    @Column(name="e_mail", nullable=false, length = 32)
+    @Column(name="e_mail", nullable=false)
     private String eMail;
 
-    @Column(name="first_name", nullable=false, length = 32)
+    @Column(name="first_name", nullable=false, length = 64)
     private String firstName;
 
-    @Column(name="last_name", nullable=false, length = 32)
+    @Column(name="last_name", nullable=false, length = 64)
     private String lastName;
 
     @Column(name="img_url", nullable=true)
@@ -31,7 +31,7 @@ public class User {
 
 
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Settings settings;
 
     @OneToMany(mappedBy = "user")

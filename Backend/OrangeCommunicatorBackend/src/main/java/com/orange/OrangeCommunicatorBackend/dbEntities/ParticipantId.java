@@ -11,6 +11,10 @@ public class ParticipantId implements Serializable {
     private long idMeeting;
     private String userName;
 
+    public ParticipantId(){
+
+    }
+
     public ParticipantId(long idMeeting, String userName) {
         this.idMeeting = idMeeting;
         this.userName = userName;

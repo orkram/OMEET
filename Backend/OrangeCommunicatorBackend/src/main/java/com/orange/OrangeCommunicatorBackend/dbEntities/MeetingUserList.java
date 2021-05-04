@@ -30,9 +30,10 @@ public class MeetingUserList {
     @MapsId
     private User user;
 
-    MeetingUserList() {
+    public MeetingUserList() {
 
     }
+
 
     public Meeting getMeeting() {
         return meeting;

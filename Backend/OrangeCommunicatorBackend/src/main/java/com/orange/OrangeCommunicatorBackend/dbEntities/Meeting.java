@@ -1,6 +1,7 @@
 package com.orange.OrangeCommunicatorBackend.dbEntities;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -12,13 +13,13 @@ import java.util.Set;
 public class Meeting {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
     private long idMeeting;
 
     @Column(name="name", nullable=false)
     private String name;
 
     @Column(name="time", nullable=true)
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private java.sql.Timestamp sqlTimestamp;
 
     @Column(name="room_url", nullable=false)
@@ -29,7 +30,7 @@ public class Meeting {
     @JoinColumn(name="owner")
     private User user;
 
-    @OneToMany(mappedBy = "meeting")
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MeetingUserList> meetingUserList;
 
     public String getName() {

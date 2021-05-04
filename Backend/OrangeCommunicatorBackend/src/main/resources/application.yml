@@ -1,8 +1,8 @@
 # application configuration
 server:
   port: 9000
-  #url: http://130.61.186.61
-  url: http://localhost
+  url: http://130.61.186.61
+  #url: http://localhost
 
 # keycloak configuration
 keycloak:
@@ -16,18 +16,18 @@ keycloak:
   bearer-only: true
   # url of our Keycloak server
   #auth-server-url: http://130.61.186.61:8100/auth
-  auth-server-url: http://localhost:8100/auth
+  auth-server-url: ${server.url}:8100/auth
   ssl-required: none
   #public-client: false
   credentials:
-    secret: 7cf7873c-298d-4bdd-976e-59258a52507e #localhost
-    #secret: ba0a99ad-340f-48f4-9538-89db097a9546 #server
+    #secret: 7cf7873c-298d-4bdd-976e-59258a52507e #localhost
+    secret: ba0a99ad-340f-48f4-9538-89db097a9546 #server
 
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/Omeet
-    #url: jdbc:postgresql://postgresqldb:5432/Omeet
+    #url: jdbc:postgresql://localhost:5432/Omeet
+    url: jdbc:postgresql://postgresqldb:5432/Omeet
     username: postgres
     password: postgres
   jpa:
@@ -56,8 +56,8 @@ swagger:
     token-url: ${keycloak.auth-server-url}/realms/${keycloak.realm}/protocol/openid-connect/token/
     auth-url: ${keycloak.auth-server-url}/realms/${keycloak.realm}/protocol/openid-connect/auth/
     client-id: orange-backend
-    #secret: 8377ed9c-abf2-43f8-a712-4c8a93a1b784 #server
-    secret: 9a612258-970b-4896-b368-58865914fefe #localhost
+    secret: 8377ed9c-abf2-43f8-a712-4c8a93a1b784 #server
+    #secret: 9a612258-970b-4896-b368-58865914fefe #localhost
 
 logging:
   level:

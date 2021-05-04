@@ -191,9 +191,9 @@ public class AccountService {
 
             List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
             urlParameters.add(new BasicNameValuePair("grant_type", "refresh_token"));
-            urlParameters.add(new BasicNameValuePair("client_id", accountRefreshTokenRequestBody.getClient_id()));
-            urlParameters.add(new BasicNameValuePair("refresh_token", accountRefreshTokenRequestBody.getRefresh_token()));
-            urlParameters.add(new BasicNameValuePair("client_secret", accountRefreshTokenRequestBody.getClient_secret()));
+            urlParameters.add(new BasicNameValuePair("client_id", accountRefreshTokenRequestBody.getClientId()));
+            urlParameters.add(new BasicNameValuePair("refresh_token", accountRefreshTokenRequestBody.getRefreshToken()));
+            urlParameters.add(new BasicNameValuePair("client_secret", accountRefreshTokenRequestBody.getClientSecret()));
 
             responseToken = sendPost(urlParameters);
 

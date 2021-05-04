@@ -4,55 +4,55 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class AccountTokenResponseBody {
 
-    private final String access_token;
-    private final long expires_in;
-    private final long refresh_expires_in;
-    private final String refresh_token;
-    private final String token_type;
-    private final long not_before_policy;
-    private final String session_state;
+    private final String accessToken;
+    private final long expiresIn;
+    private final long refreshExpiresIn;
+    private final String refreshToken;
+    private final String tokenType;
+    private final long notBeforePolicy;
+    private final String sessionState;
     private final String scope;
 
     @JsonCreator
-    public AccountTokenResponseBody(String access_token, long expires_in, long refresh_expires_in,
-                                    String refresh_token, String token_type, long not_before_policy,
-                                    String session_state, String scope) {
-        this.access_token = access_token;
-        this.expires_in = expires_in;
-        this.refresh_expires_in = refresh_expires_in;
-        this.refresh_token = refresh_token;
-        this.token_type = token_type;
-        this.not_before_policy = not_before_policy;
-        this.session_state = session_state;
+    public AccountTokenResponseBody(String accessToken, long expiresIn, long refreshExpiresIn,
+                                    String refreshToken, String tokenType, long notBeforePolicy,
+                                    String sessionState, String scope) {
+        this.accessToken = accessToken;
+        this.expiresIn = expiresIn;
+        this.refreshExpiresIn = refreshExpiresIn;
+        this.refreshToken = refreshToken;
+        this.tokenType = tokenType;
+        this.notBeforePolicy = notBeforePolicy;
+        this.sessionState = sessionState;
         this.scope = scope;
     }
 
-    public String getAccess_token() {
-        return access_token;
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    public long getExpires_in() {
-        return expires_in;
+    public long getExpiresIn() {
+        return expiresIn;
     }
 
-    public long getRefresh_expires_in() {
-        return refresh_expires_in;
+    public long getRefreshExpiresIn() {
+        return refreshExpiresIn;
     }
 
-    public String getRefresh_token() {
-        return refresh_token;
+    public String getRefreshToken() {
+        return refreshToken;
     }
 
-    public String getToken_type() {
-        return token_type;
+    public String getTokenType() {
+        return tokenType;
     }
 
-    public long getNot_before_policy() {
-        return not_before_policy;
+    public long getNotBeforePolicy() {
+        return notBeforePolicy;
     }
 
-    public String getSession_state() {
-        return session_state;
+    public String getSessionState() {
+        return sessionState;
     }
 
     public String getScope() {

@@ -22,9 +22,9 @@ public class MeetingSupport {
     public Sort getSort(boolean mNameAscending) {
         Sort sort = null;
         if(mNameAscending) {
-            sort = sort.and(Sort.by(meetingNameCol).ascending());
+            sort = Sort.by(meetingNameCol).ascending();
         } else {
-            sort = sort.and(Sort.by(meetingNameCol).descending());
+            sort = Sort.by(meetingNameCol).descending();
         }
         return sort;
     }
@@ -37,8 +37,8 @@ public class MeetingSupport {
                 List<Predicate> predicates = new ArrayList<>();
 
                 for(String text : query){
-                    predicates.add(criteriaBuilder.or(criteriaBuilder.like(root.get(meetingNameCol), "%" + text + "%"),
-                            criteriaBuilder.and(criteriaBuilder.equal(root.get(ownerCol), user.getUserName()))));
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.like(root.get(meetingNameCol), "%" + text + "%"),
+                            criteriaBuilder.equal(root.get(ownerCol), user)));
                 }
 
                 return criteriaBuilder.or(predicates.toArray(new Predicate[0]));

@@ -1,6 +1,7 @@
 package com.orange.OrangeCommunicatorBackend.api.v1.meetings.responseBody;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody.UserResponseBody;
 
 import java.sql.Timestamp;
@@ -9,6 +10,7 @@ public class MeetingResponseBody {
 
     private final long idMeeting;
     private final String name;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private final java.sql.Timestamp date;
     private final String roomUrl;
     private final UserResponseBody owner;

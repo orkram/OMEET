@@ -55,7 +55,7 @@ public class MeetingsApi {
         return ResponseEntity.status(HttpStatus.OK).body(meetingResponseBody);
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/owner/{username}")
     @ApiOperation("Get all meetings of owner")
     public ResponseEntity<List<MeetingResponseBody>> getOwnersMeetings(@PathVariable String username,
                                                                       @RequestParam(name="query", defaultValue="") List<String> query) {
@@ -63,7 +63,7 @@ public class MeetingsApi {
         return ResponseEntity.status(HttpStatus.OK).body(meetingResponseBody);
     }
 
-    @GetMapping("/{username}/page")
+    @GetMapping("/owner/{username}/page")
     @ApiOperation("Get all meetings of owner paginated")
     public ResponseEntity<MeetingsPageResponseBody> getOwnersMeetingsPaginated(@PathVariable String username,
                                                                 @RequestParam("page") int page, @RequestParam("size")  int size,
