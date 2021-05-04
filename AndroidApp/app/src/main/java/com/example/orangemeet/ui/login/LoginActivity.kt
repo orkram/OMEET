@@ -4,26 +4,19 @@ import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.annotation.StringRes
-import androidx.fragment.app.Fragment
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.Toolbar
 import androidx.preference.PreferenceManager
 import com.android.volley.Response
-import com.android.volley.toolbox.Volley
 import com.example.orangemeet.MainActivity
 
 import com.example.orangemeet.R
 import com.example.orangemeet.RegisterActivity
+import com.google.android.material.textfield.TextInputEditText
 
 class LoginActivity : AppCompatActivity() {
 
@@ -40,8 +33,8 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
-        val usernameEditText = findViewById<EditText>(R.id.username)
-        val passwordEditText = findViewById<EditText>(R.id.password)
+        val usernameEditText = findViewById<TextInputEditText>(R.id.username)
+        val passwordEditText = findViewById<TextInputEditText>(R.id.password)
         val loginButton = findViewById<Button>(R.id.login)
         val registerButton = findViewById<Button>(R.id.register)
         //val loadingProgressBar = findViewById<ProgressBar>(R.id.loading)
