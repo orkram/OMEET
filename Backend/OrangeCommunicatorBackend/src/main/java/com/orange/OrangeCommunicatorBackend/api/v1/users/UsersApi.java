@@ -53,8 +53,11 @@ public class UsersApi {
 
     @GetMapping()
     @ApiOperation("Find all users")
-    public ResponseEntity<List<UserResponseBody>> findUsers(@RequestParam(name="query", defaultValue="") List<String> query) {
-        List<UserResponseBody> resp = userService.findUsers(query);
+    public ResponseEntity<List<UserResponseBody>> findUsers(@RequestParam(name="query", defaultValue="") List<String> query,
+                                                            @RequestParam(name="firstNameSortAscending", defaultValue="true") boolean fNameAsc,
+                                                            @RequestParam(name="lastNameSortAscending", defaultValue="true") boolean lNameAsc,
+                                                            @RequestParam(name="userNameSortAscending", defaultValue="true") boolean uNameAsc){
+        List<UserResponseBody> resp = userService.findUsers(query, fNameAsc, lNameAsc, uNameAsc);
         return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
 

@@ -10,6 +10,7 @@ import com.orange.OrangeCommunicatorBackend.api.v1.users.UserService;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody.FoundUsersPageResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody.UserResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.support.UserMapper;
+import com.orange.OrangeCommunicatorBackend.api.v1.users.support.UserSupport;
 import com.orange.OrangeCommunicatorBackend.dbEntities.Meeting;
 import com.orange.OrangeCommunicatorBackend.dbEntities.User;
 import com.orange.OrangeCommunicatorBackend.dbRepositories.MeetingRepository;
@@ -35,8 +36,9 @@ public class ParticipantsService {
     private final UserMapper userMapper;
     private final MeetingsMapper meetingsMapper;
     private final MeetingSupport meetingSupport;
+    private final UserSupport userSupport;
 
-    public ParticipantsService(MeetingUserListRepository meetingUserListRepository, MeetingRepository meetingRepository, UserRepository userRepository, ParticipantsMapper participantsMapper, ParticipantsSupport participantsSupport, UserMapper userMapper, MeetingsMapper meetingsMapper, MeetingSupport meetingSupport) {
+    public ParticipantsService(MeetingUserListRepository meetingUserListRepository, MeetingRepository meetingRepository, UserRepository userRepository, ParticipantsMapper participantsMapper, ParticipantsSupport participantsSupport, UserMapper userMapper, MeetingsMapper meetingsMapper, MeetingSupport meetingSupport, UserSupport userSupport) {
         this.meetingUserListRepository = meetingUserListRepository;
         this.meetingRepository = meetingRepository;
         this.userRepository = userRepository;
@@ -45,6 +47,7 @@ public class ParticipantsService {
         this.userMapper = userMapper;
         this.meetingsMapper = meetingsMapper;
         this.meetingSupport = meetingSupport;
+        this.userSupport = userSupport;
     }
 
     public void create(long id, String username) {
@@ -71,7 +74,7 @@ public class ParticipantsService {
 
         List<String> usernames =  participantsSupport.getUsernamesFromMeeting(meeting);
 
-        Sort sort = UserService.getSort(true, true, true);
+        Sort sort = userSupport.getSort(true, true, true);
         Specification<User> spec = participantsSupport.specificationForUsers(query, usernames);
 
         List<User> users = userRepository.findAll(spec, sort);
@@ -98,7 +101,7 @@ public class ParticipantsService {
             size = 1;
         }
 
-        Sort sort = UserService.getSort(fNameAsc, lNameAsc, uNameAsc);
+        Sort sort = userSupport.getSort(fNameAsc, lNameAsc, uNameAsc);
         List<String> usernames =  participantsSupport.getUsernamesFromMeeting(meeting);
 
         PageRequest pageRequest = PageRequest.of(page - 1, size, sort);

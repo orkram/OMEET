@@ -6,6 +6,7 @@ import com.orange.OrangeCommunicatorBackend.api.v1.users.UserService;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody.FoundUsersPageResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody.UserResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.support.UserMapper;
+import com.orange.OrangeCommunicatorBackend.api.v1.users.support.UserSupport;
 import com.orange.OrangeCommunicatorBackend.dbEntities.FriendshipId;
 import com.orange.OrangeCommunicatorBackend.dbEntities.ListOfFriends;
 import com.orange.OrangeCommunicatorBackend.dbEntities.User;
@@ -13,17 +14,11 @@ import com.orange.OrangeCommunicatorBackend.dbRepositories.ListOfFriendsReposito
 import com.orange.OrangeCommunicatorBackend.dbRepositories.UserRepository;
 import com.orange.OrangeCommunicatorBackend.generalServicies.MailService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +32,7 @@ public class ContactsService {
     private final MailService mailService;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final UserSupport userSupport;
 
     private static final String subject = "Invite";
 
@@ -47,12 +43,13 @@ public class ContactsService {
     private static final String nameColName = "firstName";
     private static final String surnameColName = "lastName";
 
-    public ContactsService(ContactMapper contactMapper, ListOfFriendsRepository listOfFriendsRepository, MailService mailService, UserRepository userRepository, UserMapper userMapper) {
+    public ContactsService(ContactMapper contactMapper, ListOfFriendsRepository listOfFriendsRepository, MailService mailService, UserRepository userRepository, UserMapper userMapper, UserSupport userSupport) {
         this.contactMapper = contactMapper;
         this.listOfFriendsRepository = listOfFriendsRepository;
         this.mailService = mailService;
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.userSupport = userSupport;
     }
 
     public boolean sendInvite(String from, String to) throws MessagingException, IllegalArgumentException {
@@ -158,13 +155,13 @@ public class ContactsService {
                                                 boolean fNameAsc, boolean lNameAsc, boolean uNameAsc){
         User u = userRepository.findById(username).orElseThrow();
 
-        Sort sort = UserService.getSort(fNameAsc, lNameAsc, uNameAsc);
+        Sort sort = userSupport.getSort(fNameAsc, lNameAsc, uNameAsc);
 
         if(query.size() == 0){
             query.add("");
         }
 
-        Specification<User> spec = UserService.nameContains(query);
+        Specification<User> spec = userSupport.nameContains(query);
         List<User> users = userRepository.findAll(spec, sort);
 
         List<ListOfFriends> l1 = listOfFriendsRepository.findByUserOwn(u);
