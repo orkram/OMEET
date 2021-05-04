@@ -75,12 +75,8 @@ public class ContactsApi {
             @ApiResponse(code = 409, message = "Couldn't send an email")
     })
     public ResponseEntity<SendInviteResponseBody> sendInvite(@RequestParam("from") String from, @RequestParam("to") String to) {
-        boolean sendInviteOk = false;
-        try {
-            sendInviteOk = contactsService.sendInvite(from, to);
-        } catch (MessagingException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+        boolean sendInviteOk = sendInviteOk = contactsService.sendInvite(from, to);
+
         if(sendInviteOk){
             return ResponseEntity.status(HttpStatus.OK).build();
         } else {

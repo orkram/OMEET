@@ -18,7 +18,7 @@ public class UserExceptionAdvisor {
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public ErrorMessageExceptionResponseBody itemNotFound(UserNotFoundException exception) {
+    public ErrorMessageExceptionResponseBody userNotFound(UserNotFoundException exception) {
         LOG.error(exception.getMessage(), exception);
         return new ErrorMessageExceptionResponseBody(exception.getLocalizedMessage());
     }

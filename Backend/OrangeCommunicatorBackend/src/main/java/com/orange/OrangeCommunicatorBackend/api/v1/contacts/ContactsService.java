@@ -1,10 +1,13 @@
 package com.orange.OrangeCommunicatorBackend.api.v1.contacts;
 
 import com.orange.OrangeCommunicatorBackend.api.v1.contacts.support.AddErrorEnum;
+import com.orange.OrangeCommunicatorBackend.api.v1.contacts.support.ContactExceptionSupplier;
 import com.orange.OrangeCommunicatorBackend.api.v1.contacts.support.ContactMapper;
+import com.orange.OrangeCommunicatorBackend.api.v1.contacts.support.exceptions.FriendshipNotFoundException;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.UserService;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody.FoundUsersPageResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody.UserResponseBody;
+import com.orange.OrangeCommunicatorBackend.api.v1.users.support.UserExceptionSupplier;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.support.UserMapper;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.support.UserSupport;
 import com.orange.OrangeCommunicatorBackend.dbEntities.FriendshipId;
@@ -16,6 +19,8 @@ import com.orange.OrangeCommunicatorBackend.generalServicies.MailService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -52,22 +57,24 @@ public class ContactsService {
         this.userSupport = userSupport;
     }
 
-    public boolean sendInvite(String from, String to) throws MessagingException, IllegalArgumentException {
+    public boolean sendInvite(String from, String to) throws IllegalArgumentException {
 
-        ListOfFriends l = listOfFriendsRepository.findById(new FriendshipId(from, to)).orElse(null);
+        FriendshipId friendshipId = new FriendshipId(from, to);
+        ListOfFriends l = listOfFriendsRepository.findById(friendshipId).orElse(null);
         if (l != null){
             return false;
         }
-        l = listOfFriendsRepository.findById(new FriendshipId(to, from)).orElse(null);
+        friendshipId = new FriendshipId(to, from);
+        l = listOfFriendsRepository.findById(friendshipId).orElse(null);
         if (l != null){
             return false;
         }
 
-        User user = userRepository.findById(to).orElseThrow();
+        User user = userRepository.findById(to).orElseThrow(UserExceptionSupplier.userNotFoundException(to));
 
         String email = user.getEMail();
 
-        User sender = userRepository.findById(from).orElseThrow();
+        User sender = userRepository.findById(from).orElseThrow(UserExceptionSupplier.userNotFoundException(from));
         String senderName = sender.getFirstName() + " " + sender.getLastName();
 
 
@@ -78,7 +85,12 @@ public class ContactsService {
         String emailText = "Hey,<br>An invitation was sent to you by " + senderName + " to join his group of friends!!<br>";
         emailText += "To accept this invitation click the link below:<br>";
         emailText += "<form method=\"post\" action=\"" + path +"\"> <button type=\"submit\">" + text + "</button></form>";
-        mailService.sendMail(email, subject, emailText, true);
+
+        try {
+            mailService.sendMail(email, subject, emailText, true);
+        } catch (MessagingException e) {
+            throw ContactExceptionSupplier.emailNotSentException(user).get();
+        }
 
         return true;
     }
@@ -89,10 +101,9 @@ public class ContactsService {
         ListOfFriends l = listOfFriendsRepository.findById(friendshipId).orElse(null);
         if (l == null){
             friendshipId = new FriendshipId(friend, username);
-            l = listOfFriendsRepository.findById(friendshipId).orElse(null); // throw
+            l = listOfFriendsRepository.findById(friendshipId)
+                    .orElseThrow(ContactExceptionSupplier.friendshipNotFoundException(friendshipId));
         }
-        if(l == null)
-            return;
 
         listOfFriendsRepository.deleteById(friendshipId);
     }
@@ -153,7 +164,8 @@ public class ContactsService {
 
     private List<UserResponseBody> findAllOrder(String username, List<String> query,
                                                 boolean fNameAsc, boolean lNameAsc, boolean uNameAsc){
-        User u = userRepository.findById(username).orElseThrow();
+        User u = userRepository.findById(username)
+                .orElseThrow(UserExceptionSupplier.userNotFoundException(username));
 
         Sort sort = userSupport.getSort(fNameAsc, lNameAsc, uNameAsc);
 
