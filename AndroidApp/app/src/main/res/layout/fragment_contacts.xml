@@ -39,6 +39,7 @@
             android:layout_margin="16dp"
             android:background="@drawable/search_bg"
             android:foreground="@color/transparent"
+            android:iconifiedByDefault="false"
             android:queryBackground="@color/transparent"
             android:queryHint="@string/prompt_search">
 

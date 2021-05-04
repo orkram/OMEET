@@ -42,7 +42,8 @@ class Contact {
             val box = view.findViewById<View>(R.id.box)
             userNameTextView.text = contact.username
             emailTextView.text = contact.email
-            box.background = background
+            if(background != null)
+                box.background = background
             return view
         }
 
@@ -54,7 +55,8 @@ class Contact {
             val box = view.findViewById<View>(R.id.box)
             userNameTextView.text = contact.username
             emailTextView.text = contact.email
-            box.background = background
+            if(background != null)
+                box.background = background
             return view
         }
     }

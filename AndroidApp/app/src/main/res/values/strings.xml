@@ -165,9 +165,10 @@
 
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
-    <string name="delete_contacts_dialog">Czy na pewno chcesz usunąć wybrane kontakty?</string>
+    <string name="delete_contact_dialog_message">Czy na pewno chcesz usunąć wybraną osobę ze znajomych?</string>
     <string name="contacts_deleted_success">Pomyślnie usunięto wybrane kontakty</string>
-    <string name="contacts_deleted_fail">Nie udało się usunąć wybranych kontaktów</string>
+    <string name="contact_delete_fail">Nie udało się usunąć wybranego kontaktu</string>
+    <string name="update_contacts_fail">Nie udało się zaktualizować list kontaktów</string>
     <string name="add_contact_dialog">Podaj nazwę kontaktu</string>
     <string name="add_contact_success">Pomyślnie dodano kontakt</string>
     <string name="add_contact_fail">Nie udało się dodać kontaktu</string>
@@ -176,4 +177,5 @@
     <string name="passwords_dont_match">Wpisane hasła różnią się od siebie</string>
     <string name="invite">Zaproś</string>
     <string name="invitation_sent">Wysłano zaproszenie</string>
+    <string name="delete_from_contacts">Usuń ze znajomych</string>
 </resources>

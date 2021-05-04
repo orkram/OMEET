@@ -17,6 +17,8 @@ class FindContactFragment : Fragment() {
 
     lateinit var contactsListView : LinearLayout
 
+    lateinit var searchPlaceholder : View
+
     var contacts : List<Contact>? = null
 
     override fun onCreateView(
@@ -26,28 +28,39 @@ class FindContactFragment : Fragment() {
     ): View? {
         val findContactFragment = inflater.inflate(R.layout.fragment_find_contact, container, false)
         contactsListView = findContactFragment.findViewById<LinearLayout>(R.id.contactsList)
+        searchPlaceholder = findContactFragment.findViewById(R.id.searchPlaceholder)
         progressBar = findContactFragment.findViewById(R.id.progressBar)
         searchBar = findContactFragment.findViewById(R.id.searchView)
         searchBar.setOnClickListener { v -> searchBar.isIconified = false }
         searchBar.setOnQueryTextListener( object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
+                return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                CreateContactViews(inflater)
-                return true
+                if(newText!!.length >= 3) {
+                    CreateContactViews(inflater)
+                    searchPlaceholder.visibility = View.GONE
+                } else{
+                    contactsListView.removeAllViews()
+                    searchPlaceholder.visibility = View.VISIBLE
+                }
+
+                return false
             }
         })
 
-        BackendCommunication.GetUsers(requireContext(), null,
+        //TODO: Remove test contacts
+        contacts = MutableList<Contact>(40){i -> Contact()}
+        //CreateContactViews(inflater)
+        /*BackendCommunication.GetUsers(requireContext(), null,
         Response.Listener {contacts ->
             this.contacts = contacts
             CreateContactViews(inflater)
         },
         Response.ErrorListener {
 
-        })
+        })*/
 
         return findContactFragment
     }

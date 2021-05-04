@@ -1,6 +1,8 @@
 package com.example.orangemeet
 
 import BackendCommunication
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
@@ -64,7 +66,11 @@ class ContactsFragment : Fragment() {
         contactsList.observe(viewLifecycleOwner, Observer { CreateContactViews(inflater) })
 
         progressBar.visibility = View.VISIBLE
-        BackendCommunication.GetContactsList(requireContext(),
+
+        //TODO: Remove test contacts
+        contactsList.value = MutableList<Contact>(13){i -> Contact()}
+        progressBar.visibility = View.GONE
+        /*BackendCommunication.GetContactsList(requireContext(),
                 Response.Listener {
                     contactsList -> this.contactsList.value = contactsList.toMutableList()
                     progressBar.visibility = View.GONE
@@ -72,7 +78,7 @@ class ContactsFragment : Fragment() {
                 Response.ErrorListener {error ->
                     Toast.makeText(context, error.toString() + ": " + error.networkResponse.statusCode, Toast.LENGTH_LONG).show()
                     progressBar.visibility = View.GONE
-                })
+                })*/
 
         return contactsFragment
     }
@@ -92,6 +98,32 @@ class ContactsFragment : Fragment() {
 
         filteredContacts.forEach {contact ->
             val view = Contact.createView(inflater, contactsListView, contact, null)
+            view.setOnCreateContextMenuListener { menu, v, menuInfo ->
+                menu.add(resources.getString(R.string.delete_from_contacts)).setOnMenuItemClickListener {
+
+                    AlertDialog.Builder(requireContext())
+                            .setTitle(R.string.delete_from_contacts)
+                            .setMessage(R.string.delete_contact_dialog_message)
+                            .setPositiveButton(R.string.yes, DialogInterface.OnClickListener { dialog, which ->
+                                BackendCommunication.DeleteContact(requireContext(), contact.username,
+                                Response.Listener {
+                                    BackendCommunication.GetContactsList(requireContext(),
+                                    Response.Listener {
+                                        contactsList.value = it.toMutableList() },
+                                    Response.ErrorListener {
+                                        Toast.makeText(requireContext(), R.string.update_contacts_fail, Toast.LENGTH_LONG).show()
+                                    })
+                                },
+                                Response.ErrorListener {
+                                    Toast.makeText(requireContext(), R.string.contact_delete_fail, Toast.LENGTH_LONG).show()
+                                })
+                            })
+                            .setNegativeButton(R.string.no, DialogInterface.OnClickListener { dialog, which -> })
+                            .show()
+
+                    true
+                }
+            }
             contactsListView.addView(view)
         }
     }
