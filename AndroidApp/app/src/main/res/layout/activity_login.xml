@@ -97,6 +97,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/transparent"
                     android:hint="@string/prompt_password"
+                    android:password="true"
                     android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
