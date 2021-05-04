@@ -42,8 +42,12 @@ public class ParticipantsApi {
     @GetMapping("/meeting/{id}")
     @ApiOperation("Get meeting's participants")
     public ResponseEntity<List<UserResponseBody>> findParticipants(@PathVariable Long id,
-                                                   @RequestParam(name="query", defaultValue="") List<String> query) {
-        List<UserResponseBody> responseBodies = participantsService.findParticipants(id, query);
+                                                   @RequestParam(name="query", defaultValue="") List<String> query,
+                                                   @RequestParam(name="firstNameSortAscending", defaultValue="true") boolean fNameAsc,
+                                                   @RequestParam(name="lastNameSortAscending", defaultValue="true") boolean lNameAsc,
+                                                   @RequestParam(name="userNameSortAscending", defaultValue="true") boolean uNameAsc) {
+        List<UserResponseBody> responseBodies = participantsService.findParticipants(id, query,
+                fNameAsc,  lNameAsc, uNameAsc);
         return ResponseEntity.status(HttpStatus.OK).body(responseBodies);
     }
 
@@ -64,8 +68,9 @@ public class ParticipantsApi {
     @GetMapping("/users/{username}")
     @ApiOperation("Get user's meetings ")
     public ResponseEntity<List<MeetingResponseBody>>
-            findMeetings(@PathVariable String username, @RequestParam(name="query", defaultValue="") List<String> query) {
-        List<MeetingResponseBody> responseBodies = participantsService.findMeetings(username, query);
+            findMeetings(@PathVariable String username, @RequestParam(name="query", defaultValue="") List<String> query,
+                         @RequestParam(name="meetingNameSortAscending", defaultValue="true") boolean mNameAsc) {
+        List<MeetingResponseBody> responseBodies = participantsService.findMeetings(username, query, mNameAsc);
         return ResponseEntity.status(HttpStatus.OK).body(responseBodies);
     }
 

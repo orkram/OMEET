@@ -19,8 +19,6 @@ import com.orange.OrangeCommunicatorBackend.generalServicies.MailService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -59,6 +57,9 @@ public class ContactsService {
 
     public boolean sendInvite(String from, String to) throws IllegalArgumentException {
 
+        User user = userRepository.findById(to).orElseThrow(UserExceptionSupplier.userNotFoundException(to));
+        User sender = userRepository.findById(from).orElseThrow(UserExceptionSupplier.userNotFoundException(from));
+
         FriendshipId friendshipId = new FriendshipId(from, to);
         ListOfFriends l = listOfFriendsRepository.findById(friendshipId).orElse(null);
         if (l != null){
@@ -70,11 +71,11 @@ public class ContactsService {
             return false;
         }
 
-        User user = userRepository.findById(to).orElseThrow(UserExceptionSupplier.userNotFoundException(to));
+
 
         String email = user.getEMail();
 
-        User sender = userRepository.findById(from).orElseThrow(UserExceptionSupplier.userNotFoundException(from));
+
         String senderName = sender.getFirstName() + " " + sender.getLastName();
 
 
@@ -140,15 +141,15 @@ public class ContactsService {
         return AddErrorEnum.OK;
     }
 
-    public List<UserResponseBody> findAll(String username, List<String> query) {
-        return findAllOrder(username, query, true, true, true);
+    public List<UserResponseBody> findAll(String username, List<String> query, boolean fNameAsc, boolean lNameAsc, boolean uNameAsc) {
+        return findAllOrder(username, query, fNameAsc, lNameAsc, uNameAsc);
     }
 
     public FoundUsersPageResponseBody findPaginated(int page, int size, String username, List<String> query,
                                                     boolean fNameAsc, boolean lNameAsc, boolean uNameAsc) {
 
 
-        List<UserResponseBody> responseBodies = findAllOrder(username, query, true, true, true);
+        List<UserResponseBody> responseBodies = findAllOrder(username, query, fNameAsc, lNameAsc, uNameAsc);
         if(page <= 0){
             page = 1;
         }
@@ -192,6 +193,21 @@ public class ContactsService {
         }
         List<UserResponseBody>  usersResponse = finalUsersList.stream().map(userMapper::toUserResponseBody).collect(Collectors.toList());
         return usersResponse;
+    }
+
+    public void checkFriendship(String user1, String user2) {
+        userRepository.findById(user1).orElseThrow(UserExceptionSupplier.userNotFoundException(user1));
+        userRepository.findById(user2).orElseThrow(UserExceptionSupplier.userNotFoundException(user2));
+
+        FriendshipId friendshipId = new FriendshipId(user1, user2);
+        ListOfFriends l = listOfFriendsRepository.findById(friendshipId).orElse(null);
+        if (l != null){
+            return;
+        }
+        friendshipId = new FriendshipId(user2, user1);
+        l = listOfFriendsRepository.findById(friendshipId).orElseThrow(ContactExceptionSupplier.friendshipNotFoundException(friendshipId));
+
+
     }
 }
 

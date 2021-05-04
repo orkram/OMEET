@@ -113,7 +113,7 @@ public class MeetingsService {
         return meetingsMapper.toMeetingResponseBody(meeting);
     }
 
-    public List<MeetingResponseBody> getOwnersMeeting(String username, List<String> query) {
+    public List<MeetingResponseBody> getOwnersMeeting(String username, List<String> query, boolean mNameAsc) {
         User user = userRepository.findById(username)
                 .orElseThrow(UserExceptionSupplier.userNotFoundException(username));
 
@@ -121,7 +121,7 @@ public class MeetingsService {
             query.add("");
         }
 
-        Sort sort = meetingSupport.getSort(true);
+        Sort sort = meetingSupport.getSort(mNameAsc);
         Specification<Meeting> spec = meetingSupport.nameContains(query, user);
 
         List<Meeting> meetings = meetingRepository.findAll(spec, sort);

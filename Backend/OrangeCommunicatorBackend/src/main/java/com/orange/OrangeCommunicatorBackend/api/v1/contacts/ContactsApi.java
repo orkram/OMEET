@@ -44,8 +44,11 @@ public class ContactsApi {
 
     @GetMapping("/{username}")
     @ApiOperation("Find friends of users")
-    public ResponseEntity<List<UserResponseBody>> find(@PathVariable String username, @RequestParam(name="query", defaultValue="") List<String> query) {
-        List<UserResponseBody> responseBodyList = contactsService.findAll(username, query);
+    public ResponseEntity<List<UserResponseBody>> find(@PathVariable String username, @RequestParam(name="query", defaultValue="") List<String> query,
+                                                       @RequestParam(name="firstNameSortAscending", defaultValue="true") boolean fNameAsc,
+                                                       @RequestParam(name="lastNameSortAscending", defaultValue="true") boolean lNameAsc,
+                                                       @RequestParam(name="userNameSortAscending", defaultValue="true") boolean uNameAsc) {
+        List<UserResponseBody> responseBodyList = contactsService.findAll(username, query, fNameAsc, lNameAsc, uNameAsc);
         return ResponseEntity.status(HttpStatus.OK).body(responseBodyList);
     }
 
@@ -83,6 +86,13 @@ public class ContactsApi {
             return ResponseEntity.status(HttpStatus.FOUND).build();
         }
 
+    }
+
+    @GetMapping("/check-friendship")
+    @ApiOperation("Check if two users are friends")
+    public ResponseEntity<Void> checkFriendship(@RequestParam("from") String user1, @RequestParam("to") String user2) {
+        contactsService.checkFriendship(user1, user2);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }

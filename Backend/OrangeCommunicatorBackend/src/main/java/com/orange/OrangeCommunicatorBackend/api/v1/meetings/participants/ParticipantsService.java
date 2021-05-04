@@ -5,10 +5,11 @@ import com.orange.OrangeCommunicatorBackend.api.v1.meetings.participants.support
 import com.orange.OrangeCommunicatorBackend.api.v1.meetings.responseBody.MeetingResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.meetings.responseBody.MeetingsPageResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.meetings.support.MeetingSupport;
+import com.orange.OrangeCommunicatorBackend.api.v1.meetings.support.MeetingsExceptionSupplier;
 import com.orange.OrangeCommunicatorBackend.api.v1.meetings.support.MeetingsMapper;
-import com.orange.OrangeCommunicatorBackend.api.v1.users.UserService;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody.FoundUsersPageResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody.UserResponseBody;
+import com.orange.OrangeCommunicatorBackend.api.v1.users.support.UserExceptionSupplier;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.support.UserMapper;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.support.UserSupport;
 import com.orange.OrangeCommunicatorBackend.dbEntities.Meeting;
@@ -38,7 +39,11 @@ public class ParticipantsService {
     private final MeetingSupport meetingSupport;
     private final UserSupport userSupport;
 
-    public ParticipantsService(MeetingUserListRepository meetingUserListRepository, MeetingRepository meetingRepository, UserRepository userRepository, ParticipantsMapper participantsMapper, ParticipantsSupport participantsSupport, UserMapper userMapper, MeetingsMapper meetingsMapper, MeetingSupport meetingSupport, UserSupport userSupport) {
+    public ParticipantsService(MeetingUserListRepository meetingUserListRepository,
+                               MeetingRepository meetingRepository, UserRepository userRepository,
+                               ParticipantsMapper participantsMapper, ParticipantsSupport participantsSupport,
+                               UserMapper userMapper, MeetingsMapper meetingsMapper, MeetingSupport meetingSupport,
+                               UserSupport userSupport) {
         this.meetingUserListRepository = meetingUserListRepository;
         this.meetingRepository = meetingRepository;
         this.userRepository = userRepository;
@@ -51,22 +56,27 @@ public class ParticipantsService {
     }
 
     public void create(long id, String username) {
-        User user = userRepository.findById(username).orElseThrow();
-        Meeting meeting = meetingRepository.findById(id).orElseThrow();
+        User user = userRepository.findById(username)
+                .orElseThrow(UserExceptionSupplier.userNotFoundException(username));
+        Meeting meeting = meetingRepository.findById(id)
+                .orElseThrow(MeetingsExceptionSupplier.meetingNotFoundException(id));
 
         meetingUserListRepository.save(participantsMapper.toMeetingParticipant(meeting, user));
     }
 
     public void delete(long id, String username) {
-        User user = userRepository.findById(username).orElseThrow();
-        Meeting meeting = meetingRepository.findById(id).orElseThrow();
+        User user = userRepository.findById(username)
+                .orElseThrow(UserExceptionSupplier.userNotFoundException(username));
+        Meeting meeting = meetingRepository.findById(id)
+                .orElseThrow(MeetingsExceptionSupplier.meetingNotFoundException(id));
 
         meetingUserListRepository.delete(participantsMapper.toMeetingParticipant(meeting, user));
     }
 
-    public List<UserResponseBody> findParticipants(Long id, List<String> query) {
+    public List<UserResponseBody> findParticipants(Long id, List<String> query, boolean fNameAsc, boolean lNameAsc, boolean uNameAsc) {
 
-        Meeting meeting = meetingRepository.findById(id).orElseThrow();
+        Meeting meeting = meetingRepository.findById(id)
+                .orElseThrow(MeetingsExceptionSupplier.meetingNotFoundException(id));
 
         if(query.size() == 0){
             query.add("");
@@ -74,7 +84,7 @@ public class ParticipantsService {
 
         List<String> usernames =  participantsSupport.getUsernamesFromMeeting(meeting);
 
-        Sort sort = userSupport.getSort(true, true, true);
+        Sort sort = userSupport.getSort(fNameAsc, lNameAsc, uNameAsc);
         Specification<User> spec = participantsSupport.specificationForUsers(query, usernames);
 
         List<User> users = userRepository.findAll(spec, sort);
@@ -87,7 +97,8 @@ public class ParticipantsService {
                                       boolean fNameAsc, boolean lNameAsc, boolean uNameAsc) {
 
 
-        Meeting meeting = meetingRepository.findById(id).orElseThrow();
+        Meeting meeting = meetingRepository.findById(id)
+                .orElseThrow(MeetingsExceptionSupplier.meetingNotFoundException(id));
 
         if(query.size() == 0){
             query.add("");
@@ -113,15 +124,16 @@ public class ParticipantsService {
     }
 
 
-    public List<MeetingResponseBody> findMeetings(String username, List<String> query) {
+    public List<MeetingResponseBody> findMeetings(String username, List<String> query, boolean mNameAsc) {
 
-        User user = userRepository.findById(username).orElseThrow();
+        User user = userRepository.findById(username)
+                .orElseThrow(UserExceptionSupplier.userNotFoundException(username));
         if(query.size() == 0){
             query.add("");
         }
 
         List<Long> meetingsIds = participantsSupport.getMeetingsIdsFromUser(user);
-        Sort sort = meetingSupport.getSort(true);
+        Sort sort = meetingSupport.getSort(mNameAsc);
 
         Specification<Meeting> spec = participantsSupport.specificationForMeetings(query, meetingsIds);
         List<Meeting> meetings = meetingRepository.findAll(spec, sort);
@@ -132,7 +144,8 @@ public class ParticipantsService {
     public MeetingsPageResponseBody fingMeetingsPaginated(String username, int page, int size,
                                                           boolean mNameAsc, List<String> query) {
 
-        User user = userRepository.findById(username).orElseThrow();
+        User user = userRepository.findById(username)
+                .orElseThrow(UserExceptionSupplier.userNotFoundException(username));
 
         if(query.size() == 0){
             query.add("");
@@ -147,7 +160,7 @@ public class ParticipantsService {
         }
 
         List<Long> meetingsIds = participantsSupport.getMeetingsIdsFromUser(user);
-        Sort sort = meetingSupport.getSort(true);
+        Sort sort = meetingSupport.getSort(mNameAsc);
 
         PageRequest pageRequest = PageRequest.of(page - 1, size, sort);
         Specification<Meeting> spec = participantsSupport.specificationForMeetings(query, meetingsIds);
