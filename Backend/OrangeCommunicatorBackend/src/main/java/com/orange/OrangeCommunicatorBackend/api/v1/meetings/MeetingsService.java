@@ -7,7 +7,9 @@ import com.orange.OrangeCommunicatorBackend.api.v1.meetings.requestBody.UpdateMe
 import com.orange.OrangeCommunicatorBackend.api.v1.meetings.responseBody.MeetingResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.meetings.responseBody.MeetingsPageResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.meetings.support.MeetingSupport;
+import com.orange.OrangeCommunicatorBackend.api.v1.meetings.support.MeetingsExceptionSupplier;
 import com.orange.OrangeCommunicatorBackend.api.v1.meetings.support.MeetingsMapper;
+import com.orange.OrangeCommunicatorBackend.api.v1.users.support.UserExceptionSupplier;
 import com.orange.OrangeCommunicatorBackend.dbEntities.Meeting;
 import com.orange.OrangeCommunicatorBackend.dbEntities.MeetingUserList;
 import com.orange.OrangeCommunicatorBackend.dbEntities.User;
@@ -33,7 +35,10 @@ public class MeetingsService {
     private final MeetingSupport meetingSupport;
     private final ParticipantsService participantsService;
 
-    public MeetingsService(MeetingsMapper meetingsMapper, MeetingRepository meetingRepository, MeetingUserListRepository meetingUserListRepository, UserRepository userRepository, MeetingSupport meetingSupport, ParticipantsService participantsService, ParticipantsMapper participantsMapper) {
+    public MeetingsService(MeetingsMapper meetingsMapper, MeetingRepository meetingRepository,
+                           MeetingUserListRepository meetingUserListRepository, UserRepository userRepository,
+                           MeetingSupport meetingSupport, ParticipantsService participantsService,
+                           ParticipantsMapper participantsMapper) {
         this.meetingsMapper = meetingsMapper;
         this.meetingRepository = meetingRepository;
         this.meetingUserListRepository = meetingUserListRepository;
@@ -44,7 +49,8 @@ public class MeetingsService {
 
     public MeetingResponseBody create(NewMeetingRequestBody newMeetingRequestBody) {
 
-        User owner = userRepository.findById(newMeetingRequestBody.getOwnerUserName()).orElseThrow();
+        User owner = userRepository.findById(newMeetingRequestBody.getOwnerUserName())
+                .orElseThrow(UserExceptionSupplier.userNotFoundException(newMeetingRequestBody.getOwnerUserName()));
         long id = 0;
         Meeting checkMeet = new Meeting();
         int cnt = 0;
@@ -56,10 +62,10 @@ public class MeetingsService {
             id = leftLimit + (long) (Math.random() * (rightLimit - leftLimit));
             checkMeet = meetingRepository.findById(id).orElse(null);
             cnt++;
-            if(cnt == 1000){
+            if(cnt == 10000){
                 checkMeet = meetingRepository.findById(id).orElse(null);
                 if(checkMeet != null)
-                    return null;
+                    throw MeetingsExceptionSupplier.creatingMeetingErrorException().get();
             }
         }
         String link = "";
@@ -78,12 +84,14 @@ public class MeetingsService {
     }
 
     public MeetingResponseBody get(Long id) {
-        Meeting meeting = meetingRepository.findById(id).orElseThrow();
+        Meeting meeting = meetingRepository.findById(id)
+                .orElseThrow(MeetingsExceptionSupplier.meetingNotFoundException(id));
         return meetingsMapper.toMeetingResponseBody(meeting);
     }
 
     public void delete(Long id) {
-        Meeting meeting = meetingRepository.findById(id).orElseThrow();
+        Meeting meeting = meetingRepository.findById(id)
+                .orElseThrow(MeetingsExceptionSupplier.meetingNotFoundException(id));
 
         List<MeetingUserList> usersInMeeting = meetingUserListRepository.findByMeeting(meeting);
 
@@ -97,14 +105,17 @@ public class MeetingsService {
     }
 
     public MeetingResponseBody update(Long id, UpdateMeetingRequestBody updateMeetingRequestBody) {
-        Meeting meeting = meetingRepository.findById(id).orElseThrow();
-        User newOwner = userRepository.findById(updateMeetingRequestBody.getOwnerUserName()).orElseThrow();
+        Meeting meeting = meetingRepository.findById(id)
+                .orElseThrow(MeetingsExceptionSupplier.meetingNotFoundException(id));
+        User newOwner = userRepository.findById(updateMeetingRequestBody.getOwnerUserName())
+                .orElseThrow(UserExceptionSupplier.userNotFoundException(updateMeetingRequestBody.getOwnerUserName()));
         meetingRepository.save(meetingsMapper.toMeeting(meeting, updateMeetingRequestBody, newOwner));
         return meetingsMapper.toMeetingResponseBody(meeting);
     }
 
     public List<MeetingResponseBody> getOwnersMeeting(String username, List<String> query) {
-        User user = userRepository.findById(username).orElseThrow();
+        User user = userRepository.findById(username)
+                .orElseThrow(UserExceptionSupplier.userNotFoundException(username));
 
         if(query.size() == 0){
             query.add("");
@@ -123,7 +134,8 @@ public class MeetingsService {
     public MeetingsPageResponseBody getOwnersMeetingPaginated(String username, List<String> query,
                                                               int pageNr, int size, boolean mNameAsc) {
 
-        User user = userRepository.findById(username).orElseThrow();
+        User user = userRepository.findById(username)
+                .orElseThrow(UserExceptionSupplier.userNotFoundException(username));
         Sort sort = meetingSupport.getSort(mNameAsc);
         Specification<Meeting> spec = meetingSupport.nameContains(query, user);
 

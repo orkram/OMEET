@@ -14,7 +14,11 @@ public class ContactExceptionSupplier {
     }
 
     public static Supplier<EmailNotSentException> emailNotSentException(User user){
-        return () -> new EmailNotSentException((user));
+        return () -> new EmailNotSentException((user.getUserName()));
+    }
+
+    public static Supplier<EmailNotSentException> emailNotSentException(String username){
+        return () -> new EmailNotSentException((username));
     }
 
 }
