@@ -7,6 +7,7 @@ import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import com.android.volley.Response
 
 
 class FindContactFragment : Fragment() {
@@ -16,7 +17,7 @@ class FindContactFragment : Fragment() {
 
     lateinit var contactsListView : LinearLayout
 
-    lateinit var contacts : List<Contact>
+    var contacts : List<Contact>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,7 +25,10 @@ class FindContactFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val findContactFragment = inflater.inflate(R.layout.fragment_find_contact, container, false)
-
+        contactsListView = findContactFragment.findViewById<LinearLayout>(R.id.contactsList)
+        progressBar = findContactFragment.findViewById(R.id.progressBar)
+        searchBar = findContactFragment.findViewById(R.id.searchView)
+        searchBar.setOnClickListener { v -> searchBar.isIconified = false }
         searchBar.setOnQueryTextListener( object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return true
@@ -36,15 +40,20 @@ class FindContactFragment : Fragment() {
             }
         })
 
+        BackendCommunication.GetUsers(requireContext(), null,
+        Response.Listener {contacts ->
+            this.contacts = contacts
+            CreateContactViews(inflater)
+        },
+        Response.ErrorListener {
 
+        })
 
         return findContactFragment
     }
 
     private fun CreateContactViews(inflater: LayoutInflater){
-        //val filteredContacts = contactsList.value!!.filter { contact ->
-        //TODO: Remove test contacts
-        val filteredContacts = List<Contact>(13){i -> Contact()}.filter { contact ->
+        val filteredContacts = contacts!!.filter { contact ->
             if(searchBar.query.isEmpty())
                 true
             else
@@ -54,7 +63,13 @@ class FindContactFragment : Fragment() {
         contactsListView.removeAllViews()
 
         filteredContacts.forEach {contact ->
-            val view = Contact.createView(inflater, contactsListView, contact, null)
+            val view = Contact.createInviteView(inflater, contactsListView, contact, null)
+            val inviteButton = view.findViewById<Button>(R.id.inviteButton)
+            val sentText = view.findViewById<TextView>(R.id.sentText)
+            inviteButton.setOnClickListener {
+                inviteButton.visibility = View.GONE
+                sentText.visibility = View.VISIBLE
+            }
             contactsListView.addView(view)
         }
 

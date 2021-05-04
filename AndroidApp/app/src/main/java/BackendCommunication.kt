@@ -1,11 +1,14 @@
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.orangemeet.Contact
+import com.example.orangemeet.R
 import com.example.orangemeet.userInfo
+import org.json.JSONArray
 import org.json.JSONObject
 
 class BackendCommunication {
@@ -106,11 +109,34 @@ class BackendCommunication {
             val request = BackendRequestJsonObject(Request.Method.DELETE, backendUrl + "/api/v1/contacts/" + username + "?friend=" + friend,
                     JSONObject(),
                     Response.Listener {
-                        Log.e("BackendCommunication", "DeleteContact success")
+                        Log.i("BackendCommunication", "DeleteContact success")
                         listener!!.onResponse(it)
                     },
                     Response.ErrorListener {
                         Log.e("BackendCommunication", "DeleteContact failed: " + it.message)
+                        errorListener!!.onErrorResponse(it)
+                    },
+                    token)
+
+            requestQueue.add(request)
+        }
+
+        fun GetUsers(context: Context, query : String?, listener: Response.Listener<List<Contact>>?,
+                     errorListener: Response.ErrorListener?){
+            val requestQueue = Volley.newRequestQueue(context)
+
+            val request = BackendRequestJsonArray(Request.Method.GET, backendUrl + "/api/v1/users",
+                    JSONObject(),
+                    Response.Listener { jsonArray ->
+                        Log.i("BackendCommunication", "GetUsers success")
+                        val contacts = mutableListOf<Contact>()
+                        for(i in 0..jsonArray.length() - 1){
+                            contacts.add(i, Contact.createFromJson(jsonArray.getJSONObject(i)))
+                        }
+                        listener!!.onResponse(contacts)
+                    },
+                    Response.ErrorListener {
+                        Log.e("BackendCommunication", "GetUsers failed: " + it.message)
                         errorListener!!.onErrorResponse(it)
                     },
                     token)
@@ -126,11 +152,32 @@ class BackendCommunication {
                     backendUrl + "/api/v1/contacts/add" + "?user-f=" + username + "&user-o=" + friend,
                     JSONObject(),
                     Response.Listener {
-                        Log.e("BackendCommunication", "AddContact success")
+                        Log.i("BackendCommunication", "AddContact success")
                         listener!!.onResponse(it)
                     } ,
                     Response.ErrorListener {
                         Log.e("BackendCommunication", "AddContact failed: " + it.message)
+                        errorListener!!.onErrorResponse(it)
+                    },
+                    token)
+
+            requestQueue.add(request)
+        }
+
+        fun SendInvite(context: Context, friend: String, listener: Response.Listener<JSONObject>?,
+                       errorListener: Response.ErrorListener?){
+            val requestQueue = Volley.newRequestQueue(context)
+
+            val request = BackendRequestJsonObject(Request.Method.POST,
+                    backendUrl + "/api/v1/contacts/add" + "?from=" + username + "&to=" + friend,
+                    JSONObject(),
+                    Response.Listener {
+                        Log.i("BackendCommunication", "SendInvite success")
+                        Toast.makeText(context, R.string.invitation_sent, Toast.LENGTH_SHORT).show()
+                        listener!!.onResponse(it)
+                    },
+                    Response.ErrorListener {
+                        Log.e("BackendCommunication", "SendInvite failed: " + it.message)
                         errorListener!!.onErrorResponse(it)
                     },
                     token)

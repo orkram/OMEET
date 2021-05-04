@@ -174,4 +174,6 @@
     <string name="registed_failed">Nie udało się zarejestrować</string>
     <string name="fields_must_be_not_empty">Pola nie mogą być puste</string>
     <string name="passwords_dont_match">Wpisane hasła różnią się od siebie</string>
+    <string name="invite">Zaproś</string>
+    <string name="invitation_sent">Wysłano zaproszenie</string>
 </resources>

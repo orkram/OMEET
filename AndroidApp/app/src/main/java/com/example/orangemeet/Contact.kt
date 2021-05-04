@@ -45,6 +45,18 @@ class Contact {
             box.background = background
             return view
         }
+
+        fun createInviteView(inflater : LayoutInflater, root : ViewGroup, contact: Contact, background: Drawable?) : View{
+            val view = inflater.inflate(R.layout.contacts_list_item_invite, root, false)
+
+            val userNameTextView = view.findViewById<TextView>(R.id.meetingId)
+            val emailTextView = view.findViewById<TextView>(R.id.emailTextView)
+            val box = view.findViewById<View>(R.id.box)
+            userNameTextView.text = contact.username
+            emailTextView.text = contact.email
+            box.background = background
+            return view
+        }
     }
 
 }
