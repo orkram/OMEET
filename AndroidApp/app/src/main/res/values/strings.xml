@@ -147,6 +147,8 @@
     <string name="prompt_password">Hasło</string>
     <string name="prompt_password_repeat">Powtórz hasło</string>
     <string name="prompt_search">Szukaj</string>
+    <string name="prompt_firstname">Imię</string>
+    <string name="prompt_lastname">Nazwisko</string>
     <string name="action_sign_in">Zaloguj</string>
     <string name="action_register">Utwórz konto</string>
     <string name="welcome">"Welcome!"</string>
