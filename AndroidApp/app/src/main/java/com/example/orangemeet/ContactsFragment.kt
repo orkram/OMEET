@@ -3,10 +3,7 @@ package com.example.orangemeet
 import BackendCommunication
 import android.app.AlertDialog
 import android.content.DialogInterface
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
-import android.util.TypedValue
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.*

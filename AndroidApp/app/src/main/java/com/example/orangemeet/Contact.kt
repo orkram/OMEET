@@ -37,7 +37,7 @@ class Contact {
         fun createView(inflater : LayoutInflater, root : ViewGroup, contact: Contact, background: Drawable?) : View{
             val view = inflater.inflate(R.layout.contacts_list_item, root, false)
 
-            val userNameTextView = view.findViewById<TextView>(R.id.meetingId)
+            val userNameTextView = view.findViewById<TextView>(R.id.meetingName)
             val emailTextView = view.findViewById<TextView>(R.id.emailTextView)
             val box = view.findViewById<View>(R.id.box)
             userNameTextView.text = contact.username
@@ -50,7 +50,7 @@ class Contact {
         fun createInviteView(inflater : LayoutInflater, root : ViewGroup, contact: Contact, background: Drawable?) : View{
             val view = inflater.inflate(R.layout.contacts_list_item_invite, root, false)
 
-            val userNameTextView = view.findViewById<TextView>(R.id.meetingId)
+            val userNameTextView = view.findViewById<TextView>(R.id.meetingName)
             val emailTextView = view.findViewById<TextView>(R.id.emailTextView)
             val box = view.findViewById<View>(R.id.box)
             userNameTextView.text = contact.username

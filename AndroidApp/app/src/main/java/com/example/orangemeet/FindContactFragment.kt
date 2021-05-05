@@ -1,13 +1,9 @@
 package com.example.orangemeet
 
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
-import com.android.volley.Response
 
 
 class FindContactFragment : Fragment() {
@@ -27,7 +23,7 @@ class FindContactFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val findContactFragment = inflater.inflate(R.layout.fragment_find_contact, container, false)
-        contactsListView = findContactFragment.findViewById<LinearLayout>(R.id.contactsList)
+        contactsListView = findContactFragment.findViewById<LinearLayout>(R.id.meetingsList)
         searchPlaceholder = findContactFragment.findViewById(R.id.searchPlaceholder)
         progressBar = findContactFragment.findViewById(R.id.progressBar)
         searchBar = findContactFragment.findViewById(R.id.searchView)
