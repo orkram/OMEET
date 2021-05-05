@@ -34,11 +34,9 @@ class Contact {
             return contact
         }
 
-        fun createView(inflater : LayoutInflater, root : ViewGroup, contact: Contact, background: Drawable?) : View{
-            val view = inflater.inflate(R.layout.contacts_list_item, root, false)
-
-            val userNameTextView = view.findViewById<TextView>(R.id.meetingName)
-            val emailTextView = view.findViewById<TextView>(R.id.emailTextView)
+        private fun populateView(view : View, contact : Contact, background: Drawable?) : View{
+            val userNameTextView = view.findViewById<TextView>(R.id.contactUsername)
+            val emailTextView = view.findViewById<TextView>(R.id.contactEmail)
             val box = view.findViewById<View>(R.id.box)
             userNameTextView.text = contact.username
             emailTextView.text = contact.email
@@ -47,17 +45,19 @@ class Contact {
             return view
         }
 
+        fun createView(inflater : LayoutInflater, root : ViewGroup, contact: Contact, background: Drawable?) : View{
+            val view = inflater.inflate(R.layout.contacts_list_item, root, false)
+            return populateView(view, contact, background)
+        }
+
         fun createInviteView(inflater : LayoutInflater, root : ViewGroup, contact: Contact, background: Drawable?) : View{
             val view = inflater.inflate(R.layout.contacts_list_item_invite, root, false)
+            return populateView(view, contact, background)
+        }
 
-            val userNameTextView = view.findViewById<TextView>(R.id.meetingName)
-            val emailTextView = view.findViewById<TextView>(R.id.emailTextView)
-            val box = view.findViewById<View>(R.id.box)
-            userNameTextView.text = contact.username
-            emailTextView.text = contact.email
-            if(background != null)
-                box.background = background
-            return view
+        fun createCheckView(inflater : LayoutInflater, root : ViewGroup, contact: Contact, background: Drawable?) : View{
+            val view = inflater.inflate(R.layout.contacts_list_item_checkable, root, false)
+            return populateView(view, contact, background)
         }
     }
 

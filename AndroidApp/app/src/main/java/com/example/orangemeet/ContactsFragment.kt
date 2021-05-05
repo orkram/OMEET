@@ -45,7 +45,7 @@ class ContactsFragment : Fragment() {
         setHasOptionsMenu(true)
 
         val contactsFragment = inflater.inflate(R.layout.fragment_contacts, container, false)
-        contactsListView = contactsFragment.findViewById<LinearLayout>(R.id.contactsList)
+        contactsListView = contactsFragment.findViewById<LinearLayout>(R.id.contactsLayout)
         progressBar = contactsFragment.findViewById(R.id.progressBar)
         searchBar = contactsFragment.findViewById(R.id.searchView)
         searchBar.setOnClickListener { v -> searchBar.isIconified = false }

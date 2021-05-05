@@ -26,6 +26,7 @@ class MeetingsFragment : Fragment() {
         addMeetingButton = menu.findItem(R.id.addMeeting)
 
         addMeetingButton.setOnMenuItemClickListener {
+            findNavController().navigate(R.id.nav_create_meeting)
             true
         }
     }

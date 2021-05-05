@@ -9,6 +9,7 @@
     <string name="menu_meetings">Spotkania</string>
     <string name="menu_logout">Wyloguj</string>
     <string name="menu_find_contact">Znajdź znajomego</string>
+    <string name="menu_create_meeting">Utwórz spotkanie</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
@@ -185,4 +186,7 @@
     <string name="invite">Zaproś</string>
     <string name="invitation_sent">Wysłano zaproszenie</string>
     <string name="delete_from_contacts">Usuń ze znajomych</string>
+    <string name="prompt_meeting_name">Nazwa</string>
+    <string name="prompt_meeting_date">Termin</string>
+    <string name="prompt_meeting_participants">Uczestnicy</string>
 </resources>
