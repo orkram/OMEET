@@ -44,7 +44,7 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="2" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -56,55 +56,53 @@
                 android:id="@+id/dateBox"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="5"
                 android:background="@drawable/outline_box_rounded"
-                android:gravity="start|center_vertical"
                 android:orientation="vertical"
-                android:paddingLeft="20dp">
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Data"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/meetingDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Data"
-                    android:textColor="@android:color/primary_text_light"
+                    android:textColor="?attr/colorOnBackground"
                     android:textSize="16sp" />
             </LinearLayout>
 
             <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_width="20dp"
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:id="@+id/timeBox"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="5"
                 android:background="@drawable/outline_box_rounded"
                 android:gravity="start|center_vertical"
                 android:orientation="vertical"
-                android:paddingLeft="20dp">
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
 
                 <TextView
                     android:id="@+id/textView11"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Czas"
-                    android:textSize="10sp" />
+                    android:text="Godzina"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/meetingTime"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Czas"
-                    android:textColor="@android:color/primary_text_light"
+                    android:text="Godzina"
+                    android:textColor="?attr/colorOnBackground"
                     android:textSize="16sp" />
             </LinearLayout>
 
