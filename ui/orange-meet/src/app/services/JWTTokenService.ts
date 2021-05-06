@@ -75,8 +75,7 @@ export class JWTTokenService {
       });
       return this.http.post(
         `http://130.61.186.61:9000/api/v1/account/${this.getUsername()}/refreshToken`,
-        {refreshToken: this.refreshToken()},
-        {headers});
+        {refreshToken: this.refreshToken()}, {headers});
     } else {
       return throwError('Tokens expired');
     }
