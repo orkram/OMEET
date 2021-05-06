@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.fragment.findNavController
 import com.android.volley.Response
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
@@ -26,6 +27,8 @@ class CreateMeetingFragment : Fragment() {
     lateinit var timeView : MaterialTextView
     lateinit var contactsLayout : LinearLayout
     lateinit var searchView : SearchView
+    lateinit var createMeetingButton : Button
+    lateinit var meetingNameView : TextInputEditText
 
     val pickedDate = MutableLiveData<Date>()
 
@@ -48,12 +51,29 @@ class CreateMeetingFragment : Fragment() {
         })
 
         searchView = createMeetingFragment.findViewById(R.id.searchView)
-        contactsLayout = createMeetingFragment.findViewById<LinearLayout>(R.id.contactsLayout)
+        contactsLayout = createMeetingFragment.findViewById(R.id.contactsLayout)
         dateBox = createMeetingFragment.findViewById(R.id.dateBox)
         timeBox = createMeetingFragment.findViewById(R.id.timeBox)
         dateView = createMeetingFragment.findViewById(R.id.meetingDate)
         timeView = createMeetingFragment.findViewById(R.id.meetingTime)
+        createMeetingButton = createMeetingFragment.findViewById(R.id.createMeeting)
+        meetingNameView = createMeetingFragment.findViewById(R.id.meetingName)
 
+        createMeetingButton.setOnClickListener {
+            if(meetingNameView.text!!.isEmpty()){
+                Toast.makeText(requireContext(), "Nazwa spotkania nie może być pusta", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            BackendCommunication.CreateMeeting(requireContext(), pickedDate.value!!, meetingNameView.text.toString(), checkedContacts,
+                    Response.Listener {
+                        Toast.makeText(requireContext(), "Pomyślnie utworzono spotkanie", Toast.LENGTH_SHORT).show()
+                        findNavController().navigateUp()
+                    },
+                    Response.ErrorListener {
+                        Toast.makeText(requireContext(), "Nie udało się utworzyć spotkania", Toast.LENGTH_SHORT).show()
+                    })
+        }
 
         searchView.setOnQueryTextListener( object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -66,16 +86,16 @@ class CreateMeetingFragment : Fragment() {
             }
         })
 
-       /* BackendCommunication.GetContactsList(requireContext(),
+        BackendCommunication.GetContactsList(requireContext(),
                 Response.Listener {contacts ->
                     this.contacts = contacts
+                    CreateViews()
                 },
-                Response.ErrorListener {  })*/
-        contacts = List<Contact>(13){i -> Contact() }
-        CreateViews()
+                Response.ErrorListener {
+                    Toast.makeText(requireContext(), "Nie udało się pobrać listy spotkań", Toast.LENGTH_LONG).show()
+                })
 
         dateBox.setOnClickListener {
-
             DatePickerDialog(requireContext(),
                     DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                         calendar.set(year, month, dayOfMonth)
@@ -102,7 +122,7 @@ class CreateMeetingFragment : Fragment() {
         if(contacts == null)
             return
 
-        val filteredContacts = contacts!!.filter { contact -> contact.username.contains(searchView.query) }
+        val filteredContacts = contacts!!.filter { contact -> contact.username.toLowerCase().contains(searchView.query.toString().toLowerCase()) }
 
         contactsLayout.removeAllViews()
 

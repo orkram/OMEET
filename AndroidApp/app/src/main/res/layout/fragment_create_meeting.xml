@@ -33,6 +33,7 @@
             app:boxStrokeWidthFocused="0dp">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/meetingName"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@color/transparent"
@@ -140,7 +141,7 @@
         android:layout_height="0dp"
         android:layout_marginBottom="16dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/dateButton"
+        app:layout_constraintBottom_toTopOf="@+id/createMeeting"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
@@ -178,7 +179,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/dateButton"
+        android:id="@+id/createMeeting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"

@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import org.json.JSONObject
 import org.w3c.dom.Text
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
 class Meeting {
-    var id : Int = -1
+    var id : Long = -1
     lateinit var name : String
     lateinit var participants : List<Contact>
     lateinit var owner : Contact
@@ -21,14 +22,14 @@ class Meeting {
 
 
     constructor(){
-        id = Random().nextInt(1000)
+        id = Random().nextLong()
         name = "Name" + Util.GenerateRandomString(8)
         owner = Contact()
         participants = List<Contact>(3){ i -> Contact()}
         date = Date()
     }
 
-    constructor(id : Int, name : String, date : Date, owner : Contact, roomUrl : String){
+    constructor(id : Long, name : String, date : Date, owner : Contact, roomUrl : String){
         this.name = name
         this.id = id
         this.date = date
@@ -42,13 +43,19 @@ class Meeting {
 
     companion object{
         fun createFromJson(jsonObject: JSONObject) : Meeting{
-            return Meeting()
+            val name = jsonObject.getString("name")
+            val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(jsonObject.getString("date"))
+            val id = jsonObject.getString("idMeeting").toLong()
+            val owner = Contact.createFromJson(jsonObject.getJSONObject("owner"))
+            val roomUrl = jsonObject.getString("roomUrl")
+
+            return Meeting(id, name, date, owner, roomUrl)
         }
 
         fun createView(inflater : LayoutInflater, root : ViewGroup, meeting: Meeting, background: Drawable?) : View {
             val view = inflater.inflate(R.layout.meetings_list_item, root, false)
 
-            val idTextView = view.findViewById<TextView>(R.id.meetingName)
+            val idTextView = view.findViewById<TextView>(R.id.meetingId)
             val dateTextView = view.findViewById<TextView>(R.id.date)
             val ownerTextView = view.findViewById<TextView>(R.id.meetingOwner)
             val nameTextView = view.findViewById<TextView>(R.id.meetingName)

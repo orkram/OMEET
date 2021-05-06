@@ -6,15 +6,16 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.orangemeet.Contact
+import com.example.orangemeet.Meeting
 import com.example.orangemeet.R
 import com.example.orangemeet.userInfo
 import org.json.JSONArray
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
 
 class BackendCommunication {
     companion object{
-        val client_id = "orange-app"
-        val client_secret = "881f08d9-7da9-4654-a3b2-8987b7a17506"
         val backendUrl = "http://130.61.186.61:9000"
 
         private var username : String? = null
@@ -32,20 +33,22 @@ class BackendCommunication {
             val loginUrl = backendUrl + "/api/v1/account/login"
 
             var loginJson = JSONObject()
-                .put("clientId", client_id)
-                .put("clientSecret", client_secret)
                 .put("username", username)
                 .put("password", password)
 
             val loginRequest = JsonObjectRequest(
-                Request.Method.POST, loginUrl, loginJson,
-                Response.Listener {response ->
-                    token = response.getString("accessToken")
-                    Log.i("BackendCommunication", "Token: " + token)
-                    this.username = username
-                    listener?.onResponse(response)
-                },
-                errorListener)
+                    Request.Method.POST, loginUrl, loginJson,
+                    Response.Listener {response ->
+                        Log.i("BackendCommunication", "Login success")
+                        this.username = username
+                        token = response.getString("accessToken")
+                        listener?.onResponse(response)
+                    },
+                    Response.ErrorListener {error ->
+                        Log.e("BackendCommunication", "Register failed: " + error.message)
+                        errorListener?.onErrorResponse(error)
+                    }
+            )
 
             requestQueue.add(loginRequest)
             userInfo.userName = username;
@@ -74,7 +77,7 @@ class BackendCommunication {
                         listener?.onResponse(response)
                     },
                     Response.ErrorListener {error ->
-                        Log.i("BackendCommunication", "Register failed: " + error.message)
+                        Log.e("BackendCommunication", "Register failed: " + error.message)
                         errorListener?.onErrorResponse(error)
                     },
                     null)
@@ -86,7 +89,8 @@ class BackendCommunication {
                             errorListener: Response.ErrorListener?){
             val requestQueue = Volley.newRequestQueue(context)
 
-            val request = BackendRequestJsonArray(Request.Method.GET, backendUrl + "/api/v1/contacts/" + username,
+            val request = BackendRequestJsonArray(Request.Method.GET, backendUrl + "/api/v1/contacts/friends/" + username +
+                    "?firstNameSortAscending=true&lastNameSortAscending=true&userNameSortAscending=true",
                     JSONObject(), Response.Listener { jsonArray ->
                 Log.i("BackendCommunication", "GetContactsList success")
                 val contactsList = mutableListOf<Contact>()
@@ -173,7 +177,6 @@ class BackendCommunication {
                     JSONObject(),
                     Response.Listener {
                         Log.i("BackendCommunication", "SendInvite success")
-                        Toast.makeText(context, R.string.invitation_sent, Toast.LENGTH_SHORT).show()
                         listener!!.onResponse(it)
                     },
                     Response.ErrorListener {
@@ -185,9 +188,82 @@ class BackendCommunication {
             requestQueue.add(request)
         }
 
-        fun GetMeetingsList(context: Context, listener: Response.Listener<JSONObject>?,
+        fun GetMeetings(context: Context, listener: Response.Listener<List<Meeting>>?,
                             errorListener: Response.ErrorListener?){
+            val requestQueue = Volley.newRequestQueue(context)
 
+            val request = BackendRequestJsonArray(Request.Method.GET,
+                    backendUrl + "/api/v1/meetings/participants/user/" + username + "?meetingNameSortAscending=true",
+                    JSONObject(),
+                    Response.Listener {jsonArray ->
+                        Log.i("BackendCommunication", "GetMeetings success")
+                        val meetings = mutableListOf<Meeting>()
+                        for(i in 0..jsonArray.length() - 1)
+                            meetings.add(Meeting.createFromJson(jsonArray.getJSONObject(i)))
+                        listener!!.onResponse(meetings)
+                    },
+                    Response.ErrorListener {
+                        Log.e("BackendCommunication", "GetMeetings failed: " + it.message)
+                        errorListener!!.onErrorResponse(it)
+                    },
+                    token)
+
+            requestQueue.add(request)
+        }
+
+        fun CreateMeeting(context: Context, date : Date, name : String, participants : List<Contact>,
+                          listener: Response.Listener<JSONObject>?,
+                          errorListener: Response.ErrorListener?){
+            val requestQueue = Volley.newRequestQueue(context)
+
+            val participantsJsonArray = JSONArray()
+            participants.forEach{participant -> participantsJsonArray.put(participant.username)}
+
+            val meetingJson = JSONObject()
+                    .put("date", SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date))
+                    .put("name", name)
+                    .put("ownerUserName", username)
+                    .put("participants", participantsJsonArray)
+
+            val request = BackendRequestJsonObject(Request.Method.POST,
+                    backendUrl + "/api/v1/meetings",
+                    meetingJson,
+                    Response.Listener {jsonObject ->
+                        Log.i("BackendCommunication", "CreateMeeting success")
+                        listener?.onResponse(jsonObject)
+                    },
+                    Response.ErrorListener {error ->
+                        Log.e("BackendCommunication", "CreateMeeting failed: " + error.message)
+                        errorListener?.onErrorResponse(error)
+                    },
+                    token)
+
+            requestQueue.add(request)
+        }
+
+        fun GetMeetingParticipants(context: Context, meetingId : Long,
+                                   listener: Response.Listener<List<Contact>>?,
+                                   errorListener: Response.ErrorListener?){
+            val requestQueue = Volley.newRequestQueue(context)
+
+            val request = BackendRequestJsonArray(Request.Method.GET,
+                    backendUrl + "/api/v1/meetings/participants/meeting/" + meetingId +
+                            "?firstNameSortAscending=true&lastNameSortAscending=true&userNameSortAscending=true",
+                    JSONObject(),
+                    Response.Listener {jsonArray ->
+                        Log.i("BackendCommunication", "GetMeetingParticipants success")
+                        val contacts = mutableListOf<Contact>()
+                        for(i in 0..jsonArray.length() - 1)
+                            contacts.add(Contact.createFromJson(jsonArray.getJSONObject(i)))
+                        listener?.onResponse(contacts)
+                    },
+                    Response.ErrorListener {error ->
+                        Log.e("BackendCommunication", "GetMeetingParticipants failed: " + error.message)
+                        errorListener?.onErrorResponse(error)
+                    },
+                    token)
+
+            requestQueue.add(request)
         }
     }
 }

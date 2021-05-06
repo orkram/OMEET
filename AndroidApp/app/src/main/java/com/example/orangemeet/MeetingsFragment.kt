@@ -2,19 +2,19 @@ package com.example.orangemeet
 
 import android.os.Bundle
 import android.view.*
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.SearchView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.android.volley.Response
+import java.util.*
 
 class MeetingsFragment : Fragment() {
 
     final var testMeetings = Array<Meeting>(20){i -> Meeting() }
 
-    val meetings = MutableLiveData<MutableList<Meeting>>()
+    val meetings = MutableLiveData<MutableList<Meeting>?>()
     lateinit var searchBar : SearchView
     lateinit var meetingsListView : LinearLayout
     lateinit var progressBar : ProgressBar
@@ -48,29 +48,33 @@ class MeetingsFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                CreateMeetingViews(inflater, meetings.value!!)
+                CreateMeetingViews(inflater, meetings.value)
                 return true
             }
         })
 
-        meetings.observe(viewLifecycleOwner, Observer { CreateMeetingViews(inflater, meetings.value!!) })
+        meetings.value = null
+        meetings.observe(viewLifecycleOwner, Observer { CreateMeetingViews(inflater, meetings.value) })
 
-        meetings.value = MutableList<Meeting>(20){ i -> Meeting()}
-        /*BackendCommunication.GetMeetingsList(requireContext(),
-                Response.Listener {
-
-                    progressBar.visibility = View.VISIBLE
+        progressBar.visibility = View.VISIBLE
+        BackendCommunication.GetMeetings(requireContext(),
+                Response.Listener {meetings ->
+                    CreateMeetingViews(inflater, meetings)
+                    progressBar.visibility = View.GONE
                 },
                 Response.ErrorListener {
 
-                    progressBar.visibility = View.VISIBLE
-                })*/
+                    progressBar.visibility = View.GONE
+                })
 
 
         return meetingsFragment
     }
 
-    private fun CreateMeetingViews(inflater : LayoutInflater, meetings : List<Meeting>){
+    private fun CreateMeetingViews(inflater : LayoutInflater, meetings : List<Meeting>?){
+        if(meetings == null)
+            return
+
         val filteredMeetings = meetings.filter { meeting ->
             if(searchBar.query.isEmpty())
                 true
@@ -80,15 +84,27 @@ class MeetingsFragment : Fragment() {
 
         meetingsListView.removeAllViews()
 
-        filteredMeetings.forEach {
-            val view = Meeting.createView(inflater, meetingsListView, it, null)
+        filteredMeetings.forEach {meeting ->
+            val view = Meeting.createView(inflater, meetingsListView, meeting, null)
 
             view.setOnClickListener {
                 val participantsView = it.findViewById<View>(R.id.participantsView)
-                if(participantsView.visibility == View.GONE)
+                val participantsInnerView = participantsView.findViewById<TextView>(R.id.participantsInnerView)
+                if(participantsView.visibility == View.GONE){
+                    BackendCommunication.GetMeetingParticipants(requireContext(), meeting.id,
+                            Response.Listener {contacts ->
+                                participantsInnerView.text = ""
+                                contacts.forEach{contact ->
+                                    participantsInnerView.append(contact.username + "\n")
+                                }
+                            },
+                            Response.ErrorListener {
+                                Toast.makeText(requireContext(), "Nie udało się pobrać listy uczestników", Toast.LENGTH_LONG).show()
+                            })
                     participantsView.visibility = View.VISIBLE
-                else
+                } else{
                     participantsView.visibility = View.GONE
+                }
             }
 
             meetingsListView.addView(view)
