@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-registration',
@@ -7,7 +8,7 @@ import {Component, OnInit} from '@angular/core';
 })
 export class RegistrationComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
   langs: Lang[] = [
     {value: 'en', viewValue: 'English'},
     {value: 'pl', viewValue: 'Polish'}
@@ -15,6 +16,10 @@ export class RegistrationComponent implements OnInit {
 
   selected = 'English';
   ngOnInit(): void {
+  }
+
+  backToLogin(): void{
+    this.router.navigateByUrl('/login');
   }
 
 }

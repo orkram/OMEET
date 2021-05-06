@@ -5,7 +5,7 @@ import {MeetingsComponent} from './components/meetings/meetings.component';
 import {UsersComponentComponent} from './components/users-component/users-component.component';
 import {LoginComponent} from './components/login/login.component';
 import {RegistrationComponent} from './components/registration/registration.component';
-import {AuthorizeGuard} from "./services/AuthorizeGuard";
+import {AuthorizeGuard} from './services/AuthorizeGuard';
 
 const routes: Routes = [
   {path: 'settings', component: SettingsComponent, canActivate: [AuthorizeGuard]},

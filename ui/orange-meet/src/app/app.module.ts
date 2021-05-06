@@ -39,7 +39,10 @@ import {LoginFormComponent} from './components/login/login-form/login-form.compo
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {LoginService} from './services/LoginService';
 import {RegistrationFormComponent} from './components/registration/registration-form/registration-form.component';
-import {AppInterceptor} from "./services/AppInterceptor";
+import {AppInterceptor} from './services/AppInterceptor';
+import {JWTTokenService} from './services/JWTTokenService';
+import {CookieService} from './services/CookieService';
+import {LogoutService} from './services/LogoutService';
 
 
 @NgModule({
@@ -90,6 +93,9 @@ import {AppInterceptor} from "./services/AppInterceptor";
   ],
   providers: [
     LoginService,
+    JWTTokenService,
+    CookieService,
+    LogoutService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AppInterceptor,

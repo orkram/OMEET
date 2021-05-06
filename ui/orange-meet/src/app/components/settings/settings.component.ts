@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-settings',
@@ -12,7 +12,6 @@ export class SettingsComponent implements OnInit {
     'System default device',
     'Alternative device 2',
     'Alternative device 3'];
-
 
   ngOnInit(): void {
   }

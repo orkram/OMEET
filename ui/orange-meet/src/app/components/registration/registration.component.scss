@@ -84,7 +84,7 @@
 }
 
 .lang-selector{
-  width: 100px;
+  width: 60px;
   margin: 15px;
 
 }
@@ -95,4 +95,20 @@
 
 :host{
   width: 100%;
+}
+
+.sub-bar{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%
+}
+.bar-space{
+  width:60%;
+}
+.login-button{
+  max-height: 55px;
+  margin: 20px;
+  font-weight: 400;
+
 }

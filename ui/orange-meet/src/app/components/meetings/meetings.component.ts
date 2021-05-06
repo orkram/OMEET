@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {JWTTokenService} from '../../services/JWTTokenService';
 
 @Component({
   selector: 'app-meetings',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MeetingsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router, private jwtService: JWTTokenService) { }
 
   ngOnInit(): void {
+    if (!this.jwtService.isAccessTokenExpired()){
+      this.router.navigateByUrl('/meetings');
+    }
   }
 
 }

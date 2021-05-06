@@ -2,6 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {LoginService} from '../../../services/LoginService';
 import {Router} from '@angular/router';
+import {CookieService} from '../../../services/CookieService';
+import {JWTTokenService} from '../../../services/JWTTokenService';
 
 @Component({
   selector: 'app-login-form',
@@ -10,7 +12,11 @@ import {Router} from '@angular/router';
 })
 export class LoginFormComponent implements OnInit {
 
-  constructor(private loginService: LoginService,  private router: Router) { }
+  constructor(
+    private loginService: LoginService,
+    private router: Router,
+    private cookieService: CookieService,
+    private jwtService: JWTTokenService) { }
 
   form: FormGroup = new FormGroup({
     username: new FormControl(''),
@@ -27,6 +33,9 @@ export class LoginFormComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    if (!this.jwtService.isAccessTokenExpired()){
+      this.router.navigateByUrl('/meetings');
+    }
   }
 
   goToCreateAccount(): void {
@@ -37,8 +46,14 @@ export class LoginFormComponent implements OnInit {
   submit(): void {
     this.loginService.login(this.form.value.username, this.form.value.password)
       .subscribe(
-        (response) => { // parse messag
-          this.router.navigateByUrl('/meetings');
+        res => {
+          console.log(res);
+          this.cookieService.set('accessToken', res.accessToken);
+          this.cookieService.set('refreshToken', res.refreshToken);
+        },
+        err => console.log('HTTP Error', err),
+        () => {
+          this.router.navigate(['meetings']);
         }
       );
   }

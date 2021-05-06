@@ -1,50 +1,88 @@
 import {Injectable} from '@angular/core';
 import jwtDecode from 'jwt-decode';
+import {CookieService} from './CookieService';
+import {Observable, throwError} from 'rxjs';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 
 @Injectable()
 export class JWTTokenService {
 
-  get jwtToken(): string {
-    return this._jwtToken;
-  }
-  set jwtToken(token: string) {
-    if (token) {
-      this._jwtToken = token;
+  accessToken(): string {
+    const t = this.cookieService.get('accessToken');
+    if (t) {
+      return jwtDecode(t);
     }
-  }
-  private _jwtToken: string;
-  decodedToken: { [key: string]: string };
-
-  constructor() {
+    return '';
   }
 
-  decodeToken(): void {
-    if (this._jwtToken) {
-      this.decodedToken = jwtDecode(this._jwtToken);
+  refreshToken(): string {
+    const t = this.cookieService.get('refreshToken');
+    if (t) {
+      return jwtDecode(t);
     }
+    return '';
   }
 
-  getDecodeToken(): void {
-    return jwtDecode(this._jwtToken);
+  constructor(private cookieService: CookieService, private http: HttpClient) {
   }
 
-  getEmailId(): string {
-    this.decodeToken();
-    return this.decodedToken ? this.decodedToken.email : null as any;
+  getEmail(): string {
+    return JSON.parse(this.accessToken()).email;
   }
 
-  getExpiryTime(): number {
-    this.decodeToken();
-    return this.decodedToken ? this.decodedToken.exp : null as any;
+  getUsername(): string {
+    return JSON.parse(this.accessToken()).preferred_username;
   }
 
-  isTokenExpired(): boolean {
-    const expiryTime: number = this.getExpiryTime();
-    if (expiryTime) {
-      return ((1000 * expiryTime) - (new Date()).getTime()) < 5000;
+  isAccessTokenExpired(): boolean {
+    console.log(this.accessToken());
+    if (this.accessToken()) {
+      const expiryTime: number = +JSON.parse(JSON.stringify(this.accessToken())).exp;
+      if (expiryTime) {
+        console.log('Access token is expired');
+        return ((1000 * expiryTime) - (new Date()).getTime()) < 5000;
+      } else {
+        return false;
+      }
     } else {
-      return false;
+      return true;
     }
   }
+
+  isRefreshTokenExpired(): boolean {
+    if (this.refreshToken()) {
+      console.log(this.refreshToken());
+      const expiryTime: number = +JSON.parse(this.refreshToken()).exp;
+      if (expiryTime) {
+        return ((1000 * expiryTime) - (new Date()).getTime()) < 5000;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
+
+  getNewToken(): Observable<any> {
+    if (!this.isRefreshTokenExpired()) {
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Methods': 'POST',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Origin': 'http://130.61.186.61:9000/', // TODO remove after replacing URL with relative one
+        Anonymous: ''
+      });
+      return this.http.post(
+        `http://130.61.186.61:9000/api/v1/account/${this.getUsername()}/refreshToken`,
+        {refreshToken: this.refreshToken()},
+        {headers});
+    } else {
+      return throwError('Tokens expired');
+    }
+  }
+
+ // hasActiveToken(): {
+    // ???
+  // }
 }
