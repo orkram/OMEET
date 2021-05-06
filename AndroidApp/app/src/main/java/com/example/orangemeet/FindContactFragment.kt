@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
+import com.android.volley.Response
 
 
 class FindContactFragment : Fragment() {
@@ -46,17 +47,13 @@ class FindContactFragment : Fragment() {
             }
         })
 
-        //TODO: Remove test contacts
-        contacts = MutableList<Contact>(40){i -> Contact()}
-        //CreateContactViews(inflater)
-        /*BackendCommunication.GetUsers(requireContext(), null,
-        Response.Listener {contacts ->
-            this.contacts = contacts
-            CreateContactViews(inflater)
-        },
-        Response.ErrorListener {
-
-        })*/
+        BackendCommunication.GetUsers(requireContext(), null,
+                Response.Listener { contacts ->
+                    this.contacts = contacts
+                },
+                Response.ErrorListener {
+                    Toast.makeText(requireContext(), "Nie udało się pobrać listy użytkowników", Toast.LENGTH_LONG).show()
+                })
 
         return findContactFragment
     }

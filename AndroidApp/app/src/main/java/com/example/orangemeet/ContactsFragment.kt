@@ -63,19 +63,15 @@ class ContactsFragment : Fragment() {
         contactsList.observe(viewLifecycleOwner, Observer { CreateContactViews(inflater) })
 
         progressBar.visibility = View.VISIBLE
-
-        //TODO: Remove test contacts
-        contactsList.value = MutableList<Contact>(13){i -> Contact()}
-        progressBar.visibility = View.GONE
-        /*BackendCommunication.GetContactsList(requireContext(),
+        BackendCommunication.GetContactsList(requireContext(),
                 Response.Listener {
                     contactsList -> this.contactsList.value = contactsList.toMutableList()
                     progressBar.visibility = View.GONE
                 },
                 Response.ErrorListener {error ->
-                    Toast.makeText(context, error.toString() + ": " + error.networkResponse.statusCode, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Nie udało się pobrać listy kontaktów", Toast.LENGTH_LONG).show()
                     progressBar.visibility = View.GONE
-                })*/
+                })
 
         return contactsFragment
     }
