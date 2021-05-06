@@ -8,6 +8,8 @@
     <string name="menu_video">Konwersacja</string>
     <string name="menu_meetings">Spotkania</string>
     <string name="menu_logout">Wyloguj</string>
+    <string name="menu_find_contact">Znajdź znajomego</string>
+    <string name="menu_create_meeting">Utwórz spotkanie</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
@@ -145,21 +147,48 @@
     <string name="prompt_password">Hasło</string>
     <string name="prompt_password_repeat">Powtórz hasło</string>
     <string name="prompt_search">Szukaj</string>
+    <string name="prompt_firstname">Imię</string>
+    <string name="prompt_lastname">Nazwisko</string>
     <string name="action_sign_in">Zaloguj</string>
     <string name="action_register">Utwórz konto</string>
     <string name="welcome">"Welcome!"</string>
     <string name="invalid_username">Nieprawidłowa nazwa użytkownika</string>
     <string name="invalid_password">Hasło musi mieć conajmniej 6 znaków</string>
-    <string name="login_failed">"Login failed"</string>
+    <string name="login_failed">Nie udało się zalogować</string>
     <string name="menu_login">Logowanie</string>
     <string name="menu_register">Rejestracja</string>
     <string name="account_creation">Tworzenie nowego konta</string>
-    <string name="meeting_title">Spotkanie x</string>
-    <string name="meeting_subtitle">Rozwiń, aby zobaczyć szczegóły</string>
+    <string name="meeting_title_placeholder">Nazwa spotkania</string>
+    <string name="meeting_id_placeholder">Id spotkania</string>
+    <string name="meeting_owner_placeholder">Właściciel</string>
+    <string name="meeting_id_label">"ID: "</string>
+    <string name="meeting_owner_label">"Właściciel: "</string>
+    <string name="meeting_date_label">"Data: "</string>
+    <string name="id">ID</string>
     <string name="example_date">20/02/2020</string>
     <string name="inactive">Nieaktywne</string>
     <string name="id_val">Id:</string>
     <string name="participants_val">Uczestnicy:</string>
     <string name="join_create">Dołącz / Stwórz</string>
+    <string name="create_meeting">Utwórz spotkanie</string>
+    <string name="participants">Uczestnicy</string>
 
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="delete_contact_dialog_message">Czy na pewno chcesz usunąć wybraną osobę ze znajomych?</string>
+    <string name="contacts_deleted_success">Pomyślnie usunięto wybrane kontakty</string>
+    <string name="contact_delete_fail">Nie udało się usunąć wybranego kontaktu</string>
+    <string name="update_contacts_fail">Nie udało się zaktualizować list kontaktów</string>
+    <string name="add_contact_dialog">Podaj nazwę kontaktu</string>
+    <string name="add_contact_success">Pomyślnie dodano kontakt</string>
+    <string name="add_contact_fail">Nie udało się dodać kontaktu</string>
+    <string name="registed_failed">Nie udało się zarejestrować</string>
+    <string name="fields_must_be_not_empty">Pola nie mogą być puste</string>
+    <string name="passwords_dont_match">Wpisane hasła różnią się od siebie</string>
+    <string name="invite">Zaproś</string>
+    <string name="invitation_sent">Wysłano zaproszenie</string>
+    <string name="delete_from_contacts">Usuń ze znajomych</string>
+    <string name="prompt_meeting_name">Nazwa</string>
+    <string name="prompt_meeting_date">Termin</string>
+    <string name="prompt_meeting_participants">Uczestnicy</string>
 </resources>

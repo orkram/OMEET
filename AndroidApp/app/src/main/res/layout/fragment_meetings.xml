@@ -4,80 +4,77 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:orientation="vertical"
     tools:context=".MeetingsFragment">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="32dp"
+        android:indeterminateTint="@color/orange"
+        android:max="100"
+        android:progress="50"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
+        android:id="@+id/linearLayout7"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <SearchView
+            android:id="@+id/searchView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/search_bar_bg"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_height="40dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/search_bg"
+            android:foreground="@color/transparent"
+            android:iconifiedByDefault="false"
+            android:queryBackground="@color/transparent"
+            android:queryHint="@string/prompt_search">
 
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@color/transparent"
-                android:padding="8dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/add" />
+        </SearchView>
 
-            <EditText
-                android:id="@+id/editTextTextPersonName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="8"
-                android:ems="10"
-                android:hint="@string/prompt_search"
-                android:inputType="textPersonName" />
-
-            <ImageButton
-                android:id="@+id/imageButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@color/transparent"
-                android:padding="8dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/close" />
-        </LinearLayout>
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@drawable/line" />
 
         <androidx.core.widget.NestedScrollView
-            android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fadeScrollbars="true"
+            android:fadingEdge="vertical"
+            android:fadingEdgeLength="16dp"
+            android:requiresFadingEdge="vertical"
+            android:scrollbars="vertical"
+            app:layout_scrollFlags="scroll"
+            tools:context=".ContactsFragment">
 
             <LinearLayout
                 android:id="@+id/meetingsList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:animateLayoutChanges="true"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
         </androidx.core.widget.NestedScrollView>
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="188dp"
-        android:layout_height="57dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/join_create"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

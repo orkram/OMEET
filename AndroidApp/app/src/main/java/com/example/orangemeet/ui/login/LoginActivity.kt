@@ -4,26 +4,19 @@ import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.annotation.StringRes
-import androidx.fragment.app.Fragment
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.Toolbar
 import androidx.preference.PreferenceManager
+import com.android.volley.Response
 import com.example.orangemeet.MainActivity
 
 import com.example.orangemeet.R
 import com.example.orangemeet.RegisterActivity
+import com.google.android.material.textfield.TextInputEditText
 
 class LoginActivity : AppCompatActivity() {
 
@@ -40,8 +33,8 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
-        val usernameEditText = findViewById<EditText>(R.id.username)
-        val passwordEditText = findViewById<EditText>(R.id.password)
+        val usernameEditText = findViewById<TextInputEditText>(R.id.username)
+        val passwordEditText = findViewById<TextInputEditText>(R.id.password)
         val loginButton = findViewById<Button>(R.id.login)
         val registerButton = findViewById<Button>(R.id.register)
         //val loadingProgressBar = findViewById<ProgressBar>(R.id.loading)
@@ -75,11 +68,21 @@ class LoginActivity : AppCompatActivity() {
                 }
                 loginResult.success?.let {
                     goToMainActivity()
+                    /*BackendCommunication.Login(this, usernameEditText.text.toString(), passwordEditText.text.toString(),
+                            Response.Listener {
+                                Log.i("LoginActivity", "Login successful")
+                                goToMainActivity()
+                            },
+                            Response.ErrorListener {
+                                Toast.makeText(applicationContext, R.string.login_failed, Toast.LENGTH_LONG).show()
+                                Log.e("LoginActivity", "Login failed")
+                            }
+                    )*/
                     //updateUiWithUser(it)
                 }
             })
 
-        val afterTextChangedListener = object : TextWatcher {
+        /*val afterTextChangedListener = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
                 // ignore
             }
@@ -96,7 +99,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
         usernameEditText.addTextChangedListener(afterTextChangedListener)
-        passwordEditText.addTextChangedListener(afterTextChangedListener)
+        passwordEditText.addTextChangedListener(afterTextChangedListener)*/
         passwordEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 loginViewModel.login(
@@ -112,6 +115,10 @@ class LoginActivity : AppCompatActivity() {
             loginViewModel.login(
                 usernameEditText.text.toString(),
                 passwordEditText.text.toString()
+            )
+            loginViewModel.loginDataChanged(
+                    usernameEditText.text.toString(),
+                    passwordEditText.text.toString()
             )
         }
     }
