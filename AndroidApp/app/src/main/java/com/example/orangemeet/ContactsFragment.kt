@@ -100,9 +100,11 @@ class ContactsFragment : Fragment() {
                             .setPositiveButton(R.string.yes, DialogInterface.OnClickListener { dialog, which ->
                                 BackendCommunication.DeleteContact(requireContext(), contact.username,
                                 Response.Listener {
+                                    Toast.makeText(requireContext(), "Pomyślnie usunięto kontakt", Toast.LENGTH_SHORT).show()
                                     BackendCommunication.GetContactsList(requireContext(),
                                     Response.Listener {
-                                        contactsList.value = it.toMutableList() },
+                                        contactsList.value = it.toMutableList()
+                                    },
                                     Response.ErrorListener {
                                         Toast.makeText(requireContext(), R.string.update_contacts_fail, Toast.LENGTH_LONG).show()
                                     })

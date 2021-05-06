@@ -178,7 +178,7 @@
     <string name="delete_contact_dialog_message">Czy na pewno chcesz usunąć wybraną osobę ze znajomych?</string>
     <string name="contacts_deleted_success">Pomyślnie usunięto wybrane kontakty</string>
     <string name="contact_delete_fail">Nie udało się usunąć wybranego kontaktu</string>
-    <string name="update_contacts_fail">Nie udało się zaktualizować list kontaktów</string>
+    <string name="update_contacts_fail">Nie udało się zaktualizować listy kontaktów</string>
     <string name="add_contact_dialog">Podaj nazwę kontaktu</string>
     <string name="add_contact_success">Pomyślnie dodano kontakt</string>
     <string name="add_contact_fail">Nie udało się dodać kontaktu</string>

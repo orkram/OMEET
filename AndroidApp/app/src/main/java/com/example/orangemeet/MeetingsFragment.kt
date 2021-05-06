@@ -63,7 +63,7 @@ class MeetingsFragment : Fragment() {
                     progressBar.visibility = View.GONE
                 },
                 Response.ErrorListener {
-
+                    Toast.makeText(requireContext(), "Nie udało się pobrać listy spotkań", Toast.LENGTH_LONG).show()
                     progressBar.visibility = View.GONE
                 })
 

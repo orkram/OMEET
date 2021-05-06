@@ -110,7 +110,7 @@ class BackendCommunication {
                           errorListener: Response.ErrorListener?){
             val requestQueue = Volley.newRequestQueue(context)
 
-            val request = BackendRequestJsonObject(Request.Method.DELETE, backendUrl + "/api/v1/contacts/" + username + "?friend=" + friend,
+            val request = BackendRequestJsonObject(Request.Method.DELETE, backendUrl + "/api/v1/contacts/friends/" + username + "?friend=" + friend,
                     JSONObject(),
                     Response.Listener {
                         Log.i("BackendCommunication", "DeleteContact success")
