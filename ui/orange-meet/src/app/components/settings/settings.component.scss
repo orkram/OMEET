@@ -19,6 +19,20 @@
   flex: 0 0 74.35%;
 }
 
+.main-content{
+  display: flex;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.right-side{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
 .bottom-bar{
   display: flex;
   flex-direction: row;

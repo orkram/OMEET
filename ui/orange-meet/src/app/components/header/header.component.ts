@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {JWTTokenService} from '../../services/JWTTokenService';
 import {CookieService} from '../../services/CookieService';
 import {Router} from '@angular/router';
 
@@ -10,11 +9,8 @@ import {Router} from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private jwtService: JWTTokenService, private cookieService: CookieService, private router: Router) { }
-  isLoggedIn = !this.jwtService.isAccessTokenExpired();
-
+  constructor( private cookieService: CookieService, private router: Router) { }
   ngOnInit(): void {
-    this.isLoggedIn = !this.jwtService.isAccessTokenExpired();
   }
 
   logout(): void{

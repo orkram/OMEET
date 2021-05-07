@@ -6,22 +6,7 @@
 
   <div class="login-content-box">
     <div class="sub-bar">
-    <div class="lang-selector">
-      <mat-form-field  color="primary" appearance="outline">
-        <mat-label >Language</mat-label>
-        <mat-select [(value)] = "selected" >
-          <mat-option *ngFor="let lang of langs" [value]="lang.value">
-            {{lang.viewValue}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
       <span class="bar-space"></span>
-      <button mat-button class="login-button button-text" (click)="backToLogin()">
-        <div class="button-text">
-          Back to login
-        </div>
-      </button>
     </div>
 
     <div class="centering">
@@ -37,6 +22,9 @@
         <app-registration-form></app-registration-form>
       </div>
     </div>
+
   </div>
+
+
 
 </div>

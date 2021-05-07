@@ -8,6 +8,7 @@ import {RegistrationComponent} from './components/registration/registration.comp
 import {AuthorizeGuard} from './services/AuthorizeGuard';
 
 const routes: Routes = [
+  {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'settings', component: SettingsComponent, canActivate: [AuthorizeGuard]},
   {path: 'meetings', component: MeetingsComponent, canActivate: [AuthorizeGuard]},
   {path: 'contacts', component: UsersComponentComponent, canActivate: [AuthorizeGuard]}, // TODO ComponentComponent

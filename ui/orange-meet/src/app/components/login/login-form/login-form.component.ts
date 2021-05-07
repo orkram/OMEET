@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {LoginService} from '../../../services/LoginService';
 import {Router} from '@angular/router';
 import {CookieService} from '../../../services/CookieService';
@@ -19,12 +19,16 @@ export class LoginFormComponent implements OnInit {
     private jwtService: JWTTokenService) { }
 
   form: FormGroup = new FormGroup({
-    username: new FormControl(''),
-    password: new FormControl(''),
+    username: new FormControl(null, [Validators.required]),
+    password: new FormControl(null, Validators.compose([Validators.required, Validators.minLength(8)])),
   });
+
   hide = true;
 
-  @Input() error!: string;
+  submitted = false;
+
+  errorMessage = false;
+
    loginRequestBody(): JSON {
      const body = this.form.getRawValue();
      body.clientId = 'orange-app';
@@ -44,18 +48,26 @@ export class LoginFormComponent implements OnInit {
   }
 
   submit(): void {
-    this.loginService.login(this.form.value.username, this.form.value.password)
-      .subscribe(
-        res => {
-          console.log(res);
-          this.cookieService.set('accessToken', res.accessToken);
-          this.cookieService.set('refreshToken', res.refreshToken);
-        },
-        err => console.log('HTTP Error', err),
-        () => {
-          this.router.navigate(['meetings']);
-        }
-      );
+    if (this.form.invalid) {
+      return;
+    } else {
+      this.submitted = true;
+      this.loginService.login(this.form.value.username, this.form.value.password)
+        .subscribe(
+          res => {
+            console.log(res);
+            this.cookieService.set('accessToken', res.accessToken);
+            this.cookieService.set('refreshToken', res.refreshToken);
+          },
+          err => {
+            this.submitted = false;
+            this.errorMessage = true;
+          },
+          () => {
+            this.router.navigate(['meetings']);
+          }
+        );
+    }
   }
 
 }

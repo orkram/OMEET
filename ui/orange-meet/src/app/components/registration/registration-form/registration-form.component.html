@@ -3,58 +3,76 @@
     <p>
       <mat-form-field appearance="outline">
         <mat-label>Username</mat-label>
-        <input type="text" matInput formControlName="username">
+        <input type="text" matInput formControlName="username" required>
+        <mat-error *ngIf="form.get('username')?.invalid">Complete field</mat-error>
       </mat-form-field>
     </p>
 
     <p>
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" >
         <mat-label>First name</mat-label>
-        <input type="text" matInput formControlName="firstname">
+        <input type="text" matInput formControlName="firstname" required>
+        <mat-error *ngIf="form.get('firstname')?.invalid">Complete field</mat-error>
       </mat-form-field>
     </p>
 
     <p>
       <mat-form-field appearance="outline">
         <mat-label>Last name</mat-label>
-        <input type="text" matInput formControlName="lastname">
+        <input type="text" matInput formControlName="lastname" required>
+        <mat-error *ngIf="form.get('lastname')?.invalid">Complete field</mat-error>
       </mat-form-field>
     </p>
 
     <p>
       <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
-        <input type="text" matInput formControlName="email">
+        <input type="text" matInput formControlName="email" required placeholder="user@example.com">
+        <mat-error *ngIf="form.get('email')?.errors?.required">Complete field</mat-error>
+        <mat-error *ngIf="form.get('email')?.errors?.email">Incorrect format</mat-error>
+
       </mat-form-field>
     </p>
 
     <p>
-      <mat-form-field appearance="outline" >
+      <mat-form-field appearance="outline"  >
         <mat-label>Password</mat-label>
-        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" required>
         <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" (submit)="hide = !hide">
           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
+        <mat-error *ngIf="form.get('password')?.errors?.minlength">Password should contain at least 8 characters.</mat-error>
       </mat-form-field>
     </p>
 
     <p>
       <mat-form-field appearance="outline" >
         <mat-label>Repeat password</mat-label>
-        <input matInput [type]="hide ? 'password' : 'text'" formControlName="repeat">
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="repeat" required>
         <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" (submit)="hide = !hide">
           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
+        <mat-error *ngIf="form.get('repeat')?.errors?.minlength">Password should contain at least 8 characters.</mat-error>
+        <mat-error *ngIf="form.get('repeat')?.invalid">Passwords do not match.</mat-error>
       </mat-form-field>
     </p>
 
-    <p *ngIf="error === ''" class="error">
-      {{ error }}
+    <p *ngIf="errorMessage" class="error">
+      Didn't find user for entered username and password.
     </p>
 
-    <div class="button">
-      <button type="submit" mat-raised-button color="primary">Create account</button>
+    <div class="button" >
+      <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid || submitted" >Create account</button>
     </div>
+
+    <div class="spacer"></div>
+
+    <button mat-button class="login-button button-text" (click)="backToLogin()">
+      <div class="button-text">
+        Back to login
+      </div>
+    </button>
+
 
   </form>
 </div>

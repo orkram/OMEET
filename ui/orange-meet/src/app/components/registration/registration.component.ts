@@ -18,10 +18,6 @@ export class RegistrationComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  backToLogin(): void{
-    this.router.navigateByUrl('/login');
-  }
-
 }
 interface Lang {
   value: string;

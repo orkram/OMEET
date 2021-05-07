@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {JWTTokenService} from '../../services/JWTTokenService';
 
 @Component({
   selector: 'app-side-nav-bar',
@@ -7,11 +6,10 @@ import {JWTTokenService} from '../../services/JWTTokenService';
   styleUrls: ['./side-nav-bar.component.scss']
 })
 export class SideNavBarComponent implements OnInit {
-  constructor(private jwtService: JWTTokenService) { }
-  isLoggedIn = false;
+  constructor() { }
+
 
   ngOnInit(): void {
-    this.isLoggedIn = !this.jwtService.isAccessTokenExpired();
 
   }
 
