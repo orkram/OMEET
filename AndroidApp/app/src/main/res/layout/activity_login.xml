@@ -49,11 +49,22 @@
 
             </FrameLayout>
 
-            <EditText
-                android:id="@+id/username"
-                style="@style/input_field_textedit"
-                android:hint="@string/prompt_username"
-                android:inputType="textEmailAddress" />
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/text_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/username"
+                    style="@style/text_input_layout_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent"
+                    android:hint="@string/prompt_username"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
 
         <Space
@@ -73,13 +84,22 @@
 
             </FrameLayout>
 
-            <EditText
-                android:id="@+id/password"
-                style="@style/input_field_textedit"
-                android:hint="@string/prompt_password"
-                android:imeActionLabel="@string/action_sign_in"
-                android:imeOptions="actionDone"
-                android:inputType="textPassword" />
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/text_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/password"
+                    style="@style/text_input_layout_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:hint="@string/prompt_password"
+                    android:password="true"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 

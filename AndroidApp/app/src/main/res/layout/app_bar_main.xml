@@ -12,14 +12,14 @@
         android:layout_height="wrap_content"
         android:theme="@style/Theme.OrangeMeet.AppBarOverlay">
 
-        <com.example.orangemeet.CenteredToolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/actionBarSize"
+            android:layout_height="wrap_content"
             android:background="@color/orange"
-            app:typeface="@font/abeezee"
             app:fontsize="8sp"
-            app:popupTheme="@style/Theme.OrangeMeet.PopupOverlay"/>
+            app:popupTheme="@style/Theme.OrangeMeet.PopupOverlay"
+            app:typeface="@font/abeezee" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

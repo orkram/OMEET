@@ -35,4 +35,16 @@
         android:label="@string/menu_video"
         tools:layout="@layout/fragment_video" />
 
+    <fragment
+        android:id="@+id/nav_find_contact"
+        android:name="com.example.orangemeet.FindContactFragment"
+        android:label="@string/menu_find_contact"
+        tools:layout="@layout/fragment_find_contact" />
+
+    <fragment
+        android:id="@+id/nav_create_meeting"
+        android:name="com.example.orangemeet.CreateMeetingFragment"
+        android:label="@string/menu_create_meeting"
+        tools:layout="@layout/fragment_create_meeting" />
+
 </navigation>

@@ -7,6 +7,36 @@
     android:orientation="vertical"
     tools:context=".ContactsFragment">
 
+    <LinearLayout
+        android:id="@+id/searchPlaceholder"
+        android:layout_width="match_parent"
+        android:layout_height="256dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="64dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"
+            android:src="@drawable/ic_search_black_24dp"
+            app:srcCompat="@drawable/ic_search_black_24dp"
+            app:tint="@color/light_gray" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Wprowadź przynajmniej 3 znaki, aby wyszukać" />
+    </LinearLayout>
+
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
@@ -64,13 +94,12 @@
             tools:context=".ContactsFragment">
 
             <LinearLayout
-                android:id="@+id/contactsLayout"
+                android:id="@+id/meetingsList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
             </LinearLayout>
-
         </androidx.core.widget.NestedScrollView>
 
     </LinearLayout>

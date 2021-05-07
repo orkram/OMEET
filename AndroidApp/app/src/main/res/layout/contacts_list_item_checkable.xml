@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/box"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/contacts_meetings_list_item_height"
+    android:layout_height="60dp"
     android:background="@drawable/contact_item_bg"
     android:longClickable="true"
     android:paddingStart="8dp"
@@ -17,17 +17,20 @@
         layout="@layout/contact_details"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="7" />
 
-    <ImageButton
-        android:id="@+id/call"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center"
-        android:layout_margin="8dp"
-        android:background="@drawable/pressed_bg"
-        android:padding="4dp"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/baseline_call_24" />
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:layout_weight="1"
+            android:buttonTint="@color/orange" />
+    </FrameLayout>
 
 </LinearLayout>

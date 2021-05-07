@@ -1,45 +1,127 @@
 package com.example.orangemeet
 
-import android.graphics.drawable.ColorDrawable
+import BackendCommunication
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
-import android.util.TypedValue
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.fragment.app.Fragment
+import android.view.*
+import android.widget.*
+import androidx.fragment.app.*
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import com.android.volley.Response
+
 
 class ContactsFragment : Fragment() {
 
-    final var testContacts = Array<Contact>(20){i -> Contact() }
+    lateinit var progressBar : ProgressBar
+    lateinit var searchBar : SearchView
+
+
+    lateinit var contactsListView : LinearLayout
+    var contactsList = MutableLiveData<MutableList<Contact>>()
+    lateinit var addContactButton : MenuItem
+
+    var container : ViewGroup? = null
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.contacts, menu)
+
+        addContactButton = menu.findItem(R.id.addContact)
+
+        addContactButton.setOnMenuItemClickListener {
+            findNavController().navigate(R.id.nav_find_contact)
+            true
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        this.container = container
+        setHasOptionsMenu(true)
+
         val contactsFragment = inflater.inflate(R.layout.fragment_contacts, container, false)
-        val contactsListView = contactsFragment.findViewById<LinearLayout>(R.id.contactsList)
+        contactsListView = contactsFragment.findViewById<LinearLayout>(R.id.contactsLayout)
+        progressBar = contactsFragment.findViewById(R.id.progressBar)
+        searchBar = contactsFragment.findViewById(R.id.searchView)
+        searchBar.setOnClickListener { v -> searchBar.isIconified = false }
+        searchBar.setOnQueryTextListener( object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
 
-        var primaryColor = TypedValue()
-        var secondaryColor = TypedValue()
-        context?.theme?.resolveAttribute(R.attr.background, primaryColor, true)
-        context?.theme?.resolveAttribute(R.attr.secondaryBackground, secondaryColor, true)
+            override fun onQueryTextChange(newText: String?): Boolean {
+                CreateContactViews(inflater)
+                return true
+            }
+        })
 
-        var useSecondaryColor : Boolean = false
-        testContacts.forEach {
-            val color = ColorDrawable(resources.getColor(
-                    if(useSecondaryColor == true)
-                        primaryColor.resourceId
-                    else
-                        secondaryColor.resourceId))
+        contactsList.observe(viewLifecycleOwner, Observer { CreateContactViews(inflater) })
 
-            val view = Contact.createView(inflater, contactsListView, it, color)
+        progressBar.visibility = View.VISIBLE
 
-            contactsListView.addView(view)
-            useSecondaryColor = !useSecondaryColor
-        }
+        //TODO: Remove test contacts
+        contactsList.value = MutableList<Contact>(13){i -> Contact()}
+        progressBar.visibility = View.GONE
+        /*BackendCommunication.GetContactsList(requireContext(),
+                Response.Listener {
+                    contactsList -> this.contactsList.value = contactsList.toMutableList()
+                    progressBar.visibility = View.GONE
+                },
+                Response.ErrorListener {error ->
+                    Toast.makeText(context, error.toString() + ": " + error.networkResponse.statusCode, Toast.LENGTH_LONG).show()
+                    progressBar.visibility = View.GONE
+                })*/
 
         return contactsFragment
+    }
+
+    private fun CreateContactViews(inflater: LayoutInflater){
+        if(contactsList.value == null)
+            return
+
+        val filteredContacts = contactsList.value!!.filter { contact ->
+            if(searchBar.query.isEmpty())
+                true
+            else
+                contact.username.toLowerCase().contains(searchBar.query.toString().toLowerCase())
+        }
+
+        contactsListView.removeAllViews()
+
+        filteredContacts.forEach {contact ->
+            val view = Contact.createView(inflater, contactsListView, contact, null)
+            view.setOnCreateContextMenuListener { menu, v, menuInfo ->
+                menu.add(resources.getString(R.string.delete_from_contacts)).setOnMenuItemClickListener {
+
+                    AlertDialog.Builder(requireContext())
+                            .setTitle(R.string.delete_from_contacts)
+                            .setMessage(R.string.delete_contact_dialog_message)
+                            .setPositiveButton(R.string.yes, DialogInterface.OnClickListener { dialog, which ->
+                                BackendCommunication.DeleteContact(requireContext(), contact.username,
+                                Response.Listener {
+                                    BackendCommunication.GetContactsList(requireContext(),
+                                    Response.Listener {
+                                        contactsList.value = it.toMutableList() },
+                                    Response.ErrorListener {
+                                        Toast.makeText(requireContext(), R.string.update_contacts_fail, Toast.LENGTH_LONG).show()
+                                    })
+                                },
+                                Response.ErrorListener {
+                                    Toast.makeText(requireContext(), R.string.contact_delete_fail, Toast.LENGTH_LONG).show()
+                                })
+                            })
+                            .setNegativeButton(R.string.no, DialogInterface.OnClickListener { dialog, which -> })
+                            .show()
+
+                    true
+                }
+            }
+            contactsListView.addView(view)
+        }
     }
 }
