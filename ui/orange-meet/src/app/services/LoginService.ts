@@ -29,6 +29,7 @@ export class LoginService {
         imgUrl: ''  // TODO make optional in backend
       }
     );
+    console.log(body);
     return JSON.parse(body);
   }
 

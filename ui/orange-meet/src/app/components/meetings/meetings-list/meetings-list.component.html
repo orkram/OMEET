@@ -18,12 +18,12 @@
 
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef> id </mat-header-cell>
-      <mat-cell *matCellDef="let meeting"> {{meeting.id}} </mat-cell>
+      <mat-cell *matCellDef="let meeting"> {{meeting.idMeeting}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef > Name </mat-header-cell>
-      <mat-cell *matCellDef="let meeting"> {{meeting.title}} </mat-cell>
+      <mat-cell *matCellDef="let meeting"> {{meeting.name}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="status">
@@ -52,7 +52,6 @@
             <div class="meeting-title">
             {{detail.meeting.name}}
             </div>
-
             <mat-chip-list>
               <mat-chip class="chip" color="$success" selected> {{detail.meeting.status}}
               </mat-chip>
@@ -83,7 +82,6 @@
   </mat-table>
 
   <mat-paginator class = "contact-paginator"
-                 [length]=10
                  [pageSize]="3"
                  [pageSizeOptions]="[3,6]"
                  [hidePageSize]="true">

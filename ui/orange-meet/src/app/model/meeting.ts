@@ -4,16 +4,18 @@ export enum Status{
 }
 
 export class Meeting {
-  id: string;
-  title: string;
+  idMeeting: string;
+  name: string;
   status: Status = Status.Inactive;
   listOfParticipants: string[] = [];
   description = 'Short meeting description(Optional)';
   date = new Date().toISOString();
+  roomUrl = '';
 
-  constructor(id: string, title: string, status: Status) {
-    this.id = id;
-    this.title = title;
+  constructor(id: string, title: string, status: Status, roomUrl: string) {
+    this.idMeeting = id;
+    this.name = title;
     this.status = status;
+    this.roomUrl = roomUrl;
   }
 }

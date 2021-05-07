@@ -26,7 +26,7 @@ export class AuthorizeGuard implements CanActivate {
             res => console.log('HTTP response', res),
             _ => {
               this.router.navigateByUrl('/login');
-              return of(false);
+              return false;
             },
             () => true
         );

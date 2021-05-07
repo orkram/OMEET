@@ -7,6 +7,7 @@ import {MatSort} from '@angular/material/sort';
 import {ActivatedRoute} from '@angular/router';
 import {MeetingsDataSource} from '../../../services/meetings.datasource';
 import {MeetingsService} from '../../../services/meetings.service';
+import {JWTTokenService} from '../../../services/JWTTokenService';
 
 @Component({
   selector: 'app-meetings-list',
@@ -22,7 +23,7 @@ import {MeetingsService} from '../../../services/meetings.service';
 })
 export class MeetingsListComponent implements OnInit, AfterViewInit{
 
-  constructor(private route: ActivatedRoute, private meetingsService: MeetingsService) {}
+  constructor(private route: ActivatedRoute, private meetingsService: MeetingsService, private tokenService: JWTTokenService) {}
 
   expandedMeeting: any;
 
@@ -39,7 +40,7 @@ export class MeetingsListComponent implements OnInit, AfterViewInit{
 
   ngOnInit(): void {
     this.dataSource = new MeetingsDataSource(this.meetingsService);
-    this.dataSource.loadMeetings('', 'asc', 0, 6);
+    this.dataSource.loadMeetings(this.tokenService.getUsername(), '', true, this.paginator.pageIndex, this.paginator.pageSize);
   }
 
   ngAfterViewInit(): void {
@@ -53,7 +54,6 @@ export class MeetingsListComponent implements OnInit, AfterViewInit{
         distinctUntilChanged(),
         tap(() => {
           this.paginator.pageIndex = 0;
-
           this.loadMeetingsPage();
         })
       )
@@ -67,9 +67,10 @@ export class MeetingsListComponent implements OnInit, AfterViewInit{
   }
 
   loadMeetingsPage(): void {
-    this.dataSource.loadMeetings(
+      this.dataSource.loadMeetings(
+      this.tokenService.getUsername(),
       '',
-      'asc',
+      true,
       this.paginator.pageIndex,
       this.paginator.pageSize
     );
