@@ -44,7 +44,7 @@ export class MeetingsListComponent implements OnInit, AfterViewInit{
 
     (async () => {
       this.dataSource.loadMeetings(this.tokenService.getUsername(), this.input.nativeElement.value, true, 1, 3);
-      await this.delay(400);      // TODO return promise
+      await this.delay(300);      // TODO return promise
       this.paginator.length = this.dataSource.length;
     })();
   }

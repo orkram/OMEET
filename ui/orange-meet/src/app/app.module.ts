@@ -16,7 +16,6 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {UserListComponent} from './components/users-component/user-list/user-list.component';
-import {FindUserFieldComponent} from './components/users-component/user-list/find-user-field/find-user-field.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatListModule} from '@angular/material/list';
 import {MatTableModule} from '@angular/material/table';
@@ -48,6 +47,7 @@ import {JoinDialogComponent} from './components/meetings/join-dialog/join-dialog
 import {MatDialogModule} from '@angular/material/dialog';
 import {CreateMeetingDialogComponent} from './components/meetings/create-meeting-dialog/create-meeting-dialog.component';
 import {DatePipe} from '@angular/common';
+import {UserService} from './services/UserService';
 
 
 @NgModule({
@@ -59,7 +59,6 @@ import {DatePipe} from '@angular/common';
     NavMenuComponent,
     AddUserComponent,
     UserListComponent,
-    FindUserFieldComponent,
     StartMeetingComponent,
     routingComponents,
     MeetingsListComponent,
@@ -106,6 +105,7 @@ import {DatePipe} from '@angular/common';
     JWTTokenService,
     CookieService,
     LogoutService,
+    UserService,
     DatePipe,
     {
       provide: HTTP_INTERCEPTORS,

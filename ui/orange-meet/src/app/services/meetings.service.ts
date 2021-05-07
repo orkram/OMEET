@@ -19,7 +19,7 @@ export class MeetingsService {
     return this.http.get(`http://130.61.186.61:9000/api/v1/meetings/owner/${username}/page`, {
       params: new HttpParams()
         .set('query', filter)
-        .set('meetingNameSortAscending', String(sortOrder))
+        .set('meetingNameSortAscending', 'false')
         .set('page', pageNumber.toString())
         .set('size', pageSize.toString())
     });

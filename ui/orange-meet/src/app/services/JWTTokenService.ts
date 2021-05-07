@@ -70,11 +70,12 @@ export class JWTTokenService {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Methods': 'POST',
         'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Origin': 'http://130.61.186.61:9000/' // TODO remove after replacing URL with relative one
+        'Access-Control-Allow-Origin': 'http://130.61.186.61:9000/', // TODO remove after replacing URL with relative one
+         Anonymous: ''
       });
       return this.http.post(
         `http://130.61.186.61:9000/api/v1/account/${this.getUsername()}/refresh-token`,
-        {refreshToken: this.refreshToken()}, {headers});
+        {refreshToken: this.cookieService.get('refreshToken')}, {headers});
     } else {
       return throwError('Tokens expired');
     }

@@ -1,14 +1,13 @@
 <div class="find-meeting">
   <p>
     <mat-form-field appearance="outline" >
-      <mat-label>Find meeting</mat-label>
+      <mat-label>Find meeting(by name)</mat-label>
       <input matInput placeholder="Search" autocomplete="off" #input >
     </mat-form-field>
   </p>
 </div>
 
 <div class="example-container" >
-
   <div class="spinner-container" *ngIf="dataSource.loading$ | async">
     <mat-spinner></mat-spinner>
   </div>
@@ -31,7 +30,7 @@
       <mat-cell *matCellDef="let meeting">
 
         <mat-chip-list>
-        <mat-chip class="chip" color="$success" selected> {{meeting.status}}
+        <mat-chip class="chip" color="gray" selected> Active
         </mat-chip>
         </mat-chip-list>
       </mat-cell>
@@ -44,7 +43,6 @@
       </mat-cell>
     </ng-container>
 
-
     <ng-container matColumnDef="expandedMeeting" >
       <mat-cell *matCellDef="let detail" >
         <div class="expanded-description ">
@@ -53,7 +51,7 @@
             {{detail.meeting.name}}
             </div>
             <mat-chip-list>
-              <mat-chip class="chip" color="$success" selected> {{detail.meeting.status}}
+              <mat-chip class="chip" color="$success" selected> Active
               </mat-chip>
             </mat-chip-list>
 
@@ -88,5 +86,4 @@
                  >
     <!-- TODO length, relate pagesizeoptions and screen size,-->
   </mat-paginator>
-
 </div>

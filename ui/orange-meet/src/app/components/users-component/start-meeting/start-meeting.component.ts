@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {CreateMeetingDialogComponent} from '../../meetings/create-meeting-dialog/create-meeting-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-start-meeting',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StartMeetingComponent implements OnInit {
 
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
+  }
+
+  submit(): void {
+    this.dialog.open(CreateMeetingDialogComponent, {});
   }
 
 }
