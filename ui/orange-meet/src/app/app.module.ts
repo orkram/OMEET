@@ -28,6 +28,16 @@ import {StartMeetingComponent} from './components/users-component/start-meeting/
 import {MatCardModule} from '@angular/material/card';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MeetingsListComponent} from './components/meetings/meetings-list/meetings-list.component';
+import {MatListModule} from '@angular/material/list';
+import {MatTableModule} from '@angular/material/table';
+import {MatSelectModule} from '@angular/material/select';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {FormsModule} from '@angular/forms';
+import {MatSortModule} from '@angular/material/sort';
+import {StartMeetingComponent} from './components/users-component/start-meeting/start-meeting.component';
+import {MatCardModule} from '@angular/material/card';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MeetingsListComponent} from './components/meetings/meetings-list/meetings-list.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatRippleModule} from '@angular/material/core';
 import {A11yModule} from '@angular/cdk/a11y';
@@ -43,6 +53,12 @@ import {AppInterceptor} from './services/AppInterceptor';
 import {JWTTokenService} from './services/JWTTokenService';
 import {CookieService} from './services/CookieService';
 import {LogoutService} from './services/LogoutService';
+import {MatRippleModule} from '@angular/material/core';
+import {A11yModule} from '@angular/cdk/a11y';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {HttpClientModule} from '@angular/common/http';
+import {MeetingsService} from './services/meetings.service';
 
 
 @NgModule({
@@ -67,6 +83,7 @@ import {LogoutService} from './services/LogoutService';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     MatToolbarModule,
     MatIconModule,
@@ -87,11 +104,13 @@ import {LogoutService} from './services/LogoutService';
     MatRippleModule,
     A11yModule,
     MatChipsModule,
+    MatProgressSpinnerModule
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
   ],
   providers: [
+     MeetingsService,
     LoginService,
     JWTTokenService,
     CookieService,
