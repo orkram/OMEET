@@ -15,10 +15,10 @@
       <span class="create-spacer"></span>
 
       <div class="create-or-join">
-        <button  class="create-button" mat-raised-button color="primary">+ Create</button>
+        <button  class="create-button" mat-raised-button color="primary" (click)="createMeeting()">+ Create</button>
 
         <button mat-button class="create-button" color="primary">
-          <div class="text-button" > OR JOIN USING ID </div>
+          <div class="text-button" (click)="joinMeeting()" > OR JOIN USING ID </div>
         </button>
       </div>
 

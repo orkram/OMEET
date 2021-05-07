@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Join meeting</h1>
+<div mat-dialog-content>
+  Enter meeting id:
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <p>
+    <mat-form-field appearance="outline">
+      <mat-label>Meeting id</mat-label>
+      <input type="text" matInput formControlName="id" required>
+      <mat-error *ngIf="form.get('id')?.invalid">Complete field</mat-error>
+    </mat-form-field>
+    </p>
+
+    <div class="button">
+      <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid || submitted" >Join</button>
+    </div>
+  </form>
+
+</div>

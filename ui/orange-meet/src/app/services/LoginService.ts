@@ -21,7 +21,7 @@ export class LoginService {
     const inputs = form.value;
     const body = JSON.stringify(
       {
-        username: inputs.username,
+        userName: inputs.username,
         password: inputs.password,
         eMail: inputs.email,
         firstName: inputs.firstname,

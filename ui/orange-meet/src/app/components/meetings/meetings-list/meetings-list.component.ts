@@ -40,7 +40,17 @@ export class MeetingsListComponent implements OnInit, AfterViewInit{
 
   ngOnInit(): void {
     this.dataSource = new MeetingsDataSource(this.meetingsService);
-    this.dataSource.loadMeetings(this.tokenService.getUsername(), '', true, this.paginator.pageIndex, this.paginator.pageSize);
+
+
+    (async () => {
+      this.dataSource.loadMeetings(this.tokenService.getUsername(), this.input.nativeElement.value, true, 1, 3);
+      await this.delay(400);      // TODO return promise
+      this.paginator.length = this.dataSource.length;
+    })();
+  }
+
+  private delay(ms: number): Promise<any> {
+    return new Promise( resolve => setTimeout(resolve, ms) );
   }
 
   ngAfterViewInit(): void {
@@ -64,19 +74,25 @@ export class MeetingsListComponent implements OnInit, AfterViewInit{
         tap(() => this.loadMeetingsPage())
       )
       .subscribe();
+    this.paginator.length = this.dataSource.length;
   }
 
   loadMeetingsPage(): void {
       this.dataSource.loadMeetings(
       this.tokenService.getUsername(),
-      '',
+        this.input.nativeElement.value,
       true,
-      this.paginator.pageIndex,
+      this.paginator.pageIndex + 1,
       this.paginator.pageSize
     );
+      this.paginator.length = this.dataSource.length;
   }
 
   isExpansionDetailRow = (i: number, row: object) => row.hasOwnProperty('detailRow');
+
+  joinMeeting(meeting: any): void{
+    window.open(`https://130.61.186.61/${meeting.name}#userInfo.displayName=%22${this.tokenService.getUsername()}%22`);
+  }
 
 }
 

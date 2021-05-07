@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {JWTTokenService} from '../../../services/JWTTokenService';
 
 @Component({
   selector: 'app-user-info',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserInfoComponent implements OnInit {
 
-  constructor() { }
+  constructor(private jwtToken: JWTTokenService) { }
+
+  email = this.jwtToken.getEmail();
+  username = this.jwtToken.getUsername();
 
   ngOnInit(): void {
   }

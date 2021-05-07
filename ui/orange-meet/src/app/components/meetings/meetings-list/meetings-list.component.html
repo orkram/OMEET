@@ -63,8 +63,9 @@
               {{detail.meeting.date | date }}
             </div>
           </div>
+
          <span class="description-spacer"></span>
-        <button mat-raised-button color="primary">Join</button>
+        <button mat-raised-button color="primary" (click)="joinMeeting(detail.meeting)">Join</button>
         </div>
       </mat-cell>
     </ng-container>
@@ -84,7 +85,7 @@
   <mat-paginator class = "contact-paginator"
                  [pageSize]="3"
                  [pageSizeOptions]="[3,6]"
-                 [hidePageSize]="true">
+                 >
     <!-- TODO length, relate pagesizeoptions and screen size,-->
   </mat-paginator>
 

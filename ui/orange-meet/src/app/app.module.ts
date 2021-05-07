@@ -44,6 +44,10 @@ import {CookieService} from './services/CookieService';
 import {LogoutService} from './services/LogoutService';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MeetingsService} from './services/meetings.service';
+import {JoinDialogComponent} from './components/meetings/join-dialog/join-dialog.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import {CreateMeetingDialogComponent} from './components/meetings/create-meeting-dialog/create-meeting-dialog.component';
+import {DatePipe} from '@angular/common';
 
 
 @NgModule({
@@ -62,7 +66,9 @@ import {MeetingsService} from './services/meetings.service';
     LoginComponent,
     RegistrationComponent,
     LoginFormComponent,
-    RegistrationFormComponent
+    RegistrationFormComponent,
+    JoinDialogComponent,
+    CreateMeetingDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -92,13 +98,15 @@ import {MeetingsService} from './services/meetings.service';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatDialogModule
   ],
   providers: [
-     MeetingsService,
+    MeetingsService,
     LoginService,
     JWTTokenService,
     CookieService,
     LogoutService,
+    DatePipe,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AppInterceptor,
