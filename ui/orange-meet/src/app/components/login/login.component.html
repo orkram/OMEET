@@ -1,0 +1,35 @@
+<div class="main-container">
+  <div class="images-holder">
+    <div class="login-main-image"></div>
+    <div class="camera-image"></div>
+  </div>
+
+  <div class="login-content-box">
+    <div class="lang-selector">
+    <mat-form-field  color="primary" appearance="outline">
+      <mat-label >Language</mat-label>
+      <mat-select [(value)] = "selected" >
+        <mat-option *ngFor="let lang of langs" [value]="lang.value">
+          {{lang.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    </div>
+
+      <div class="centering">
+          <div>
+            <div class="spacer"></div>
+
+            <div class="centered-image">
+              <div class="login-small-logo"></div>
+            </div>
+
+            <div class="spacer"></div>
+
+            <app-login-form></app-login-form>
+        </div>
+      </div>
+  </div>
+
+</div>

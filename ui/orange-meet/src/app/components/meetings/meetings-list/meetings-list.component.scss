@@ -1,0 +1,73 @@
+@import "../../../../custom-theme.scss";
+
+.example-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 500px;
+  min-width: 300px;
+  margin-top: 10px;
+  margin-left: 20px;
+  font: 400 16px/16px Roboto, "Helvetica Neue", sans-serif;
+
+}
+
+.mat-table {
+  overflow: auto;
+  max-height: 500px;
+}
+
+.element-row {
+  position: relative;
+}
+
+.element-row:not(.expanded) {
+  cursor: pointer;
+}
+
+.element-row:not(.expanded):hover {
+  background: #f5f5f5;
+}
+
+.element-row.expanded {
+  border-bottom-color: transparent;
+}
+
+.expanded-description{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.description-spacer{
+  flex: 0 0 75%;
+}
+.mat-raised-button{
+  height: 32px;
+  position: relative;
+  top: 5%;
+}
+
+.mat-chip.mat-standard-chip{
+  background-color: rgba(#6200EE, 0.1);
+  color: #20E574; //theme success color TODO override color scheme of orange and green.
+  font: 400 14px/16px Roboto, "Helvetica Neue", sans-serif;
+}
+
+.text-description{
+  flex-direction: column;
+  color: #696969;
+  font: 300 14px/16px Roboto, "Helvetica Neue", sans-serif;
+  margin: 10px;
+}
+
+.border-shadow{
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.meeting-title{
+  font: 400 15px/14px Roboto, "Helvetica Neue", sans-serif;
+  color: black;
+}
+
+.mat-chip-list{
+  margin: 4px !important;
+}

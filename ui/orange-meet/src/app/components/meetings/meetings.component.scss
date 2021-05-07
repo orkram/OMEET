@@ -1,0 +1,48 @@
+.meetings-style{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.main-content{
+  display: flex;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.right-side{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.create-meeting{
+  display: flex;
+  flex-direction: row;
+  width:100%;
+  margin: 20px;
+}
+.create-spacer{
+  flex: 0 0 85%;
+}
+
+.create-button{
+  width: 80%;
+  height: 50px;
+}
+
+.text-button{
+  text-decoration: underline;
+}
+
+.meetings-style h1{
+  margin: 15px;
+  font: 400 32px/32px Roboto, "Helvetica Neue", sans-serif;
+}
+
+:host{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 100%;
+}

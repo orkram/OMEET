@@ -1,0 +1,29 @@
+.main-container{
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+
+}
+
+.spacer{
+  width: 100%;
+  height: 40px;
+}
+
+.mat-form-field{
+  width: 45%;
+}
+
+.mat-raised-button{
+  width: 45%;
+  border-radius: 15px;
+}
+
+.mat-button{
+  font-weight: 400;
+}
+
+.error{
+  color: red;
+  font-weight: 400;
+}
