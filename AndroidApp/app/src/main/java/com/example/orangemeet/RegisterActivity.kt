@@ -15,6 +15,8 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
 
         val accCreateButton = findViewById<Button>(R.id.register)
+        val firstName = findViewById<EditText>(R.id.firstname)
+        val lastName = findViewById<EditText>(R.id.lastname)
         val email = findViewById<EditText>(R.id.email)
         val username = findViewById<EditText>(R.id.username)
         val password = findViewById<EditText>(R.id.password)
@@ -34,7 +36,7 @@ class RegisterActivity : AppCompatActivity() {
 
 
             BackendCommunication.Register(this,
-                    email.text.toString(), "firstname", "lastname", "imgurl",
+                    email.text.toString(), firstName.text.toString(), lastName.text.toString(), "imgurl",
                     username.text.toString(), password.text.toString(),
                     Response.Listener {
                         goToLoginActivity()
