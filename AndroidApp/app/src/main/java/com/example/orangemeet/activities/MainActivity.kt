@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+        toolbar.setTitleTextAppearance(applicationContext, R.style.title_bar)
 
         val logoutButton = findViewById<Button>(R.id.logout)
         logoutButton.setOnClickListener {
