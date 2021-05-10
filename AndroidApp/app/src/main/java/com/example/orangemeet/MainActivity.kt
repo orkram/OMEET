@@ -4,8 +4,10 @@ package com.example.orangemeet
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -14,6 +16,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.android.volley.Response
 import com.example.orangemeet.ui.login.LoginActivity
 import com.google.android.material.navigation.NavigationView
 
@@ -45,14 +48,13 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-    }
-
     private fun goToLoginActivity(){
         val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-        finish()
+        BackendCommunication.Logout(applicationContext,
+                {
+                    startActivity(intent)
+                    finish()
+                })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

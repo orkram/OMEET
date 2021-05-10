@@ -75,13 +75,40 @@ class BackendCommunication {
                         listener?.onResponse(response)
                     },
                     Response.ErrorListener {error ->
-                        Log.e("BackendCommunication", "Login failed: " + error.message)
+                        Log.e("BackendCommunication", "Login failed")
                         errorListener?.onErrorResponse(error)
                     }
             )
 
             requestQueue.add(loginRequest)
             userInfo.userName = username;
+        }
+
+        fun Logout(context : Context, onLogout: () -> Unit){
+
+            if(username == null)
+                return
+
+            val requestQueue = Volley.newRequestQueue(context)
+
+            val logoutUrl = backendUrl + "/api/v1/account/" + username + "/logout"
+
+            val logoutRequest = JsonObjectRequest(
+                    Request.Method.POST, logoutUrl, JSONObject(),
+                    Response.Listener {response ->
+                        Log.i("BackendCommunication", "Logout success")
+                        onLogout()
+                    },
+                    Response.ErrorListener {error ->
+                        Log.e("BackendCommunication", "Logout failed")
+                        onLogout()
+                    }
+            )
+
+            username = null
+            password = null
+
+            requestQueue.add(logoutRequest)
         }
 
         fun Register(context : Context, email : String, firstName : String, lastName : String,
