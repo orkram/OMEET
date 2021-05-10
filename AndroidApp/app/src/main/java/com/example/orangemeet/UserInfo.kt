@@ -1,5 +1,5 @@
 package com.example.orangemeet
 
-object userInfo {
+object UserInfo {
     var userName: String = ""
 }

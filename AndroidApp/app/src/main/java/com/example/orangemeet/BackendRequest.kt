@@ -1,3 +1,5 @@
+package com.example.orangemeet
+
 import com.android.volley.NetworkResponse
 import com.android.volley.Response
 import com.android.volley.VolleyError
@@ -17,23 +19,21 @@ abstract class BackendRequest<T>(
         token : String??
 ) : JsonRequest<T>(method, url, requestBody, listener, errorListener) {
 
-    private val token : String?
-    init {
-        this.token = token
-    }
+    private val token : String? = token
 
     override fun getHeaders(): MutableMap<String, String> {
         val headersMap = HashMap<String, String>()
         if(token != null){
-            headersMap.put("accept", "*/*")
-            headersMap.put("authorization", "Bearer " + token)
+            headersMap["accept"] = "*/*"
+            headersMap["authorization"] = "Bearer " + token
         }
         return headersMap
     }
 
 }
 
-open class BackendRequestJsonObject : BackendRequest<JSONObject> {
+open class BackendRequestJsonObject :
+    BackendRequest<JSONObject> {
 
     constructor(method: Int,
                 url: String?,
@@ -68,7 +68,8 @@ open class BackendRequestJsonObject : BackendRequest<JSONObject> {
     }
 }
 
-open class BackendRequestJsonArray : BackendRequest<JSONArray> {
+open class BackendRequestJsonArray :
+    BackendRequest<JSONArray> {
 
     constructor(method: Int,
                 url: String?,

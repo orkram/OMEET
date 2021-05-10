@@ -1,4 +1,4 @@
-package com.example.orangemeet
+package com.example.orangemeet.fragments
 
 import android.os.Bundle
 import android.view.*
@@ -8,11 +8,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.android.volley.Response
-import java.util.*
+import com.example.orangemeet.BackendCommunication
+import com.example.orangemeet.Meeting
+import com.example.orangemeet.R
 
 class MeetingsFragment : Fragment() {
 
-    final var testMeetings = Array<Meeting>(20){i -> Meeting() }
+    var testMeetings = Array(20){ i -> Meeting() }
 
     val meetings = MutableLiveData<MutableList<Meeting>?>()
     lateinit var searchBar : SearchView
@@ -39,7 +41,7 @@ class MeetingsFragment : Fragment() {
         setHasOptionsMenu(true)
 
         val meetingsFragment = inflater.inflate(R.layout.fragment_meetings, container, false)
-        meetingsListView = meetingsFragment.findViewById<LinearLayout>(R.id.meetingsList)
+        meetingsListView = meetingsFragment.findViewById(R.id.meetingsList)
         progressBar = meetingsFragment.findViewById(R.id.progressBar)
         searchBar = meetingsFragment.findViewById(R.id.searchView)
         searchBar.setOnQueryTextListener( object : SearchView.OnQueryTextListener{
@@ -48,30 +50,35 @@ class MeetingsFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                CreateMeetingViews(inflater, meetings.value)
+                createMeetingViews(inflater, meetings.value)
                 return true
             }
         })
 
         meetings.value = null
-        meetings.observe(viewLifecycleOwner, Observer { CreateMeetingViews(inflater, meetings.value) })
+        meetings.observe(viewLifecycleOwner, Observer { createMeetingViews(inflater, meetings.value) })
 
         progressBar.visibility = View.VISIBLE
-        BackendCommunication.GetMeetings(requireContext(),
-                Response.Listener {meetings ->
-                    CreateMeetingViews(inflater, meetings)
-                    progressBar.visibility = View.GONE
-                },
-                Response.ErrorListener {
-                    Toast.makeText(requireContext(), "Nie udało się pobrać listy spotkań", Toast.LENGTH_LONG).show()
-                    progressBar.visibility = View.GONE
-                })
+        BackendCommunication.getMeetings(
+            requireContext(),
+            Response.Listener { meetings ->
+                createMeetingViews(inflater, meetings)
+                progressBar.visibility = View.GONE
+            },
+            Response.ErrorListener {
+                Toast.makeText(
+                    requireContext(),
+                    "Nie udało się pobrać listy spotkań",
+                    Toast.LENGTH_LONG
+                ).show()
+                progressBar.visibility = View.GONE
+            })
 
 
         return meetingsFragment
     }
 
-    private fun CreateMeetingViews(inflater : LayoutInflater, meetings : List<Meeting>?){
+    private fun createMeetingViews(inflater : LayoutInflater, meetings : List<Meeting>?){
         if(meetings == null)
             return
 
@@ -85,22 +92,34 @@ class MeetingsFragment : Fragment() {
         meetingsListView.removeAllViews()
 
         filteredMeetings.forEach {meeting ->
-            val view = Meeting.createView(inflater, meetingsListView, meeting, null)
+            val view = Meeting.createView(
+                inflater,
+                meetingsListView,
+                meeting,
+                null
+            )
 
             view.setOnClickListener {
                 val participantsView = it.findViewById<View>(R.id.participantsView)
-                val participantsInnerView = participantsView.findViewById<TextView>(R.id.participantsInnerView)
+                val participantsInnerView = participantsView.findViewById<TextView>(
+                    R.id.participantsInnerView
+                )
                 if(participantsView.visibility == View.GONE){
-                    BackendCommunication.GetMeetingParticipants(requireContext(), meeting.id,
-                            Response.Listener {contacts ->
-                                participantsInnerView.text = ""
-                                contacts.forEach{contact ->
-                                    participantsInnerView.append(contact.username + "\n")
-                                }
-                            },
-                            Response.ErrorListener {
-                                Toast.makeText(requireContext(), "Nie udało się pobrać listy uczestników", Toast.LENGTH_LONG).show()
-                            })
+                    BackendCommunication.getMeetingParticipants(requireContext(),
+                        meeting.id,
+                        Response.Listener { contacts ->
+                            participantsInnerView.text = ""
+                            contacts.forEach { contact ->
+                                participantsInnerView.append(contact.username + "\n")
+                            }
+                        },
+                        Response.ErrorListener {
+                            Toast.makeText(
+                                requireContext(),
+                                "Nie udało się pobrać listy uczestników",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        })
                     participantsView.visibility = View.VISIBLE
                 } else{
                     participantsView.visibility = View.GONE

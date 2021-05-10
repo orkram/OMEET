@@ -1,13 +1,10 @@
-package com.example.orangemeet
+package com.example.orangemeet.fragments
 
 import android.os.Bundle
-import android.text.BoringLayout
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreference
 import androidx.preference.SwitchPreferenceCompat
-import java.util.prefs.PreferenceChangeListener
+import com.example.orangemeet.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -23,7 +20,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun setDayNight(mode : Boolean){
-        if(mode == true)
+        if(mode)
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         else
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)

@@ -1,12 +1,13 @@
-package com.example.orangemeet
+package com.example.orangemeet.activities
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Response
+import com.example.orangemeet.BackendCommunication
+import com.example.orangemeet.R
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -25,27 +26,35 @@ class RegisterActivity : AppCompatActivity() {
         accCreateButton.setOnClickListener{
             if(username.text.isEmpty() or email.text.isEmpty()
             or password.text.isEmpty() or repeatPassword.text.isEmpty()){
-                Toast.makeText(applicationContext, R.string.fields_must_be_not_empty, Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext,
+                    R.string.fields_must_be_not_empty, Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
-            if(!password.text.toString().equals(repeatPassword.text.toString())){
-                Toast.makeText(applicationContext, R.string.passwords_dont_match, Toast.LENGTH_LONG).show()
+            if(password.text.toString() != repeatPassword.text.toString()){
+                Toast.makeText(applicationContext,
+                    R.string.passwords_dont_match, Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
 
-            BackendCommunication.Register(this,
-                    email.text.toString(), firstName.text.toString(), lastName.text.toString(), "imgurl",
-                    username.text.toString(), password.text.toString(),
-                    Response.Listener {
-                        goToLoginActivity()
-                        Log.i("RegisterActivity", "Register success")
-                    },
-                    Response.ErrorListener {
-                        Log.i("RegisterActivity", "Register failed")
-                        Toast.makeText(applicationContext, R.string.registed_failed, Toast.LENGTH_LONG).show()
-                    })
+            BackendCommunication.register(this,
+                email.text.toString(),
+                firstName.text.toString(),
+                lastName.text.toString(),
+                "imgurl",
+                username.text.toString(),
+                password.text.toString(),
+                Response.Listener {
+                    goToLoginActivity()
+                },
+                Response.ErrorListener {
+                    Toast.makeText(
+                        applicationContext,
+                        R.string.registed_failed,
+                        Toast.LENGTH_LONG
+                    ).show()
+                })
 
         }
     }

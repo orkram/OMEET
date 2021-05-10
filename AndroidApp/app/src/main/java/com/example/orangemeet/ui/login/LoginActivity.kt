@@ -5,17 +5,17 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.annotation.StringRes
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import com.android.volley.Response
-import com.example.orangemeet.MainActivity
+import com.example.orangemeet.BackendCommunication
+import com.example.orangemeet.activities.MainActivity
 
 import com.example.orangemeet.R
-import com.example.orangemeet.RegisterActivity
+import com.example.orangemeet.activities.RegisterActivity
 import com.google.android.material.textfield.TextInputEditText
 
 class LoginActivity : AppCompatActivity() {
@@ -25,7 +25,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val dayNightMode = sharedPreferences.getBoolean("day_night", false)
-        AppCompatDelegate.setDefaultNightMode(if (dayNightMode == true) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
+        AppCompatDelegate.setDefaultNightMode(if (dayNightMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -49,7 +49,7 @@ class LoginActivity : AppCompatActivity() {
                     return@Observer
                 }
 
-                loginButton.isEnabled = true;
+                loginButton.isEnabled = true
                 //loginButton.isEnabled = loginFormState.isDataValid
                 loginFormState.usernameError?.let {
                     usernameEditText.error = getString(it)
@@ -67,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
                     showLoginFailed(it)
                 }
                 loginResult.success?.let {
-                    BackendCommunication.Login(this, usernameEditText.text.toString(), passwordEditText.text.toString(),
+                    BackendCommunication.login(this, usernameEditText.text.toString(), passwordEditText.text.toString(),
                             Response.Listener {
                                 goToMainActivity()
                             },

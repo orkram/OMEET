@@ -1,4 +1,4 @@
-package com.example.orangemeet
+package com.example.orangemeet.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,7 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import org.w3c.dom.Text
+import com.example.orangemeet.R
+import com.example.orangemeet.UserInfo
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,7 +40,7 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_home, container, false)
         val textview = v.findViewById<TextView>(R.id.textView3)
-        textview.setText("Welcome, "+userInfo.userName+"!")
+        textview.text = "Welcome, "+ UserInfo.userName +"!"
         return v
     }
 

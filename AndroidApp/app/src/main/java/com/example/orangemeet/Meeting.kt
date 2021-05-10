@@ -6,16 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import org.json.JSONObject
-import org.w3c.dom.Text
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
 class Meeting {
     var id : Long = -1
     lateinit var name : String
-    lateinit var participants : List<Contact>
-    lateinit var owner : Contact
+    lateinit var participants : List<User>
+    lateinit var owner : User
     lateinit var date: Date
     lateinit var roomUrl : String
     var isActive : Boolean = false
@@ -23,13 +21,13 @@ class Meeting {
 
     constructor(){
         id = Random().nextLong()
-        name = "Name" + Util.GenerateRandomString(8)
-        owner = Contact()
-        participants = List<Contact>(3){ i -> Contact()}
+        name = "Name" + Util.generateRandomString(8)
+        owner = User()
+        participants = List(3){ i -> User()}
         date = Date()
     }
 
-    constructor(id : Long, name : String, date : Date, owner : Contact, roomUrl : String){
+    constructor(id : Long, name : String, date : Date, owner : User, roomUrl : String){
         this.name = name
         this.id = id
         this.date = date
@@ -46,7 +44,7 @@ class Meeting {
             val name = jsonObject.getString("name")
             val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(jsonObject.getString("date"))
             val id = jsonObject.getString("idMeeting").toLong()
-            val owner = Contact.createFromJson(jsonObject.getJSONObject("owner"))
+            val owner = User.createFromJson(jsonObject.getJSONObject("owner"))
             val roomUrl = jsonObject.getString("roomUrl")
 
             return Meeting(id, name, date, owner, roomUrl)

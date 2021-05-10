@@ -1,9 +1,11 @@
+package com.example.orangemeet
+
 import java.nio.charset.Charset
 import java.util.*
 
 class Util {
     companion object{
-        fun GenerateRandomString(length : Int) : String{
+        fun generateRandomString(length : Int) : String{
             val array = ByteArray(length)
             Random().nextBytes(array)
             for(i in array.indices){

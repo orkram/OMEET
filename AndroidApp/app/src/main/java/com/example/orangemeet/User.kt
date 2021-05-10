@@ -9,14 +9,14 @@ import android.widget.TextView
 import org.json.JSONObject
 
 
-class Contact {
+class User {
     lateinit var username : String
     lateinit var email : String
     lateinit var avatar : Image
     var selected = false
 
     constructor(){
-        username = "TestUsername" + Util.GenerateRandomString(8)
+        username = "TestUsername" + Util.generateRandomString(8)
         email = "Test@Email.com"
     }
 
@@ -26,15 +26,14 @@ class Contact {
     }
 
     companion object{
-        fun createFromJson(jsonObject: JSONObject) : Contact{
+        fun createFromJson(jsonObject: JSONObject) : User{
             val str = jsonObject.toString()
             val username = jsonObject.getString("userName")
             val email = jsonObject.getString("eMail")
-            val contact = Contact(username, email)
-            return contact
+            return User(username, email)
         }
 
-        private fun populateView(view : View, contact : Contact, background: Drawable?) : View{
+        private fun populateView(view : View, contact : User, background: Drawable?) : View{
             val userNameTextView = view.findViewById<TextView>(R.id.contactUsername)
             val emailTextView = view.findViewById<TextView>(R.id.contactEmail)
             val box = view.findViewById<View>(R.id.box)
@@ -45,18 +44,18 @@ class Contact {
             return view
         }
 
-        fun createView(inflater : LayoutInflater, root : ViewGroup, contact: Contact, background: Drawable?) : View{
-            val view = inflater.inflate(R.layout.contacts_list_item, root, false)
+        fun createView(inflater : LayoutInflater, root : ViewGroup, contact: User, background: Drawable?) : View{
+            val view = inflater.inflate(R.layout.contact_item, root, false)
             return populateView(view, contact, background)
         }
 
-        fun createInviteView(inflater : LayoutInflater, root : ViewGroup, contact: Contact, background: Drawable?) : View{
-            val view = inflater.inflate(R.layout.contacts_list_item_invite, root, false)
+        fun createInviteView(inflater : LayoutInflater, root : ViewGroup, contact: User, background: Drawable?) : View{
+            val view = inflater.inflate(R.layout.contact_item_invite, root, false)
             return populateView(view, contact, background)
         }
 
-        fun createCheckView(inflater : LayoutInflater, root : ViewGroup, contact: Contact, background: Drawable?) : View{
-            val view = inflater.inflate(R.layout.contacts_list_item_checkable, root, false)
+        fun createCheckView(inflater : LayoutInflater, root : ViewGroup, contact: User, background: Drawable?) : View{
+            val view = inflater.inflate(R.layout.contact_item_checkable, root, false)
             return populateView(view, contact, background)
         }
     }

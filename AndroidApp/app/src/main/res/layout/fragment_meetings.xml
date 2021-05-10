@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:orientation="vertical"
-    tools:context=".MeetingsFragment">
+    tools:context=".fragments.MeetingsFragment">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -62,7 +62,7 @@
             android:requiresFadingEdge="vertical"
             android:scrollbars="vertical"
             app:layout_scrollFlags="scroll"
-            tools:context=".ContactsFragment">
+            tools:context=".fragments.ContactsFragment">
 
             <LinearLayout
                 android:id="@+id/meetingsList"

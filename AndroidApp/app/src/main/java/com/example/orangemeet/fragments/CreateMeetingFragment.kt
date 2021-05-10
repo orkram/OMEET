@@ -1,16 +1,17 @@
-package com.example.orangemeet
+package com.example.orangemeet.fragments
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.text.Layout
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.android.volley.Response
+import com.example.orangemeet.BackendCommunication
+import com.example.orangemeet.R
+import com.example.orangemeet.User
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
 import java.text.SimpleDateFormat
@@ -32,9 +33,9 @@ class CreateMeetingFragment : Fragment() {
 
     val pickedDate = MutableLiveData<Date>()
 
-    var contacts : List<Contact>? = null
+    var contacts : List<User>? = null
 
-    val checkedContacts = mutableListOf<Contact>()
+    val checkedContacts = mutableListOf<User>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,8 +47,8 @@ class CreateMeetingFragment : Fragment() {
 
         pickedDate.value = calendar.time
         pickedDate.observe(viewLifecycleOwner, androidx.lifecycle.Observer {newDate ->
-            dateView.setText(SimpleDateFormat("dd-MM-yyyy", Locale("PL")).format(newDate).toString())
-            timeView.setText(SimpleDateFormat("kk:mm", Locale("PL")).format(newDate).toString())
+            dateView.text = SimpleDateFormat("dd-MM-yyyy", Locale("PL")).format(newDate).toString()
+            timeView.text = SimpleDateFormat("kk:mm", Locale("PL")).format(newDate).toString()
         })
 
         searchView = createMeetingFragment.findViewById(R.id.searchView)
@@ -65,14 +66,26 @@ class CreateMeetingFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            BackendCommunication.CreateMeeting(requireContext(), pickedDate.value!!, meetingNameView.text.toString(), checkedContacts,
-                    Response.Listener {
-                        Toast.makeText(requireContext(), "Pomyślnie utworzono spotkanie", Toast.LENGTH_SHORT).show()
-                        findNavController().navigateUp()
-                    },
-                    Response.ErrorListener {
-                        Toast.makeText(requireContext(), "Nie udało się utworzyć spotkania", Toast.LENGTH_SHORT).show()
-                    })
+            BackendCommunication.createMeeting(
+                requireContext(),
+                pickedDate.value!!,
+                meetingNameView.text.toString(),
+                checkedContacts,
+                Response.Listener {
+                    Toast.makeText(
+                        requireContext(),
+                        "Pomyślnie utworzono spotkanie",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    findNavController().navigateUp()
+                },
+                Response.ErrorListener {
+                    Toast.makeText(
+                        requireContext(),
+                        "Nie udało się utworzyć spotkania",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                })
         }
 
         searchView.setOnQueryTextListener( object : SearchView.OnQueryTextListener{
@@ -81,19 +94,24 @@ class CreateMeetingFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                CreateViews()
+                createViews()
                 return true
             }
         })
 
-        BackendCommunication.GetContactsList(requireContext(),
-                Response.Listener {contacts ->
-                    this.contacts = contacts
-                    CreateViews()
-                },
-                Response.ErrorListener {
-                    Toast.makeText(requireContext(), "Nie udało się pobrać listy spotkań", Toast.LENGTH_LONG).show()
-                })
+        BackendCommunication.getContactsList(
+            requireContext(),
+            Response.Listener { contacts ->
+                this.contacts = contacts
+                createViews()
+            },
+            Response.ErrorListener {
+                Toast.makeText(
+                    requireContext(),
+                    "Nie udało się pobrać listy spotkań",
+                    Toast.LENGTH_LONG
+                ).show()
+            })
 
         dateBox.setOnClickListener {
             DatePickerDialog(requireContext(),
@@ -118,7 +136,7 @@ class CreateMeetingFragment : Fragment() {
         return createMeetingFragment
     }
 
-    private fun CreateViews(){
+    private fun createViews(){
         if(contacts == null)
             return
 
@@ -126,8 +144,14 @@ class CreateMeetingFragment : Fragment() {
 
         contactsLayout.removeAllViews()
 
-        filteredContacts!!.forEach {contact ->
-            val contactView = Contact.createCheckView(layoutInflater, contactsLayout, contact, null)
+        filteredContacts.forEach { contact ->
+            val contactView =
+                User.createCheckView(
+                    layoutInflater,
+                    contactsLayout,
+                    contact,
+                    null
+                )
 
             val checkBox = contactView.findViewById<CheckBox>(R.id.checkBox)
 
