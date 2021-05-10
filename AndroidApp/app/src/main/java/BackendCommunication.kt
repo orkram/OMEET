@@ -254,7 +254,7 @@ class BackendCommunication {
             val requestQueue = Volley.newRequestQueue(context)
 
             val request = BackendRequestJsonObject(Request.Method.POST,
-                    backendUrl + "/api/v1/contacts/add" + "?from=" + username + "&to=" + friend,
+                    backendUrl + "/api/v1/contacts/send-invite" + "?from=" + username + "&to=" + friend,
                     JSONObject(),
                     Response.Listener {
                         Log.i("BackendCommunication", "SendInvite success")

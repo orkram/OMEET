@@ -73,8 +73,14 @@ class FindContactFragment : Fragment() {
             val inviteButton = view.findViewById<Button>(R.id.inviteButton)
             val sentText = view.findViewById<TextView>(R.id.sentText)
             inviteButton.setOnClickListener {
-                inviteButton.visibility = View.GONE
-                sentText.visibility = View.VISIBLE
+                BackendCommunication.SendInvite(requireContext(), contact.username,
+                        Response.Listener {
+                            inviteButton.visibility = View.GONE
+                            sentText.visibility = View.VISIBLE
+                        },
+                        Response.ErrorListener {
+                            Toast.makeText(requireContext(), "Nie udało się wysłać zaproszenia", Toast.LENGTH_LONG).show()
+                        })
             }
             contactsListView.addView(view)
         }
