@@ -1,13 +1,12 @@
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.orangemeet.Contact
 import com.example.orangemeet.Meeting
-import com.example.orangemeet.R
 import com.example.orangemeet.userInfo
 import org.json.JSONArray
 import org.json.JSONObject
@@ -19,10 +18,39 @@ class BackendCommunication {
         val backendUrl = "http://130.61.186.61:9000"
 
         private var username : String? = null
-        private var token : String? = null
+        private var password : String? = null
+        private var accessToken : String? = null
+        private var refreshToken : String? = null
 
         fun GetToken() : String?{
-            return token
+            return accessToken
+        }
+
+        private fun RefreshAccessToken(context : Context,
+                                       listener: Response.Listener<JSONObject>?,
+                                       errorListener: Response.ErrorListener?){
+            val requestQueue = Volley.newRequestQueue(context)
+
+            val tokenUrl = backendUrl + "/api/v1/account/" + username + "/refresh-token"
+
+            val refreshTokenJsonObject = JSONObject().put("refreshToken", refreshToken)
+
+            val tokenRequest = BackendRequestJsonObject(
+                    Request.Method.POST, tokenUrl,
+                    refreshTokenJsonObject,
+                    Response.Listener {
+                        Log.i("BackendCommunication", "RefreshAccessToken success")
+                        accessToken = it.getString("accessToken")
+                        listener?.onResponse(it)
+                    },
+                    Response.ErrorListener {
+                        Log.e("BackendCommunication", "RefreshAccessToken failed")
+                        errorListener?.onErrorResponse(it)
+                    },
+                    null
+            )
+
+            requestQueue.add(tokenRequest)
         }
 
         fun Login(context : Context, username : String, password : String, listener: Response.Listener<JSONObject>?,
@@ -41,11 +69,13 @@ class BackendCommunication {
                     Response.Listener {response ->
                         Log.i("BackendCommunication", "Login success")
                         this.username = username
-                        token = response.getString("accessToken")
+                        this.password = password
+                        accessToken = response.getString("accessToken")
+                        refreshToken = response.getString("refreshToken")
                         listener?.onResponse(response)
                     },
                     Response.ErrorListener {error ->
-                        Log.e("BackendCommunication", "Register failed: " + error.message)
+                        Log.e("BackendCommunication", "Login failed: " + error.message)
                         errorListener?.onErrorResponse(error)
                     }
             )
@@ -85,6 +115,32 @@ class BackendCommunication {
             requestQueue.add(registerRequest)
         }
 
+        fun handleAuthorizationError(
+                context: Context,
+                error : VolleyError,
+                listener: Response.Listener<JSONObject>?,
+                errorListener: Response.ErrorListener?)
+        {
+            if(error.networkResponse.statusCode == 401){
+                RefreshAccessToken(
+                        context,
+                        Response.Listener {
+                            listener?.onResponse(it)
+                        },
+                        Response.ErrorListener { refreshError ->
+                            if(refreshError.networkResponse.statusCode == 401){
+                                Login(context, username!!, password!!,
+                                Response.Listener {
+                                    listener?.onResponse(it)
+                                },
+                                Response.ErrorListener {
+                                    errorListener?.onErrorResponse(it)
+                                })
+                            }
+                        })
+            }
+        }
+
         fun GetContactsList(context: Context, listener: Response.Listener<List<Contact>>?,
                             errorListener: Response.ErrorListener?){
             val requestQueue = Volley.newRequestQueue(context)
@@ -97,11 +153,17 @@ class BackendCommunication {
                 for(i in 0..jsonArray.length() - 1)
                     contactsList.add(Contact.createFromJson(jsonArray.getJSONObject(i)))
                 listener?.onResponse(contactsList) },
-                    Response.ErrorListener {
-                        Log.e("BackendCommunication", "GetContactsList failed: " + it.message)
-                        errorListener!!.onErrorResponse(it)
+                    Response.ErrorListener {error ->
+                        handleAuthorizationError(context, error,
+                            Response.Listener {
+                                GetContactsList(context, listener, errorListener)
+                            },
+                            Response.ErrorListener {
+                                Log.e("BackendCommunication", "GetContactsList failed: " + error.message)
+                                errorListener?.onErrorResponse(error)
+                            })
                     },
-                    token)
+                    accessToken)
 
             requestQueue.add(request)
         }
@@ -116,11 +178,17 @@ class BackendCommunication {
                         Log.i("BackendCommunication", "DeleteContact success")
                         listener!!.onResponse(it)
                     },
-                    Response.ErrorListener {
-                        Log.e("BackendCommunication", "DeleteContact failed: " + it.message)
-                        errorListener!!.onErrorResponse(it)
+                    Response.ErrorListener {error ->
+                        handleAuthorizationError(context, error,
+                                Response.Listener {
+                                    DeleteContact(context, friend, listener, errorListener)
+                                },
+                                Response.ErrorListener{
+                                    Log.e("BackendCommunication", "DeleteContact failed: " + it.message)
+                                    errorListener!!.onErrorResponse(it)
+                                })
                     },
-                    token)
+                    accessToken)
 
             requestQueue.add(request)
         }
@@ -139,11 +207,18 @@ class BackendCommunication {
                         }
                         listener!!.onResponse(contacts)
                     },
-                    Response.ErrorListener {
-                        Log.e("BackendCommunication", "GetUsers failed: " + it.message)
-                        errorListener!!.onErrorResponse(it)
+                    Response.ErrorListener {error ->
+                        handleAuthorizationError(context, error,
+                                Response.Listener {
+                                    GetUsers(context, query, listener, errorListener)
+                                },
+                                Response.ErrorListener{
+                                    Log.e("BackendCommunication", "GetUsers failed: " + it.message)
+                                    errorListener!!.onErrorResponse(it)
+                                })
+
                     },
-                    token)
+                    accessToken)
 
             requestQueue.add(request)
         }
@@ -159,11 +234,17 @@ class BackendCommunication {
                         Log.i("BackendCommunication", "AddContact success")
                         listener!!.onResponse(it)
                     } ,
-                    Response.ErrorListener {
-                        Log.e("BackendCommunication", "AddContact failed: " + it.message)
-                        errorListener!!.onErrorResponse(it)
+                    Response.ErrorListener {error ->
+                        handleAuthorizationError(context, error,
+                                Response.Listener {
+                                    AddContact(context, friend, listener, errorListener)
+                                },
+                                Response.ErrorListener{
+                                    Log.e("BackendCommunication", "AddContact failed: " + it.message)
+                                    errorListener!!.onErrorResponse(it)
+                                })
                     },
-                    token)
+                    accessToken)
 
             requestQueue.add(request)
         }
@@ -179,11 +260,17 @@ class BackendCommunication {
                         Log.i("BackendCommunication", "SendInvite success")
                         listener!!.onResponse(it)
                     },
-                    Response.ErrorListener {
-                        Log.e("BackendCommunication", "SendInvite failed: " + it.message)
-                        errorListener!!.onErrorResponse(it)
+                    Response.ErrorListener {error ->
+                        handleAuthorizationError(context, error,
+                                Response.Listener {
+                                    SendInvite(context, friend, listener, errorListener)
+                                },
+                                Response.ErrorListener{
+                                    Log.e("BackendCommunication", "SendInvite failed: " + it.message)
+                                    errorListener!!.onErrorResponse(it)
+                                })
                     },
-                    token)
+                    accessToken)
 
             requestQueue.add(request)
         }
@@ -202,11 +289,17 @@ class BackendCommunication {
                             meetings.add(Meeting.createFromJson(jsonArray.getJSONObject(i)))
                         listener!!.onResponse(meetings)
                     },
-                    Response.ErrorListener {
-                        Log.e("BackendCommunication", "GetMeetings failed: " + it.message)
-                        errorListener!!.onErrorResponse(it)
+                    Response.ErrorListener {error ->
+                        handleAuthorizationError(context, error,
+                                Response.Listener {
+                                    GetMeetings(context, listener, errorListener)
+                                },
+                                Response.ErrorListener{
+                                    Log.e("BackendCommunication", "GetMeetings failed: " + it.message)
+                                    errorListener!!.onErrorResponse(it)
+                                })
                     },
-                    token)
+                    accessToken)
 
             requestQueue.add(request)
         }
@@ -233,10 +326,16 @@ class BackendCommunication {
                         listener?.onResponse(jsonObject)
                     },
                     Response.ErrorListener {error ->
-                        Log.e("BackendCommunication", "CreateMeeting failed: " + error.message)
-                        errorListener?.onErrorResponse(error)
+                        handleAuthorizationError(context, error,
+                                Response.Listener {
+                                    CreateMeeting(context, date, name, participants, listener, errorListener)
+                                },
+                                Response.ErrorListener{
+                                    Log.e("BackendCommunication", "CreateMeeting failed: " + error.message)
+                                    errorListener?.onErrorResponse(error)
+                                })
                     },
-                    token)
+                    accessToken)
 
             requestQueue.add(request)
         }
@@ -258,10 +357,16 @@ class BackendCommunication {
                         listener?.onResponse(contacts)
                     },
                     Response.ErrorListener {error ->
-                        Log.e("BackendCommunication", "GetMeetingParticipants failed: " + error.message)
-                        errorListener?.onErrorResponse(error)
+                        handleAuthorizationError(context, error,
+                                Response.Listener {
+                                    GetMeetingParticipants(context, meetingId, listener, errorListener)
+                                },
+                                Response.ErrorListener{
+                                    Log.e("BackendCommunication", "GetMeetingParticipants failed: " + error.message)
+                                    errorListener?.onErrorResponse(error)
+                                })
                     },
-                    token)
+                    accessToken)
 
             requestQueue.add(request)
         }
