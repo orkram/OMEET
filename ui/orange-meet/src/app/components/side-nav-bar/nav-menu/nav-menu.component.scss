@@ -1,0 +1,60 @@
+@import "../../../../custom-theme.scss";
+
+.menu-icon-spacer{
+  display: inline-flex;
+  width: 5%;
+}
+
+.menu-item-spacer{
+  display: inline-flex;
+  width: 10%;
+}
+
+.mdc-drawer{
+  flex-wrap: wrap;
+  flex-direction: column;
+  display:  flex;
+  width: 100%;
+}
+
+.mdc-drawer__content{
+  flex-wrap: wrap;
+}
+
+.mdc-list-item {
+  width: 100%;
+  color: black;
+  height: 50px;
+  display: table;
+  flex-direction: row;
+  font-weight: normal;
+  line-height: 24px;
+  text-decoration: none;
+  border-radius: 15px;
+  --mdc-ripple-fg-size: 285px;
+  --mdc-ripple-fg-scale: 1.71373;
+  --mdc-ripple-fg-translate-start: -73px, -106.5px;
+  --mdc-ripple-fg-translate-end: 95.5px, -118.5px;
+  --mdc-ripple-fg-opacity: 0.12;
+  overflow: hidden;
+}
+.mdc-list-item__ripple{
+  width: 100%;
+  height: 50px;
+}
+
+.mdc-list-item__text{
+  position: relative;
+  top: 10px;
+}
+
+.mdc-list-item__graphic{
+  vertical-align: bottom;
+  position: relative;
+  top: 10px;
+}
+
+.active{
+  color: $primary;
+  background-color: rgba($ripple, 0.5);
+}

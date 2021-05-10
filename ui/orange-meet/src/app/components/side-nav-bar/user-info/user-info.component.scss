@@ -1,0 +1,43 @@
+.info-holder{
+  flex-wrap: wrap;
+  display: flex;
+
+}
+.image-holder{
+  position: relative;
+  flex: 1 1 auto;
+  height: 120px;
+  width: 100%;
+}
+.user-image{
+  margin: 10px 0 0 10px;
+  left:5%;
+  background-image: url("../../../../assets/images/small-user-image.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 3;
+  width: 130px;
+  height: 130px;
+  max-height: 100%;
+  border-radius: 50%;
+  position: center;
+}
+
+.name-text{
+  left:5%;
+  position: relative;
+  width: 100%;
+}
+
+.email-text{
+  left:5%;
+  position: relative;
+  width: 100%;
+  font: 400 20px/32px Roboto, "Helvetica Neue", sans-serif;
+}
+
+.info-space{
+  height: 30px;
+  flex: 1 1 auto;
+  width: 100%;
+}
