@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
+    android:background="@drawable/contact_item_bg"
+    android:clickable="true"
     android:gravity="clip_vertical"
     android:orientation="vertical"
     android:padding="8dp"
@@ -20,35 +22,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="9"
-            android:gravity="center_vertical"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/meetingName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/meeting_title_placeholder"
-                android:textColor="?attr/colorOnBackground"
-                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="fill"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/meetingName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/meeting_date_label" />
-
-                <TextView
-                    android:id="@+id/date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/example_date" />
+                    android:layout_gravity="left"
+                    android:fontFamily="@font/abeezee"
+                    android:text="@string/meeting_title_placeholder"
+                    android:textColor="?attr/colorOnBackground"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/example_date"
+                android:textSize="14sp"
+                android:textStyle="bold|italic" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -68,24 +69,6 @@
                     android:text="@string/meeting_owner_placeholder" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/meeting_id_label" />
-
-                <TextView
-                    android:id="@+id/meetingId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/meeting_id_placeholder" />
-            </LinearLayout>
-
         </LinearLayout>
 
         <ImageButton
@@ -93,10 +76,11 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
             android:background="@drawable/pressed_bg"
             android:padding="4dp"
             android:scaleType="fitCenter"
+            android:tint="@color/orange"
             app:srcCompat="@drawable/baseline_meeting_room_24" />
 
     </LinearLayout>

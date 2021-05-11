@@ -51,14 +51,12 @@ class Meeting {
         }
 
         fun createView(inflater : LayoutInflater, root : ViewGroup, meeting: Meeting, background: Drawable?) : View {
-            val view = inflater.inflate(R.layout.meetings_list_item, root, false)
+            val view = inflater.inflate(R.layout.meeting_item, root, false)
 
-            val idTextView = view.findViewById<TextView>(R.id.meetingId)
             val dateTextView = view.findViewById<TextView>(R.id.date)
             val ownerTextView = view.findViewById<TextView>(R.id.meetingOwner)
             val nameTextView = view.findViewById<TextView>(R.id.meetingName)
             val box = view.findViewById<View>(R.id.box)
-            idTextView.text = meeting.id.toString()
             dateTextView.text = SimpleDateFormat("dd-MM-yyyy").format(meeting.date)
             ownerTextView.text = meeting.owner.username
             nameTextView.text = meeting.name
