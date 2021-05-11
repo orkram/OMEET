@@ -4,21 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#6D000000"
+    android:background="#8D000000"
     android:clickable="true"
     android:focusable="auto"
+    android:translationZ="4dp"
     tools:showIn="@layout/fragment_meetings">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="?attr/secondaryBackground"
+        android:layout_height="330dp"
+        android:background="?attr/colorSurface"
         android:clickable="true"
         android:focusable="auto"
         android:paddingStart="16dp"
         android:paddingTop="8dp"
         android:paddingEnd="16dp"
         android:paddingBottom="16dp"
+        android:translationZ="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -33,18 +36,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
+                android:fontFamily="@font/abeezee"
                 android:text="Nazwa spotkania"
                 android:textColor="?attr/colorOnBackground"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/meetingDateTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:text="12/12/2020"
-                android:textSize="18sp"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <Space
@@ -122,4 +127,17 @@
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/button"
+        style="@style/login_register_button"
+        android:layout_width="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Dołącz"
+        android:translationZ="4dp"
+        app:cornerRadius="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

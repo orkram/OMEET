@@ -12,6 +12,7 @@ import com.example.orangemeet.BackendCommunication
 import com.example.orangemeet.Meeting
 import com.example.orangemeet.R
 import com.example.orangemeet.User
+import java.text.SimpleDateFormat
 
 class MeetingsFragment : Fragment() {
 
@@ -26,6 +27,7 @@ class MeetingsFragment : Fragment() {
     lateinit var meetingPopupOwner : View
     lateinit var meetingPopupParticipants : LinearLayout
     lateinit var meetingPopupName : TextView
+    lateinit var meetingPopupDateTime : TextView
     lateinit var meetingsFragment : View
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -52,6 +54,7 @@ class MeetingsFragment : Fragment() {
         meetingPopupOwner = meetingPopup.findViewById(R.id.owner)
         meetingPopupParticipants = meetingPopup.findViewById(R.id.participantsList)
         meetingPopupName = meetingPopup.findViewById(R.id.meetingName)
+        meetingPopupDateTime = meetingPopup.findViewById(R.id.meetingDateTime)
         meetingPopup.setOnClickListener { meetingPopup.visibility = View.GONE }
 
         meetingsListView = meetingsFragment.findViewById(R.id.meetingsList)
@@ -120,10 +123,10 @@ class MeetingsFragment : Fragment() {
                 username.text = owner.username
 
                 meetingPopupName.text = meeting.name
-
+                meetingPopupDateTime.text = SimpleDateFormat("dd-MM-yyyy    kk:mm").format(meeting.date)
                 meetingPopupParticipants.removeAllViews()
 
-                BackendCommunication.getContactsList(requireContext(),
+                BackendCommunication.getMeetingParticipants(requireContext(), meeting.id,
                     Response.Listener {contacts ->
                         contacts.forEach {contact ->
                             val contactView = User.createSmallView(inflater, meetingPopupParticipants, contact, null)

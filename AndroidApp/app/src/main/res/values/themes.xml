@@ -3,6 +3,7 @@
     <style name="Theme.OrangeMeet" parent="Theme.MaterialComponents.DayNight">
         <item name="colorPrimary">@color/orange</item>
         <item name="colorPrimaryVariant">@color/orange_secondary</item>
+        <item name="colorSurface">@color/white_secondary</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorSecondary">@color/orange</item>
         <item name="colorSecondaryVariant">@color/orange_secondary</item>

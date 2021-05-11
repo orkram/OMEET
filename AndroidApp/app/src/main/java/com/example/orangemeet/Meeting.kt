@@ -57,7 +57,7 @@ class Meeting {
             val ownerTextView = view.findViewById<TextView>(R.id.meetingOwner)
             val nameTextView = view.findViewById<TextView>(R.id.meetingName)
             val box = view.findViewById<View>(R.id.box)
-            dateTextView.text = SimpleDateFormat("dd-MM-yyyy").format(meeting.date)
+            dateTextView.text = SimpleDateFormat("dd-MM-yyyy    kk:mm").format(meeting.date)
             ownerTextView.text = meeting.owner.username
             nameTextView.text = meeting.name
             if(background != null)
