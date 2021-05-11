@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.example.orangemeet.CustomJitsiFragment
 import com.example.orangemeet.R
 import org.jitsi.meet.sdk.*
@@ -47,45 +48,27 @@ class VideoFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_video, container, false)
 
         startFragmentButton = view.findViewById(R.id.startFragmentButton)
-
+        startFragmentButton.setTag("off")
         startFragmentButton.setOnClickListener {
+            if(startFragmentButton.tag == "off"){
             activity?.supportFragmentManager?.commit {
                 setReorderingAllowed(true)
                 // Replace whatever is in the fragment_container view with this fragment
                 add<CustomJitsiFragment>(R.id.fragmentLayout)
 
+                }
+                startFragmentButton.setTag("on")
+            }
+            else if(startFragmentButton.tag == "on"){
+                activity?.supportFragmentManager?.commit {
+                    setReorderingAllowed(true)
+                    // Replace whatever is in the fragment_container view with this fragment
+                    replace<Fragment>(R.id.fragmentLayout)
 
+                }
+                startFragmentButton.setTag("off")
             }
-        }
 
-        val micIcon = view.findViewById(R.id.mic_icon) as ImageView
-        micIcon.tag = "turned_on"
-        micIcon.setOnClickListener{
-            if (micIcon.tag == "turned_on")
-            {
-                micIcon.setImageResource(R.drawable.ic_mic_off)
-                micIcon.tag = "turned_off"
-            }
-            else
-            {
-                micIcon.setImageResource(R.drawable.ic_mic_on)
-                micIcon.tag = "turned_on"
-            }
-        }
-
-        val camIcon = view.findViewById(R.id.cam_icon) as ImageView
-        camIcon.tag = "turned_on"
-        camIcon.setOnClickListener{
-            if (camIcon.tag == "turned_on")
-            {
-                camIcon.setImageResource(R.drawable.ic_videocam_off)
-                camIcon.tag = "turned_off"
-            }
-            else
-            {
-                camIcon.setImageResource(R.drawable.ic_videocam_on)
-                camIcon.tag = "turned_on"
-            }
         }
         return view
         ////

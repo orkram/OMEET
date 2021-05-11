@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.add
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.jitsi.meet.sdk.BroadcastEvent
 import org.jitsi.meet.sdk.BroadcastReceiver
@@ -43,13 +45,19 @@ class CustomJitsiFragment : JitsiMeetFragment() {
             .setVideoMuted(false)
             .setFeatureFlag("add-people.enabled", false)
             .setFeatureFlag("invite.enabled", false)
-            //.setFeatureFlag("toolbox.enabled", false)
+            .setFeatureFlag("toolbox.enabled", true)
             .setFeatureFlag("chat.enabled", true)
             .setWelcomePageEnabled(false)
             .build()
         )
 
         return view
+    }
+
+    override fun onDestroyView() {
+        jitsiView.leave()
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver!!)
+        super.onDestroyView()
     }
 
 
@@ -76,7 +84,10 @@ class CustomJitsiFragment : JitsiMeetFragment() {
             val event = BroadcastEvent(intent)
             when (event.getType()) {
                 BroadcastEvent.Type.CONFERENCE_JOINED -> Timber.i("Conference Joined with url%s", event.getData().get("url"))
-                BroadcastEvent.Type.PARTICIPANT_JOINED -> Timber.i("Participant joined%s", event.getData().get("name"))
+                BroadcastEvent.Type.CONFERENCE_TERMINATED -> {
+                    Timber.i("Conference terminated%s", event.getData().get("url"))
+
+                }
             }
         }
     }
