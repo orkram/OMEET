@@ -1,7 +1,10 @@
 package com.example.orangemeet.fragments
 
+import android.app.UiModeManager
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.example.orangemeet.R
@@ -20,10 +23,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun setDayNight(mode : Boolean){
-        if(mode)
+        if(mode){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        else
+        }
+        else{
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
     }
 
 }
