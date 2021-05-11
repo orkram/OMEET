@@ -5,4 +5,5 @@
         <attr name="fontsize" format="dimension"/>
     </declare-styleable>
     <attr name="secondaryBackground" format="color"/>
+    <attr name="itemTintColor" format="color"/>
 </resources>

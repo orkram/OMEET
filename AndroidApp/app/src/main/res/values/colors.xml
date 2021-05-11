@@ -10,6 +10,7 @@
     <color name="red">#FFFF0000</color>
     <color name="orange">#FFF16E00</color>
     <color name="orange_secondary">#FFFFB000</color>
+    <color name="dark_orange">#bf5c00</color>
     <color name="white_secondary">#F2F2F2</color>
     <color name="gray">#FF808080</color>
     <color name="light_gray">#FFC0C0C0</color>
@@ -17,4 +18,6 @@
     <color name="dim_orange">#FFFFFAF8</color>
     <color name="dim_orange_black">#FF403010</color>
     <color name="transparent">#00000000</color>
+    <color name="orange_dark_accent">#2b2112</color>
+    <color name="orange_light_accent">#fff8ed</color>
 </resources>

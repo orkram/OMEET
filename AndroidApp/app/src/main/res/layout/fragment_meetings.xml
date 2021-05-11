@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="?attr/background"
     android:orientation="vertical"
     tools:context=".fragments.MeetingsFragment">
 
@@ -72,6 +71,10 @@
                 android:animateLayoutChanges="true"
                 android:orientation="vertical">
 
+                <View
+                    android:id="@+id/view7"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp" />
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

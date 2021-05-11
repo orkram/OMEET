@@ -8,6 +8,7 @@ import com.android.volley.Response
 import com.example.orangemeet.BackendCommunication
 import com.example.orangemeet.R
 import com.example.orangemeet.User
+import com.example.orangemeet.Util
 
 
 class FindContactFragment : Fragment() {
@@ -76,12 +77,13 @@ class FindContactFragment : Fragment() {
 
         contactsListView.removeAllViews()
 
+        var evenView = false
         filteredContacts.forEach {contact ->
             val view = User.createInviteView(
                 inflater,
                 contactsListView,
                 contact,
-                null
+                Util.createTintedBackground(requireContext(), evenView)
             )
             val inviteButton = view.findViewById<Button>(R.id.inviteButton)
             val sentText = view.findViewById<TextView>(R.id.sentText)
@@ -101,6 +103,7 @@ class FindContactFragment : Fragment() {
                     })
             }
             contactsListView.addView(view)
+            evenView = !evenView
         }
 
         progressBar.visibility = View.GONE

@@ -1,6 +1,13 @@
 package com.example.orangemeet.fragments
 
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.AnimatedStateListDrawable
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
@@ -8,10 +15,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.android.volley.Response
-import com.example.orangemeet.BackendCommunication
-import com.example.orangemeet.Meeting
-import com.example.orangemeet.R
-import com.example.orangemeet.User
+import com.example.orangemeet.*
+import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 
 class MeetingsFragment : Fragment() {
@@ -107,12 +112,14 @@ class MeetingsFragment : Fragment() {
 
         meetingsListView.removeAllViews()
 
+        var evenView = false
         filteredMeetings.forEach {meeting ->
+
             val view = Meeting.createView(
                 inflater,
                 meetingsListView,
                 meeting,
-                null
+                Util.createTintedBackground(requireContext(), evenView)
             )
 
             view.setOnClickListener {
@@ -141,6 +148,7 @@ class MeetingsFragment : Fragment() {
             }
 
             meetingsListView.addView(view)
+            evenView = !evenView
         }
     }
 }

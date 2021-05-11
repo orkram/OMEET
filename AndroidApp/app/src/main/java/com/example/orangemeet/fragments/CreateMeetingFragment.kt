@@ -12,6 +12,7 @@ import com.android.volley.Response
 import com.example.orangemeet.BackendCommunication
 import com.example.orangemeet.R
 import com.example.orangemeet.User
+import com.example.orangemeet.Util
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
 import java.text.SimpleDateFormat
@@ -144,13 +145,14 @@ class CreateMeetingFragment : Fragment() {
 
         contactsLayout.removeAllViews()
 
+        var evenView = false
         filteredContacts.forEach { contact ->
             val contactView =
                 User.createCheckView(
                     layoutInflater,
                     contactsLayout,
                     contact,
-                    null
+                    Util.createTintedBackground(requireContext(), evenView)
                 )
 
             val checkBox = contactView.findViewById<CheckBox>(R.id.checkBox)
@@ -166,6 +168,7 @@ class CreateMeetingFragment : Fragment() {
             }
 
             contactsLayout.addView(contactView)
+            evenView = !evenView
         }
     }
 

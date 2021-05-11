@@ -15,6 +15,7 @@ import com.android.volley.Response
 import com.example.orangemeet.BackendCommunication
 import com.example.orangemeet.R
 import com.example.orangemeet.User
+import com.example.orangemeet.Util
 
 
 class ContactsFragment : Fragment() {
@@ -95,12 +96,14 @@ class ContactsFragment : Fragment() {
 
         contactsListView.removeAllViews()
 
+        var evenView = false
         filteredContacts.forEach {contact ->
+
             val view = User.createView(
                 inflater,
                 contactsListView,
                 contact,
-                null
+                Util.createTintedBackground(requireContext(), evenView)
             )
             view.setOnCreateContextMenuListener { menu, v, menuInfo ->
                 menu.add(resources.getString(R.string.delete_from_contacts)).setOnMenuItemClickListener {
@@ -145,6 +148,7 @@ class ContactsFragment : Fragment() {
                 }
             }
             contactsListView.addView(view)
+            evenView = !evenView
         }
     }
 }
