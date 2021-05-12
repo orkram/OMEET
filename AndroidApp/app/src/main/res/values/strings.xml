@@ -173,6 +173,9 @@
     <string name="create_meeting">Utwórz spotkanie</string>
     <string name="participants">Uczestnicy</string>
 
+    <!-- Strings related to Jitsi-->
+    <string name="no_meeting">Brak aktywnej konwersacji, dołącz z ekranu spotkań lub kontaktów</string>
+
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
     <string name="delete_contact_dialog_message">Czy na pewno chcesz usunąć wybraną osobę ze znajomych?</string>

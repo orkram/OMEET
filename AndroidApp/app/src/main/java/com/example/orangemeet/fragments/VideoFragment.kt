@@ -13,6 +13,7 @@ import androidx.fragment.app.replace
 import com.example.orangemeet.CustomJitsiFragment
 import com.example.orangemeet.R
 import org.jitsi.meet.sdk.*
+import timber.log.Timber
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,8 +38,8 @@ class VideoFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1_VIDEO)
             param2 = it.getString(ARG_PARAM2_VIDEO)
         }
-
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,22 +51,27 @@ class VideoFragment : Fragment() {
         startFragmentButton = view.findViewById(R.id.startFragmentButton)
         startFragmentButton.setTag("off")
         startFragmentButton.setOnClickListener {
+            val widok: CustomJitsiFragment = CustomJitsiFragment()
+            widok.parentFrag = this
             if(startFragmentButton.tag == "off"){
             activity?.supportFragmentManager?.commit {
-                setReorderingAllowed(true)
+                setReorderingAllowed(false)
                 // Replace whatever is in the fragment_container view with this fragment
-                add<CustomJitsiFragment>(R.id.fragmentLayout)
-
+                //add<CustomJitsiFragment>(R.id.fragmentLayout)
+                add(R.id.fragmentLayout, widok)
                 }
                 startFragmentButton.setTag("on")
+
             }
             else if(startFragmentButton.tag == "on"){
-                activity?.supportFragmentManager?.commit {
-                    setReorderingAllowed(true)
-                    // Replace whatever is in the fragment_container view with this fragment
-                    replace<Fragment>(R.id.fragmentLayout)
 
-                }
+                //widok.hangUp()
+               // activity?.supportFragmentManager?.commit {
+                 //   setReorderingAllowed(false)
+                    // Replace whatever is in the fragment_container view with this fragment
+
+                   // replace<EmptyMeetingFragment>(R.id.fragmentLayout)
+               // }
                 startFragmentButton.setTag("off")
             }
 
@@ -76,7 +82,21 @@ class VideoFragment : Fragment() {
         //return inflater.inflate(R.layout.fragment_video, container, false)
     }
 
+    fun replaceWithInfo()
+    {
+        activity?.supportFragmentManager?.commit {
+            setReorderingAllowed(false)
+            // Replace whatever is in the fragment_container view with this fragment
+            replace<EmptyMeetingFragment>(R.id.fragmentLayout)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+    }
+
     companion object {
+
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.

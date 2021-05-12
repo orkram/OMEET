@@ -5,23 +5,23 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.add
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import org.jitsi.meet.sdk.BroadcastEvent
-import org.jitsi.meet.sdk.BroadcastReceiver
-import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
-import org.jitsi.meet.sdk.JitsiMeetFragment
+import com.example.orangemeet.fragments.VideoFragment
+import org.jitsi.meet.sdk.*
 import timber.log.Timber
 import java.net.URL
 
 class CustomJitsiFragment : JitsiMeetFragment() {
 
     private var broadcastReceiver : BroadcastReceiver? = null
-
+    var parentFrag : VideoFragment? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,7 +50,6 @@ class CustomJitsiFragment : JitsiMeetFragment() {
             .setWelcomePageEnabled(false)
             .build()
         )
-
         return view
     }
 
@@ -83,12 +82,21 @@ class CustomJitsiFragment : JitsiMeetFragment() {
         if (intent != null) {
             val event = BroadcastEvent(intent)
             when (event.getType()) {
-                BroadcastEvent.Type.CONFERENCE_JOINED -> Timber.i("Conference Joined with url%s", event.getData().get("url"))
+                BroadcastEvent.Type.CONFERENCE_JOINED -> {
+                    Timber.i("XD Conference Joined with url%s", event.getData().get("url"))
+                    UserInfo.isInConference = true
+                }
                 BroadcastEvent.Type.CONFERENCE_TERMINATED -> {
-                    Timber.i("Conference terminated%s", event.getData().get("url"))
-
+                    Timber.i("XD Conference terminated%s", event.getData().get("url"))
+                    UserInfo.isInConference = false
+                    parentFrag?.replaceWithInfo()
                 }
             }
         }
+    }
+
+    fun hangUp() {
+        val hangupBroadcastIntent: Intent = BroadcastIntentHelper.buildHangUpIntent()
+        LocalBroadcastManager.getInstance(org.webrtc.ContextUtils.getApplicationContext()).sendBroadcast(hangupBroadcastIntent)
     }
 }
