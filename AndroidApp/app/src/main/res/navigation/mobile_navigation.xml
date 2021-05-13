@@ -47,4 +47,10 @@
         android:label="@string/menu_create_meeting"
         tools:layout="@layout/fragment_create_meeting" />
 
+    <fragment
+        android:id="@+id/nav_jitsi"
+        android:name="com.example.orangemeet.CustomJitsiFragment"
+        android:label="Jitsi"
+        tools:layout="@layout/fragment_jitsi" />
+
 </navigation>
