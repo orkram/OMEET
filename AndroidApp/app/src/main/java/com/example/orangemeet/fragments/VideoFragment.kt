@@ -12,7 +12,6 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.example.orangemeet.CustomJitsiFragment
 import com.example.orangemeet.R
-import org.jitsi.meet.sdk.*
 import timber.log.Timber
 
 // TODO: Rename parameter arguments, choose names that match

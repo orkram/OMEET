@@ -39,7 +39,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:ellipsize="end"
-                    android:fontFamily="@font/abeezee"
                     android:singleLine="true"
                     android:text="@string/meeting_title_placeholder"
                     android:textColor="?attr/colorOnBackground"

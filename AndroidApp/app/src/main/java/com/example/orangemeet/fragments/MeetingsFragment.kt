@@ -122,6 +122,13 @@ class MeetingsFragment : Fragment() {
                 Util.createTintedBackground(requireContext(), evenView)
             )
 
+            val joinMeetingButton = view.findViewById<ImageButton>(R.id.imageButton)
+
+            joinMeetingButton.setOnClickListener {
+                UserInfo.conferenceName = meeting.id.toString()
+                findNavController().navigate(R.id.nav_video)
+            }
+
             view.setOnClickListener {
                 val owner = meeting.owner
 
