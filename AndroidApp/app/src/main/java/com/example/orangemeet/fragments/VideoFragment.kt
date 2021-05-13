@@ -12,6 +12,7 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.example.orangemeet.CustomJitsiFragment
 import com.example.orangemeet.R
+import com.example.orangemeet.UserInfo
 import timber.log.Timber
 
 // TODO: Rename parameter arguments, choose names that match
@@ -28,7 +29,7 @@ class VideoFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
+    var widok: CustomJitsiFragment? = null
     lateinit var startFragmentButton : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,34 +48,44 @@ class VideoFragment : Fragment() {
         ////
         val view = inflater.inflate(R.layout.fragment_video, container, false)
 
-        startFragmentButton = view.findViewById(R.id.startFragmentButton)
-        startFragmentButton.setTag("off")
-        startFragmentButton.setOnClickListener {
-            val widok: CustomJitsiFragment = CustomJitsiFragment()
-            widok.parentFrag = this
-            if(startFragmentButton.tag == "off"){
+//        startFragmentButton = view.findViewById(R.id.startFragmentButton)
+//        startFragmentButton.setTag("off")
+//        startFragmentButton.setOnClickListener {
+//            widok = CustomJitsiFragment()
+//            widok!!.parentFrag = this
+//            if(startFragmentButton.tag == "off"){
+//            activity?.supportFragmentManager?.commit {
+//                setReorderingAllowed(false)
+//                // Replace whatever is in the fragment_container view with this fragment
+//                //add<CustomJitsiFragment>(R.id.fragmentLayout)
+//                add(R.id.fragmentLayout, widok!!)
+//                }
+//                startFragmentButton.setTag("on")
+//
+//            }
+//            else if(startFragmentButton.tag == "on"){
+//
+//                //widok.hangUp()
+//               // activity?.supportFragmentManager?.commit {
+//                 //   setReorderingAllowed(false)
+//                    // Replace whatever is in the fragment_container view with this fragment
+//
+//                   // replace<EmptyMeetingFragment>(R.id.fragmentLayout)
+//               // }
+//                startFragmentButton.setTag("off")
+//            }
+//
+//        }
+        if (!UserInfo.conferenceName.equals("")) {
+            widok = CustomJitsiFragment()
+            widok!!.parentFrag = this
             activity?.supportFragmentManager?.commit {
                 setReorderingAllowed(false)
-                // Replace whatever is in the fragment_container view with this fragment
-                //add<CustomJitsiFragment>(R.id.fragmentLayout)
-                add(R.id.fragmentLayout, widok)
-                }
-                startFragmentButton.setTag("on")
-
+                //Replace whatever is in the fragment_container view with this fragment
+                add(R.id.fragmentLayout, widok!!)
             }
-            else if(startFragmentButton.tag == "on"){
+        } else replaceWithInfo()
 
-                //widok.hangUp()
-               // activity?.supportFragmentManager?.commit {
-                 //   setReorderingAllowed(false)
-                    // Replace whatever is in the fragment_container view with this fragment
-
-                   // replace<EmptyMeetingFragment>(R.id.fragmentLayout)
-               // }
-                startFragmentButton.setTag("off")
-            }
-
-        }
         return view
         ////
         // Inflate the layout for this fragment
@@ -90,8 +101,14 @@ class VideoFragment : Fragment() {
         }
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
+    }
+
+    override fun onDestroy() {
+        //widok?.hangUp()
+        super.onDestroy()
     }
 
     companion object {

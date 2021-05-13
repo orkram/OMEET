@@ -41,11 +41,11 @@ class CustomJitsiFragment : JitsiMeetFragment() {
 
         val userData = JitsiMeetUserInfo()
         userData.setDisplayName(UserInfo.userName)
-        userData.setEmail(UserInfo.userEmail)
 
         jitsiView.join(JitsiMeetConferenceOptions.Builder()
             .setServerURL(URL("http://130.61.186.61"))
             .setRoom(roomName)
+            .setSubject(roomName)
             .setAudioMuted(false)
             .setVideoMuted(false)
             .setUserInfo(userData)
@@ -54,8 +54,7 @@ class CustomJitsiFragment : JitsiMeetFragment() {
             .setFeatureFlag("toolbox.enabled", true)
             .setFeatureFlag("chat.enabled", true)
             .setWelcomePageEnabled(false)
-            .build()
-        )
+            .build())
         return view
     }
 
@@ -63,6 +62,10 @@ class CustomJitsiFragment : JitsiMeetFragment() {
         jitsiView.leave()
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver!!)
         super.onDestroyView()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
 
@@ -96,13 +99,15 @@ class CustomJitsiFragment : JitsiMeetFragment() {
                     Timber.i("XD Conference terminated%s", event.getData().get("url"))
                     UserInfo.isInConference = false
                     parentFrag?.replaceWithInfo()
+                    UserInfo.conferenceName = ""
                 }
             }
         }
     }
 
     fun hangUp() {
-        val hangupBroadcastIntent: Intent = BroadcastIntentHelper.buildHangUpIntent()
-        LocalBroadcastManager.getInstance(org.webrtc.ContextUtils.getApplicationContext()).sendBroadcast(hangupBroadcastIntent)
+//        val hangupBroadcastIntent: Intent = BroadcastIntentHelper.buildHangUpIntent()
+//        LocalBroadcastManager.getInstance(org.webrtc.ContextUtils.getApplicationContext()).sendBroadcast(hangupBroadcastIntent)
+        jitsiView.leave()
     }
 }
