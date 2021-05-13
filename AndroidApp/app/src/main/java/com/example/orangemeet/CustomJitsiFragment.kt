@@ -22,7 +22,7 @@ class CustomJitsiFragment : JitsiMeetFragment() {
 
     private var broadcastReceiver : BroadcastReceiver? = null
     var parentFrag : VideoFragment? = null
-
+    var roomName : String = UserInfo.conferenceName
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,11 +38,16 @@ class CustomJitsiFragment : JitsiMeetFragment() {
 
         registerForBroadcastMessages()
 
+        val userData = JitsiMeetUserInfo()
+        userData.setDisplayName(UserInfo.userName)
+        userData.setEmail(UserInfo.userEmail)
+
         jitsiView.join(JitsiMeetConferenceOptions.Builder()
             .setServerURL(URL("http://130.61.186.61"))
-            .setRoom("test")
+            .setRoom(roomName)
             .setAudioMuted(false)
             .setVideoMuted(false)
+            .setUserInfo(userData)
             .setFeatureFlag("add-people.enabled", false)
             .setFeatureFlag("invite.enabled", false)
             .setFeatureFlag("toolbox.enabled", true)
