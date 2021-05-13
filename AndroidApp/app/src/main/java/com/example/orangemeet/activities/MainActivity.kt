@@ -21,10 +21,12 @@ import androidx.preference.PreferenceManager
 import com.example.orangemeet.BackendCommunication
 import com.example.orangemeet.R
 import com.example.orangemeet.ui.login.LoginActivity
+import com.facebook.react.modules.core.PermissionListener
 import com.google.android.material.navigation.NavigationView
+import org.jitsi.meet.sdk.JitsiMeetActivityInterface
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -86,5 +88,10 @@ class MainActivity : AppCompatActivity() {
         val currentNightMode = newConfig.uiMode and Configuration.UI_MODE_NIGHT_MASK
         println(if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) "Night" else "Day")
     }
+
+    override fun requestPermissions(p0: Array<out String>?, p1: Int, p2: PermissionListener?) {
+
+    }
+
 
 }
