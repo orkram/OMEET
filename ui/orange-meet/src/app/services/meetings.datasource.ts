@@ -3,6 +3,7 @@ import {BehaviorSubject, Observable, of, Subscription} from 'rxjs';
 import {catchError, finalize} from 'rxjs/operators';
 import {MeetingsService} from './meetings.service';
 import {Meeting} from '../model/meeting';
+import {ParticipantsService} from './ParticipantsService';
 
 
 export class MeetingsDataSource extends DataSource<Meeting> {
@@ -14,7 +15,7 @@ export class MeetingsDataSource extends DataSource<Meeting> {
 
   public loading$ = this.loadingSubject.asObservable();
 
-  constructor(private meetingService: MeetingsService) {
+  constructor(private meetingService: MeetingsService, private participantsService: ParticipantsService) {
     super();
   }
 
@@ -42,7 +43,12 @@ export class MeetingsDataSource extends DataSource<Meeting> {
       this.length = meetings.allFoundUsers;
       console.log(this.length );
       meetings.foundMeetings.forEach( (meeting: any) => {
-         rows.push(meeting, { detailRow: true, meeting });
+        this.participantsService.getParticipants(meeting.idMeeting).subscribe(
+          next => {
+            meeting.participants = next.map((participant: any) => participant.firstName + ' ' + participant.lastName);
+          }
+        );
+        rows.push(meeting, { detailRow: true, meeting });
       });
       this.meetingsSubject.next(rows);
       });

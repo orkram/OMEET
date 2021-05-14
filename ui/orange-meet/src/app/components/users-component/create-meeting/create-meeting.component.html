@@ -19,13 +19,6 @@
       </mat-form-field>
     </p>
 
-    <p>
-      <mat-form-field appearance="outline">
-        <mat-label>Participants</mat-label>
-        <input type="text" matInput formControlName="participants">
-        <mat-error *ngIf="form.get('id')?.invalid">Complete field</mat-error>
-      </mat-form-field>
-    </p>
 
     <div class="button">
       <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid || submitted" >Create</button>

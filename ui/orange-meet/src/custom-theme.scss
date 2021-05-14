@@ -2,7 +2,7 @@
 @import '~@angular/material/theming';
 @include mat-core();
 
-$orange-meet-primary: mat-palette($mat-deep-orange,  500, A100, A600);
+$orange-meet-primary: mat-palette($mat-deep-orange,  700, A100, A600);
 $mat-ripple-color: mat-palette($mat-orange,  A100, A100, A400);
 $orange-meet-accent: mat-palette($mat-deep-orange, A200, A100, A400);
 $orange-meet-warn: mat-palette($mat-red);

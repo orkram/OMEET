@@ -1,11 +1,41 @@
+@import "../../../custom-theme.scss";
+
 .add-user{
   display: flex;
   margin: 20px;
   width: 100%;
-  flex-direction: row;
+  flex-direction: column;
+  flex-wrap: nowrap;
+
 }
 .add-button{
   position: relative;
-  top: 13%;
-  margin-left: 10px;
+}
+
+.sub-container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.mat-raised-button{
+  margin: 10px;
+}
+
+.mat-form-field{
+  width: 80%;
+}
+
+.add-user-form{
+  width: 50%;
+  //background: rgb($primary, 0.25);
+  border-radius: 15px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;}
+
+.add-user h1{
+  font: 400 32px/32px Roboto, "Helvetica Neue", sans-serif;
+}
+.full-width{
+  margin: 10px;
 }

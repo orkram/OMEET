@@ -37,7 +37,7 @@
     <ng-container matColumnDef="checked">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell *matCellDef="let contact">
-        <mat-checkbox [(ngModel)]="contact.checked" color="primary"></mat-checkbox>
+        <mat-checkbox [(ngModel)]="selected[contact.userName]" color="primary" (ngModelChange)="onSelect($event, contact)">  </mat-checkbox>
       </mat-cell>
     </ng-container>
 
@@ -49,8 +49,8 @@
   </mat-table>
 
   <mat-paginator class = "contact-paginator"
-                 [pageSize]="5"
-                 [pageSizeOptions]="[5,8]"
+                 [pageSize]="defaultPageSize"
+                 [pageSizeOptions]="defaultPageSizes()"
   >
     <!-- TODO length, relate pagesizeoptions and screen size,-->
   </mat-paginator>

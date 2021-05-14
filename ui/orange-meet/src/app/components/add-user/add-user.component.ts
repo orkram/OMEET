@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {JWTTokenService} from '../../services/JWTTokenService';
 import {UserService} from '../../services/UserService';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {flatMap} from 'rxjs/internal/operators';
 
 @Component({
   selector: 'app-add-user',
@@ -18,30 +21,36 @@ export class AddUserComponent implements OnInit {
 
   hide = true;
 
-  submitted = false;
-
   errorMessage = false;
 
-  ngOnInit(): void {
-  }
+  myControl = new FormControl();
+
+  filterUsers: Observable<Array<any>> =
+    this.myControl.valueChanges.pipe(
+      flatMap  (value => this.userService.findContactToAdd(value.toLowerCase())
+        .pipe(map((x: any) => x.foundUsers))
+      ));
+
+  responseText = 'User was added to your list';
+  errorText = 'User to add not found';
+
+  ngOnInit(): void {}
 
   submit(): void {
     if (this.form.invalid) {
       return;
     } else {
-      this.submitted = true;
-      this.userService.createConnection(this.jwtService.getUsername(), this.form.value.name)
+      this.userService.createConnection(this.jwtService.getUsername(), this.myControl.value.replace(/ *\([^)]*\) */g, ''))
         .subscribe(
           res => {
             console.log(res);
           },
           err => {
-            this.submitted = false;
             this.errorMessage = true;
           },
           () => {}// TODO Refresh list?
         );
     }
+    window.location.reload();
   }
-
 }

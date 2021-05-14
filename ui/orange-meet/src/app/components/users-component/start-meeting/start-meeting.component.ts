@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {CreateMeetingDialogComponent} from '../../meetings/create-meeting-dialog/create-meeting-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
+import {CreateMeetingComponent} from '../create-meeting/create-meeting.component';
 
 @Component({
   selector: 'app-start-meeting',
@@ -15,7 +15,7 @@ export class StartMeetingComponent implements OnInit {
   }
 
   submit(): void {
-    this.dialog.open(CreateMeetingDialogComponent, {});
+    this.dialog.open(CreateMeetingComponent, {});
   }
 
 }

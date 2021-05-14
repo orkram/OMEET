@@ -1,20 +1,30 @@
 <div class="add-user">
+  <h1> Contacts</h1>
 
-  <form [formGroup]="form" (ngSubmit)="submit()">
-    <p>
-      <mat-form-field appearance="outline">
-        <mat-label>Enter name</mat-label>
-        <input type="text" matInput formControlName="name" required>
-        <mat-error *ngIf="form.get('username')?.invalid">Complete field</mat-error>
+  <div class="sub-container">
 
+  <form class='add-user-form' [formGroup]="form" (ngSubmit)="submit()" >
+      <mat-form-field class="full-width">
+        <mat-label>Find new contact</mat-label>
+        <input type="text"
+               aria-label="Name"
+               matInput
+               [formControl]="myControl"
+               [matAutocomplete]="auto"
+              >
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          <mat-option *ngFor="let y of filterUsers | async" [value]="y.userName">
+             {{ '' + y.firstName + ' ' + y.lastName + ' (' + y.eMail + ')' }}
+          </mat-option>
+
+        </mat-autocomplete>
       </mat-form-field>
-    </p>
 
-    <div class="example-button-row">
-      <button mat-button class="add-button" color="primary">Add contact</button>
-    </div>
+      <button mat-raised-button  class="add-button " color="primary" >Add contact</button>
+      </form>
+  </div>
 
-  </form>
+  <p *ngIf="!hide"> {{ errorMessage? errorText: responseText }} </p>
 
 </div>
 

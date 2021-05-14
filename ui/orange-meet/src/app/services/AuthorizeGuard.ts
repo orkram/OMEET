@@ -28,7 +28,7 @@ export class AuthorizeGuard implements CanActivate {
               this.authStorageService.set('refreshToken', res.refreshToken);
             },
             _ => {
-              console.log('Error while fetching');
+              console.log('Error while fetching new token');
               window.location.reload();
               this.router.navigateByUrl('/login');
               return false;
@@ -37,7 +37,8 @@ export class AuthorizeGuard implements CanActivate {
               return true;
             }
         );
-        return !!k;   // TODO wasn't tested
+        this.router.navigateByUrl('/login');
+        return !!k;      // TODO wasn't tested
       } else {
         return true;
       }

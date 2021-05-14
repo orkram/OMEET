@@ -29,10 +29,8 @@
       <mat-header-cell *matHeaderCellDef > Status </mat-header-cell>
       <mat-cell *matCellDef="let meeting">
 
-        <mat-chip-list>
         <mat-chip class="chip" color="gray" selected> Active
         </mat-chip>
-        </mat-chip-list>
       </mat-cell>
     </ng-container>
 
@@ -48,17 +46,22 @@
         <div class="expanded-description ">
           <div class="text-description">
             <div class="meeting-title">
-            {{detail.meeting.name}}
+            Title: {{detail.meeting.name}}
             </div>
             <mat-chip-list>
               <mat-chip class="chip" color="$success" selected> Active
               </mat-chip>
             </mat-chip-list>
-
+<!--
             <div class="meeting-desc">
-            {{detail.meeting.description}}
+            Description: {{detail.meeting.description}}
               <br>
               {{detail.meeting.date | date }}
+            </div>
+        -->
+
+            <div>
+              Invited participants: {{detail.meeting.participants}}
             </div>
           </div>
 
@@ -81,8 +84,8 @@
   </mat-table>
 
   <mat-paginator class = "contact-paginator"
-                 [pageSize]="3"
-                 [pageSizeOptions]="[3,6]"
+                 [pageSize]="defaultPageSize"
+                 [pageSizeOptions]="[5,7]"
                  >
     <!-- TODO length, relate pagesizeoptions and screen size,-->
   </mat-paginator>

@@ -39,6 +39,9 @@ export class ContactsDataSource extends DataSource<Contact> {
     ).subscribe(contacts => {
       this.length = contacts.allFoundUsers;
       this.contactsSubject.next(contacts.foundUsers);
+    },
+      error => {
+       window.location.reload();
     });
   }
 }

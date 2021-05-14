@@ -48,6 +48,11 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {CreateMeetingDialogComponent} from './components/meetings/create-meeting-dialog/create-meeting-dialog.component';
 import {DatePipe} from '@angular/common';
 import {UserService} from './services/UserService';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {ParticipantsService} from './services/ParticipantsService';
+import {JitsiComponent} from './components/jitsi/jitsi.component';
+import {SelectedUsersService} from './services/SelectedUsersService';
+import {CreateMeetingComponent} from './components/users-component/create-meeting/create-meeting.component';
 
 
 @NgModule({
@@ -67,7 +72,9 @@ import {UserService} from './services/UserService';
     LoginFormComponent,
     RegistrationFormComponent,
     JoinDialogComponent,
-    CreateMeetingDialogComponent
+    CreateMeetingDialogComponent,
+    JitsiComponent,
+    CreateMeetingComponent
   ],
   imports: [
     BrowserModule,
@@ -97,7 +104,8 @@ import {UserService} from './services/UserService';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    MatDialogModule
+    MatDialogModule,
+    MatAutocompleteModule
   ],
   providers: [
     MeetingsService,
@@ -107,6 +115,8 @@ import {UserService} from './services/UserService';
     LogoutService,
     UserService,
     DatePipe,
+    SelectedUsersService,
+    ParticipantsService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AppInterceptor,
