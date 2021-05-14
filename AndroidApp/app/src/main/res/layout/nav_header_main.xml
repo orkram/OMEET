@@ -36,6 +36,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/menu_username"
                 android:layout_width="246dp"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
@@ -44,7 +45,7 @@
                 android:textColor="@color/white" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/menu_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/nav_header_subtitle"
