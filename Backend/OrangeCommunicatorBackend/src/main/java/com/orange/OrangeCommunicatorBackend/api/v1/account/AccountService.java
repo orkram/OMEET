@@ -9,9 +9,12 @@ import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountR
 import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountTokenResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.support.AccountExceptionSupplier;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.support.AccountMaper;
+import com.orange.OrangeCommunicatorBackend.api.v1.users.settings.support.SettingsMapper;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.support.UserExceptionSupplier;
 import com.orange.OrangeCommunicatorBackend.config.KeycloakClientConfig;
+import com.orange.OrangeCommunicatorBackend.dbEntities.Settings;
 import com.orange.OrangeCommunicatorBackend.dbEntities.User;
+import com.orange.OrangeCommunicatorBackend.dbRepositories.SettingsRepository;
 import com.orange.OrangeCommunicatorBackend.dbRepositories.UserRepository;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -41,15 +44,20 @@ import java.util.List;
 public class AccountService {
     private final UserRepository userRepository;
     private final AccountMaper accountMaper;
+    private final SettingsRepository settingsRepository;
+    private final SettingsMapper settingsMapper;
 
     @Value("${auth.client}")
     private String clientForAccounts;
     @Value("${auth.secret}")
     private String secretForAccounts;
 
-    public AccountService(UserRepository userRepository, AccountMaper accountMaper) {
+    public AccountService(UserRepository userRepository, AccountMaper accountMaper, SettingsRepository settingsRepository, SettingsMapper settingsMapper) {
         this.userRepository = userRepository;
         this.accountMaper = accountMaper;
+
+        this.settingsRepository = settingsRepository;
+        this.settingsMapper = settingsMapper;
     }
 
 
@@ -111,8 +119,14 @@ public class AccountService {
                 u.setKeycloakId(userId);
                 try {
                     userRepository.save(u);
+                    Settings settings = settingsMapper.createDefaultSettings(u);
+                    settingsRepository.save(settings);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     usersResource.get(userId).remove();
+                    if (userRepository.existsById(u.getUserName())) {
+                        userRepository.deleteById(u.getUserName());
+                    }
                     throw AccountExceptionSupplier.creatingAccountException().get();
                 }
                 return accountMaper.toAccountRegisterResponse(u);

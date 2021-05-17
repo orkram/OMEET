@@ -3,8 +3,6 @@ package com.orange.OrangeCommunicatorBackend.api.v1.contacts;
 import com.orange.OrangeCommunicatorBackend.api.v1.contacts.support.AddErrorEnum;
 import com.orange.OrangeCommunicatorBackend.api.v1.contacts.support.ContactExceptionSupplier;
 import com.orange.OrangeCommunicatorBackend.api.v1.contacts.support.ContactMapper;
-import com.orange.OrangeCommunicatorBackend.api.v1.contacts.support.exceptions.FriendshipNotFoundException;
-import com.orange.OrangeCommunicatorBackend.api.v1.users.UserService;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody.FoundUsersPageResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody.UserResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.support.UserExceptionSupplier;
@@ -21,7 +19,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -85,11 +82,11 @@ public class ContactsService {
 
         String emailText = "Hey,<br>An invitation was sent to you by " + senderName + " to join his group of friends!!<br>";
         emailText += "To accept this invitation click the link below:<br>";
-        emailText += "<form method=\"post\" action=\"" + path +"\"> <button type=\"submit\">" + text + "</button></form>";
+        emailText += "<form method=\"post\" action=\"" + path +"\" target=\"_self\"> <button type=\"submit\">" + text + "</button></form>";
 
         try {
             mailService.sendMail(email, subject, emailText, true);
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             throw ContactExceptionSupplier.emailNotSentException(user).get();
         }
 
@@ -141,15 +138,15 @@ public class ContactsService {
         return AddErrorEnum.OK;
     }
 
-    public List<UserResponseBody> findAll(String username, List<String> query, boolean fNameAsc, boolean lNameAsc, boolean uNameAsc) {
-        return findAllOrder(username, query, fNameAsc, lNameAsc, uNameAsc);
+    public List<UserResponseBody> findAll(String username, List<String> query, boolean fNameAsc, boolean lNameAsc, boolean uNameAsc, boolean emailAsc) {
+        return findAllOrder(username, query, fNameAsc, lNameAsc, uNameAsc, emailAsc);
     }
 
     public FoundUsersPageResponseBody findPaginated(int page, int size, String username, List<String> query,
-                                                    boolean fNameAsc, boolean lNameAsc, boolean uNameAsc) {
+                                                    boolean fNameAsc, boolean lNameAsc, boolean uNameAsc, boolean emailAsc) {
 
 
-        List<UserResponseBody> responseBodies = findAllOrder(username, query, fNameAsc, lNameAsc, uNameAsc);
+        List<UserResponseBody> responseBodies = findAllOrder(username, query, fNameAsc, lNameAsc, uNameAsc, emailAsc);
         if(page <= 0){
             page = 1;
         }
@@ -158,17 +155,31 @@ public class ContactsService {
             size = 1;
         }
 
-        List<UserResponseBody> responseBodiesPage = responseBodies.subList((page - 1) * size, page * size);
+        List<UserResponseBody> responseBodiesPage;
+        try {
+            if(page * size > responseBodies.size()){
+                responseBodiesPage = responseBodies.subList((page - 1) * size, responseBodies.size());
+            } else {
+                responseBodiesPage = responseBodies.subList((page - 1) * size, page * size);
+            }
+        } catch(Exception e){
+            responseBodiesPage = new ArrayList<>();
+        }
 
-        return userMapper.toUserFoundPaged(responseBodiesPage, responseBodies.size(), responseBodies.size()/size + 1);
+        long totalPages = responseBodies.size()/size;
+        if(page%size != 0){
+            totalPages++;
+        }
+
+        return userMapper.toUserFoundPaged(responseBodiesPage, responseBodies.size(), totalPages);
     }
 
     private List<UserResponseBody> findAllOrder(String username, List<String> query,
-                                                boolean fNameAsc, boolean lNameAsc, boolean uNameAsc){
+                                                boolean fNameAsc, boolean lNameAsc, boolean uNameAsc, boolean emailAsc){
         User u = userRepository.findById(username)
                 .orElseThrow(UserExceptionSupplier.userNotFoundException(username));
 
-        Sort sort = userSupport.getSort(fNameAsc, lNameAsc, uNameAsc);
+        Sort sort = userSupport.getSort(fNameAsc, lNameAsc, uNameAsc, emailAsc);
 
         if(query.size() == 0){
             query.add("");

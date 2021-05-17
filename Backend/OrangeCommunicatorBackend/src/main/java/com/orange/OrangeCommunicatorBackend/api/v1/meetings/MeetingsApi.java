@@ -60,8 +60,11 @@ public class MeetingsApi {
     public ResponseEntity<List<MeetingResponseBody>>
             getOwnersMeetings(@PathVariable String username,
                               @RequestParam(name="query", defaultValue="") List<String> query,
-                              @RequestParam(name="meetingNameSortAscending", defaultValue="true") boolean mNameAsc) {
-        List<MeetingResponseBody> meetingResponseBody = meetingsService.getOwnersMeeting(username, query, mNameAsc);
+                              @RequestParam(name="meetingNameSortAscending", defaultValue="true") boolean mNameAsc,
+                              @RequestParam(name="idSortAscending", defaultValue="true") boolean idAsc,
+                              @RequestParam(name="meetingDateSortAscending", defaultValue="true") boolean dateAsc) {
+        List<MeetingResponseBody> meetingResponseBody = meetingsService.getOwnersMeeting(username, query, mNameAsc,
+                idAsc, dateAsc);
         return ResponseEntity.status(HttpStatus.OK).body(meetingResponseBody);
     }
 
@@ -71,9 +74,11 @@ public class MeetingsApi {
             getOwnersMeetingsPaginated(@PathVariable String username,
                                        @RequestParam("page") int page, @RequestParam("size")  int size,
                                        @RequestParam(name="query", defaultValue="") List<String> query,
-                                       @RequestParam(name="meetingNameSortAscending", defaultValue="true") boolean mNameAsc) {
+                                       @RequestParam(name="meetingNameSortAscending", defaultValue="true") boolean mNameAsc,
+                                       @RequestParam(name="idSortAscending", defaultValue="true") boolean idAsc,
+                                       @RequestParam(name="meetingDateSortAscending", defaultValue="true") boolean dateAsc) {
         MeetingsPageResponseBody meetingResponseBody =
-                meetingsService.getOwnersMeetingPaginated(username, query, page, size, mNameAsc);
+                meetingsService.getOwnersMeetingPaginated(username, query, page, size, mNameAsc, idAsc, dateAsc);
         return ResponseEntity.status(HttpStatus.OK).body(meetingResponseBody);
     }
 

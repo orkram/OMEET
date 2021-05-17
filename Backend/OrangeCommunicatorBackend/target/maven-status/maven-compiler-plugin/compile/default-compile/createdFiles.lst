@@ -1,4 +1,5 @@
 com\orange\OrangeCommunicatorBackend\api\v1\account\requestBody\AccountLoginRequestBody.class
+com\orange\OrangeCommunicatorBackend\api\v1\users\settings\SettingsService.class
 com\orange\OrangeCommunicatorBackend\api\v1\meetings\support\MeetingsMapper.class
 com\orange\OrangeCommunicatorBackend\dbRepositories\SettingsRepository.class
 com\orange\OrangeCommunicatorBackend\api\v1\meetings\MeetingsApi.class
@@ -20,6 +21,7 @@ com\orange\OrangeCommunicatorBackend\api\v1\contacts\support\ContactExceptionAdv
 com\orange\OrangeCommunicatorBackend\api\v1\meetings\responseBody\MeetingsPageResponseBody.class
 com\orange\OrangeCommunicatorBackend\api\v1\account\AccountApi.class
 com\orange\OrangeCommunicatorBackend\api\v1\users\responseBody\FoundUsersPageResponseBody.class
+com\orange\OrangeCommunicatorBackend\api\v1\users\settings\support\SettingsExceptionAdvisor.class
 com\orange\OrangeCommunicatorBackend\shared\responsesBody\ErrorMessageExceptionResponseBody.class
 com\orange\OrangeCommunicatorBackend\api\v1\account\support\exceptions\TokenAcquireException.class
 com\orange\OrangeCommunicatorBackend\api\v1\meetings\support\MeetingSupport$1.class
@@ -31,14 +33,17 @@ com\orange\OrangeCommunicatorBackend\api\v1\contacts\support\ContactMapper.class
 com\orange\OrangeCommunicatorBackend\config\KeycloakConfig.class
 com\orange\OrangeCommunicatorBackend\api\v1\contacts\support\exceptions\EmailNotSentException.class
 com\orange\OrangeCommunicatorBackend\api\v1\meetings\participants\support\ParticipantsSupport$2.class
+com\orange\OrangeCommunicatorBackend\api\v1\users\settings\responseBody\SettingsResponseBody.class
 com\orange\OrangeCommunicatorBackend\config\SpringFoxConfig.class
 com\orange\OrangeCommunicatorBackend\api\v1\meetings\participants\ParticipantsService.class
 com\orange\OrangeCommunicatorBackend\OrangeCommunicatorBackendApplication.class
 com\orange\OrangeCommunicatorBackend\api\v1\meetings\support\MeetingsExceptionAdvisor.class
 com\orange\OrangeCommunicatorBackend\api\v1\contacts\support\AddErrorEnum.class
 com\orange\OrangeCommunicatorBackend\api\v1\meetings\support\exceptions\CreatingMeetingErrorException.class
+com\orange\OrangeCommunicatorBackend\api\v1\users\settings\requestBody\UpdateSettingsRequestBody.class
 com\orange\OrangeCommunicatorBackend\dbEntities\FriendshipId.class
 com\orange\OrangeCommunicatorBackend\api\v1\account\responseBody\AccountLogoutResponseBody.class
+com\orange\OrangeCommunicatorBackend\api\v1\users\settings\support\exceptions\SettingsNotFoundException.class
 com\orange\OrangeCommunicatorBackend\dbEntities\ListOfFriends.class
 com\orange\OrangeCommunicatorBackend\api\v1\users\settings\SettingsApi.class
 com\orange\OrangeCommunicatorBackend\api\v1\users\UsersApi.class
@@ -65,10 +70,12 @@ com\orange\OrangeCommunicatorBackend\dbEntities\Settings.class
 com\orange\OrangeCommunicatorBackend\api\v1\users\responseBody\UserResponseBody.class
 com\orange\OrangeCommunicatorBackend\api\v1\users\requestBody\UserUpdateRequestBody.class
 com\orange\OrangeCommunicatorBackend\api\v1\meetings\requestBody\NewMeetingRequestBody.class
+com\orange\OrangeCommunicatorBackend\api\v1\users\settings\support\SettingsMapper.class
 com\orange\OrangeCommunicatorBackend\api\v1\test\TestController.class
 com\orange\OrangeCommunicatorBackend\api\v1\meetings\support\MeetingSupport.class
 com\orange\OrangeCommunicatorBackend\api\v1\account\support\exceptions\CreatingAccountException.class
 com\orange\OrangeCommunicatorBackend\api\v1\account\responseBody\AccountRegisterResponseBody.class
 com\orange\OrangeCommunicatorBackend\dbEntities\ParticipantId.class
+com\orange\OrangeCommunicatorBackend\api\v1\users\settings\support\SettingsExceptionSupplier.class
 com\orange\OrangeCommunicatorBackend\api\v1\contacts\support\exceptions\FriendshipNotFoundException.class
 com\orange\OrangeCommunicatorBackend\dbRepositories\MeetingUserListRepository.class

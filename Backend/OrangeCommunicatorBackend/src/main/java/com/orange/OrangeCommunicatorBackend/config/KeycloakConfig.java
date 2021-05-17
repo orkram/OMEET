@@ -50,8 +50,11 @@ public class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
                // "/swagger-ui/**");
         web.ignoring().antMatchers("/api/v1/account/login/**")
                 .antMatchers("/api/v1/account/register/**")
+                .antMatchers("/api/v1/account/{username}/logout/**")
+                .antMatchers("/api/v1/account/{username}/refresh-token/**")
                 .antMatchers("/api/v1/contacts/add/**");
-        web.ignoring().antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**");
+        web.ignoring().antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
+                .antMatchers("**/favicon.ico");
     }
 
     @Override
@@ -65,6 +68,7 @@ public class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
                 //.antMatchers("api/v1/account/register/**")
                 //.permitAll()
                 .antMatchers("/api/v1/**").fullyAuthenticated()
+                .antMatchers( "**/favicon.ico").permitAll()
                 .anyRequest().fullyAuthenticated();
     }
 

@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 
 public class MeetingResponseBody {
 
-    private final long idMeeting;
+    private final String idMeeting;
     private final String name;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private final java.sql.Timestamp date;
@@ -16,7 +16,7 @@ public class MeetingResponseBody {
     private final UserResponseBody owner;
 
     @JsonCreator
-    public MeetingResponseBody(long idMeeting, String name, Timestamp date, String roomUrl, UserResponseBody owner) {
+    public MeetingResponseBody(String idMeeting, String name, Timestamp date, String roomUrl, UserResponseBody owner) {
         this.idMeeting = idMeeting;
         this.name = name;
         this.date = date;
@@ -24,7 +24,7 @@ public class MeetingResponseBody {
         this.owner = owner;
     }
 
-    public long getIdMeeting() {
+    public String getIdMeeting() {
         return idMeeting;
     }
 

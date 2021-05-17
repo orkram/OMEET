@@ -45,9 +45,10 @@ public class ParticipantsApi {
                                                    @RequestParam(name="query", defaultValue="") List<String> query,
                                                    @RequestParam(name="firstNameSortAscending", defaultValue="true") boolean fNameAsc,
                                                    @RequestParam(name="lastNameSortAscending", defaultValue="true") boolean lNameAsc,
-                                                   @RequestParam(name="userNameSortAscending", defaultValue="true") boolean uNameAsc) {
+                                                   @RequestParam(name="userNameSortAscending", defaultValue="true") boolean uNameAsc,
+                                                   @RequestParam(name="emailSortAscending", defaultValue="true") boolean emailAsc) {
         List<UserResponseBody> responseBodies = participantsService.findParticipants(id, query,
-                fNameAsc,  lNameAsc, uNameAsc);
+                fNameAsc,  lNameAsc, uNameAsc, emailAsc);
         return ResponseEntity.status(HttpStatus.OK).body(responseBodies);
     }
 
@@ -58,30 +59,36 @@ public class ParticipantsApi {
                                       @RequestParam("page") int page, @RequestParam("size")  int size,
                                       @RequestParam(name="firstNameSortAscending", defaultValue="true") boolean fNameAsc,
                                       @RequestParam(name="lastNameSortAscending", defaultValue="true") boolean lNameAsc,
-                                      @RequestParam(name="userNameSortAscending", defaultValue="true") boolean uNameAsc) {
+                                      @RequestParam(name="userNameSortAscending", defaultValue="true") boolean uNameAsc,
+                                      @RequestParam(name="emailSortAscending", defaultValue="true") boolean emailAsc) {
         FoundUsersPageResponseBody responseBodies =
-                participantsService.findParticipantsPaginated(id, query, page, size, fNameAsc, lNameAsc, uNameAsc);
+                participantsService.findParticipantsPaginated(id, query, page, size, fNameAsc, lNameAsc, uNameAsc, emailAsc);
         return ResponseEntity.status(HttpStatus.OK).body(responseBodies);
     }
 
 
-    @GetMapping("/users/{username}")
+    @GetMapping("/user/{username}")
     @ApiOperation("Get user's meetings ")
     public ResponseEntity<List<MeetingResponseBody>>
             findMeetings(@PathVariable String username, @RequestParam(name="query", defaultValue="") List<String> query,
-                         @RequestParam(name="meetingNameSortAscending", defaultValue="true") boolean mNameAsc) {
-        List<MeetingResponseBody> responseBodies = participantsService.findMeetings(username, query, mNameAsc);
+                         @RequestParam(name="meetingNameSortAscending", defaultValue="true") boolean mNameAsc,
+                         @RequestParam(name="idSortAscending", defaultValue="true") boolean idAsc,
+                         @RequestParam(name="meetingDateSortAscending", defaultValue="true") boolean dateAsc) {
+        List<MeetingResponseBody> responseBodies = participantsService.findMeetings(username, query,
+                mNameAsc, idAsc, dateAsc);
         return ResponseEntity.status(HttpStatus.OK).body(responseBodies);
     }
 
-    @GetMapping("/users/{username}/page")
+    @GetMapping("/user/{username}/page")
     @ApiOperation("Get user's meetings ")
     public ResponseEntity<MeetingsPageResponseBody>
             findMeetingsPaginated(@PathVariable String username, @RequestParam(name="query", defaultValue="") List<String> query,
                                   @RequestParam("page") int page, @RequestParam("size")  int size,
-                                  @RequestParam(name="meetingNameSortAscending", defaultValue="true") boolean mNameAsc) {
+                                  @RequestParam(name="meetingNameSortAscending", defaultValue="true") boolean mNameAsc,
+                                  @RequestParam(name="idSortAscending", defaultValue="true") boolean idAsc,
+                                  @RequestParam(name="meetingDateSortAscending", defaultValue="true") boolean dateAsc) {
         MeetingsPageResponseBody responseBodies =
-                participantsService.fingMeetingsPaginated(username, page, size, mNameAsc, query);
+                participantsService.fingMeetingsPaginated(username, page, size, mNameAsc, query, idAsc, dateAsc);
         return ResponseEntity.status(HttpStatus.OK).body(responseBodies);
     }
 

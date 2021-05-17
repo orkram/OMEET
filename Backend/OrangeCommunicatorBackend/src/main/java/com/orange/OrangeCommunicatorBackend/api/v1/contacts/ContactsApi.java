@@ -28,7 +28,7 @@ public class ContactsApi {
         this.contactsService = contactsService;
     }
 
-    @PostMapping("/friends")
+    @PostMapping("/add")
     @ApiOperation("Add friend")
     public String create(@RequestParam("user-o") String userO, @RequestParam("user-f") String userF) {
         AddErrorEnum addErrorEnum = contactsService.add(userO, userF);
@@ -47,8 +47,9 @@ public class ContactsApi {
     public ResponseEntity<List<UserResponseBody>> find(@PathVariable String username, @RequestParam(name="query", defaultValue="") List<String> query,
                                                        @RequestParam(name="firstNameSortAscending", defaultValue="true") boolean fNameAsc,
                                                        @RequestParam(name="lastNameSortAscending", defaultValue="true") boolean lNameAsc,
-                                                       @RequestParam(name="userNameSortAscending", defaultValue="true") boolean uNameAsc) {
-        List<UserResponseBody> responseBodyList = contactsService.findAll(username, query, fNameAsc, lNameAsc, uNameAsc);
+                                                       @RequestParam(name="userNameSortAscending", defaultValue="true") boolean uNameAsc,
+                                                       @RequestParam(name="emailSortAscending", defaultValue="true") boolean emailAsc) {
+        List<UserResponseBody> responseBodyList = contactsService.findAll(username, query, fNameAsc, lNameAsc, uNameAsc, emailAsc);
         return ResponseEntity.status(HttpStatus.OK).body(responseBodyList);
     }
 
@@ -59,8 +60,9 @@ public class ContactsApi {
                                                                     @RequestParam(name="query", defaultValue="") List<String> query,
                                                                     @RequestParam(name="firstNameSortAscending", defaultValue="true") boolean fNameAsc,
                                                                     @RequestParam(name="lastNameSortAscending", defaultValue="true") boolean lNameAsc,
-                                                                    @RequestParam(name="userNameSortAscending", defaultValue="true") boolean uNameAsc) {
-        FoundUsersPageResponseBody response = contactsService.findPaginated(page, size, username, query, fNameAsc, lNameAsc, uNameAsc);
+                                                                    @RequestParam(name="userNameSortAscending", defaultValue="true") boolean uNameAsc,
+                                                                    @RequestParam(name="emailSortAscending", defaultValue="true") boolean emailAsc) {
+        FoundUsersPageResponseBody response = contactsService.findPaginated(page, size, username, query, fNameAsc, lNameAsc, uNameAsc, emailAsc);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

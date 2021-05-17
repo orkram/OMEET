@@ -12,59 +12,34 @@ public class Settings {
     @Column(name = "user_name")
     private String userName;
 
-    private String setting1;
+    @Column(name = "is_private")
+    private boolean isPrivate;
 
-    private String setting2;
+    @Column(name = "is_mic_enabled_on_entry")
+    private boolean isDefaultMicOn;
 
-    private String setting3;
+    @Column(name = "is_camera_enabled_on_entry")
+    private boolean isDefaultCamOn;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_name")
     @MapsId
     private User user;
 
-    Settings() {
+    public Settings() {
 
     }
 
-    public Settings(String userName, String setting1, String setting2, String setting3, User user) {
-        this.userName = userName;
-        this.setting1 = setting1;
-        this.setting2 = setting2;
-        this.setting3 = setting3;
+    public Settings(boolean isPrivate, boolean isDefaultMicOn, boolean isDefaultCamOn, User user) {
+        this.userName = user.getUserName();
+        this.isPrivate = isPrivate;
+        this.isDefaultMicOn = isDefaultMicOn;
+        this.isDefaultCamOn = isDefaultCamOn;
         this.user = user;
     }
 
     public String getUserName() {
         return userName;
-    }
-
-    public void setUserName(String id_user) {
-        this.userName = id_user;
-    }
-
-    public String getSetting1() {
-        return setting1;
-    }
-
-    public void setSetting1(String setting1) {
-        this.setting1 = setting1;
-    }
-
-    public String getSetting2() {
-        return setting2;
-    }
-
-    public void setSetting2(String setting2) {
-        this.setting2 = setting2;
-    }
-
-    public String getSetting3() {
-        return setting3;
-    }
-
-    public void setSetting3(String setting3) {
-        this.setting3 = setting3;
     }
 
     public User getUser() {
@@ -73,6 +48,30 @@ public class Settings {
 
     public void setUser(User user) {
         this.user = user;
+        this.userName = user.getUserName();
     }
 
+    public boolean isPrivate() {
+        return isPrivate;
+    }
+
+    public void setPrivate(boolean aPrivate) {
+        isPrivate = aPrivate;
+    }
+
+    public boolean isDefaultMicOn() {
+        return isDefaultMicOn;
+    }
+
+    public void setDefaultMicOn(boolean defaultMicOn) {
+        isDefaultMicOn = defaultMicOn;
+    }
+
+    public boolean isDefaultCamOn() {
+        return isDefaultCamOn;
+    }
+
+    public void setDefaultCamOn(boolean defaultCamOn) {
+        isDefaultCamOn = defaultCamOn;
+    }
 }

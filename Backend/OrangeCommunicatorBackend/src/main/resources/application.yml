@@ -1,7 +1,11 @@
 # application configuration
 server:
   port: 9000
-  url: http://130.61.186.61
+  http: http://
+  https: https://
+  ip: 130.61.186.61
+  url: ${server.http}${server.ip}
+  #url: http://130.61.186.61
   #url: http://localhost
 
 # keycloak configuration
@@ -67,6 +71,6 @@ logging:
 
 auth:
   client: orange-app
-  secret: f0a42c65-a82a-431c-b4e6-36985039a434 #server
+  secret: 881f08d9-7da9-4654-a3b2-8987b7a17506 #server
   #secret: 3a9266bb-4ca5-4615-9f6d-934bd2a3afad #localhost
 

@@ -55,8 +55,9 @@ public class UserService {
     }
 
     public FoundUsersPageResponseBody findPaginated(int pageNr, int size, List<String> query, boolean fNameAscending,
-                                                    boolean lNameAscending, boolean uNameAscending){
-        Sort sort = userSupport.getSort(fNameAscending, lNameAscending, uNameAscending);
+                                                    boolean lNameAscending, boolean uNameAscending,
+                                                    boolean emailAscending){
+        Sort sort = userSupport.getSort(fNameAscending, lNameAscending, uNameAscending, emailAscending);
 
         if(pageNr <= 0){
             pageNr = 1;
@@ -79,9 +80,10 @@ public class UserService {
         return userMapper.toUserFoundPaged(usersResponse, page.getTotalElements(), page.getTotalPages());
     }
 
-    public List<UserResponseBody> findUsers(List<String> query, boolean fNameAsc, boolean lNameAsc, boolean uNameAsc){
+    public List<UserResponseBody> findUsers(List<String> query, boolean fNameAsc, boolean lNameAsc,
+                                            boolean uNameAsc, boolean emailAsc){
 
-        Sort sort = userSupport.getSort(fNameAsc, lNameAsc, uNameAsc);
+        Sort sort = userSupport.getSort(fNameAsc, lNameAsc, uNameAsc, emailAsc);
 
         if(query.size() == 0){
             query.add("");

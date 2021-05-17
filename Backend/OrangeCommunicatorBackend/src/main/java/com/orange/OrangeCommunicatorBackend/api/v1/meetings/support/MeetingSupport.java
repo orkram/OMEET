@@ -18,13 +18,25 @@ public class MeetingSupport {
 
     private final String meetingNameCol = "name";
     private final String ownerCol = "user";
+    private final String dateCol = "sqlTimestamp";
+    private final String idCol = "idMeeting";
 
-    public Sort getSort(boolean mNameAscending) {
+    public Sort getSort(boolean mNameAscending, boolean idAscending, boolean dateAscending) {
         Sort sort = null;
         if(mNameAscending) {
             sort = Sort.by(meetingNameCol).ascending();
         } else {
             sort = Sort.by(meetingNameCol).descending();
+        }
+        if(idAscending) {
+            sort = sort.and(Sort.by(idCol).ascending());
+        } else {
+            sort = sort.and(Sort.by(idCol).descending());
+        }
+        if(dateAscending) {
+            sort = sort.and(Sort.by(dateCol).ascending());
+        } else {
+            sort = sort.and(Sort.by(dateCol).descending());
         }
         return sort;
     }

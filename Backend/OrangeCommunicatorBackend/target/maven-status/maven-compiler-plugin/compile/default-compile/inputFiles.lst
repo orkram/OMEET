@@ -11,6 +11,7 @@ C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\dbRepositories\SettingsRepository.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\account\support\AccountExceptionSupplier.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\meetings\support\exceptions\MeetingNotFoundException.java
+C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\users\settings\requestBody\UpdateSettingsRequestBody.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\meetings\participants\support\ParticipantsMapper.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\meetings\support\exceptions\CreatingMeetingErrorException.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\contacts\support\AddErrorEnum.java
@@ -23,6 +24,7 @@ C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\test\TestController.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\users\settings\SettingsApi.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\contacts\support\ContactExceptionSupplier.java
+C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\users\settings\SettingsService.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\users\support\UserSupport.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\account\requestBody\AccountRefreshTokenRequestBody.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\contacts\ContactsApi.java
@@ -32,19 +34,23 @@ C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\account\requestBody\AccountLoginRequestBody.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\meetings\support\MeetingsExceptionSupplier.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\dbEntities\Settings.java
+C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\users\settings\support\SettingsExceptionSupplier.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\OrangeCommunicatorBackendApplication.java
+C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\users\settings\support\SettingsMapper.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\meetings\support\MeetingsMapper.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\meetings\requestBody\UpdateMeetingRequestBody.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\account\support\exceptions\AccountExistsException.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\contacts\support\exceptions\FriendshipNotFoundException.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\users\UsersApi.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\dbEntities\MeetingUserList.java
+C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\users\settings\support\exceptions\SettingsNotFoundException.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\dbEntities\ListOfFriends.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\dbRepositories\ListOfFriendsRepository.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\dbEntities\ParticipantId.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\account\responseBody\AccountRegisterResponseBody.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\account\support\AccountExceptionAdvisor.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\account\responseBody\AccountTokenResponseBody.java
+C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\users\settings\responseBody\SettingsResponseBody.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\config\SpringFoxConfig.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\meetings\participants\ParticipantsService.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\dbEntities\Meeting.java
@@ -60,6 +66,7 @@ C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\account\support\exceptions\CreatingAccountException.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\account\requestBody\AccountRegisterRequestBody.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\users\requestBody\UserUpdateRequestBody.java
+C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\users\settings\support\SettingsExceptionAdvisor.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\meetings\MeetingsApi.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\users\responseBody\FoundUsersPageResponseBody.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\meetings\participants\support\ParticipantsSupport.java

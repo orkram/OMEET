@@ -16,6 +16,7 @@ import com.orange.OrangeCommunicatorBackend.dbEntities.User;
 import com.orange.OrangeCommunicatorBackend.dbRepositories.MeetingRepository;
 import com.orange.OrangeCommunicatorBackend.dbRepositories.MeetingUserListRepository;
 import com.orange.OrangeCommunicatorBackend.dbRepositories.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -35,10 +36,14 @@ public class MeetingsService {
     private final MeetingSupport meetingSupport;
     private final ParticipantsService participantsService;
 
+    @Value("${server.https}")
+    private String https;
+    @Value("${server.ip}")
+    private String ip;
+
     public MeetingsService(MeetingsMapper meetingsMapper, MeetingRepository meetingRepository,
                            MeetingUserListRepository meetingUserListRepository, UserRepository userRepository,
-                           MeetingSupport meetingSupport, ParticipantsService participantsService,
-                           ParticipantsMapper participantsMapper) {
+                           MeetingSupport meetingSupport, ParticipantsService participantsService) {
         this.meetingsMapper = meetingsMapper;
         this.meetingRepository = meetingRepository;
         this.meetingUserListRepository = meetingUserListRepository;
@@ -68,7 +73,7 @@ public class MeetingsService {
                     throw MeetingsExceptionSupplier.creatingMeetingErrorException().get();
             }
         }
-        String link = "";
+        String link = https + ip + "/" + id;
         Meeting meeting = meetingRepository.save(meetingsMapper.toMeeting(id, newMeetingRequestBody, link, owner));
 
         List<String> usernames = newMeetingRequestBody.getParticipants();
@@ -113,7 +118,7 @@ public class MeetingsService {
         return meetingsMapper.toMeetingResponseBody(meeting);
     }
 
-    public List<MeetingResponseBody> getOwnersMeeting(String username, List<String> query, boolean mNameAsc) {
+    public List<MeetingResponseBody> getOwnersMeeting(String username, List<String> query, boolean mNameAsc, boolean idAsc, boolean dateAsc) {
         User user = userRepository.findById(username)
                 .orElseThrow(UserExceptionSupplier.userNotFoundException(username));
 
@@ -121,7 +126,7 @@ public class MeetingsService {
             query.add("");
         }
 
-        Sort sort = meetingSupport.getSort(mNameAsc);
+        Sort sort = meetingSupport.getSort(mNameAsc, idAsc, dateAsc);
         Specification<Meeting> spec = meetingSupport.nameContains(query, user);
 
         List<Meeting> meetings = meetingRepository.findAll(spec, sort);
@@ -132,11 +137,11 @@ public class MeetingsService {
     }
 
     public MeetingsPageResponseBody getOwnersMeetingPaginated(String username, List<String> query,
-                                                              int pageNr, int size, boolean mNameAsc) {
+                                                              int pageNr, int size, boolean mNameAsc, boolean idAsc, boolean dateAsc) {
 
         User user = userRepository.findById(username)
                 .orElseThrow(UserExceptionSupplier.userNotFoundException(username));
-        Sort sort = meetingSupport.getSort(mNameAsc);
+        Sort sort = meetingSupport.getSort(mNameAsc, idAsc, dateAsc);
         Specification<Meeting> spec = meetingSupport.nameContains(query, user);
 
         if(pageNr <= 0){

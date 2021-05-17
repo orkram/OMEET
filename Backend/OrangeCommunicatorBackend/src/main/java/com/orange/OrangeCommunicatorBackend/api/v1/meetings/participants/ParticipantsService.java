@@ -73,7 +73,7 @@ public class ParticipantsService {
         meetingUserListRepository.delete(participantsMapper.toMeetingParticipant(meeting, user));
     }
 
-    public List<UserResponseBody> findParticipants(Long id, List<String> query, boolean fNameAsc, boolean lNameAsc, boolean uNameAsc) {
+    public List<UserResponseBody> findParticipants(Long id, List<String> query, boolean fNameAsc, boolean lNameAsc, boolean uNameAsc, boolean emailAsc) {
 
         Meeting meeting = meetingRepository.findById(id)
                 .orElseThrow(MeetingsExceptionSupplier.meetingNotFoundException(id));
@@ -84,7 +84,7 @@ public class ParticipantsService {
 
         List<String> usernames =  participantsSupport.getUsernamesFromMeeting(meeting);
 
-        Sort sort = userSupport.getSort(fNameAsc, lNameAsc, uNameAsc);
+        Sort sort = userSupport.getSort(fNameAsc, lNameAsc, uNameAsc, emailAsc);
         Specification<User> spec = participantsSupport.specificationForUsers(query, usernames);
 
         List<User> users = userRepository.findAll(spec, sort);
@@ -94,7 +94,7 @@ public class ParticipantsService {
 
     public FoundUsersPageResponseBody
             findParticipantsPaginated(Long id, List<String> query, int page, int size,
-                                      boolean fNameAsc, boolean lNameAsc, boolean uNameAsc) {
+                                      boolean fNameAsc, boolean lNameAsc, boolean uNameAsc, boolean emailAsc) {
 
 
         Meeting meeting = meetingRepository.findById(id)
@@ -112,7 +112,7 @@ public class ParticipantsService {
             size = 1;
         }
 
-        Sort sort = userSupport.getSort(fNameAsc, lNameAsc, uNameAsc);
+        Sort sort = userSupport.getSort(fNameAsc, lNameAsc, uNameAsc, emailAsc);
         List<String> usernames =  participantsSupport.getUsernamesFromMeeting(meeting);
 
         PageRequest pageRequest = PageRequest.of(page - 1, size, sort);
@@ -124,7 +124,7 @@ public class ParticipantsService {
     }
 
 
-    public List<MeetingResponseBody> findMeetings(String username, List<String> query, boolean mNameAsc) {
+    public List<MeetingResponseBody> findMeetings(String username, List<String> query, boolean mNameAsc, boolean idAsc, boolean dateAsc) {
 
         User user = userRepository.findById(username)
                 .orElseThrow(UserExceptionSupplier.userNotFoundException(username));
@@ -133,7 +133,7 @@ public class ParticipantsService {
         }
 
         List<Long> meetingsIds = participantsSupport.getMeetingsIdsFromUser(user);
-        Sort sort = meetingSupport.getSort(mNameAsc);
+        Sort sort = meetingSupport.getSort(mNameAsc, idAsc, dateAsc);
 
         Specification<Meeting> spec = participantsSupport.specificationForMeetings(query, meetingsIds);
         List<Meeting> meetings = meetingRepository.findAll(spec, sort);
@@ -142,7 +142,7 @@ public class ParticipantsService {
     }
 
     public MeetingsPageResponseBody fingMeetingsPaginated(String username, int page, int size,
-                                                          boolean mNameAsc, List<String> query) {
+                                                          boolean mNameAsc, List<String> query, boolean idAsc, boolean dateAsc) {
 
         User user = userRepository.findById(username)
                 .orElseThrow(UserExceptionSupplier.userNotFoundException(username));
@@ -160,7 +160,7 @@ public class ParticipantsService {
         }
 
         List<Long> meetingsIds = participantsSupport.getMeetingsIdsFromUser(user);
-        Sort sort = meetingSupport.getSort(mNameAsc);
+        Sort sort = meetingSupport.getSort(mNameAsc, idAsc, dateAsc);
 
         PageRequest pageRequest = PageRequest.of(page - 1, size, sort);
         Specification<Meeting> spec = participantsSupport.specificationForMeetings(query, meetingsIds);

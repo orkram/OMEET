@@ -5,9 +5,11 @@ import com.orange.OrangeCommunicatorBackend.dbEntities.MeetingUserList;
 import com.orange.OrangeCommunicatorBackend.dbEntities.ParticipantId;
 import com.orange.OrangeCommunicatorBackend.dbEntities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface MeetingUserListRepository extends JpaRepository<MeetingUserList, ParticipantId> {
     List<MeetingUserList> findByUser(User user);
     List<MeetingUserList> findByMeeting(Meeting meeting);

@@ -33,7 +33,7 @@ public class MeetingsMapper {
     }
 
     public MeetingResponseBody toMeetingResponseBody(Meeting meeting) {
-        MeetingResponseBody meetingResponseBody = new MeetingResponseBody(meeting.getIdMeeting(),
+        MeetingResponseBody meetingResponseBody = new MeetingResponseBody(Long.toString(meeting.getIdMeeting()),
                 meeting.getName(), meeting.getSqlTimestamp(), meeting.getRoomUrl(),
                 userMapper.toUserResponseBody(meeting.getUser()));
         return  meetingResponseBody;
