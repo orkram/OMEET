@@ -125,7 +125,8 @@ class MeetingsFragment : Fragment() {
             val joinMeetingButton = view.findViewById<ImageButton>(R.id.imageButton)
 
             joinMeetingButton.setOnClickListener {
-                UserInfo.conferenceName = meeting.id.toString()
+                UserInfo.conferenceName = meeting.name.toString()
+                UserInfo.conferenceId = meeting.id.toString()
                 findNavController().navigate(R.id.nav_video)
             }
 

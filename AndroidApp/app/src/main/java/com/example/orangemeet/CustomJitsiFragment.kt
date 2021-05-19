@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.add
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.orangemeet.fragments.VideoFragment
+import com.facebook.react.ReactInstanceManager
 import org.jitsi.meet.sdk.*
 
 import timber.log.Timber
@@ -23,7 +24,7 @@ class CustomJitsiFragment : JitsiMeetFragment() {
 
     private var broadcastReceiver : BroadcastReceiver? = null
     var parentFrag : VideoFragment? = null
-    var roomName : String = UserInfo.conferenceName
+    var roomName : String = UserInfo.conferenceId;
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,10 +46,11 @@ class CustomJitsiFragment : JitsiMeetFragment() {
         jitsiView.join(JitsiMeetConferenceOptions.Builder()
             .setServerURL(URL("http://130.61.186.61"))
             .setRoom(roomName)
-            .setSubject(roomName)
+            .setSubject(UserInfo.conferenceName)
             .setAudioMuted(false)
             .setVideoMuted(false)
             .setUserInfo(userData)
+            .setFeatureFlag("fullscreen.enabled", false)
             .setFeatureFlag("add-people.enabled", false)
             .setFeatureFlag("invite.enabled", false)
             .setFeatureFlag("toolbox.enabled", true)
