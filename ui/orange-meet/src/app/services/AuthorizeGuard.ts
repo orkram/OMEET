@@ -23,15 +23,22 @@ export class AuthorizeGuard implements CanActivate {
           .pipe(
             catchError(_ => of([]))
           ).subscribe(
-            res => console.log('HTTP response', res),
-            _ => {
-              this.router.navigateByUrl('/login');
-              return of(false);
+            res => {
+              this.authStorageService.set('accessToken', res.accessToken);
+              this.authStorageService.set('refreshToken', res.refreshToken);
             },
-            () => true
+            _ => {
+              console.log('Error while fetching new token');
+              window.location.reload();
+              this.router.navigateByUrl('/login');
+              return false;
+            },
+            () => {
+              return true;
+            }
         );
-
-        return !!k;   // TODO wasn't tested
+        this.router.navigateByUrl('/login');
+        return !!k;      // TODO wasn't tested
       } else {
         return true;
       }

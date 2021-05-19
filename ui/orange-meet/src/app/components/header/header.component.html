@@ -10,8 +10,18 @@
 
   <div class="button-spacer"></div>
 
-  <button type=button mat-icon-button class="example-icon" color="primary" aria-label="Example icon-button with share icon" (click)="logout()">
+  <button type=button mat-icon-button class="example-icon" color="primary" aria-label="Example icon-button with share icon" (click)=" changeVisibility()">
     <mat-icon>account_circle</mat-icon>
   </button>
+
+  <div *ngIf="logoutVisible" class="logout-window">
+    <div class="username">
+      {{username}}
+    </div>
+    <div class="email">
+      {{email}}
+    </div>
+    <button type="button" class="logout-button" (click)="logout()" mat-raised-button color="primary" >Log out?</button>
+  </div>
 
 </mat-toolbar>

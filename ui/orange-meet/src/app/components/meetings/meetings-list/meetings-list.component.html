@@ -1,14 +1,13 @@
 <div class="find-meeting">
   <p>
     <mat-form-field appearance="outline" >
-      <mat-label>Find meeting</mat-label>
+      <mat-label>Find meeting(by name)</mat-label>
       <input matInput placeholder="Search" autocomplete="off" #input >
     </mat-form-field>
   </p>
 </div>
 
 <div class="example-container" >
-
   <div class="spinner-container" *ngIf="dataSource.loading$ | async">
     <mat-spinner></mat-spinner>
   </div>
@@ -18,22 +17,20 @@
 
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef> id </mat-header-cell>
-      <mat-cell *matCellDef="let meeting"> {{meeting.id}} </mat-cell>
+      <mat-cell *matCellDef="let meeting"> {{meeting.idMeeting}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef > Name </mat-header-cell>
-      <mat-cell *matCellDef="let meeting"> {{meeting.title}} </mat-cell>
+      <mat-cell *matCellDef="let meeting"> {{meeting.name}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="status">
       <mat-header-cell *matHeaderCellDef > Status </mat-header-cell>
       <mat-cell *matCellDef="let meeting">
 
-        <mat-chip-list>
-        <mat-chip class="chip" color="$success" selected> {{meeting.status}}
+        <mat-chip class="chip" color="gray" selected> Active
         </mat-chip>
-        </mat-chip-list>
       </mat-cell>
     </ng-container>
 
@@ -44,28 +41,32 @@
       </mat-cell>
     </ng-container>
 
-
     <ng-container matColumnDef="expandedMeeting" >
       <mat-cell *matCellDef="let detail" >
         <div class="expanded-description ">
           <div class="text-description">
             <div class="meeting-title">
-            {{detail.meeting.name}}
+            Title: {{detail.meeting.name}}
             </div>
-
             <mat-chip-list>
-              <mat-chip class="chip" color="$success" selected> {{detail.meeting.status}}
+              <mat-chip class="chip" color="$success" selected> Active
               </mat-chip>
             </mat-chip-list>
-
+<!--
             <div class="meeting-desc">
-            {{detail.meeting.description}}
+            Description: {{detail.meeting.description}}
               <br>
               {{detail.meeting.date | date }}
             </div>
+        -->
+
+            <div>
+              Invited participants: {{detail.meeting.participants}}
+            </div>
           </div>
+
          <span class="description-spacer"></span>
-        <button mat-raised-button color="primary">Join</button>
+        <button mat-raised-button color="primary" (click)="joinMeeting(detail.meeting)">Join</button>
         </div>
       </mat-cell>
     </ng-container>
@@ -83,11 +84,9 @@
   </mat-table>
 
   <mat-paginator class = "contact-paginator"
-                 [length]=10
-                 [pageSize]="3"
-                 [pageSizeOptions]="[3,6]"
-                 [hidePageSize]="true">
+                 [pageSize]="defaultPageSize"
+                 [pageSizeOptions]="[5,7]"
+                 >
     <!-- TODO length, relate pagesizeoptions and screen size,-->
   </mat-paginator>
-
 </div>

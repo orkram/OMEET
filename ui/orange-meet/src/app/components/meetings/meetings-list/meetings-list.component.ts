@@ -7,6 +7,8 @@ import {MatSort} from '@angular/material/sort';
 import {ActivatedRoute} from '@angular/router';
 import {MeetingsDataSource} from '../../../services/meetings.datasource';
 import {MeetingsService} from '../../../services/meetings.service';
+import {JWTTokenService} from '../../../services/JWTTokenService';
+import {ParticipantsService} from '../../../services/ParticipantsService';
 
 @Component({
   selector: 'app-meetings-list',
@@ -22,7 +24,11 @@ import {MeetingsService} from '../../../services/meetings.service';
 })
 export class MeetingsListComponent implements OnInit, AfterViewInit{
 
-  constructor(private route: ActivatedRoute, private meetingsService: MeetingsService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private meetingsService: MeetingsService,
+    private tokenService: JWTTokenService,
+    private participantsService: ParticipantsService) {}
 
   expandedMeeting: any;
 
@@ -36,10 +42,20 @@ export class MeetingsListComponent implements OnInit, AfterViewInit{
 
   @ViewChild('input', { static: true }) input!: ElementRef;
 
+  defaultPageSize = 7;
 
   ngOnInit(): void {
-    this.dataSource = new MeetingsDataSource(this.meetingsService);
-    this.dataSource.loadMeetings('', 'asc', 0, 6);
+    this.dataSource = new MeetingsDataSource(this.meetingsService, this.participantsService);
+
+    (async () => {
+      this.dataSource.loadMeetings(this.tokenService.getUsername(), this.input.nativeElement.value, true, 1, this.defaultPageSize);
+      await this.delay(300);                // TODO return promise
+      this.paginator.length = this.dataSource.length;
+    })();
+  }
+
+  private delay(ms: number): Promise<any> {
+    return new Promise( resolve => setTimeout(resolve, ms) );
   }
 
   ngAfterViewInit(): void {
@@ -53,7 +69,6 @@ export class MeetingsListComponent implements OnInit, AfterViewInit{
         distinctUntilChanged(),
         tap(() => {
           this.paginator.pageIndex = 0;
-
           this.loadMeetingsPage();
         })
       )
@@ -63,19 +78,38 @@ export class MeetingsListComponent implements OnInit, AfterViewInit{
       .pipe(
         tap(() => this.loadMeetingsPage())
       )
-      .subscribe();
+      .subscribe(
+        _ => {},
+        _ => {window.location.reload(); }
+      );
+    this.paginator.length = this.dataSource.length;
+  }
+
+  getParticipants(id: string): Array<string>{
+    const part = this.participantsService
+      .getParticipants(id)
+      .subscribe(
+        next => { console.log(next); }
+      );
+    return [];
   }
 
   loadMeetingsPage(): void {
-    this.dataSource.loadMeetings(
-      '',
-      'asc',
-      this.paginator.pageIndex,
+      this.dataSource.loadMeetings(
+      this.tokenService.getUsername(),
+        this.input.nativeElement.value,
+      true,
+      this.paginator.pageIndex + 1,
       this.paginator.pageSize
     );
+      this.paginator.length = this.dataSource.length;
   }
 
   isExpansionDetailRow = (i: number, row: object) => row.hasOwnProperty('detailRow');
+
+  joinMeeting(meeting: any): void{
+    window.open(`https://130.61.186.61/${meeting.idMeeting}#userInfo.displayName=%22${this.tokenService.getUsername()}%22`);
+  }
 
 }
 

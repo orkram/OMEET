@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>Create meeting</h1>
+<div mat-dialog-content>
+  Enter meeting id:
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Meeting name</mat-label>
+        <input type="text" matInput formControlName="name" required>
+        <mat-error *ngIf="form.get('id')?.invalid">Complete field</mat-error>
+      </mat-form-field>
+    </p>
+
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Meeting description</mat-label>
+        <input type="text" matInput formControlName="description" required>
+        <mat-error *ngIf="form.get('id')?.invalid">Complete field</mat-error>
+      </mat-form-field>
+    </p>
+
+
+    <div class="button">
+      <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid || submitted" >Create</button>
+    </div>
+  </form>
+
+</div>

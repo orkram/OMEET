@@ -28,11 +28,11 @@ export class JWTTokenService {
   }
 
   getEmail(): string {
-    return JSON.parse(this.accessToken()).email;
+    return JSON.parse(JSON.stringify(this.accessToken())).email;
   }
 
   getUsername(): string {
-    return JSON.parse(this.accessToken()).preferred_username;
+    return JSON.parse(JSON.stringify(this.accessToken())).preferred_username;
   }
 
   isAccessTokenExpired(): boolean {
@@ -53,9 +53,9 @@ export class JWTTokenService {
   isRefreshTokenExpired(): boolean {
     if (this.refreshToken()) {
       console.log(this.refreshToken());
-      const expiryTime: number = +JSON.parse(this.refreshToken()).exp;
+      const expiryTime: number = +JSON.parse(JSON.stringify(this.refreshToken())).exp;
       if (expiryTime) {
-        return ((1000 * expiryTime) - (new Date()).getTime()) < 5000;
+        return ((1000 * expiryTime) - (new Date()).getTime()) < 4000;
       } else {
         return false;
       }
@@ -71,11 +71,11 @@ export class JWTTokenService {
         'Access-Control-Allow-Methods': 'POST',
         'Access-Control-Allow-Headers': 'Content-Type',
         'Access-Control-Allow-Origin': 'http://130.61.186.61:9000/', // TODO remove after replacing URL with relative one
-        Anonymous: ''
+         Anonymous: ''
       });
       return this.http.post(
-        `http://130.61.186.61:9000/api/v1/account/${this.getUsername()}/refreshToken`,
-        {refreshToken: this.refreshToken()}, {headers});
+        `http://130.61.186.61:9000/api/v1/account/${this.getUsername()}/refresh-token`,
+        {refreshToken: this.cookieService.get('refreshToken')}, {headers});
     } else {
       return throwError('Tokens expired');
     }

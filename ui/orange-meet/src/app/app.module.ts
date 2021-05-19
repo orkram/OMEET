@@ -16,7 +16,6 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {UserListComponent} from './components/users-component/user-list/user-list.component';
-import {FindUserFieldComponent} from './components/users-component/user-list/find-user-field/find-user-field.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatListModule} from '@angular/material/list';
 import {MatTableModule} from '@angular/material/table';
@@ -44,6 +43,16 @@ import {CookieService} from './services/CookieService';
 import {LogoutService} from './services/LogoutService';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MeetingsService} from './services/meetings.service';
+import {JoinDialogComponent} from './components/meetings/join-dialog/join-dialog.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import {CreateMeetingDialogComponent} from './components/meetings/create-meeting-dialog/create-meeting-dialog.component';
+import {DatePipe} from '@angular/common';
+import {UserService} from './services/UserService';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {ParticipantsService} from './services/ParticipantsService';
+import {JitsiComponent} from './components/jitsi/jitsi.component';
+import {SelectedUsersService} from './services/SelectedUsersService';
+import {CreateMeetingComponent} from './components/users-component/create-meeting/create-meeting.component';
 
 
 @NgModule({
@@ -55,14 +64,17 @@ import {MeetingsService} from './services/meetings.service';
     NavMenuComponent,
     AddUserComponent,
     UserListComponent,
-    FindUserFieldComponent,
     StartMeetingComponent,
     routingComponents,
     MeetingsListComponent,
     LoginComponent,
     RegistrationComponent,
     LoginFormComponent,
-    RegistrationFormComponent
+    RegistrationFormComponent,
+    JoinDialogComponent,
+    CreateMeetingDialogComponent,
+    JitsiComponent,
+    CreateMeetingComponent
   ],
   imports: [
     BrowserModule,
@@ -92,13 +104,19 @@ import {MeetingsService} from './services/meetings.service';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatDialogModule,
+    MatAutocompleteModule
   ],
   providers: [
-     MeetingsService,
+    MeetingsService,
     LoginService,
     JWTTokenService,
     CookieService,
     LogoutService,
+    UserService,
+    DatePipe,
+    SelectedUsersService,
+    ParticipantsService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AppInterceptor,

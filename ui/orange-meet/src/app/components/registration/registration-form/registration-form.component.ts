@@ -61,7 +61,7 @@ export class RegistrationFormComponent implements OnInit {
               this.errorMessage = true;
             },
           () => { // parse messag
-            this.router.navigateByUrl('/login');
+            // this.router.navigateByUrl('/login');
           }
         );
     }

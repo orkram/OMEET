@@ -1,47 +1,63 @@
-<app-find-user-field (applyFilter)="applyFilter($event)"> </app-find-user-field>
+<div class="find-contact">
+  <p>
+    <mat-form-field appearance="outline" >
+      <mat-label>Find user</mat-label>
+      <input matInput placeholder="Search" autocomplete="off" #input >
+    </mat-form-field>
+  </p>
+</div>
 
-<mat-table class = "contact-table " [dataSource]="dataSource" matSort >
+<div class="example-container" >
 
-  <ng-container matColumnDef="image">
-    <mat-header-cell *matHeaderCellDef></mat-header-cell>
-    <mat-cell *matCellDef="let contact">
-      <img class="table-image" src="{{contact.image}}"/>
-    </mat-cell>
-  </ng-container>
+  <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+    <mat-spinner></mat-spinner>
+  </div>
 
-  <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef  mat-sort-header> Name </mat-header-cell>
-      <mat-cell *matCellDef="let contact">{{contact.name}}
+  <mat-table #table [dataSource]="dataSource" matSort
+             matSortActive="id" matSortDirection="asc" matSortDisableClear>
+
+    <ng-container matColumnDef="image">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let contact">
+        <img class="table-image" src="{{imagePlaceholder}}"/>
       </mat-cell>
-  </ng-container>
+    </ng-container>
 
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef > Name </mat-header-cell>
+      <mat-cell *matCellDef="let contact"> {{contact.firstName}} {{contact.lastName}} </mat-cell>
+    </ng-container>
 
-  <ng-container matColumnDef="email">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
-    <mat-cell *matCellDef="let contact">{{contact.email}}
-    </mat-cell>
-  </ng-container>
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+      <mat-cell *matCellDef="let contact">{{contact.eMail}}
+      </mat-cell>
+    </ng-container>
 
-  <ng-container matColumnDef="checked">
-    <mat-header-cell *matHeaderCellDef> </mat-header-cell>
-    <mat-cell *matCellDef="let contact">
-      <mat-checkbox [(ngModel)]="contact.checked" color="primary"></mat-checkbox>
-    </mat-cell>
-  </ng-container>
+    <ng-container matColumnDef="checked">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let contact">
+        <mat-checkbox [(ngModel)]="selected[contact.userName]" color="primary" (ngModelChange)="onSelect($event, contact)">  </mat-checkbox>
+      </mat-cell>
+    </ng-container>
 
-  <mat-header-row *matHeaderRowDef="headerRow"></mat-header-row>
-  <mat-row *matRowDef="let row;  columns: headerRow;"> </mat-row>
-</mat-table>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"
+             matRipple
+             class="element-row">
+    </mat-row>
+  </mat-table>
 
-
-<mat-paginator class = "contact-paginator " [length]="contacts.length"
-               [pageSizeOptions]="[9]"
-               [hidePageSize]="true">
-  <!-- TODO relate pagesizeoptions and screen size, rebuild paginator for backend pagination-->
-</mat-paginator>
+  <mat-paginator class = "contact-paginator"
+                 [pageSize]="defaultPageSize"
+                 [pageSizeOptions]="defaultPageSizes()"
+  >
+    <!-- TODO length, relate pagesizeoptions and screen size,-->
+  </mat-paginator>
+</div>
 
 <p class="persons-counter">
-  Options selected: {{selectedContacts()}}
+  Options selected: 1
 </p>
 
 

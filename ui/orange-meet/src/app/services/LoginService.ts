@@ -21,7 +21,7 @@ export class LoginService {
     const inputs = form.value;
     const body = JSON.stringify(
       {
-        username: inputs.username,
+        userName: inputs.username,
         password: inputs.password,
         eMail: inputs.email,
         firstName: inputs.firstname,
@@ -29,6 +29,7 @@ export class LoginService {
         imgUrl: ''  // TODO make optional in backend
       }
     );
+    console.log(body);
     return JSON.parse(body);
   }
 
