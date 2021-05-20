@@ -26,6 +26,8 @@ class CustomJitsiFragment : JitsiMeetFragment() {
     private var broadcastReceiver : BroadcastReceiver? = null
     var parentFrag : VideoFragment? = null
 
+    var scheduleHide = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -102,12 +104,24 @@ class CustomJitsiFragment : JitsiMeetFragment() {
                     Timber.i("XD Conference terminated%s", event.getData().get("url"))
                     UserInfo.isInConference = false
                     UserInfo.conferenceId = ""
-                    (activity as MainActivity).customJitsiFragmentView.visibility = View.GONE
+                    if(activity != null)
+                        (activity as MainActivity).customJitsiFragmentView.visibility = View.GONE
+                    else
+                        scheduleHide = true
                     UserInfo.conferenceName = ""
                 }
             }
         }
     }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if(scheduleHide){
+            scheduleHide = false
+            (activity as MainActivity).customJitsiFragmentView.visibility = View.GONE
+        }
+    }
+
 
     companion object{
 

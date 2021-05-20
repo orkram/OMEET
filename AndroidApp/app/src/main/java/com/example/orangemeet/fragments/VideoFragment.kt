@@ -1,5 +1,6 @@
 package com.example.orangemeet.fragments
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.widget.ProgressBar
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.preference.PreferenceManager
 import com.example.orangemeet.CustomJitsiFragment
 import com.example.orangemeet.R
 import com.example.orangemeet.UserInfo
@@ -104,6 +106,10 @@ class VideoFragment : Fragment() {
 
         } else replaceWithInfo()*/
 
+     /*   val prefs = requireActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
+        val startWithAudio = prefs.getBoolean("start_with_audio", false)
+        val startWithVideo = prefs.getBoolean("start_with_wideo", false)*/
+
         if (!UserInfo.conferenceId.isEmpty()) {
             val userData = JitsiMeetUserInfo()
             userData.setDisplayName(UserInfo.userName)
@@ -115,8 +121,8 @@ class VideoFragment : Fragment() {
                                 .setRoom("test")
                                 .setRoom(UserInfo.conferenceId)
                                 .setSubject(UserInfo.conferenceName)
-                                .setAudioMuted(false)
-                                .setVideoMuted(false)
+                                //.setAudioMuted(!startWithAudio)
+                                //.setVideoMuted(!startWithVideo)
                                 .setUserInfo(userData)
                                 .setFeatureFlag("fullscreen.enabled", false)
                                 .setFeatureFlag("add-people.enabled", false)
