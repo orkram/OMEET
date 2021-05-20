@@ -35,6 +35,7 @@ class MeetingsFragment : Fragment() {
     lateinit var meetingPopupDateTime : TextView
     lateinit var meetingsFragment : View
     lateinit var meetingPopupButton: Button
+    lateinit var notFoundPlaceholder : View
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.meetings, menu)
@@ -56,6 +57,7 @@ class MeetingsFragment : Fragment() {
 
         meetingsFragment = inflater.inflate(R.layout.fragment_meetings, container, false)
 
+        notFoundPlaceholder = meetingsFragment.findViewById(R.id.notFoundPlaceholder)
         meetingPopup = meetingsFragment.findViewById(R.id.meetingPopup)
         meetingPopupOwner = meetingPopup.findViewById(R.id.owner)
         meetingPopupParticipants = meetingPopup.findViewById(R.id.participantsList)
@@ -85,7 +87,7 @@ class MeetingsFragment : Fragment() {
         BackendCommunication.getMeetings(
             requireContext(),
             Response.Listener { meetings ->
-                createMeetingViews(inflater, meetings)
+                this.meetings.value = meetings.toMutableList()
                 progressBar.visibility = View.GONE
             },
             Response.ErrorListener {
@@ -109,10 +111,15 @@ class MeetingsFragment : Fragment() {
             if(searchBar.query.isEmpty())
                 true
             else
-                meeting.name.contains(searchBar.query.toString().toLowerCase())
+                meeting.name.toLowerCase().contains(searchBar.query.toString().toLowerCase())
         }
 
         meetingsListView.removeAllViews()
+
+        if(filteredMeetings.isEmpty())
+            notFoundPlaceholder.visibility = View.VISIBLE
+        else
+            notFoundPlaceholder.visibility = View.GONE
 
         var evenView = false
         filteredMeetings.forEach {meeting ->

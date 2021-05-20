@@ -5,10 +5,7 @@ import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
 import com.android.volley.Response
-import com.example.orangemeet.BackendCommunication
-import com.example.orangemeet.R
-import com.example.orangemeet.User
-import com.example.orangemeet.Util
+import com.example.orangemeet.*
 
 
 class FindContactFragment : Fragment() {
@@ -19,6 +16,7 @@ class FindContactFragment : Fragment() {
     lateinit var contactsListView : LinearLayout
 
     lateinit var searchPlaceholder : View
+    lateinit var notFoundPlaceholder : View
 
     var users : List<User>? = null
     var contacts : List<User>? = null
@@ -29,8 +27,10 @@ class FindContactFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val findContactFragment = inflater.inflate(R.layout.fragment_find_contact, container, false)
+
         contactsListView = findContactFragment.findViewById(R.id.meetingsList)
         searchPlaceholder = findContactFragment.findViewById(R.id.searchPlaceholder)
+        notFoundPlaceholder = findContactFragment.findViewById(R.id.notFoundPlaceholder)
         progressBar = findContactFragment.findViewById(R.id.progressBar)
         searchBar = findContactFragment.findViewById(R.id.searchView)
         searchBar.setOnClickListener { v -> searchBar.isIconified = false }
@@ -46,6 +46,7 @@ class FindContactFragment : Fragment() {
                 } else{
                     contactsListView.removeAllViews()
                     searchPlaceholder.visibility = View.VISIBLE
+                    notFoundPlaceholder.visibility = View.GONE
                 }
 
                 return false
@@ -96,9 +97,15 @@ class FindContactFragment : Fragment() {
             else
                 user.username.toLowerCase().contains(searchBar.query.toString().toLowerCase())
                         && contacts!!.find{ contact -> contact.equals(user) } == null
+                        && user.username != UserInfo.userName
         }
 
         contactsListView.removeAllViews()
+
+        if(filteredContacts.isEmpty()){
+            notFoundPlaceholder.visibility = View.VISIBLE
+        } else
+            notFoundPlaceholder.visibility = View.GONE
 
         var evenView = false
         filteredContacts.forEach {contact ->

@@ -17,7 +17,7 @@ class ContactsFragment : Fragment() {
 
     lateinit var progressBar : ProgressBar
     lateinit var searchBar : SearchView
-
+    lateinit var notFoundPlaceholder : View
 
     lateinit var contactsListView : LinearLayout
     var contactsList = MutableLiveData<MutableList<User>>()
@@ -45,6 +45,8 @@ class ContactsFragment : Fragment() {
         setHasOptionsMenu(true)
 
         val contactsFragment = inflater.inflate(R.layout.fragment_contacts, container, false)
+
+        notFoundPlaceholder = contactsFragment.findViewById(R.id.notFoundPlaceholder)
         contactsListView = contactsFragment.findViewById(R.id.contactsLayout)
         progressBar = contactsFragment.findViewById(R.id.progressBar)
         searchBar = contactsFragment.findViewById(R.id.searchView)
@@ -90,6 +92,11 @@ class ContactsFragment : Fragment() {
         }
 
         contactsListView.removeAllViews()
+
+        if(filteredContacts.isEmpty())
+            notFoundPlaceholder.visibility = View.VISIBLE
+        else
+            notFoundPlaceholder.visibility = View.GONE
 
         var evenView = false
         filteredContacts.forEach {contact ->
