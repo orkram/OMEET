@@ -56,7 +56,7 @@ class CreateMeetingFragment : Fragment() {
             timeView.text = SimpleDateFormat("kk:mm", Locale("PL")).format(newDate).toString()
         })
 
-
+        progressBar = createMeetingFragment.findViewById(R.id.progressBar)
         searchView = createMeetingFragment.findViewById(R.id.searchView)
         contactsLayout = createMeetingFragment.findViewById(R.id.contactsLayout)
         dateBox = createMeetingFragment.findViewById(R.id.dateBox)
@@ -65,6 +65,8 @@ class CreateMeetingFragment : Fragment() {
         timeView = createMeetingFragment.findViewById(R.id.meetingTime)
         createMeetingButton = createMeetingFragment.findViewById(R.id.createMeeting)
         meetingNameView = createMeetingFragment.findViewById(R.id.meetingName)
+
+        progressBar.visibility = View.VISIBLE
 
         createMeetingButton.setOnClickListener {
             if(meetingNameView.text!!.isEmpty()){
@@ -115,6 +117,7 @@ class CreateMeetingFragment : Fragment() {
                         checkedContacts.add(contact)
                     }
                 }
+                progressBar.visibility = View.GONE;
                 createViews()
             },
             Response.ErrorListener {
@@ -123,6 +126,7 @@ class CreateMeetingFragment : Fragment() {
                     "Nie udało się pobrać listy spotkań",
                     Toast.LENGTH_LONG
                 ).show()
+                progressBar.visibility = View.GONE;
             })
 
         dateBox.setOnClickListener {

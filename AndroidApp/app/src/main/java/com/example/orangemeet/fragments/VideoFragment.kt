@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
@@ -31,6 +32,7 @@ class VideoFragment : Fragment() {
     private var param2: String? = null
     var widok: CustomJitsiFragment? = null
     lateinit var startFragmentButton : Button
+    lateinit var progressBar : ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +50,7 @@ class VideoFragment : Fragment() {
         ////
         val view = inflater.inflate(R.layout.fragment_video, container, false)
 
+        progressBar = view.findViewById(R.id.progressBar)
 //        startFragmentButton = view.findViewById(R.id.startFragmentButton)
 //        startFragmentButton.setTag("off")
 //        startFragmentButton.setOnClickListener {
@@ -77,6 +80,7 @@ class VideoFragment : Fragment() {
 //
 //        }
         if (!UserInfo.conferenceName.equals("")) {
+            progressBar.visibility = View.VISIBLE
             widok = CustomJitsiFragment()
             widok!!.parentFrag = this
             activity?.supportFragmentManager?.commit {
@@ -99,6 +103,7 @@ class VideoFragment : Fragment() {
             // Replace whatever is in the fragment_container view with this fragment
             replace<EmptyMeetingFragment>(R.id.fragmentLayout)
         }
+        progressBar.visibility = View.GONE
     }
 
 

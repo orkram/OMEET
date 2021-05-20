@@ -52,6 +52,9 @@ class FindContactFragment : Fragment() {
             }
         })
 
+        progressBar.visibility = View.VISIBLE
+        searchPlaceholder.visibility = View.GONE
+
         BackendCommunication.getUsers(requireContext(),
             null,
             Response.Listener { users ->
@@ -59,6 +62,8 @@ class FindContactFragment : Fragment() {
                 BackendCommunication.getContactsList(requireContext(),
                 Response.Listener { contacts ->
                     this.contacts = contacts;
+                    progressBar.visibility = View.GONE
+                    searchPlaceholder.visibility = View.VISIBLE
                 },
                 Response.ErrorListener {
                     Toast.makeText(
@@ -66,6 +71,7 @@ class FindContactFragment : Fragment() {
                             "Nie udało się pobrać listy znajomych",
                             Toast.LENGTH_LONG
                     ).show()
+                    progressBar.visibility = View.GONE
                 })
             },
             Response.ErrorListener {
@@ -74,6 +80,7 @@ class FindContactFragment : Fragment() {
                     "Nie udało się pobrać listy użytkowników",
                     Toast.LENGTH_LONG
                 ).show()
+                progressBar.visibility = View.GONE
             })
 
         return findContactFragment
@@ -122,6 +129,5 @@ class FindContactFragment : Fragment() {
             evenView = !evenView
         }
 
-        progressBar.visibility = View.GONE
     }
 }
