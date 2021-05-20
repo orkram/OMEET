@@ -14,6 +14,7 @@ import androidx.fragment.app.replace
 import com.example.orangemeet.CustomJitsiFragment
 import com.example.orangemeet.R
 import com.example.orangemeet.UserInfo
+import com.example.orangemeet.activities.MainActivity
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import org.jitsi.meet.sdk.JitsiMeetUserInfo
 import timber.log.Timber
@@ -43,6 +44,9 @@ class VideoFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1_VIDEO)
             param2 = it.getString(ARG_PARAM2_VIDEO)
         }
+
+
+
     }
 
 
@@ -52,6 +56,7 @@ class VideoFragment : Fragment() {
     ): View? {
         ////
         val view = inflater.inflate(R.layout.fragment_video, container, false)
+
 
         progressBar = view.findViewById(R.id.progressBar)
 //        startFragmentButton = view.findViewById(R.id.startFragmentButton)
@@ -82,42 +87,47 @@ class VideoFragment : Fragment() {
 //            }
 //
 //        }
-        if (!UserInfo.conferenceName.equals("")) {
+
+
+
+
+
+       /* if (!UserInfo.conferenceName.equals("")) {
             progressBar.visibility = View.VISIBLE
-            val jitsiFragment = childFragmentManager.findFragmentById(R.id.jitsiFragment) as CustomJitsiFragment
 
 
+
+
+
+
+
+
+        } else replaceWithInfo()*/
+
+        if (!UserInfo.conferenceId.isEmpty()) {
             val userData = JitsiMeetUserInfo()
-            var roomName : String = UserInfo.conferenceId;
             userData.setDisplayName(UserInfo.userName)
 
-            jitsiFragment.jitsiView.join(JitsiMeetConferenceOptions.Builder()
-                    .setServerURL(URL("http://130.61.186.61"))
-                    .setRoom(roomName)
-                    .setSubject(UserInfo.conferenceName)
-                    .setAudioMuted(false)
-                    .setVideoMuted(false)
-                    .setUserInfo(userData)
-                    .setFeatureFlag("fullscreen.enabled", false)
-                    .setFeatureFlag("add-people.enabled", false)
-                    .setFeatureFlag("invite.enabled", false)
-                    .setFeatureFlag("toolbox.enabled", true)
-                    .setFeatureFlag("chat.enabled", true)
-                    .setWelcomePageEnabled(false)
-                    .build())
-            val g = 3
-        } else replaceWithInfo()
-
-        /*if (!UserInfo.conferenceName.equals("")) {
-            progressBar.visibility = View.VISIBLE
-            widok = CustomJitsiFragment()
-            widok!!.parentFrag = this
-            activity?.supportFragmentManager?.commit {
-                setReorderingAllowed(false)
-                //Replace whatever is in the fragment_container view with this fragment
-                add(R.id.fragmentLayout, widok!!)
+            if(!UserInfo.isInConference){
+                (activity as MainActivity).customJitsiFragment
+                        .jitsiView.join(JitsiMeetConferenceOptions.Builder()
+                                .setServerURL(URL("http://130.61.186.61"))
+                                .setRoom("test")
+                                .setRoom(UserInfo.conferenceId)
+                                .setSubject(UserInfo.conferenceName)
+                                .setAudioMuted(false)
+                                .setVideoMuted(false)
+                                .setUserInfo(userData)
+                                .setFeatureFlag("fullscreen.enabled", false)
+                                .setFeatureFlag("add-people.enabled", false)
+                                .setFeatureFlag("invite.enabled", false)
+                                .setFeatureFlag("toolbox.enabled", true)
+                                .setFeatureFlag("chat.enabled", true)
+                                .setWelcomePageEnabled(false)
+                                .build())
+                UserInfo.isInConference = true
             }
-        } else replaceWithInfo()*/
+        }
 
         return view
         ////
@@ -135,10 +145,25 @@ class VideoFragment : Fragment() {
         progressBar.visibility = View.GONE
     }
 
+    override fun onResume() {
+        if(UserInfo.isInConference)
+            (activity as MainActivity).customJitsiFragmentView.visibility = View.VISIBLE
+        super.onResume()
+    }
+
+    override fun onStop() {
+        (activity as MainActivity).customJitsiFragmentView.visibility = View.GONE
+        super.onStop()
+    }
+
+    override fun onPause() {
+        super.onPause()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
     }
+
 
     override fun onDestroy() {
         //widok?.hangUp()
@@ -147,6 +172,7 @@ class VideoFragment : Fragment() {
 
     companion object {
 
+        var joined = false
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.

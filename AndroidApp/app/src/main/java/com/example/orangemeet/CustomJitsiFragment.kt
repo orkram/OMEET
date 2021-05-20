@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.add
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.example.orangemeet.activities.MainActivity
 import com.example.orangemeet.fragments.VideoFragment
 import com.facebook.react.ReactInstanceManager
 import org.jitsi.meet.sdk.*
@@ -24,6 +25,7 @@ class CustomJitsiFragment : JitsiMeetFragment() {
 
     private var broadcastReceiver : BroadcastReceiver? = null
     var parentFrag : VideoFragment? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,7 +38,6 @@ class CustomJitsiFragment : JitsiMeetFragment() {
                 onBroadcastReceived(intent)
             }
         }
-
         registerForBroadcastMessages()
 
         return view
@@ -47,12 +48,12 @@ class CustomJitsiFragment : JitsiMeetFragment() {
         jitsiView.leave()
         val hangupBroadcastIntent: Intent = BroadcastIntentHelper.buildHangUpIntent()
         LocalBroadcastManager.getInstance(org.webrtc.ContextUtils.getApplicationContext()).sendBroadcast(hangupBroadcastIntent)
-        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver!!)
         super.onDestroyView()
     }
 
     override fun onDestroy() {
         Timber.i("OnDestroy")
+        jitsiView.leave()
         super.onDestroy()
     }
 
@@ -100,11 +101,17 @@ class CustomJitsiFragment : JitsiMeetFragment() {
                 BroadcastEvent.Type.CONFERENCE_TERMINATED -> {
                     Timber.i("XD Conference terminated%s", event.getData().get("url"))
                     UserInfo.isInConference = false
-                    parentFrag?.replaceWithInfo()
+                    UserInfo.conferenceId = ""
+                    (activity as MainActivity).customJitsiFragmentView.visibility = View.GONE
                     UserInfo.conferenceName = ""
                 }
             }
         }
+    }
+
+    companion object{
+
+        var savedView : View? = null
     }
 
     fun hangUp() {
