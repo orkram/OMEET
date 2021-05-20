@@ -166,6 +166,7 @@
                 android:id="@+id/contactsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
                 android:orientation="vertical"
                 android:weightSum="20" />
         </androidx.core.widget.NestedScrollView>
