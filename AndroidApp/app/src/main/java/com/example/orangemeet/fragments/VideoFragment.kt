@@ -14,7 +14,10 @@ import androidx.fragment.app.replace
 import com.example.orangemeet.CustomJitsiFragment
 import com.example.orangemeet.R
 import com.example.orangemeet.UserInfo
+import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
+import org.jitsi.meet.sdk.JitsiMeetUserInfo
 import timber.log.Timber
+import java.net.URL
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -81,6 +84,32 @@ class VideoFragment : Fragment() {
 //        }
         if (!UserInfo.conferenceName.equals("")) {
             progressBar.visibility = View.VISIBLE
+            val jitsiFragment = childFragmentManager.findFragmentById(R.id.jitsiFragment) as CustomJitsiFragment
+
+
+            val userData = JitsiMeetUserInfo()
+            var roomName : String = UserInfo.conferenceId;
+            userData.setDisplayName(UserInfo.userName)
+
+            jitsiFragment.jitsiView.join(JitsiMeetConferenceOptions.Builder()
+                    .setServerURL(URL("http://130.61.186.61"))
+                    .setRoom(roomName)
+                    .setSubject(UserInfo.conferenceName)
+                    .setAudioMuted(false)
+                    .setVideoMuted(false)
+                    .setUserInfo(userData)
+                    .setFeatureFlag("fullscreen.enabled", false)
+                    .setFeatureFlag("add-people.enabled", false)
+                    .setFeatureFlag("invite.enabled", false)
+                    .setFeatureFlag("toolbox.enabled", true)
+                    .setFeatureFlag("chat.enabled", true)
+                    .setWelcomePageEnabled(false)
+                    .build())
+            val g = 3
+        } else replaceWithInfo()
+
+        /*if (!UserInfo.conferenceName.equals("")) {
+            progressBar.visibility = View.VISIBLE
             widok = CustomJitsiFragment()
             widok!!.parentFrag = this
             activity?.supportFragmentManager?.commit {
@@ -88,7 +117,7 @@ class VideoFragment : Fragment() {
                 //Replace whatever is in the fragment_container view with this fragment
                 add(R.id.fragmentLayout, widok!!)
             }
-        } else replaceWithInfo()
+        } else replaceWithInfo()*/
 
         return view
         ////

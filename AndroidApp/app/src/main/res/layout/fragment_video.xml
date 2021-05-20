@@ -51,4 +51,14 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <fragment
+        android:id="@+id/jitsiFragment"
+        android:name="com.example.orangemeet.CustomJitsiFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/fragmentLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/fragmentLayout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,7 +24,6 @@ class CustomJitsiFragment : JitsiMeetFragment() {
 
     private var broadcastReceiver : BroadcastReceiver? = null
     var parentFrag : VideoFragment? = null
-    var roomName : String = UserInfo.conferenceId;
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,36 +39,37 @@ class CustomJitsiFragment : JitsiMeetFragment() {
 
         registerForBroadcastMessages()
 
-        val userData = JitsiMeetUserInfo()
-        userData.setDisplayName(UserInfo.userName)
-
-        jitsiView.join(JitsiMeetConferenceOptions.Builder()
-            .setServerURL(URL("http://130.61.186.61"))
-            .setRoom(roomName)
-            .setSubject(UserInfo.conferenceName)
-            .setAudioMuted(false)
-            .setVideoMuted(false)
-            .setUserInfo(userData)
-            .setFeatureFlag("fullscreen.enabled", false)
-            .setFeatureFlag("add-people.enabled", false)
-            .setFeatureFlag("invite.enabled", false)
-            .setFeatureFlag("toolbox.enabled", true)
-            .setFeatureFlag("chat.enabled", true)
-            .setWelcomePageEnabled(false)
-            .build())
         return view
     }
 
     override fun onDestroyView() {
+        Timber.i("OnDestroyView")
         jitsiView.leave()
+        val hangupBroadcastIntent: Intent = BroadcastIntentHelper.buildHangUpIntent()
+        LocalBroadcastManager.getInstance(org.webrtc.ContextUtils.getApplicationContext()).sendBroadcast(hangupBroadcastIntent)
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver!!)
         super.onDestroyView()
     }
 
     override fun onDestroy() {
+        Timber.i("OnDestroy")
         super.onDestroy()
     }
 
+    override fun onPause() {
+        Timber.i("OnPause")
+        super.onPause()
+    }
+
+    override fun onStop() {
+        Timber.i("OnStop")
+        super.onStop()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        Timber.i("OnSaveInstanceState")
+        super.onSaveInstanceState(outState)
+    }
 
     private fun registerForBroadcastMessages() {
         val intentFilter = IntentFilter()
