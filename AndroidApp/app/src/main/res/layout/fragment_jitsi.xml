@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.jitsi.meet.sdk.JitsiMeetView
+    layout_height="match_parent"
+    layout_width="match_parent">
+
+</org.jitsi.meet.sdk.JitsiMeetView>

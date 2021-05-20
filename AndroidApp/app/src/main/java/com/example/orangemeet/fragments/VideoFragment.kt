@@ -5,8 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
+import com.example.orangemeet.CustomJitsiFragment
 import com.example.orangemeet.R
+import com.example.orangemeet.UserInfo
+import timber.log.Timber
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,6 +29,8 @@ class VideoFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    var widok: CustomJitsiFragment? = null
+    lateinit var startFragmentButton : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +38,8 @@ class VideoFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1_VIDEO)
             param2 = it.getString(ARG_PARAM2_VIDEO)
         }
-
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,42 +48,71 @@ class VideoFragment : Fragment() {
         ////
         val view = inflater.inflate(R.layout.fragment_video, container, false)
 
-        val micIcon = view.findViewById(R.id.mic_icon) as ImageView
-        micIcon.tag = "turned_on"
-        micIcon.setOnClickListener{
-            if (micIcon.tag == "turned_on")
-            {
-                micIcon.setImageResource(R.drawable.ic_mic_off)
-                micIcon.tag = "turned_off"
+//        startFragmentButton = view.findViewById(R.id.startFragmentButton)
+//        startFragmentButton.setTag("off")
+//        startFragmentButton.setOnClickListener {
+//            widok = CustomJitsiFragment()
+//            widok!!.parentFrag = this
+//            if(startFragmentButton.tag == "off"){
+//            activity?.supportFragmentManager?.commit {
+//                setReorderingAllowed(false)
+//                // Replace whatever is in the fragment_container view with this fragment
+//                //add<CustomJitsiFragment>(R.id.fragmentLayout)
+//                add(R.id.fragmentLayout, widok!!)
+//                }
+//                startFragmentButton.setTag("on")
+//
+//            }
+//            else if(startFragmentButton.tag == "on"){
+//
+//                //widok.hangUp()
+//               // activity?.supportFragmentManager?.commit {
+//                 //   setReorderingAllowed(false)
+//                    // Replace whatever is in the fragment_container view with this fragment
+//
+//                   // replace<EmptyMeetingFragment>(R.id.fragmentLayout)
+//               // }
+//                startFragmentButton.setTag("off")
+//            }
+//
+//        }
+        if (!UserInfo.conferenceName.equals("")) {
+            widok = CustomJitsiFragment()
+            widok!!.parentFrag = this
+            activity?.supportFragmentManager?.commit {
+                setReorderingAllowed(false)
+                //Replace whatever is in the fragment_container view with this fragment
+                add(R.id.fragmentLayout, widok!!)
             }
-            else
-            {
-                micIcon.setImageResource(R.drawable.ic_mic_on)
-                micIcon.tag = "turned_on"
-            }
-        }
+        } else replaceWithInfo()
 
-        val camIcon = view.findViewById(R.id.cam_icon) as ImageView
-        camIcon.tag = "turned_on"
-        camIcon.setOnClickListener{
-            if (camIcon.tag == "turned_on")
-            {
-                camIcon.setImageResource(R.drawable.ic_videocam_off)
-                camIcon.tag = "turned_off"
-            }
-            else
-            {
-                camIcon.setImageResource(R.drawable.ic_videocam_on)
-                camIcon.tag = "turned_on"
-            }
-        }
         return view
         ////
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_video, container, false)
     }
 
+    fun replaceWithInfo()
+    {
+        activity?.supportFragmentManager?.commit {
+            setReorderingAllowed(false)
+            // Replace whatever is in the fragment_container view with this fragment
+            replace<EmptyMeetingFragment>(R.id.fragmentLayout)
+        }
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+    }
+
+    override fun onDestroy() {
+        //widok?.hangUp()
+        super.onDestroy()
+    }
+
     companion object {
+
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.

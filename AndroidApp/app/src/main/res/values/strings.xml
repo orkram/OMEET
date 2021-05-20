@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OrangeMeet</string>
+    <string name="app_name">Kaliber</string>
     <string name="action_settings">Settings</string>
 
     <string name="menu_home">Strona główna</string>
@@ -172,6 +172,9 @@
     <string name="join_create">Dołącz / Stwórz</string>
     <string name="create_meeting">Utwórz spotkanie</string>
     <string name="participants">Uczestnicy</string>
+
+    <!-- Strings related to Jitsi-->
+    <string name="no_meeting">Brak aktywnej konwersacji, dołącz z ekranu spotkań lub kontaktów</string>
 
     <string name="yes">Tak</string>
     <string name="no">Nie</string>

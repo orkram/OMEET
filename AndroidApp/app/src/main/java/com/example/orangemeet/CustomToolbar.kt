@@ -10,7 +10,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 
 
-class CenteredToolbar : Toolbar {
+class CustomToolbar : Toolbar {
     private var centeredTitleTextView: TextView? = null
 
     constructor(context: Context?) : super(context!!)
@@ -51,9 +51,8 @@ class CenteredToolbar : Toolbar {
             centeredTitleTextView = TextView(context)
             centeredTitleTextView!!.setSingleLine()
             centeredTitleTextView!!.ellipsize = TextUtils.TruncateAt.END
-            centeredTitleTextView!!.gravity = Gravity.CENTER
-            @Suppress("DEPRECATION")
-            centeredTitleTextView!!.setTextAppearance(context, R.style.TextAppearance_AppCompat_Widget_ActionBar_Title)
+            //centeredTitleTextView!!.gravity = Gravity.CENTER
+            centeredTitleTextView!!.setTextAppearance(R.style.TextAppearance_AppCompat_Widget_ActionBar_Title)
             centeredTitleTextView!!.setTypeface(typeface, Typeface.BOLD)
             centeredTitleTextView!!.textSize = fontsize
             val lp = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
