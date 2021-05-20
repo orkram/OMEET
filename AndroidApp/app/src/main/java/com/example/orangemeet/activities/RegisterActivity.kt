@@ -31,6 +31,12 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email.text).matches()){
+                Toast.makeText(applicationContext,
+                        R.string.email_not_correct, Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
             if(password.text.toString() != repeatPassword.text.toString()){
                 Toast.makeText(applicationContext,
                     R.string.passwords_dont_match, Toast.LENGTH_LONG).show()
