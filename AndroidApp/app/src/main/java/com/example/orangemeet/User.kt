@@ -25,6 +25,14 @@ class User {
         this.email = email
     }
 
+    override fun equals(other: Any?): Boolean {
+        if(other !is User)
+            return false;
+        else{
+            return (other as User).username == this.username
+        }
+    }
+
     companion object{
         fun createFromJson(jsonObject: JSONObject) : User{
             val str = jsonObject.toString()

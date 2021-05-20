@@ -188,8 +188,8 @@
     <string name="registed_failed">Nie udało się zarejestrować</string>
     <string name="fields_must_be_not_empty">Pola nie mogą być puste</string>
     <string name="passwords_dont_match">Wpisane hasła różnią się od siebie</string>
-    <string name="invite">Zaproś</string>
-    <string name="invitation_sent">Wysłano zaproszenie</string>
+    <string name="add_friend">Dodaj</string>
+    <string name="friend_added">Dodano do znajomych</string>
     <string name="delete_from_contacts">Usuń ze znajomych</string>
     <string name="prompt_meeting_name">Nazwa</string>
     <string name="prompt_meeting_date">Termin</string>

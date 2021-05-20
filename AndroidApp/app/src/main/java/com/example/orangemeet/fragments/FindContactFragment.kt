@@ -20,6 +20,7 @@ class FindContactFragment : Fragment() {
 
     lateinit var searchPlaceholder : View
 
+    var users : List<User>? = null
     var contacts : List<User>? = null
 
     override fun onCreateView(
@@ -53,8 +54,19 @@ class FindContactFragment : Fragment() {
 
         BackendCommunication.getUsers(requireContext(),
             null,
-            Response.Listener { contacts ->
-                this.contacts = contacts
+            Response.Listener { users ->
+                this.users = users
+                BackendCommunication.getContactsList(requireContext(),
+                Response.Listener { contacts ->
+                    this.contacts = contacts;
+                },
+                Response.ErrorListener {
+                    Toast.makeText(
+                            requireContext(),
+                            "Nie udało się pobrać listy znajomych",
+                            Toast.LENGTH_LONG
+                    ).show()
+                })
             },
             Response.ErrorListener {
                 Toast.makeText(
@@ -68,11 +80,15 @@ class FindContactFragment : Fragment() {
     }
 
     private fun createContactViews(inflater: LayoutInflater){
-        val filteredContacts = contacts!!.filter { contact ->
+        if(users == null || contacts == null)
+            return;
+
+        val filteredContacts = users!!.filter { user ->
             if(searchBar.query.isEmpty())
                 true
             else
-                contact.username.toLowerCase().contains(searchBar.query.toString().toLowerCase())
+                user.username.toLowerCase().contains(searchBar.query.toString().toLowerCase())
+                        && contacts!!.find{ contact -> contact.equals(user) } == null
         }
 
         contactsListView.removeAllViews()
@@ -88,7 +104,7 @@ class FindContactFragment : Fragment() {
             val inviteButton = view.findViewById<Button>(R.id.inviteButton)
             val sentText = view.findViewById<TextView>(R.id.sentText)
             inviteButton.setOnClickListener {
-                BackendCommunication.sendInvite(requireContext(),
+                BackendCommunication.addContact(requireContext(),
                     contact.username,
                     Response.Listener {
                         inviteButton.visibility = View.GONE
@@ -97,7 +113,7 @@ class FindContactFragment : Fragment() {
                     Response.ErrorListener {
                         Toast.makeText(
                             requireContext(),
-                            "Nie udało się wysłać zaproszenia",
+                            "Nie udało się dodać do znajomych",
                             Toast.LENGTH_LONG
                         ).show()
                     })
