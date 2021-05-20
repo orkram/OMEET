@@ -86,7 +86,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/text_input_layout"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="0.4">
 
@@ -94,12 +94,22 @@
                     android:id="@+id/password"
                     style="@style/text_input_layout_edit_text"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:background="@color/transparent"
                     android:hint="@string/prompt_password"
                     android:password="true"
                     android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageButton
+                android:id="@+id/visibilityButton"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:onClick="showHidePassword"
+                android:paddingRight="10dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/outline_visibility_off_24" />
 
         </LinearLayout>
 

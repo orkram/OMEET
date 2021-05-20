@@ -5,22 +5,33 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.annotation.StringRes
 import android.os.Bundle
+import android.text.InputType
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
+import android.text.method.TransformationMethod
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.res.ResourcesCompat
 import androidx.preference.PreferenceManager
 import com.android.volley.Response
 import com.example.orangemeet.BackendCommunication
 import com.example.orangemeet.activities.MainActivity
 
 import com.example.orangemeet.R
+import com.example.orangemeet.Util
 import com.example.orangemeet.activities.RegisterActivity
 import com.google.android.material.textfield.TextInputEditText
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
+
+    lateinit var usernameEditText : TextInputEditText
+    lateinit var passwordEditText : TextInputEditText
+    lateinit var visibilityButton : ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
@@ -33,8 +44,9 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
-        val usernameEditText = findViewById<TextInputEditText>(R.id.username)
-        val passwordEditText = findViewById<TextInputEditText>(R.id.password)
+        visibilityButton = findViewById(R.id.visibilityButton)
+        usernameEditText = findViewById(R.id.username)
+        passwordEditText = findViewById(R.id.password)
         val loginButton = findViewById<Button>(R.id.login)
         val registerButton = findViewById<Button>(R.id.register)
         //val loadingProgressBar = findViewById<ProgressBar>(R.id.loading)
@@ -143,5 +155,9 @@ class LoginActivity : AppCompatActivity() {
     private fun showLoginFailed(@StringRes errorString: Int) {
         val appContext = applicationContext ?: return
         Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
+    }
+
+    fun showHidePassword(view : View){
+        Util.showHidePassword(passwordEditText, visibilityButton, this)
     }
 }

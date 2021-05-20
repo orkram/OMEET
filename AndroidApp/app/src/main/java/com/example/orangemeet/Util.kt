@@ -4,7 +4,12 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.StateListDrawable
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.TypedValue
+import android.widget.ImageButton
+import androidx.core.content.res.ResourcesCompat
+import com.google.android.material.textfield.TextInputEditText
 import java.nio.charset.Charset
 import java.util.*
 
@@ -38,6 +43,16 @@ class Util {
             background.setExitFadeDuration(200)
 
             return background
+        }
+
+        fun showHidePassword(passwordEditText: TextInputEditText, visibilityButton : ImageButton, context: Context){
+            if(passwordEditText.transformationMethod is HideReturnsTransformationMethod){
+                passwordEditText.transformationMethod = PasswordTransformationMethod.getInstance()
+                visibilityButton.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.outline_visibility_off_24, context.theme))
+            } else{
+                passwordEditText.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                visibilityButton.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.outline_visibility_24, context.theme))
+            }
         }
     }
 }

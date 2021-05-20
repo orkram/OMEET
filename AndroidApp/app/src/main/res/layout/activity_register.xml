@@ -192,8 +192,9 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/text_input_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/password"
@@ -205,6 +206,16 @@
                     android:password="true"
                     android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageButton
+                android:id="@+id/passwordVisibilityButton"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:onClick="ShowHidePassword"
+                android:paddingRight="10dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/outline_visibility_off_24" />
 
         </LinearLayout>
 
@@ -227,8 +238,9 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/text_input_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/password_repeat"
@@ -240,6 +252,16 @@
                     android:password="true"
                     android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageButton
+                android:id="@+id/passwordRepVisibilityButton"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:onClick="ShowHideRepeatPassword"
+                android:paddingRight="10dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/outline_visibility_off_24" />
 
         </LinearLayout>
 
