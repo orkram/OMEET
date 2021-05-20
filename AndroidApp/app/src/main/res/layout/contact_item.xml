@@ -20,7 +20,7 @@
         android:layout_weight="1" />
 
     <ImageButton
-        android:id="@+id/call"
+        android:id="@+id/callButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_gravity="center"

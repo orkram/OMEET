@@ -34,6 +34,7 @@ class MeetingsFragment : Fragment() {
     lateinit var meetingPopupName : TextView
     lateinit var meetingPopupDateTime : TextView
     lateinit var meetingsFragment : View
+    lateinit var meetingPopupButton: Button
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.meetings, menu)
@@ -60,6 +61,7 @@ class MeetingsFragment : Fragment() {
         meetingPopupParticipants = meetingPopup.findViewById(R.id.participantsList)
         meetingPopupName = meetingPopup.findViewById(R.id.meetingName)
         meetingPopupDateTime = meetingPopup.findViewById(R.id.meetingDateTime)
+        meetingPopupButton = meetingPopup.findViewById(R.id.joinMeetingButton)
         meetingPopup.setOnClickListener { meetingPopup.visibility = View.GONE }
 
         meetingsListView = meetingsFragment.findViewById(R.id.meetingsList)
@@ -140,6 +142,12 @@ class MeetingsFragment : Fragment() {
                 meetingPopupName.text = meeting.name
                 meetingPopupDateTime.text = SimpleDateFormat("dd-MM-yyyy    kk:mm").format(meeting.date)
                 meetingPopupParticipants.removeAllViews()
+                meetingPopupButton.setOnClickListener {
+                    UserInfo.conferenceName = meeting.name.toString()
+                    UserInfo.conferenceId = meeting.id.toString()
+                    findNavController().navigate(R.id.nav_video)
+                }
+
 
                 BackendCommunication.getMeetingParticipants(requireContext(), meeting.id,
                     Response.Listener {contacts ->

@@ -83,7 +83,7 @@
 
     <include
         android:id="@+id/meetingPopup"
-        layout="@layout/contact_popup"
+        layout="@layout/meeting_popup"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"

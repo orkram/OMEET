@@ -1,21 +1,16 @@
 package com.example.orangemeet.fragments
 
 import android.app.AlertDialog
+import android.media.Image
 import android.os.Bundle
 import android.view.*
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.SearchView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.android.volley.Response
-import com.example.orangemeet.BackendCommunication
-import com.example.orangemeet.R
-import com.example.orangemeet.User
-import com.example.orangemeet.Util
+import com.example.orangemeet.*
 
 
 class ContactsFragment : Fragment() {
@@ -105,6 +100,14 @@ class ContactsFragment : Fragment() {
                 contact,
                 Util.createTintedBackground(requireContext(), evenView)
             )
+
+            val callButton = view.findViewById<ImageButton>(R.id.callButton)
+            callButton.setOnClickListener {
+                val includedContactBundle = Bundle();
+                includedContactBundle.putString("username",  contact.username);
+                findNavController().navigate(R.id.nav_create_meeting, includedContactBundle)
+            }
+
             view.setOnCreateContextMenuListener { menu, v, menuInfo ->
                 menu.add(resources.getString(R.string.delete_from_contacts)).setOnMenuItemClickListener {
 

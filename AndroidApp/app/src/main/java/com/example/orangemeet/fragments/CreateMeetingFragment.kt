@@ -37,6 +37,8 @@ class CreateMeetingFragment : Fragment() {
     var contacts : List<User>? = null
 
     val checkedContacts = mutableListOf<User>()
+    var includedContact : String? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,11 +48,14 @@ class CreateMeetingFragment : Fragment() {
         val createMeetingFragment = inflater.inflate(R.layout.fragment_create_meeting, container, false)
         val calendar = Calendar.getInstance()
 
+        includedContact = arguments?.getString("username")
+
         pickedDate.value = calendar.time
         pickedDate.observe(viewLifecycleOwner, androidx.lifecycle.Observer {newDate ->
             dateView.text = SimpleDateFormat("dd-MM-yyyy", Locale("PL")).format(newDate).toString()
             timeView.text = SimpleDateFormat("kk:mm", Locale("PL")).format(newDate).toString()
         })
+
 
         searchView = createMeetingFragment.findViewById(R.id.searchView)
         contactsLayout = createMeetingFragment.findViewById(R.id.contactsLayout)
@@ -104,6 +109,12 @@ class CreateMeetingFragment : Fragment() {
             requireContext(),
             Response.Listener { contacts ->
                 this.contacts = contacts
+                checkedContacts.clear();
+                contacts.forEach {contact ->
+                    if(includedContact != null && contact.username == includedContact){
+                        checkedContacts.add(contact)
+                    }
+                }
                 createViews()
             },
             Response.ErrorListener {
@@ -141,12 +152,15 @@ class CreateMeetingFragment : Fragment() {
         if(contacts == null)
             return
 
-        val filteredContacts = contacts!!.filter { contact -> contact.username.toLowerCase().contains(searchView.query.toString().toLowerCase()) }
+        val filteredContacts = contacts!!
+                .filter { contact -> contact.username.toLowerCase().contains(searchView.query.toString().toLowerCase()) }
+                .sortedBy { contact -> contact.username != includedContact}
 
         contactsLayout.removeAllViews()
 
         var evenView = false
         filteredContacts.forEach { contact ->
+
             val contactView =
                 User.createCheckView(
                     layoutInflater,

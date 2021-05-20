@@ -129,7 +129,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/joinMeetingButton"
         style="@style/login_register_button"
         android:layout_width="wrap_content"
         android:layout_marginEnd="8dp"
