@@ -106,9 +106,9 @@ class VideoFragment : Fragment() {
 
         } else replaceWithInfo()*/
 
-     /*   val prefs = requireActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
+        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val startWithAudio = prefs.getBoolean("start_with_audio", false)
-        val startWithVideo = prefs.getBoolean("start_with_wideo", false)*/
+        val startWithVideo = prefs.getBoolean("start_with_wideo", false)
 
         if (!UserInfo.conferenceId.isEmpty()) {
             val userData = JitsiMeetUserInfo()
@@ -118,11 +118,10 @@ class VideoFragment : Fragment() {
                 (activity as MainActivity).customJitsiFragment
                         .jitsiView.join(JitsiMeetConferenceOptions.Builder()
                                 .setServerURL(URL("http://130.61.186.61"))
-                                .setRoom("test")
                                 .setRoom(UserInfo.conferenceId)
                                 .setSubject(UserInfo.conferenceName)
-                                //.setAudioMuted(!startWithAudio)
-                                //.setVideoMuted(!startWithVideo)
+                                .setAudioMuted(!startWithAudio)
+                                .setVideoMuted(!startWithVideo)
                                 .setUserInfo(userData)
                                 .setFeatureFlag("fullscreen.enabled", false)
                                 .setFeatureFlag("add-people.enabled", false)
