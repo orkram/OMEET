@@ -26,6 +26,13 @@
   width: 100%
 }
 
+:host{
+  border-radius: 15px;
+  box-shadow: rgb(100 100 111 / 20%) 0px 7px 29px 0px;
+  margin: 15px;
+}
+
+
 .persons-counter{
   margin: 10px;
 }
@@ -74,4 +81,7 @@
 
 .element-row:not(.expanded):hover {
   background: #f5f5f5;
+}
+.mat-paginator{
+  border-radius: 25px;
 }

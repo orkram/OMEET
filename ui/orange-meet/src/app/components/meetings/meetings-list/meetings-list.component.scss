@@ -87,6 +87,9 @@
 .mat-raised-button{
   margin: 10px;
 }
+.mat-paginator{
+   border-radius: 25px;
+ }
 
 .mat-row:nth-child(odd){
   background-color: #e7e4e4;
@@ -99,4 +102,5 @@
 :host{
   border-radius: 15px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  margin: 15px;
 }

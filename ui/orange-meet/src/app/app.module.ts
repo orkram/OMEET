@@ -46,7 +46,7 @@ import {MeetingsService} from './services/meetings.service';
 import {JoinDialogComponent} from './components/meetings/join-dialog/join-dialog.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {CreateMeetingDialogComponent} from './components/meetings/create-meeting-dialog/create-meeting-dialog.component';
-import {DatePipe} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {UserService} from './services/UserService';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {ParticipantsService} from './services/ParticipantsService';
@@ -54,6 +54,11 @@ import {JitsiComponent} from './components/jitsi/jitsi.component';
 import {SelectedUsersService} from './services/SelectedUsersService';
 import {CreateMeetingComponent} from './components/users-component/create-meeting/create-meeting.component';
 import {SettingsService} from './services/SettingsService';
+import {CalendarModule, DateAdapter} from 'angular-calendar';
+import {adapterFactory} from 'angular-calendar/date-adapters/date-fns';
+import {CalendarComponent} from './components/calendar/calendar.component';
+import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
+import {FlatpickrModule} from 'angularx-flatpickr';
 
 
 @NgModule({
@@ -75,7 +80,8 @@ import {SettingsService} from './services/SettingsService';
     JoinDialogComponent,
     CreateMeetingDialogComponent,
     JitsiComponent,
-    CreateMeetingComponent
+    CreateMeetingComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,
@@ -106,7 +112,16 @@ import {SettingsService} from './services/SettingsService';
     ReactiveFormsModule,
     HttpClientModule,
     MatDialogModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    CommonModule,
+    FormsModule,
+    NgbModalModule,
+    BrowserAnimationsModule,
+    FlatpickrModule.forRoot(),
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
   ],
   providers: [
     MeetingsService,
