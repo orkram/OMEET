@@ -12,6 +12,7 @@ import com.android.volley.Response
 import com.example.orangemeet.BackendCommunication
 import com.example.orangemeet.R
 import com.example.orangemeet.User
+import com.example.orangemeet.Util
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
 import java.text.SimpleDateFormat
@@ -36,6 +37,8 @@ class CreateMeetingFragment : Fragment() {
     var contacts : List<User>? = null
 
     val checkedContacts = mutableListOf<User>()
+    var includedContact : String? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,12 +48,15 @@ class CreateMeetingFragment : Fragment() {
         val createMeetingFragment = inflater.inflate(R.layout.fragment_create_meeting, container, false)
         val calendar = Calendar.getInstance()
 
+        includedContact = arguments?.getString("username")
+
         pickedDate.value = calendar.time
         pickedDate.observe(viewLifecycleOwner, androidx.lifecycle.Observer {newDate ->
             dateView.text = SimpleDateFormat("dd-MM-yyyy", Locale("PL")).format(newDate).toString()
             timeView.text = SimpleDateFormat("kk:mm", Locale("PL")).format(newDate).toString()
         })
 
+        progressBar = createMeetingFragment.findViewById(R.id.progressBar)
         searchView = createMeetingFragment.findViewById(R.id.searchView)
         contactsLayout = createMeetingFragment.findViewById(R.id.contactsLayout)
         dateBox = createMeetingFragment.findViewById(R.id.dateBox)
@@ -59,6 +65,8 @@ class CreateMeetingFragment : Fragment() {
         timeView = createMeetingFragment.findViewById(R.id.meetingTime)
         createMeetingButton = createMeetingFragment.findViewById(R.id.createMeeting)
         meetingNameView = createMeetingFragment.findViewById(R.id.meetingName)
+
+        progressBar.visibility = View.VISIBLE
 
         createMeetingButton.setOnClickListener {
             if(meetingNameView.text!!.isEmpty()){
@@ -103,6 +111,13 @@ class CreateMeetingFragment : Fragment() {
             requireContext(),
             Response.Listener { contacts ->
                 this.contacts = contacts
+                checkedContacts.clear();
+                contacts.forEach {contact ->
+                    if(includedContact != null && contact.username == includedContact){
+                        checkedContacts.add(contact)
+                    }
+                }
+                progressBar.visibility = View.GONE;
                 createViews()
             },
             Response.ErrorListener {
@@ -111,6 +126,7 @@ class CreateMeetingFragment : Fragment() {
                     "Nie udało się pobrać listy spotkań",
                     Toast.LENGTH_LONG
                 ).show()
+                progressBar.visibility = View.GONE;
             })
 
         dateBox.setOnClickListener {
@@ -140,17 +156,21 @@ class CreateMeetingFragment : Fragment() {
         if(contacts == null)
             return
 
-        val filteredContacts = contacts!!.filter { contact -> contact.username.toLowerCase().contains(searchView.query.toString().toLowerCase()) }
+        val filteredContacts = contacts!!
+                .filter { contact -> contact.username.toLowerCase().contains(searchView.query.toString().toLowerCase()) }
+                .sortedBy { contact -> contact.username != includedContact}
 
         contactsLayout.removeAllViews()
 
+        var evenView = false
         filteredContacts.forEach { contact ->
+
             val contactView =
                 User.createCheckView(
                     layoutInflater,
                     contactsLayout,
                     contact,
-                    null
+                    Util.createTintedBackground(requireContext(), evenView)
                 )
 
             val checkBox = contactView.findViewById<CheckBox>(R.id.checkBox)
@@ -166,6 +186,7 @@ class CreateMeetingFragment : Fragment() {
             }
 
             contactsLayout.addView(contactView)
+            evenView = !evenView
         }
     }
 

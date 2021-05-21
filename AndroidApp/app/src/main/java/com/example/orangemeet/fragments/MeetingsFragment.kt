@@ -1,6 +1,13 @@
 package com.example.orangemeet.fragments
 
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.AnimatedStateListDrawable
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
@@ -8,9 +15,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.android.volley.Response
-import com.example.orangemeet.BackendCommunication
-import com.example.orangemeet.Meeting
-import com.example.orangemeet.R
+import com.example.orangemeet.*
+import java.lang.reflect.Type
+import java.text.SimpleDateFormat
 
 class MeetingsFragment : Fragment() {
 
@@ -21,6 +28,14 @@ class MeetingsFragment : Fragment() {
     lateinit var meetingsListView : LinearLayout
     lateinit var progressBar : ProgressBar
     lateinit var addMeetingButton : MenuItem
+    lateinit var meetingPopup : View
+    lateinit var meetingPopupOwner : View
+    lateinit var meetingPopupParticipants : LinearLayout
+    lateinit var meetingPopupName : TextView
+    lateinit var meetingPopupDateTime : TextView
+    lateinit var meetingsFragment : View
+    lateinit var meetingPopupButton: Button
+    lateinit var notFoundPlaceholder : View
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.meetings, menu)
@@ -40,7 +55,17 @@ class MeetingsFragment : Fragment() {
     ): View? {
         setHasOptionsMenu(true)
 
-        val meetingsFragment = inflater.inflate(R.layout.fragment_meetings, container, false)
+        meetingsFragment = inflater.inflate(R.layout.fragment_meetings, container, false)
+
+        notFoundPlaceholder = meetingsFragment.findViewById(R.id.notFoundPlaceholder)
+        meetingPopup = meetingsFragment.findViewById(R.id.meetingPopup)
+        meetingPopupOwner = meetingPopup.findViewById(R.id.owner)
+        meetingPopupParticipants = meetingPopup.findViewById(R.id.participantsList)
+        meetingPopupName = meetingPopup.findViewById(R.id.meetingName)
+        meetingPopupDateTime = meetingPopup.findViewById(R.id.meetingDateTime)
+        meetingPopupButton = meetingPopup.findViewById(R.id.joinMeetingButton)
+        meetingPopup.setOnClickListener { meetingPopup.visibility = View.GONE }
+
         meetingsListView = meetingsFragment.findViewById(R.id.meetingsList)
         progressBar = meetingsFragment.findViewById(R.id.progressBar)
         searchBar = meetingsFragment.findViewById(R.id.searchView)
@@ -62,7 +87,7 @@ class MeetingsFragment : Fragment() {
         BackendCommunication.getMeetings(
             requireContext(),
             Response.Listener { meetings ->
-                createMeetingViews(inflater, meetings)
+                this.meetings.value = meetings.toMutableList()
                 progressBar.visibility = View.GONE
             },
             Response.ErrorListener {
@@ -86,47 +111,67 @@ class MeetingsFragment : Fragment() {
             if(searchBar.query.isEmpty())
                 true
             else
-                meeting.name.contains(searchBar.query.toString().toLowerCase())
+                meeting.name.toLowerCase().contains(searchBar.query.toString().toLowerCase())
         }
 
         meetingsListView.removeAllViews()
 
+        if(filteredMeetings.isEmpty())
+            notFoundPlaceholder.visibility = View.VISIBLE
+        else
+            notFoundPlaceholder.visibility = View.GONE
+
+        var evenView = false
         filteredMeetings.forEach {meeting ->
+
             val view = Meeting.createView(
                 inflater,
                 meetingsListView,
                 meeting,
-                null
+                Util.createTintedBackground(requireContext(), evenView)
             )
 
+            val joinMeetingButton = view.findViewById<ImageButton>(R.id.imageButton)
+
+            joinMeetingButton.setOnClickListener {
+                UserInfo.conferenceName = meeting.name.toString()
+                UserInfo.conferenceId = meeting.id.toString()
+                findNavController().navigate(R.id.nav_video)
+            }
+
             view.setOnClickListener {
-                val participantsView = it.findViewById<View>(R.id.participantsView)
-                val participantsInnerView = participantsView.findViewById<TextView>(
-                    R.id.participantsInnerView
-                )
-                if(participantsView.visibility == View.GONE){
-                    BackendCommunication.getMeetingParticipants(requireContext(),
-                        meeting.id,
-                        Response.Listener { contacts ->
-                            participantsInnerView.text = ""
-                            contacts.forEach { contact ->
-                                participantsInnerView.append(contact.username + "\n")
-                            }
-                        },
-                        Response.ErrorListener {
-                            Toast.makeText(
-                                requireContext(),
-                                "Nie udało się pobrać listy uczestników",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        })
-                    participantsView.visibility = View.VISIBLE
-                } else{
-                    participantsView.visibility = View.GONE
+                val owner = meeting.owner
+
+                val username = meetingPopupOwner.findViewById<TextView>(R.id.contactUsername)
+
+                username.text = owner.username
+
+                meetingPopupName.text = meeting.name
+                meetingPopupDateTime.text = SimpleDateFormat("dd-MM-yyyy    kk:mm").format(meeting.date)
+                meetingPopupParticipants.removeAllViews()
+                meetingPopupButton.setOnClickListener {
+                    UserInfo.conferenceName = meeting.name.toString()
+                    UserInfo.conferenceId = meeting.id.toString()
+                    findNavController().navigate(R.id.nav_video)
                 }
+
+
+                BackendCommunication.getMeetingParticipants(requireContext(), meeting.id,
+                    Response.Listener {contacts ->
+                        contacts.forEach {contact ->
+                            val contactView = User.createSmallView(inflater, meetingPopupParticipants, contact, null)
+                            meetingPopupParticipants.addView(contactView)
+                        }
+                    },
+                    Response.ErrorListener {
+
+                    })
+
+                meetingPopup.visibility = View.VISIBLE
             }
 
             meetingsListView.addView(view)
+            evenView = !evenView
         }
     }
 }

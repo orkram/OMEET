@@ -45,6 +45,18 @@
         android:id="@+id/nav_create_meeting"
         android:name="com.example.orangemeet.fragments.CreateMeetingFragment"
         android:label="@string/menu_create_meeting"
-        tools:layout="@layout/fragment_create_meeting" />
+        tools:layout="@layout/fragment_create_meeting" >
+        <argument
+            android:name="includedContact"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_jitsi"
+        android:name="com.example.orangemeet.CustomJitsiFragment"
+        android:label="Jitsi"
+        tools:layout="@layout/fragment_jitsi" />
 
 </navigation>

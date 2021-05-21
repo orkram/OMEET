@@ -26,10 +26,11 @@
 
         <Button
             android:id="@+id/inviteButton"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            style="@style/login_register_button"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
             android:layout_gravity="center"
-            android:text="@string/invite" />
+            android:text="@string/add_friend" />
 
         <TextView
             android:id="@+id/sentText"
@@ -38,7 +39,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/invitation_sent"
+            android:text="@string/friend_added"
             android:visibility="gone" />
     </FrameLayout>
 

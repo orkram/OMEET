@@ -5,9 +5,7 @@ import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
 import com.android.volley.Response
-import com.example.orangemeet.BackendCommunication
-import com.example.orangemeet.R
-import com.example.orangemeet.User
+import com.example.orangemeet.*
 
 
 class FindContactFragment : Fragment() {
@@ -18,7 +16,9 @@ class FindContactFragment : Fragment() {
     lateinit var contactsListView : LinearLayout
 
     lateinit var searchPlaceholder : View
+    lateinit var notFoundPlaceholder : View
 
+    var users : List<User>? = null
     var contacts : List<User>? = null
 
     override fun onCreateView(
@@ -27,8 +27,10 @@ class FindContactFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val findContactFragment = inflater.inflate(R.layout.fragment_find_contact, container, false)
+
         contactsListView = findContactFragment.findViewById(R.id.meetingsList)
         searchPlaceholder = findContactFragment.findViewById(R.id.searchPlaceholder)
+        notFoundPlaceholder = findContactFragment.findViewById(R.id.notFoundPlaceholder)
         progressBar = findContactFragment.findViewById(R.id.progressBar)
         searchBar = findContactFragment.findViewById(R.id.searchView)
         searchBar.setOnClickListener { v -> searchBar.isIconified = false }
@@ -44,16 +46,34 @@ class FindContactFragment : Fragment() {
                 } else{
                     contactsListView.removeAllViews()
                     searchPlaceholder.visibility = View.VISIBLE
+                    notFoundPlaceholder.visibility = View.GONE
                 }
 
                 return false
             }
         })
 
+        progressBar.visibility = View.VISIBLE
+        searchPlaceholder.visibility = View.GONE
+
         BackendCommunication.getUsers(requireContext(),
             null,
-            Response.Listener { contacts ->
-                this.contacts = contacts
+            Response.Listener { users ->
+                this.users = users
+                BackendCommunication.getContactsList(requireContext(),
+                Response.Listener { contacts ->
+                    this.contacts = contacts;
+                    progressBar.visibility = View.GONE
+                    searchPlaceholder.visibility = View.VISIBLE
+                },
+                Response.ErrorListener {
+                    Toast.makeText(
+                            requireContext(),
+                            "Nie udało się pobrać listy znajomych",
+                            Toast.LENGTH_LONG
+                    ).show()
+                    progressBar.visibility = View.GONE
+                })
             },
             Response.ErrorListener {
                 Toast.makeText(
@@ -61,32 +81,44 @@ class FindContactFragment : Fragment() {
                     "Nie udało się pobrać listy użytkowników",
                     Toast.LENGTH_LONG
                 ).show()
+                progressBar.visibility = View.GONE
             })
 
         return findContactFragment
     }
 
     private fun createContactViews(inflater: LayoutInflater){
-        val filteredContacts = contacts!!.filter { contact ->
+        if(users == null || contacts == null)
+            return;
+
+        val filteredContacts = users!!.filter { user ->
             if(searchBar.query.isEmpty())
                 true
             else
-                contact.username.toLowerCase().contains(searchBar.query.toString().toLowerCase())
+                user.username.toLowerCase().contains(searchBar.query.toString().toLowerCase())
+                        && contacts!!.find{ contact -> contact.equals(user) } == null
+                        && user.username != UserInfo.userName
         }
 
         contactsListView.removeAllViews()
 
+        if(filteredContacts.isEmpty()){
+            notFoundPlaceholder.visibility = View.VISIBLE
+        } else
+            notFoundPlaceholder.visibility = View.GONE
+
+        var evenView = false
         filteredContacts.forEach {contact ->
             val view = User.createInviteView(
                 inflater,
                 contactsListView,
                 contact,
-                null
+                Util.createTintedBackground(requireContext(), evenView)
             )
             val inviteButton = view.findViewById<Button>(R.id.inviteButton)
             val sentText = view.findViewById<TextView>(R.id.sentText)
             inviteButton.setOnClickListener {
-                BackendCommunication.sendInvite(requireContext(),
+                BackendCommunication.addContact(requireContext(),
                     contact.username,
                     Response.Listener {
                         inviteButton.visibility = View.GONE
@@ -95,14 +127,14 @@ class FindContactFragment : Fragment() {
                     Response.ErrorListener {
                         Toast.makeText(
                             requireContext(),
-                            "Nie udało się wysłać zaproszenia",
+                            "Nie udało się dodać do znajomych",
                             Toast.LENGTH_LONG
                         ).show()
                     })
             }
             contactsListView.addView(view)
+            evenView = !evenView
         }
 
-        progressBar.visibility = View.GONE
     }
 }

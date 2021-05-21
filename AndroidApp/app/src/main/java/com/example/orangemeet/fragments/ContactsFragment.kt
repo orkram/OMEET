@@ -1,27 +1,23 @@
 package com.example.orangemeet.fragments
 
 import android.app.AlertDialog
+import android.media.Image
 import android.os.Bundle
 import android.view.*
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.SearchView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.android.volley.Response
-import com.example.orangemeet.BackendCommunication
-import com.example.orangemeet.R
-import com.example.orangemeet.User
+import com.example.orangemeet.*
 
 
 class ContactsFragment : Fragment() {
 
     lateinit var progressBar : ProgressBar
     lateinit var searchBar : SearchView
-
+    lateinit var notFoundPlaceholder : View
 
     lateinit var contactsListView : LinearLayout
     var contactsList = MutableLiveData<MutableList<User>>()
@@ -49,6 +45,8 @@ class ContactsFragment : Fragment() {
         setHasOptionsMenu(true)
 
         val contactsFragment = inflater.inflate(R.layout.fragment_contacts, container, false)
+
+        notFoundPlaceholder = contactsFragment.findViewById(R.id.notFoundPlaceholder)
         contactsListView = contactsFragment.findViewById(R.id.contactsLayout)
         progressBar = contactsFragment.findViewById(R.id.progressBar)
         searchBar = contactsFragment.findViewById(R.id.searchView)
@@ -95,13 +93,28 @@ class ContactsFragment : Fragment() {
 
         contactsListView.removeAllViews()
 
+        if(filteredContacts.isEmpty())
+            notFoundPlaceholder.visibility = View.VISIBLE
+        else
+            notFoundPlaceholder.visibility = View.GONE
+
+        var evenView = false
         filteredContacts.forEach {contact ->
+
             val view = User.createView(
                 inflater,
                 contactsListView,
                 contact,
-                null
+                Util.createTintedBackground(requireContext(), evenView)
             )
+
+            val callButton = view.findViewById<ImageButton>(R.id.callButton)
+            callButton.setOnClickListener {
+                val includedContactBundle = Bundle();
+                includedContactBundle.putString("username",  contact.username);
+                findNavController().navigate(R.id.nav_create_meeting, includedContactBundle)
+            }
+
             view.setOnCreateContextMenuListener { menu, v, menuInfo ->
                 menu.add(resources.getString(R.string.delete_from_contacts)).setOnMenuItemClickListener {
 
@@ -145,6 +158,7 @@ class ContactsFragment : Fragment() {
                 }
             }
             contactsListView.addView(view)
+            evenView = !evenView
         }
     }
 }
