@@ -108,7 +108,7 @@ export class MeetingsListComponent implements OnInit, AfterViewInit{
   isExpansionDetailRow = (i: number, row: object) => row.hasOwnProperty('detailRow');
 
   joinMeeting(meeting: any): void{
-    window.open(`backend/${meeting.idMeeting}#userInfo.displayName=%22${this.tokenService.getEmail()}%22&config.subject="Test meeting"`);
+    window.open(`https://130.61.186.61/${meeting.idMeeting}#userInfo.displayName=%22${this.tokenService.getEmail()}%22&config.subject="Test meeting"`);
   }
 
 }
