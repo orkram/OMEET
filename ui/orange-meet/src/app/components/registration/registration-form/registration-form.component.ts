@@ -27,6 +27,8 @@ export class RegistrationFormComponent implements OnInit {
 
   errorMessage = false;
 
+  successMessage = true;
+
   @Input() error!: string;
 
   ngOnInit(): void {
@@ -60,7 +62,8 @@ export class RegistrationFormComponent implements OnInit {
               this.submitted = false;
               this.errorMessage = true;
             },
-          () => { // parse messag
+          () => {
+            this.successMessage = true;
             // this.router.navigateByUrl('/login');
           }
         );

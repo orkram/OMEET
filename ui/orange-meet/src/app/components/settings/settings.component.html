@@ -10,21 +10,7 @@
 <hr>
   <! -- TODO replace with  mat-divider -->
   <mat-list role="list">
-    <mat-list-item role="listitem">
-        <div class="setting-text">
-            Select output device:
-        </div>
-      <span class="output-device-spacer"></span>
-      <mat-form-field>
-        <mat-label>Output device</mat-label>
-        <mat-select >
-          <mat-option *ngFor="let device of availableDevices" [value]="device">
-            {{device}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
 
-    </mat-list-item>
     <mat-list-item role="listitem">
       <div class="setting-text">
         Change profile picture:
@@ -35,10 +21,23 @@
     </mat-list-item>
     <mat-list-item role="listitem">
       <div class="setting-text">
-        Setting 3:
+        Default camera microphone on:
       </div>
       <span class="default-spacer"></span>
       <mat-slide-toggle
+        [(ngModel)]="micOn"
+        color="primary"
+        class="example-margin">
+      </mat-slide-toggle>
+    </mat-list-item>
+
+    <mat-list-item role="listitem">
+      <div class="setting-text">
+        Default camera on:
+      </div>
+      <span class="default-spacer"></span>
+      <mat-slide-toggle
+        [(ngModel)]="cameraOn"
         color="primary"
         class="example-margin">
       </mat-slide-toggle>
@@ -46,9 +45,16 @@
   </mat-list>
 
 
+
+
   <div class="bottom-bar">
     <span class="bottom-bar-spacer"></span>
-    <button class = "save-button" mat-raised-button color="primary">Save</button>
+    <div class="column">
+    <button class = "save-button" mat-raised-button color="primary" (click)="saveSettings()">Save</button>
+    <p *ngIf="displaySuccess" class="success">
+      Your settings were successfully saved.
+    </p>
+    </div>
   </div>
 
 </div>

@@ -26,6 +26,9 @@
   width: 100%;
 }
 
+.mat-list-item{
+  width: 300px;
+}
 .right-side{
   display: flex;
   flex-direction: column;
@@ -48,7 +51,9 @@
 .save-button{
   margin: 30px;
 }
-
+.mat-slide-toggle{
+  margin-right: 40px;
+}
 .mat-raised-button{
   width: 200px;
 }
@@ -57,16 +62,21 @@
   background-color: #FEC994;
 }
 .settings h1{
-  margin: 15px;
-  font: 400 32px/32px Roboto, "Helvetica Neue", sans-serif;
+  margin: 15px;font: 400 32px/32px Roboto, "Helvetica Neue", sans-serif;
 }
 .setting-text{
-  min-width: 120px;
-}
+  width: 420px;
+  flex-grow: 1;}
 
 :host{
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   width: 100%;
+}
+
+.success{
+  margin: 5px;
+  font: 300 14px/12px Roboto, "Helvetica Neue", sans-serif;
+  color: #37a24e;
 }

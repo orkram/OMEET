@@ -53,6 +53,7 @@ import {ParticipantsService} from './services/ParticipantsService';
 import {JitsiComponent} from './components/jitsi/jitsi.component';
 import {SelectedUsersService} from './services/SelectedUsersService';
 import {CreateMeetingComponent} from './components/users-component/create-meeting/create-meeting.component';
+import {SettingsService} from './services/SettingsService';
 
 
 @NgModule({
@@ -115,6 +116,7 @@ import {CreateMeetingComponent} from './components/users-component/create-meetin
     LogoutService,
     UserService,
     DatePipe,
+    SettingsService,
     SelectedUsersService,
     ParticipantsService,
     {

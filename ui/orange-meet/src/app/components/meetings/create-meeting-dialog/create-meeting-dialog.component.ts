@@ -3,6 +3,10 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {JWTTokenService} from '../../../services/JWTTokenService';
 import {MeetingsService} from '../../../services/meetings.service';
 import {MatDialogRef} from '@angular/material/dialog';
+import {Observable} from 'rxjs';
+import {flatMap} from 'rxjs/internal/operators';
+import {map} from 'rxjs/operators';
+import {UserService} from '../../../services/UserService';
 
 @Component({
   selector: 'app-create-meeting-dialog',
@@ -14,7 +18,8 @@ export class CreateMeetingDialogComponent implements OnInit {
   constructor(
     private tokenService: JWTTokenService,
     private meetingService: MeetingsService,
-    private dialogRef: MatDialogRef<CreateMeetingDialogComponent>
+    private dialogRef: MatDialogRef<CreateMeetingDialogComponent>,
+    private userService: UserService
   ) { }
 
   form: FormGroup = new FormGroup({
@@ -22,6 +27,14 @@ export class CreateMeetingDialogComponent implements OnInit {
     description: new FormControl('', Validators.compose([Validators.required])),
     participants: new FormControl(''),
   });
+
+  myControl = new FormControl();
+
+  filterUsers: Observable<Array<any>> =
+    this.myControl.valueChanges.pipe(
+      flatMap  (value => this.userService.findContactToAdd(value.toLowerCase())
+        .pipe(map((x: any) => x.foundUsers))
+      ));
 
   hide = true;
 

@@ -22,8 +22,20 @@
     <p>
       <mat-form-field appearance="outline">
         <mat-label>Participants</mat-label>
-        <input type="text" matInput formControlName="participants">
-        <mat-error *ngIf="form.get('id')?.invalid">Complete field</mat-error>
+
+        <input type="text"
+               aria-label="Name"
+               matInput
+               [formControl]="myControl"
+               [matAutocomplete]="auto"
+               formControlName="participants">
+
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          <mat-option *ngFor="let y of filterUsers | async" [value]="y.userName">
+            {{'' + y.firstName + ' ' + y.lastName }}
+          </mat-option>
+        </mat-autocomplete>
+
       </mat-form-field>
     </p>
 

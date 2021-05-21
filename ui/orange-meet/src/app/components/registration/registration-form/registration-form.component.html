@@ -61,6 +61,10 @@
       Failed to create new user for given inputs.
     </p>
 
+    <p *ngIf="successMessage" class="success">
+     New user successfully created!
+    </p>
+
     <div class="button" >
       <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid || submitted" >Create account</button>
     </div>

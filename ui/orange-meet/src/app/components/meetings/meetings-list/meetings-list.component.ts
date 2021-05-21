@@ -9,6 +9,7 @@ import {MeetingsDataSource} from '../../../services/meetings.datasource';
 import {MeetingsService} from '../../../services/meetings.service';
 import {JWTTokenService} from '../../../services/JWTTokenService';
 import {ParticipantsService} from '../../../services/ParticipantsService';
+import {SettingsService} from '../../../services/SettingsService';
 
 @Component({
   selector: 'app-meetings-list',
@@ -28,7 +29,8 @@ export class MeetingsListComponent implements OnInit, AfterViewInit{
     private route: ActivatedRoute,
     private meetingsService: MeetingsService,
     private tokenService: JWTTokenService,
-    private participantsService: ParticipantsService) {}
+    private participantsService: ParticipantsService,
+    private settings: SettingsService) {}
 
   expandedMeeting: any;
 
@@ -108,7 +110,17 @@ export class MeetingsListComponent implements OnInit, AfterViewInit{
   isExpansionDetailRow = (i: number, row: object) => row.hasOwnProperty('detailRow');
 
   joinMeeting(meeting: any): void{
-    window.open(`https://130.61.186.61/${meeting.idMeeting}#userInfo.displayName=%22${this.tokenService.getEmail()}%22&config.subject="Test meeting"`);
+
+    let micMuted = false;
+    let VidMuted = false;
+    this.settings.getSettings(this.tokenService.getUsername()).subscribe(
+      next => {
+        micMuted = !next.defaultMicOn;
+        VidMuted = next.defaultCamOn;
+      }
+    );
+
+    window.open(`https://130.61.186.61/${meeting.idMeeting}#userInfo.displayName=%22${this.tokenService.getEmail()}%22&config.subject="Test meeting"&config.startWithVideoMuted=${VidMuted}&config.startSilent=false`);
   }
 
 }

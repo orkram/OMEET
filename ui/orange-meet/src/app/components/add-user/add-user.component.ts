@@ -32,7 +32,7 @@ export class AddUserComponent implements OnInit {
       ));
 
   responseText = 'User was added to your list';
-  errorText = 'User to add not found';
+  errorText = 'User not found';
 
   ngOnInit(): void {}
 
@@ -46,11 +46,13 @@ export class AddUserComponent implements OnInit {
             console.log(res);
           },
           err => {
+            this.hide = false;
             this.errorMessage = true;
           },
-          () => {}// TODO Refresh list?
+          () => {
+            window.location.reload();
+          }// TODO Refresh list?
         );
     }
-    window.location.reload();
   }
 }
