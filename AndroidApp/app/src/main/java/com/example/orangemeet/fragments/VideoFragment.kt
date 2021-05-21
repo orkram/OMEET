@@ -108,7 +108,7 @@ class VideoFragment : Fragment() {
 
         val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val startWithAudio = prefs.getBoolean("start_with_audio", false)
-        val startWithVideo = prefs.getBoolean("start_with_wideo", false)
+        val startWithVideo = prefs.getBoolean("start_with_video", false)
 
         if (!UserInfo.conferenceId.isEmpty()) {
             val userData = JitsiMeetUserInfo()
