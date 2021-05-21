@@ -39,11 +39,11 @@ export class LoginService {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Methods': 'POST',
       'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Allow-Origin': 'http://backend:9000/', // TODO remove after replacing URL with relative one
+      'Access-Control-Allow-Origin': 'backend:9000/', // TODO remove after replacing URL with relative one
        Anonymous: ''
     });
 
-    return this.http.post('http://backend:9000/api/v1/account/login', LoginService.loginRequestBody(username, password), {headers});
+    return this.http.post('backend:9000/api/v1/account/login', LoginService.loginRequestBody(username, password), {headers});
   }
 
   registerUser(form: FormGroup): Observable<any> {
@@ -51,10 +51,10 @@ export class LoginService {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Methods': 'POST',
       'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Allow-Origin': 'http://backend:9000/', // TODO remove after replacing URL with relative one
+      'Access-Control-Allow-Origin': 'backend:9000/', // TODO remove after replacing URL with relative one
       Anonymous: ''
     });
 
-    return this.http.post('http://backend:9000/api/v1/account/register', this.registerRequestBody(form), {headers});
+    return this.http.post('backend:9000/api/v1/account/register', this.registerRequestBody(form), {headers});
   }
 }

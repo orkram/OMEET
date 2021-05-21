@@ -13,7 +13,7 @@ export class ParticipantsService {
   getParticipants(
     id: string): Observable<any> {
 
-    return this.http.get(`http://backend:9000/api/v1/meetings/participants/meeting/${id}`, {
+    return this.http.get(`backend:9000/api/v1/meetings/participants/meeting/${id}`, {
       params: new HttpParams()
         .set('query', '')
         .set('lastNameSortAscending', 'false')
