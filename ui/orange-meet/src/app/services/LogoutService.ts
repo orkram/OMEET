@@ -18,6 +18,6 @@ export class LogoutService {
       Anonymous: ''
     });
 
-    return this.http.post(`http://130.61.186.61:9000/api/v1/account/${username}/logout`, '', {headers});
+    return this.http.post(`backend:9000/api/v1/account/${username}/logout`, '', {headers});
   }
 }

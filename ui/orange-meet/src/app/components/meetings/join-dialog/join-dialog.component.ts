@@ -29,7 +29,7 @@ export class JoinDialogComponent implements OnInit {
       return;
     } else {
       this.submitted = true;
-      window.open(`https://130.61.186.61/${this.form.value.id}#userInfo.displayName=%22${this.tokenService.getEmail()}%22&config.subject="Test meeting"`);
+      window.open(`backend/${this.form.value.id}#userInfo.displayName=%22${this.tokenService.getEmail()}%22&config.subject="Test meeting"`);
     }
   }
 

@@ -16,7 +16,7 @@ export class MeetingsService {
     filter = '', sortOrder = true,
     pageNumber = 0, pageSize = 6): Observable<any> {
 
-    return this.http.get(`http://130.61.186.61:9000/api/v1/meetings/owner/${username}/page`, {
+    return this.http.get(`backend:9000/api/v1/meetings/owner/${username}/page`, {
       params: new HttpParams()
         .set('query', filter)
         .set('meetingNameSortAscending', 'false')
@@ -27,7 +27,7 @@ export class MeetingsService {
 
   createMeeting(username: string, name: string, participants: string[]): Observable<any> {
     console.log(participants);
-    return this.http.post(`http://130.61.186.61:9000/api/v1/meetings`, {
+    return this.http.post(`backend:9000/api/v1/meetings`, {
      date: this.datepipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss'),
       name,
       ownerUserName: username,

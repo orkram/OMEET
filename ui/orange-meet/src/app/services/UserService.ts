@@ -14,7 +14,7 @@ export class UserService {
     filter = '', sortOrder = true,
     pageNumber = 0, pageSize = 6): Observable<any> {
 
-    return this.http.get(`http://130.61.186.61:9000/api/v1/contacts/friends/${username}/page`, {
+    return this.http.get(`backend:9000/api/v1/contacts/friends/${username}/page`, {
       params: new HttpParams()
         .set('query', filter)
         .set('lastNameSortAscending', 'false')
@@ -26,7 +26,7 @@ export class UserService {
   }
 
   findContactToAdd(filter: string): Observable<any> {
-    return this.http.get(`http://130.61.186.61:9000/api/v1/users/page`, {
+    return this.http.get(`backend:9000/api/v1/users/page`, {
       params: new HttpParams()
         .set('query', filter)
         .set('lastNameSortAscending', 'true')
@@ -38,7 +38,7 @@ export class UserService {
   }
 
   createConnection(username: string, friendName: string): Observable<any> {
-    return this.http.post(`http://130.61.186.61:9000/api/v1/contacts/add`, '', {
+    return this.http.post(`backend:9000/api/v1/contacts/add`, '', {
       params: new HttpParams()
       .set('user-f', friendName)
       .set('user-o', username)
