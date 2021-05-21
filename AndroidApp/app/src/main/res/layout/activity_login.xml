@@ -109,7 +109,7 @@
                 android:onClick="showHidePassword"
                 android:paddingRight="10dp"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/outline_visibility_off_24" />
+                app:srcCompat="@drawable/visibility_off_24" />
 
         </LinearLayout>
 
