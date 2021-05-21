@@ -56,6 +56,7 @@ class CustomJitsiFragment : JitsiMeetFragment() {
     override fun onDestroy() {
         Timber.i("OnDestroy")
         jitsiView.leave()
+        UserInfo.isInConference = false
         super.onDestroy()
     }
 
