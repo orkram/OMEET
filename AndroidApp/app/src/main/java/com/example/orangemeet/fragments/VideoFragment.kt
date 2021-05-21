@@ -129,6 +129,10 @@ class VideoFragment : Fragment() {
                                 .setFeatureFlag("invite.enabled", false)
                                 .setFeatureFlag("toolbox.enabled", true)
                                 .setFeatureFlag("chat.enabled", true)
+                                .setFeatureFlag("pip.enabled", false)
+                                .setFeatureFlag("video-share.enabled", false)
+                                .setFeatureFlag("recording.enabled", false)
+                                .setFeatureFlag("live-streaming.enabled", false)
                                 .setWelcomePageEnabled(false)
                                 .build())
                 UserInfo.isInConference = true
