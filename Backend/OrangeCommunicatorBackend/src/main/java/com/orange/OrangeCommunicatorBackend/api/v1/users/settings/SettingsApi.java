@@ -4,6 +4,7 @@ import com.orange.OrangeCommunicatorBackend.api.v1.users.settings.requestBody.Up
 import com.orange.OrangeCommunicatorBackend.api.v1.users.settings.responseBody.SettingsResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,17 +22,21 @@ public class SettingsApi {
         this.settingsService = settingsService;
     }
 
-    @GetMapping("/{username}")
+    @GetMapping(path="/{username}", produces = "application/json")
     @ApiOperation("Find certain user's settings")
-    public ResponseEntity<SettingsResponseBody> find(@PathVariable String username) {
+    public ResponseEntity<SettingsResponseBody> find(
+            @ApiParam(value = "The username of user for which settings should be returned.", required = true)
+            @PathVariable String username) {
         SettingsResponseBody settingsResponseBody = settingsService.getSettings(username);
         return ResponseEntity.status(HttpStatus.OK).body(settingsResponseBody);
     }
 
-    @PutMapping("/{username}")
+    @PutMapping(path="/{username}", produces = "application/json")
     @ApiOperation("Update user's settings")
-    public ResponseEntity<SettingsResponseBody> update(@PathVariable String username,
-                                                       @RequestBody UpdateSettingsRequestBody updateSettingsRequestBody) {
+    public ResponseEntity<SettingsResponseBody> update(
+            @ApiParam(value = "The username of user for which settings should be updated.", required = true)
+            @PathVariable String username,
+            @RequestBody UpdateSettingsRequestBody updateSettingsRequestBody) {
         SettingsResponseBody settingsResponseBody = settingsService.updateSettings(username, updateSettingsRequestBody);
         return ResponseEntity.status(HttpStatus.OK).body(settingsResponseBody);
     }

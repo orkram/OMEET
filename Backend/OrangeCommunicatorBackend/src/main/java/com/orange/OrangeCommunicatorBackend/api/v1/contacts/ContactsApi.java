@@ -4,19 +4,19 @@ import com.orange.OrangeCommunicatorBackend.api.v1.contacts.responseBody.SendInv
 import com.orange.OrangeCommunicatorBackend.api.v1.contacts.support.AddErrorEnum;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody.FoundUsersPageResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody.UserResponseBody;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping(value = "/api/v1/contacts")
 @Api(tags = "User's list of friends")
 @Slf4j
@@ -30,56 +30,90 @@ public class ContactsApi {
 
     @PostMapping("/add")
     @ApiOperation("Add friend")
-    public String create(@RequestParam("user-o") String userO, @RequestParam("user-f") String userF) {
+    public String create(@ApiParam(value = "The username of one of users who wants to be friends", required = true)
+                         @RequestParam("user-o") String userO,
+                         @ApiParam(value = "The username of one of users who wants to be friends", required = true)
+                         @RequestParam("user-f") String userF, Model model) {
         AddErrorEnum addErrorEnum = contactsService.add(userO, userF);
+
+        String msg;
+        HttpStatus status;
+
         if(addErrorEnum == AddErrorEnum.EXISTS){
-            return "You are already friends";
+            msg = "You are already friends";
+            status = HttpStatus.FOUND;
         } else if(addErrorEnum == AddErrorEnum.NOT_FOUND){
-            return "You cannot be friends :(";
+            msg = "You cannot be friends :(";
+            status = HttpStatus.NOT_FOUND;
         }
         else {
-            return "You have become friends";
+            msg = "You have become friends";
+            status = HttpStatus.OK;
         }
+
+        model.addAttribute("msg", msg);
+        //model.;
+
+
+        return "msg";
+
     }
 
-    @GetMapping("/friends/{username}")
+    @GetMapping(path="/friends/{username}", produces = "application/json")
     @ApiOperation("Find friends of users")
-    public ResponseEntity<List<UserResponseBody>> find(@PathVariable String username, @RequestParam(name="query", defaultValue="") List<String> query,
+    public @ResponseBody ResponseEntity<List<UserResponseBody>> find(@ApiParam(value = "The username of user whose friends should be found.", required = true)
+                                                       @PathVariable String username,
+                                                       @ApiParam(value = "The searching words, by which friends will be found.")
+                                                       @RequestParam(name="query", defaultValue="") List<String> query,
+                                                       @ApiParam(value = "The sort type by first name.")
                                                        @RequestParam(name="firstNameSortAscending", defaultValue="true") boolean fNameAsc,
+                                                       @ApiParam(value = "The sort type by last name.")
                                                        @RequestParam(name="lastNameSortAscending", defaultValue="true") boolean lNameAsc,
+                                                       @ApiParam(value = "The sort type by username.")
                                                        @RequestParam(name="userNameSortAscending", defaultValue="true") boolean uNameAsc,
+                                                       @ApiParam(value = "The sort type by email.")
                                                        @RequestParam(name="emailSortAscending", defaultValue="true") boolean emailAsc) {
         List<UserResponseBody> responseBodyList = contactsService.findAll(username, query, fNameAsc, lNameAsc, uNameAsc, emailAsc);
         return ResponseEntity.status(HttpStatus.OK).body(responseBodyList);
     }
 
-    @GetMapping("/friends/{username}/page")
+    @GetMapping(path="/friends/{username}/page", produces = "application/json")
     @ApiOperation("Find friends of users paginated")
-    public ResponseEntity<FoundUsersPageResponseBody> findPaginated(@PathVariable String username, @RequestParam("page") int page,
-                                                                    @RequestParam("size")  int size,
+    public @ResponseBody ResponseEntity<FoundUsersPageResponseBody> findPaginated(@ApiParam(value = "The username of user whose friends should be found.", required = true)
+                                                                    @PathVariable String username,
+                                                                    @ApiParam(value = "The number of page to return.", required = true) @RequestParam("page") int page,
+                                                                    @ApiParam(value = "The amount of users per page to return.", required = true) @RequestParam("size")  int size,
+                                                                    @ApiParam(value = "The searching words, by which friends will be found.")
                                                                     @RequestParam(name="query", defaultValue="") List<String> query,
+                                                                    @ApiParam(value = "The sort type by first name.")
                                                                     @RequestParam(name="firstNameSortAscending", defaultValue="true") boolean fNameAsc,
+                                                                    @ApiParam(value = "The sort type by last name.")
                                                                     @RequestParam(name="lastNameSortAscending", defaultValue="true") boolean lNameAsc,
+                                                                    @ApiParam(value = "The sort type by username.")
                                                                     @RequestParam(name="userNameSortAscending", defaultValue="true") boolean uNameAsc,
+                                                                    @ApiParam(value = "The sort type by email.")
                                                                     @RequestParam(name="emailSortAscending", defaultValue="true") boolean emailAsc) {
         FoundUsersPageResponseBody response = contactsService.findPaginated(page, size, username, query, fNameAsc, lNameAsc, uNameAsc, emailAsc);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @DeleteMapping("/friends/{username}")
+    @DeleteMapping(path="/friends/{username}", produces = "application/json")
     @ApiOperation("Delete friend from friend's list")
-    public ResponseEntity<Void> delete(@PathVariable String username, @RequestParam("friend") String friend) {
+    public @ResponseBody ResponseEntity<Void> delete(@ApiParam(value = "The username of one of users to delete relationship between.", required = true) @PathVariable String username,
+                                                     @ApiParam(value = "The username of one of users to delete relationship between.", required = true) @RequestParam("friend") String friend) {
         contactsService.delete(username, friend);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PostMapping("/send-invite")
+    @PostMapping(path="/send-invite", produces = "application/json")
     @ApiOperation("Send invite")
     @ApiResponses(value = {
             @ApiResponse(code = 302, message = "Friendship already exists"),
             @ApiResponse(code = 409, message = "Couldn't send an email")
     })
-    public ResponseEntity<Void> sendInvite(@RequestParam("from") String from, @RequestParam("to") String to) {
+    public @ResponseBody ResponseEntity<Void> sendInvite
+            (@ApiParam(value = "The username of user which is sending an email.", required = true) @RequestParam("from") String from,
+             @ApiParam(value = "The username of user which is receiving an email.", required = true) @RequestParam("to") String to) {
         boolean sendInviteOk = sendInviteOk = contactsService.sendInvite(from, to);
 
         if(sendInviteOk){
@@ -90,9 +124,11 @@ public class ContactsApi {
 
     }
 
-    @GetMapping("/check-friendship")
+    @GetMapping(path="/check-friendship")
     @ApiOperation("Check if two users are friends")
-    public ResponseEntity<Void> checkFriendship(@RequestParam("from") String user1, @RequestParam("to") String user2) {
+    public @ResponseBody ResponseEntity<Void> checkFriendship
+            (@ApiParam(value = "", required = true) @RequestParam("from") String user1,
+             @ApiParam(value = "The username of one of users to check relationship between.", required = true) @RequestParam("to") String user2) {
         contactsService.checkFriendship(user1, user2);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

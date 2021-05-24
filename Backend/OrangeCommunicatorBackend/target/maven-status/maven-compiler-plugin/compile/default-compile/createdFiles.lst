@@ -46,6 +46,7 @@ com\orange\OrangeCommunicatorBackend\api\v1\account\responseBody\AccountLogoutRe
 com\orange\OrangeCommunicatorBackend\api\v1\users\settings\support\exceptions\SettingsNotFoundException.class
 com\orange\OrangeCommunicatorBackend\dbEntities\ListOfFriends.class
 com\orange\OrangeCommunicatorBackend\api\v1\users\settings\SettingsApi.class
+com\orange\OrangeCommunicatorBackend\api\v1\users\support\exceptions\UserDataConflictException.class
 com\orange\OrangeCommunicatorBackend\api\v1\users\UsersApi.class
 com\orange\OrangeCommunicatorBackend\api\v1\contacts\ContactsService.class
 com\orange\OrangeCommunicatorBackend\api\v1\meetings\requestBody\UpdateMeetingRequestBody.class

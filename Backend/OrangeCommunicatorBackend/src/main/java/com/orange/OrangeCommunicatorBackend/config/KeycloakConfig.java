@@ -54,13 +54,18 @@ public class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/account/{username}/refresh-token/**")
                 .antMatchers("/api/v1/contacts/add/**");
         web.ignoring().antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
+                .antMatchers("/resources/**")
+                .antMatchers("/style.css")
+                .antMatchers("/logoV1res.png")
                 .antMatchers("**/favicon.ico");
+
     }
 
     @Override
     protected void configure(final HttpSecurity httpSecurity) throws Exception {
         super.configure(httpSecurity);
         httpSecurity
+                .cors().and()
                 .csrf().disable()
                 .authorizeRequests()
                 //.antMatchers("api/v1/account/login/**")
@@ -68,8 +73,9 @@ public class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
                 //.antMatchers("api/v1/account/register/**")
                 //.permitAll()
                 .antMatchers("/api/v1/**").fullyAuthenticated()
-                .antMatchers( "**/favicon.ico").permitAll()
-                .anyRequest().fullyAuthenticated();
+                .antMatchers( "/resources/**").permitAll()
+                .antMatchers("**/favicon.ico").permitAll()
+                .anyRequest().permitAll();
     }
 
 }

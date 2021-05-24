@@ -9,6 +9,8 @@ import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountR
 import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountTokenResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.support.AccountExceptionSupplier;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.support.AccountMaper;
+import com.orange.OrangeCommunicatorBackend.api.v1.account.support.exceptions.AccountExistsException;
+import com.orange.OrangeCommunicatorBackend.api.v1.contacts.support.ContactExceptionSupplier;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.settings.support.SettingsMapper;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.support.UserExceptionSupplier;
 import com.orange.OrangeCommunicatorBackend.config.KeycloakClientConfig;
@@ -16,6 +18,7 @@ import com.orange.OrangeCommunicatorBackend.dbEntities.Settings;
 import com.orange.OrangeCommunicatorBackend.dbEntities.User;
 import com.orange.OrangeCommunicatorBackend.dbRepositories.SettingsRepository;
 import com.orange.OrangeCommunicatorBackend.dbRepositories.UserRepository;
+import com.orange.OrangeCommunicatorBackend.generalServicies.MailService;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -33,6 +36,7 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import javax.ws.rs.core.Response;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -46,18 +50,20 @@ public class AccountService {
     private final AccountMaper accountMaper;
     private final SettingsRepository settingsRepository;
     private final SettingsMapper settingsMapper;
+    private final MailService mailService;
 
     @Value("${auth.client}")
     private String clientForAccounts;
     @Value("${auth.secret}")
     private String secretForAccounts;
 
-    public AccountService(UserRepository userRepository, AccountMaper accountMaper, SettingsRepository settingsRepository, SettingsMapper settingsMapper) {
+    public AccountService(UserRepository userRepository, AccountMaper accountMaper, SettingsRepository settingsRepository, SettingsMapper settingsMapper, MailService mailService) {
         this.userRepository = userRepository;
         this.accountMaper = accountMaper;
 
         this.settingsRepository = settingsRepository;
         this.settingsMapper = settingsMapper;
+        this.mailService = mailService;
     }
 
 
@@ -110,6 +116,8 @@ public class AccountService {
                 usersResource.get(userId).resetPassword(createPasswordCredentials(accountRegisterRequestBody.
                         getPassword()));
 
+                user.setEmail(accountRegisterRequestBody.geteMail());
+                usersResource.get(userId).update(user);
 
                 RealmResource realmResource = keycloak.realm(KeycloakClientConfig.getRealm());
 
@@ -121,6 +129,10 @@ public class AccountService {
                     userRepository.save(u);
                     Settings settings = settingsMapper.createDefaultSettings(u);
                     settingsRepository.save(settings);
+
+                    //sendConfirm(u);
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     usersResource.get(userId).remove();
@@ -138,6 +150,8 @@ public class AccountService {
                 throw AccountExceptionSupplier.creatingAccountException().get();
             }
 
+        } catch (AccountExistsException e){
+            throw AccountExceptionSupplier.accountExistsException().get();
         } catch (Exception e) {
             e.printStackTrace();
             throw AccountExceptionSupplier.creatingAccountException().get();
@@ -225,6 +239,13 @@ public class AccountService {
             throw AccountExceptionSupplier.tokenAcquireException().get();
         }
         return responseToken;
+    }
+
+    private void sendConfirm(User user) throws MessagingException {
+        String email = user.getEMail();
+        String subject = "Kaliber-Confirmation";
+        String emailText = "Hey,<br>Account of user \"" + user.getUserName() + "\" was successfully created!!<br>";
+        mailService.sendMail(email, subject, emailText, true);
     }
 
 }

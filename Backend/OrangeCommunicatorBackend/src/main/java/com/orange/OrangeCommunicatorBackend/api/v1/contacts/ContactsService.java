@@ -34,7 +34,7 @@ public class ContactsService {
     private final UserMapper userMapper;
     private final UserSupport userSupport;
 
-    private static final String subject = "Invite";
+    private static final String subject = "Kaliber-Invite";
 
     @Value("${server.url}") String url;
     @Value("${server.port}") String port;
@@ -220,6 +220,8 @@ public class ContactsService {
 
 
     }
+
+
 }
 
 

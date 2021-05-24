@@ -65,6 +65,7 @@ C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\meetings\support\MeetingSupport.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\account\support\exceptions\CreatingAccountException.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\account\requestBody\AccountRegisterRequestBody.java
+C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\users\support\exceptions\UserDataConflictException.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\users\requestBody\UserUpdateRequestBody.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\users\settings\support\SettingsExceptionAdvisor.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\meetings\MeetingsApi.java

@@ -42,11 +42,11 @@ public class SpringFoxConfig {
     private String path = "/api/**";
     private String pathReg = "/api/.*";
 
-    private String title = "Omeet APi";
+    private String title = "Kaliber APi";
     private String description = "Projekt";
     private String version = "1.0";
 
-    private static final String GROUP_NAME = "Omeet-Api";
+    private static final String GROUP_NAME = "Kaliber-Api";
     private static final String OAUTH_NAME = "spring_oauth";
 
     @Bean
