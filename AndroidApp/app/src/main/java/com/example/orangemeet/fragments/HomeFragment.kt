@@ -40,7 +40,7 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_home, container, false)
         val textview = v.findViewById<TextView>(R.id.textView3)
-        textview.text = "Witaj "+ UserInfo.userName +"!"
+        textview.text = getString(R.string.welcome)+ UserInfo.userName +"!"
         return v
     }
 

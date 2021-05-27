@@ -3,31 +3,31 @@
     <string name="action_settings">Settings</string>
     <string name="version">v 1.0</string>
 
-    <string name="menu_home">Strona główna</string>
-    <string name="menu_contacts">Kontakty</string>
-    <string name="menu_settings">Ustawienia</string>
-    <string name="menu_video">Konwersacja</string>
-    <string name="menu_meetings">Spotkania</string>
-    <string name="menu_logout">Wyloguj</string>
-    <string name="menu_find_contact">Znajdź znajomego</string>
-    <string name="menu_create_meeting">Utwórz spotkanie</string>
+    <string name="menu_home">Home page</string>
+    <string name="menu_contacts">Contacts</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_video">Conversation</string>
+    <string name="menu_meetings">Meetings</string>
+    <string name="menu_logout">Logout</string>
+    <string name="menu_find_contact">Find a contact</string>
+    <string name="menu_create_meeting">Create a meeting</string>
 
     <!-- Preference Titles -->
-    <string name="privacy_header">Prywatność</string>
-    <string name="call_header">Rozmowa</string>
-    <string name="appearance_header">Wygląd</string>
+    <string name="privacy_header">Privacy</string>
+    <string name="call_header">Call</string>
+    <string name="appearance_header">Looks</string>
 
     <!-- Test preferences -->
-    <string name="day_night_theme">Tryb jasny/ciemny</string>
+    <string name="day_night_theme">Light/dark mode</string>
 
     <!-- Messages Preferences -->
     <string name="signature_title">Your signature</string>
     <string name="reply_title">Default reply action</string>
 
 
-    <string name="start_with_audio">Rozpocznij z uruchomionym mikrofonem</string>
-    <string name="start_with_video">Rozpocznij z uruchomioną kamerą</string>
-    <string name="private_user">Ukryj konto przed innymi użytkownikami</string>
+    <string name="start_with_audio">Start with microphone turned on</string>
+    <string name="start_with_video">Start with camera turned on</string>
+    <string name="private_user">Hide your account</string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
@@ -142,57 +142,57 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="details">Details</string>
     <!-- Strings related to login -->
-    <string name="prompt_username">Nazwa użytkownika</string>
+    <string name="prompt_username">Username</string>
     <string name="prompt_email">E-mail</string>
-    <string name="prompt_password">Hasło</string>
-    <string name="prompt_password_repeat">Powtórz hasło</string>
-    <string name="prompt_search">Szukaj</string>
-    <string name="prompt_firstname">Imię</string>
-    <string name="prompt_lastname">Nazwisko</string>
-    <string name="action_sign_in">Zaloguj</string>
-    <string name="action_register">Utwórz konto</string>
-    <string name="welcome">"Witaj "</string>
-    <string name="invalid_username">Nieprawidłowa nazwa użytkownika</string>
-    <string name="invalid_password">Hasło musi mieć conajmniej 6 znaków</string>
-    <string name="login_failed">Nie udało się zalogować</string>
-    <string name="menu_login">Logowanie</string>
-    <string name="menu_register">Rejestracja</string>
-    <string name="account_creation">Tworzenie nowego konta</string>
-    <string name="meeting_title_placeholder">Nazwa spotkania</string>
-    <string name="meeting_id_placeholder">Id spotkania</string>
-    <string name="meeting_owner_placeholder">Właściciel</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_password_repeat">Repeat password</string>
+    <string name="prompt_search">Search</string>
+    <string name="prompt_firstname">First name</string>
+    <string name="prompt_lastname">Last name</string>
+    <string name="action_sign_in">Login</string>
+    <string name="action_register">Create account</string>
+    <string name="welcome">"Welcome "</string>
+    <string name="invalid_username">Incorrect username</string>
+    <string name="invalid_password">Password has to be at least 6 characters long</string>
+    <string name="login_failed">Login failed</string>
+    <string name="menu_login">Login</string>
+    <string name="menu_register">Register</string>
+    <string name="account_creation">Account creation</string>
+    <string name="meeting_title_placeholder">Meeting name</string>
+    <string name="meeting_id_placeholder">Meeting id</string>
+    <string name="meeting_owner_placeholder">Owner</string>
     <string name="meeting_id_label">"ID: "</string>
-    <string name="meeting_owner_label">"Właściciel: "</string>
-    <string name="meeting_date_label">"Data: "</string>
+    <string name="meeting_owner_label">"Owner: "</string>
+    <string name="meeting_date_label">"Date: "</string>
     <string name="id">ID</string>
     <string name="example_date">20/02/2020</string>
-    <string name="inactive">Nieaktywne</string>
+    <string name="inactive">Inactive</string>
     <string name="id_val">Id:</string>
-    <string name="participants_val">Uczestnicy:</string>
-    <string name="join_create">Dołącz / Stwórz</string>
-    <string name="create_meeting">Utwórz spotkanie</string>
-    <string name="participants">Uczestnicy</string>
+    <string name="participants_val">Participants:</string>
+    <string name="join_create">Join / Create</string>
+    <string name="create_meeting">Create a meeting</string>
+    <string name="participants">Participants</string>
 
     <!-- Strings related to Jitsi-->
-    <string name="no_meeting">Brak aktywnej konwersacji, dołącz z ekranu spotkań lub kontaktów</string>
+    <string name="no_meeting">No active meeting, join using meeting or contacts screen</string>
 
-    <string name="yes">Tak</string>
-    <string name="no">Nie</string>
-    <string name="delete_contact_dialog_message">Czy na pewno chcesz usunąć wybraną osobę ze znajomych?</string>
-    <string name="contacts_deleted_success">Pomyślnie usunięto wybrane kontakty</string>
-    <string name="contact_delete_fail">Nie udało się usunąć wybranego kontaktu</string>
-    <string name="update_contacts_fail">Nie udało się zaktualizować listy kontaktów</string>
-    <string name="add_contact_dialog">Podaj nazwę kontaktu</string>
-    <string name="add_contact_success">Pomyślnie dodano kontakt</string>
-    <string name="add_contact_fail">Nie udało się dodać kontaktu</string>
-    <string name="registed_failed">Nie udało się zarejestrować</string>
-    <string name="fields_must_be_not_empty">Pola nie mogą być puste</string>
-    <string name="passwords_dont_match">Wpisane hasła różnią się od siebie</string>
-    <string name="email_not_correct">Niepoprawny format adresu email</string>
-    <string name="add_friend">Dodaj</string>
-    <string name="friend_added">Dodano do znajomych</string>
-    <string name="delete_from_contacts">Usuń ze znajomych</string>
-    <string name="prompt_meeting_name">Nazwa</string>
-    <string name="prompt_meeting_date">Termin</string>
-    <string name="prompt_meeting_participants">Uczestnicy</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="delete_contact_dialog_message">Are you sure you want to delete selected contact?</string>
+    <string name="contacts_deleted_success">Contacts deleted successfully</string>
+    <string name="contact_delete_fail">Contact deletion failed</string>
+    <string name="update_contacts_fail">Contacts list update failed</string>
+    <string name="add_contact_dialog">Enter contact name</string>
+    <string name="add_contact_success">Contact added successfully</string>
+    <string name="add_contact_fail">Contact adding failed</string>
+    <string name="registed_failed">Registration failed</string>
+    <string name="fields_must_be_not_empty">Fields can not be empty</string>
+    <string name="passwords_dont_match">Entered passwords do not match</string>
+    <string name="email_not_correct">Incorrect email format</string>
+    <string name="add_friend">Add</string>
+    <string name="friend_added">Contact added</string>
+    <string name="delete_from_contacts">Delete contact</string>
+    <string name="prompt_meeting_name">Name</string>
+    <string name="prompt_meeting_date">Date</string>
+    <string name="prompt_meeting_participants">Participants</string>
 </resources>
