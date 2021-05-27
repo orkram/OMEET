@@ -62,4 +62,12 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:textSize">16sp</item>
     </style>
+
+    <style name="default_scrollview">
+        <item name="android:fadeScrollbars">false</item>
+        <item name="android:fadingEdge">vertical</item>
+        <item name="android:fadingEdgeLength">16dp</item>
+        <item name="android:requiresFadingEdge">vertical</item>
+        <item name="android:scrollbars">vertical</item>
+    </style>
 </resources>

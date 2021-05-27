@@ -54,6 +54,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation ('org.jitsi.react:jitsi-meet-sdk:3.5.0') { transitive = true }
+    implementation 'com.applandeo:material-calendar-view:1.7.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

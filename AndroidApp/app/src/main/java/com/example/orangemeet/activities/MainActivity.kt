@@ -66,7 +66,8 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
             R.id.nav_contacts,
             R.id.nav_settings,
             R.id.nav_meetings,
-            R.id.nav_video
+            R.id.nav_video,
+            R.id.nav_calendar
         ), drawerLayout)
 
         setupActionBarWithNavController(navController, appBarConfiguration)

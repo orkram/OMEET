@@ -96,16 +96,10 @@
             android:background="@drawable/line" />
 
         <androidx.core.widget.NestedScrollView
+            style="@style/default_scrollview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fadeScrollbars="true"
-            android:fadingEdge="vertical"
-            android:fadingEdgeLength="16dp"
-            android:requiresFadingEdge="vertical"
-            android:scrollbars="vertical"
-            app:layout_scrollFlags="scroll"
-            tools:context=".fragments.ContactsFragment">
+            android:layout_weight="1">
 
             <LinearLayout
                 android:id="@+id/meetingsList"
