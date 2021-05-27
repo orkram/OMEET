@@ -51,9 +51,6 @@ class CalendarFragment : Fragment() {
         meetingsView = view.findViewById(R.id.meetingsView)
         meetingDateView = view.findViewById(R.id.meetingDate)
 
-        meetingDateView.setText(SimpleDateFormat("dd-MM-yy").format(Calendar.getInstance().time))
-        CreateMeetingViews(Calendar.getInstance(), inflater)
-
         val events: MutableList<EventDay> = ArrayList()
 
         BackendCommunication.getMeetings(requireContext(),
@@ -63,6 +60,8 @@ class CalendarFragment : Fragment() {
                     val calendar = Calendar.getInstance()
                     calendar.time = meeting.date
                     events.add(EventDay(calendar, R.drawable.baseline_account_circle_24))
+                    meetingDateView.setText(SimpleDateFormat("dd-MM-yy").format(Calendar.getInstance().time))
+                    CreateMeetingViews(Calendar.getInstance(), inflater)
                 }
                 calendarView.setEvents(events)
             },
@@ -75,8 +74,6 @@ class CalendarFragment : Fragment() {
 
             meetingDateView.setText(SimpleDateFormat("dd-MM-yy").format(clickedDayCalendar.time))
 
-            meetingsView.removeAllViews()
-
             CreateMeetingViews(clickedDayCalendar, inflater)
         }
 
@@ -84,6 +81,8 @@ class CalendarFragment : Fragment() {
     }
 
     private fun CreateMeetingViews(clickedDayCalendar : Calendar, inflater: LayoutInflater){
+        meetingsView.removeAllViews()
+
         meetings?.forEach {meeting ->
             val meetingCalendar = Calendar.getInstance().apply { time = meeting.date }
             if(meetingCalendar.get(Calendar.DAY_OF_YEAR) == clickedDayCalendar.get(Calendar.DAY_OF_YEAR) &&
