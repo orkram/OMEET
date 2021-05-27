@@ -19,6 +19,6 @@
         android:layout_height="30dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Nie udało się nic znaleźć" />
+        android:text="@string/could_not_find" />
 
 </LinearLayout>

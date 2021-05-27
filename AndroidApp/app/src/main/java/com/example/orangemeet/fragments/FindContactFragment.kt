@@ -69,7 +69,7 @@ class FindContactFragment : Fragment() {
                 Response.ErrorListener {
                     Toast.makeText(
                             requireContext(),
-                            "Nie udało się pobrać listy znajomych",
+                            getString(R.string.get_contacts_fail),
                             Toast.LENGTH_LONG
                     ).show()
                     progressBar.visibility = View.GONE
@@ -78,7 +78,7 @@ class FindContactFragment : Fragment() {
             Response.ErrorListener {
                 Toast.makeText(
                     requireContext(),
-                    "Nie udało się pobrać listy użytkowników",
+                    getString(R.string.get_users_fail),
                     Toast.LENGTH_LONG
                 ).show()
                 progressBar.visibility = View.GONE
@@ -127,7 +127,7 @@ class FindContactFragment : Fragment() {
                     Response.ErrorListener {
                         Toast.makeText(
                             requireContext(),
-                            "Nie udało się dodać do znajomych",
+                            getString(R.string.add_contact_fail),
                             Toast.LENGTH_LONG
                         ).show()
                     })

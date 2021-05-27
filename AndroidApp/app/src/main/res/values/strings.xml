@@ -170,6 +170,7 @@
     <string name="id_val">Id:</string>
     <string name="participants_val">Uczestnicy:</string>
     <string name="join_create">Dołącz / Stwórz</string>
+    <string name="join">Dołącz</string>
     <string name="create_meeting">Utwórz spotkanie</string>
     <string name="participants">Uczestnicy</string>
 
@@ -180,21 +181,26 @@
     <string name="no">Nie</string>
     <string name="delete_contact_dialog_message">Czy na pewno chcesz usunąć wybraną osobę ze znajomych?</string>
     <string name="contacts_deleted_success">Pomyślnie usunięto wybrane kontakty</string>
+    <string name="contact_deleted_success">Pomyślnie usunięto kontakt</string>
     <string name="contact_delete_fail">Nie udało się usunąć wybranego kontaktu</string>
     <string name="update_contacts_fail">Nie udało się zaktualizować listy kontaktów</string>
+    <string name="get_contacts_fail">Nie udało się pobrać listy kontaktów</string>
     <string name="add_contact_dialog">Podaj nazwę kontaktu</string>
     <string name="add_contact_success">Pomyślnie dodano kontakt</string>
     <string name="add_contact_fail">Nie udało się dodać kontaktu</string>
     <string name="registed_failed">Nie udało się zarejestrować</string>
     <string name="fields_must_be_not_empty">Pola nie mogą być puste</string>
+    <string name="meeting_name_empty">Nazwa spotkania nie może być pusta</string>
     <string name="passwords_dont_match">Wpisane hasła różnią się od siebie</string>
     <string name="email_not_correct">Niepoprawny format adresu email</string>
     <string name="add_friend">Dodaj</string>
     <string name="friend_added">Dodano do znajomych</string>
     <string name="delete_from_contacts">Usuń ze znajomych</string>
     <string name="prompt_meeting_name">Nazwa</string>
-    <string name="prompt_meeting_date">Termin</string>
+    <string name="prompt_meeting_date">Data</string>
+    <string name="meeting_time">Godzina</string>
     <string name="prompt_meeting_participants">Uczestnicy</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_calendar">Kalendarz</string>
@@ -226,4 +232,12 @@
     <string name="material_calendar_positive_button">OK</string>
     <string name="material_calendar_negative_button">Anuluj</string>
     <string name="meetings_on_day">Spotkania w dniu</string>
+
+    <string name="create_meeting_success">Pomyślnie utworzono spotkanie</string>
+    <string name="create_meeting_fail">Nie udało się utworzyć spotkania</string>
+    <string name="get_meetings_fail">Nie udało się pobrać listy spotkań</string>
+    <string name="get_users_fail">Nie udało się pobrać listy użytkowników</string>
+    <string name="find_contact_error">Wprowadź przynajmniej 3 znaki, aby wyszukać</string>
+    <string name="could_not_find">Nie udało się nic znaleźć</string>
+
 </resources>
