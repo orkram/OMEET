@@ -1,25 +1,22 @@
 package com.example.orangemeet.fragments
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.ProgressBar
-import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.preference.PreferenceManager
 import com.example.orangemeet.CustomJitsiFragment
 import com.example.orangemeet.R
 import com.example.orangemeet.UserInfo
+import com.example.orangemeet.Util
 import com.example.orangemeet.activities.MainActivity
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import org.jitsi.meet.sdk.JitsiMeetUserInfo
-import timber.log.Timber
 import java.net.URL
 
 // TODO: Rename parameter arguments, choose names that match
@@ -114,6 +111,19 @@ class VideoFragment : Fragment() {
             val userData = JitsiMeetUserInfo()
             userData.setDisplayName(UserInfo.userName)
 
+
+            val colorScheme = Bundle()
+
+            val dialogColorScheme = Bundle()
+            dialogColorScheme.putString("buttonBackground", Util.rgbString(resources.getColor(R.color.orange, requireContext().theme)))
+            colorScheme.putBundle("Dialog", dialogColorScheme)
+
+            val headerColorScheme = Bundle()
+            headerColorScheme.putString("background", Util.rgbString(resources.getColor(R.color.orange, requireContext().theme)))
+            headerColorScheme.putString("statusBar", "null")
+            colorScheme.putBundle("Header", headerColorScheme)
+
+
             if(!UserInfo.isInConference){
                 (activity as MainActivity).customJitsiFragment
                         .jitsiView.join(JitsiMeetConferenceOptions.Builder()
@@ -133,13 +143,15 @@ class VideoFragment : Fragment() {
                                 .setFeatureFlag("recording.enabled", false)
                                 .setFeatureFlag("live-streaming.enabled", false)
                                 .setWelcomePageEnabled(false)
+                                .setColorScheme(colorScheme)
                                 .build())
+
                 UserInfo.isInConference = true
             }
         }
 
         return view
-        ////
+
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_video, container, false)
     }

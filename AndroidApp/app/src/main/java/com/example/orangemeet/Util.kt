@@ -1,6 +1,8 @@
 package com.example.orangemeet
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.ColorSpace
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.StateListDrawable
 import android.text.method.HideReturnsTransformationMethod
@@ -8,6 +10,7 @@ import android.text.method.PasswordTransformationMethod
 import android.util.TypedValue
 import android.widget.ImageButton
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.convertTo
 import com.google.android.material.textfield.TextInputEditText
 import java.nio.charset.Charset
 import java.util.*
@@ -52,6 +55,10 @@ class Util {
                 passwordEditText.transformationMethod = HideReturnsTransformationMethod.getInstance()
                 visibilityButton.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.visibility_24, context.theme))
             }
+        }
+
+        fun rgbString(color : Int) : String{
+            return "rgb(" + Color.red(color) + ", " + Color.green(color) + ", " + Color.blue(color) + ")"
         }
     }
 }
