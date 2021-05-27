@@ -24,8 +24,8 @@ import com.example.orangemeet.UserInfo
 import com.example.orangemeet.ui.login.LoginActivity
 import com.facebook.react.modules.core.PermissionListener
 import com.google.android.material.navigation.NavigationView
+import org.jitsi.meet.sdk.JitsiMeetActivityDelegate
 import org.jitsi.meet.sdk.JitsiMeetActivityInterface
-import org.jitsi.meet.sdk.JitsiMeetOngoingConferenceService
 
 
 class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
@@ -115,8 +115,8 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
         println(if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) "Night" else "Day")
     }
 
-    override fun requestPermissions(p0: Array<out String>?, p1: Int, p2: PermissionListener?) {
-
+    override fun requestPermissions(permissions: Array<out String>?, requestCode: Int, listener: PermissionListener?) {
+        JitsiMeetActivityDelegate.requestPermissions(this, permissions, requestCode, listener);
     }
 
 
