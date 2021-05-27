@@ -192,6 +192,7 @@
     <string name="fields_must_be_not_empty">Pola nie mogą być puste</string>
     <string name="meeting_name_empty">Nazwa spotkania nie może być pusta</string>
     <string name="passwords_dont_match">Wpisane hasła różnią się od siebie</string>
+    <string name="password_too_short">Hasło musi składać się conajmniej z 8 znaków</string>
     <string name="email_not_correct">Niepoprawny format adresu email</string>
     <string name="add_friend">Dodaj</string>
     <string name="friend_added">Dodano do znajomych</string>
@@ -232,7 +233,7 @@
     <string name="material_calendar_positive_button">OK</string>
     <string name="material_calendar_negative_button">Anuluj</string>
     <string name="meetings_on_day">Spotkania w dniu</string>
-    
+
     <string name="create_meeting_success">Pomyślnie utworzono spotkanie</string>
     <string name="create_meeting_fail">Nie udało się utworzyć spotkania</string>
     <string name="get_meetings_fail">Nie udało się pobrać listy spotkań</string>
