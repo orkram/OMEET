@@ -226,4 +226,5 @@
     <string name="material_calendar_positive_button">OK</string>
     <string name="material_calendar_negative_button">Anuluj</string>
     <string name="meetings_on_day">Spotkania w dniu</string>
+    <string name="this_day_no_meetings">W tym dniu nie masz żadnych spotkań</string>
 </resources>
