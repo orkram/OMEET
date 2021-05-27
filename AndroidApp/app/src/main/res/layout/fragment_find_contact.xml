@@ -48,7 +48,7 @@
             android:layout_height="30dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Wprowadź przynajmniej 3 znaki, aby wyszukać" />
+            android:text="@string/find_contact_error" />
     </LinearLayout>
 
     <ProgressBar

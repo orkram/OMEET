@@ -72,7 +72,7 @@ class ContactsFragment : Fragment() {
                 progressBar.visibility = View.GONE
             },
             Response.ErrorListener { error ->
-                Toast.makeText(context, "Nie udało się pobrać listy kontaktów", Toast.LENGTH_LONG)
+                Toast.makeText(context, getString(R.string.get_contacts_fail), Toast.LENGTH_LONG)
                     .show()
                 progressBar.visibility = View.GONE
             })
@@ -127,7 +127,7 @@ class ContactsFragment : Fragment() {
                                     Response.Listener {
                                         Toast.makeText(
                                             requireContext(),
-                                            "Pomyślnie usunięto kontakt",
+                                            getString(R.string.contact_deleted_success),
                                             Toast.LENGTH_SHORT
                                         ).show()
                                         BackendCommunication.getContactsList(

@@ -170,23 +170,27 @@
     <string name="id_val">Id:</string>
     <string name="participants_val">Participants:</string>
     <string name="join_create">Join / Create</string>
+    <string name="join">Join</string>
     <string name="create_meeting">Create a meeting</string>
     <string name="participants">Participants</string>
 
     <!-- Strings related to Jitsi-->
-    <string name="no_meeting">No active meeting, join using meeting or contacts screen</string>
+    <string name="no_meeting">No active meeting, join using meetings or contacts screen</string>
 
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="delete_contact_dialog_message">Are you sure you want to delete selected contact?</string>
     <string name="contacts_deleted_success">Contacts deleted successfully</string>
+    <string name="contact_deleted_success">Contact deleted successfully</string>
     <string name="contact_delete_fail">Contact deletion failed</string>
     <string name="update_contacts_fail">Contacts list update failed</string>
+    <string name="get_contacts_fail">Loading contacts failed</string>
     <string name="add_contact_dialog">Enter contact name</string>
     <string name="add_contact_success">Contact added successfully</string>
-    <string name="add_contact_fail">Contact adding failed</string>
+    <string name="add_contact_fail">Adding contact failed</string>
     <string name="registed_failed">Registration failed</string>
     <string name="fields_must_be_not_empty">Fields can not be empty</string>
+    <string name="meeting_name_empty">Meeting name cannot be empty</string>
     <string name="passwords_dont_match">Entered passwords do not match</string>
     <string name="email_not_correct">Incorrect email format</string>
     <string name="add_friend">Add</string>
@@ -194,5 +198,12 @@
     <string name="delete_from_contacts">Delete contact</string>
     <string name="prompt_meeting_name">Name</string>
     <string name="prompt_meeting_date">Date</string>
+    <string name="meeting_time">Time</string>
     <string name="prompt_meeting_participants">Participants</string>
+    <string name="create_meeting_success">Meeting created successfully</string>
+    <string name="create_meeting_fail">Meeting creation failed</string>
+    <string name="get_meetings_fail">Loading meetings failed</string>
+    <string name="get_users_fail">Loading users failed</string>
+    <string name="find_contact_error">Enter at least 3 characters to search</string>
+    <string name="could_not_find">Could not find anything</string>
 </resources>

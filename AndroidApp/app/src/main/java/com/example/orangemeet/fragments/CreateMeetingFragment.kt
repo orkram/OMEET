@@ -70,7 +70,7 @@ class CreateMeetingFragment : Fragment() {
 
         createMeetingButton.setOnClickListener {
             if(meetingNameView.text!!.isEmpty()){
-                Toast.makeText(requireContext(), "Nazwa spotkania nie może być pusta", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), getString(R.string.meeting_name_empty), Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
@@ -82,7 +82,7 @@ class CreateMeetingFragment : Fragment() {
                 Response.Listener {
                     Toast.makeText(
                         requireContext(),
-                        "Pomyślnie utworzono spotkanie",
+                        getString(R.string.create_meeting_success),
                         Toast.LENGTH_SHORT
                     ).show()
                     findNavController().navigateUp()
@@ -90,7 +90,7 @@ class CreateMeetingFragment : Fragment() {
                 Response.ErrorListener {
                     Toast.makeText(
                         requireContext(),
-                        "Nie udało się utworzyć spotkania",
+                        getString(R.string.create_meeting_fail),
                         Toast.LENGTH_SHORT
                     ).show()
                 })
@@ -123,7 +123,7 @@ class CreateMeetingFragment : Fragment() {
             Response.ErrorListener {
                 Toast.makeText(
                     requireContext(),
-                    "Nie udało się pobrać listy spotkań",
+                    getString(R.string.get_meetings_fail),
                     Toast.LENGTH_LONG
                 ).show()
                 progressBar.visibility = View.GONE;
