@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.add
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.example.orangemeet.activities.MainActivity
 import com.example.orangemeet.fragments.VideoFragment
 import com.facebook.react.ReactInstanceManager
 import org.jitsi.meet.sdk.*
@@ -24,7 +25,9 @@ class CustomJitsiFragment : JitsiMeetFragment() {
 
     private var broadcastReceiver : BroadcastReceiver? = null
     var parentFrag : VideoFragment? = null
-    var roomName : String = UserInfo.conferenceId;
+
+    var scheduleHide = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,39 +40,40 @@ class CustomJitsiFragment : JitsiMeetFragment() {
                 onBroadcastReceived(intent)
             }
         }
-
         registerForBroadcastMessages()
 
-        val userData = JitsiMeetUserInfo()
-        userData.setDisplayName(UserInfo.userName)
-
-        jitsiView.join(JitsiMeetConferenceOptions.Builder()
-            .setServerURL(URL("http://130.61.186.61"))
-            .setRoom(roomName)
-            .setSubject(UserInfo.conferenceName)
-            .setAudioMuted(false)
-            .setVideoMuted(false)
-            .setUserInfo(userData)
-            .setFeatureFlag("fullscreen.enabled", false)
-            .setFeatureFlag("add-people.enabled", false)
-            .setFeatureFlag("invite.enabled", false)
-            .setFeatureFlag("toolbox.enabled", true)
-            .setFeatureFlag("chat.enabled", true)
-            .setWelcomePageEnabled(false)
-            .build())
         return view
     }
 
     override fun onDestroyView() {
+        Timber.i("OnDestroyView")
         jitsiView.leave()
-        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver!!)
+        val hangupBroadcastIntent: Intent = BroadcastIntentHelper.buildHangUpIntent()
+        LocalBroadcastManager.getInstance(org.webrtc.ContextUtils.getApplicationContext()).sendBroadcast(hangupBroadcastIntent)
         super.onDestroyView()
     }
 
     override fun onDestroy() {
+        Timber.i("OnDestroy")
+        jitsiView.leave()
+        UserInfo.isInConference = false
         super.onDestroy()
     }
 
+    override fun onPause() {
+        Timber.i("OnPause")
+        super.onPause()
+    }
+
+    override fun onStop() {
+        Timber.i("OnStop")
+        super.onStop()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        Timber.i("OnSaveInstanceState")
+        super.onSaveInstanceState(outState)
+    }
 
     private fun registerForBroadcastMessages() {
         val intentFilter = IntentFilter()
@@ -100,11 +104,29 @@ class CustomJitsiFragment : JitsiMeetFragment() {
                 BroadcastEvent.Type.CONFERENCE_TERMINATED -> {
                     Timber.i("XD Conference terminated%s", event.getData().get("url"))
                     UserInfo.isInConference = false
-                    parentFrag?.replaceWithInfo()
+                    UserInfo.conferenceId = ""
+                    if(activity != null)
+                        (activity as MainActivity).customJitsiFragmentView.visibility = View.GONE
+                    else
+                        scheduleHide = true
                     UserInfo.conferenceName = ""
                 }
             }
         }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if(scheduleHide){
+            scheduleHide = false
+            (activity as MainActivity).customJitsiFragmentView.visibility = View.GONE
+        }
+    }
+
+
+    companion object{
+
+        var savedView : View? = null
     }
 
     fun hangUp() {

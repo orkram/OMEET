@@ -1,7 +1,6 @@
 package com.example.orangemeet
 
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.StateListDrawable
 import android.text.method.HideReturnsTransformationMethod
@@ -48,10 +47,10 @@ class Util {
         fun showHidePassword(passwordEditText: TextInputEditText, visibilityButton : ImageButton, context: Context){
             if(passwordEditText.transformationMethod is HideReturnsTransformationMethod){
                 passwordEditText.transformationMethod = PasswordTransformationMethod.getInstance()
-                visibilityButton.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.outline_visibility_off_24, context.theme))
+                visibilityButton.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.visibility_off_24, context.theme))
             } else{
                 passwordEditText.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                visibilityButton.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.outline_visibility_24, context.theme))
+                visibilityButton.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.visibility_24, context.theme))
             }
         }
     }

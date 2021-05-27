@@ -5,38 +5,39 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.preference.PreferenceManager
-import com.dropbox.core.v2.sharing.UserFileMembershipInfo
 import com.example.orangemeet.BackendCommunication
+import com.example.orangemeet.CustomJitsiFragment
 import com.example.orangemeet.R
-import com.example.orangemeet.User
 import com.example.orangemeet.UserInfo
 import com.example.orangemeet.ui.login.LoginActivity
 import com.facebook.react.modules.core.PermissionListener
 import com.google.android.material.navigation.NavigationView
 import org.jitsi.meet.sdk.JitsiMeetActivityInterface
+import org.jitsi.meet.sdk.JitsiMeetOngoingConferenceService
 
 
 class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    lateinit var customJitsiFragment: CustomJitsiFragment
+    lateinit var customJitsiFragmentView : View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -70,7 +71,17 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        customJitsiFragment = supportFragmentManager.findFragmentById(R.id.jitsiFragment) as CustomJitsiFragment
+        customJitsiFragmentView = findViewById(R.id.jitsiFragment)
+        customJitsiFragmentView.visibility = View.GONE
+    }
 
+    override fun onRestart() {
+        super.onRestart()
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     private fun goToLoginActivity(){
@@ -81,6 +92,10 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
             startActivity(intent)
             finish()
         }
+    }
+
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

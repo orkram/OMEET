@@ -11,15 +11,13 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="258dp"
-        android:layout_height="137dp"
+        android:layout_width="317dp"
+        android:layout_height="158dp"
 
         android:layout_marginStart="7dp"
-        android:layout_marginLeft="7dp"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="55dp"
         android:layout_marginEnd="7dp"
-        android:layout_marginRight="7dp"
-        android:src="@drawable/orangemeet_logo"
+        android:src="@drawable/kaliber_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +39,7 @@
         android:layout_height="168dp"
         android:fontFamily="@font/abeezee"
         android:gravity="center"
-        android:text="Welcome, user!"
+        android:text="@string/welcome"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,7 +54,7 @@
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginBottom="30dp"
-        android:text="v 1.0"
+        android:text="@string/version"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

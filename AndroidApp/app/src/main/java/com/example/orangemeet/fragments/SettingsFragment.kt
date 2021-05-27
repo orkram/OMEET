@@ -1,6 +1,7 @@
 package com.example.orangemeet.fragments
 
 import android.app.UiModeManager
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
@@ -14,9 +15,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
 
-        val dayNightPref = findPreference<SwitchPreferenceCompat>("day_night")
-
-        dayNightPref?.setOnPreferenceChangeListener { preference, newValue ->
+        findPreference<SwitchPreferenceCompat>("day_night")?.setOnPreferenceChangeListener { preference, newValue ->
             setDayNight(newValue as Boolean)
             true
         }
