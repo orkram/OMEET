@@ -5,15 +5,18 @@ import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.android.volley.Response
 import com.applandeo.materialcalendarview.CalendarView
 import com.applandeo.materialcalendarview.EventDay
 import com.example.orangemeet.BackendCommunication
 import com.example.orangemeet.Meeting
 import com.example.orangemeet.R
+import com.example.orangemeet.UserInfo
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -86,7 +89,15 @@ class CalendarFragment : Fragment() {
             if(meetingCalendar.get(Calendar.DAY_OF_YEAR) == clickedDayCalendar.get(Calendar.DAY_OF_YEAR) &&
                 meetingCalendar.get(Calendar.YEAR) == clickedDayCalendar.get(Calendar.YEAR)){
 
-                meetingsView.addView(Meeting.createView(inflater, meetingsView, meeting, null))
+                val meetingView = Meeting.createView(inflater, meetingsView, meeting, null)
+
+                meetingView.findViewById<ImageButton>(R.id.imageButton).setOnClickListener {
+                    UserInfo.conferenceName = meeting.name.toString()
+                    UserInfo.conferenceId = meeting.id.toString()
+                    findNavController().navigate(R.id.nav_video)
+                }
+
+                meetingsView.addView(meetingView)
             }
         }
     }
