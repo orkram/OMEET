@@ -17,6 +17,11 @@
             android:icon="@drawable/meetings"
             android:title="@string/menu_meetings" />
         <item
+            android:id="@+id/nav_calendar"
+            android:icon="@drawable/baseline_event_24"
+            android:title="@string/menu_calendar"
+            />
+        <item
             android:id="@+id/nav_contacts"
             android:icon="@drawable/contacts"
             android:title="@string/menu_contacts" />

@@ -42,6 +42,12 @@
         tools:layout="@layout/fragment_find_contact" />
 
     <fragment
+        android:id="@+id/nav_calendar"
+        android:name="com.example.orangemeet.fragments.CalendarFragment"
+        android:label="@string/menu_calendar"
+        tools:layout="@layout/fragment_calendar" />
+
+    <fragment
         android:id="@+id/nav_create_meeting"
         android:name="com.example.orangemeet.fragments.CreateMeetingFragment"
         android:label="@string/menu_create_meeting"
