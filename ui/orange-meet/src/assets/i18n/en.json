@@ -49,6 +49,12 @@
 		"status": "Status",
 		"title": "Meetings"
 	},
+	"navigation": {
+		"calendar": "Calendar",
+		"contacts": "Contacts",
+		"meetings": "Meetings",
+		"settings": "Settings"
+	},
 	"paginator": {
 		"items_per_page": "Items per page: ",
 		"next_page": "Next",

@@ -49,6 +49,12 @@
 		"status": "Stan",
 		"title": "Spotkania"
 	},
+	"navigation": {
+		"calendar": "Kalendarz",
+		"contacts": "Kontakty",
+		"meetings": "Spotkania",
+		"settings": "Ustawienia"
+	},
 	"paginator": {
 		"items_per_page": "Elementów na stronie",
 		"next_page": "Kolejna",
