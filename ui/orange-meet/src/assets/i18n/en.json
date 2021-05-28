@@ -43,7 +43,7 @@
 		"join-with-id": "OR JOIN USING ID",
 		"name": "Name",
 		"status": "Status",
-		"title": ""
+		"title": "Meetings"
 	},
 	"paginator": {
 		"items_per_page": "Items per page: ",
@@ -89,7 +89,7 @@
 		"options-selected": "Options selected: ",
 		"remove-selected": "Remove selected users",
 		"start-hint": "Start meeting by selecting users and pressing create meeting",
-		"title": "",
+		"title": "Contacts",
 		"unselect-all": "Unselect all",
 		"user-name": "Name"
 	}
