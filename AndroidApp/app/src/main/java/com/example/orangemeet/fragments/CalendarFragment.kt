@@ -5,15 +5,15 @@ import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.android.volley.Response
 import com.applandeo.materialcalendarview.CalendarView
 import com.applandeo.materialcalendarview.EventDay
-import com.example.orangemeet.BackendCommunication
-import com.example.orangemeet.Meeting
-import com.example.orangemeet.R
+import com.example.orangemeet.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -29,6 +29,7 @@ class CalendarFragment : Fragment() {
     lateinit var calendarView : CalendarView
     lateinit var meetingsView : ViewGroup
     lateinit var meetingDateView : TextView
+    lateinit var noMeetingsPlaceholder : View
 
     var meetings : List<Meeting>? = null
 
@@ -47,9 +48,7 @@ class CalendarFragment : Fragment() {
         calendarView = view.findViewById(R.id.calendarView)
         meetingsView = view.findViewById(R.id.meetingsView)
         meetingDateView = view.findViewById(R.id.meetingDate)
-
-        meetingDateView.setText(SimpleDateFormat("dd-MM-yy").format(Calendar.getInstance().time))
-        CreateMeetingViews(Calendar.getInstance(), inflater)
+        noMeetingsPlaceholder = view.findViewById(R.id.noMeetingsPlaceholder)
 
         val events: MutableList<EventDay> = ArrayList()
 
@@ -59,7 +58,9 @@ class CalendarFragment : Fragment() {
                 this.meetings!!.forEach { meeting ->
                     val calendar = Calendar.getInstance()
                     calendar.time = meeting.date
-                    events.add(EventDay(calendar, R.drawable.baseline_account_circle_24))
+                    events.add(EventDay(calendar, R.drawable.baseline_groups_24))
+                    meetingDateView.setText(SimpleDateFormat("dd-MM-yy").format(Calendar.getInstance().time))
+                    CreateMeetingViews(Calendar.getInstance(), inflater)
                 }
                 calendarView.setEvents(events)
             },
@@ -69,26 +70,46 @@ class CalendarFragment : Fragment() {
 
         calendarView.setOnDayClickListener {eventDay ->
             val clickedDayCalendar = eventDay.calendar
-
-            meetingDateView.setText(SimpleDateFormat("dd-MM-yy").format(clickedDayCalendar.time))
-
-            meetingsView.removeAllViews()
-
-            CreateMeetingViews(clickedDayCalendar, inflater)
+            if(calendarView.currentPageDate.get(Calendar.MONTH) ==
+                Calendar.getInstance().apply { time = clickedDayCalendar.time }.get(Calendar.MONTH) )
+            {
+                meetingDateView.setText(SimpleDateFormat("dd-MM-yy").format(clickedDayCalendar.time))
+                CreateMeetingViews(clickedDayCalendar, inflater)
+            }
         }
 
         return view
     }
 
     private fun CreateMeetingViews(clickedDayCalendar : Calendar, inflater: LayoutInflater){
-        meetings?.forEach {meeting ->
-            val meetingCalendar = Calendar.getInstance().apply { time = meeting.date }
-            if(meetingCalendar.get(Calendar.DAY_OF_YEAR) == clickedDayCalendar.get(Calendar.DAY_OF_YEAR) &&
-                meetingCalendar.get(Calendar.YEAR) == clickedDayCalendar.get(Calendar.YEAR)){
+        meetingsView.removeAllViews()
 
-                meetingsView.addView(Meeting.createView(inflater, meetingsView, meeting, null))
+        val filteredMeetings = meetings!!.filter { meeting ->
+            val meetingCalendar = Calendar.getInstance().apply { time = meeting.date }
+            meetingCalendar.get(Calendar.DAY_OF_YEAR) == clickedDayCalendar.get(Calendar.DAY_OF_YEAR) &&
+                    meetingCalendar.get(Calendar.YEAR) == clickedDayCalendar.get(Calendar.YEAR)
+        }
+
+        if(filteredMeetings.isEmpty()){
+            noMeetingsPlaceholder.visibility = View.VISIBLE
+        }else{
+            noMeetingsPlaceholder.visibility = View.GONE
+
+            var evenView = false
+            filteredMeetings?.forEach {meeting ->
+                val meetingView = Meeting.createView(inflater, meetingsView, meeting, Util.createTintedBackground(requireContext(), evenView))
+
+                meetingView.findViewById<ImageButton>(R.id.imageButton).setOnClickListener {
+                    UserInfo.conferenceName = meeting.name.toString()
+                    UserInfo.conferenceId = meeting.id.toString()
+                    findNavController().navigate(R.id.nav_video)
+                }
+
+                meetingsView.addView(meetingView)
+                evenView = !evenView
             }
         }
+
     }
 
     companion object {

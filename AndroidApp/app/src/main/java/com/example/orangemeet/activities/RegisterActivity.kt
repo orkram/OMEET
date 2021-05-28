@@ -56,6 +56,11 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            if(password.length() < 8){
+                Toast.makeText(applicationContext, R.string.password_too_short, Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
 
             BackendCommunication.register(this,
                 email.text.toString(),
