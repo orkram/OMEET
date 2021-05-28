@@ -6,6 +6,8 @@
 
   <div class="main-style">
       <div class=" row text-center">
+
+
         <div class="col-md-4">
           <div class="btn-group">
             <button
@@ -15,9 +17,8 @@
               mwlCalendarPreviousView
               [view]="view"
               [(viewDate)]="viewDate"
-              (viewDateChange)="closeOpenMonthViewDay()"
-            >
-              Previous
+              (viewDateChange)="closeOpenMonthViewDay()">
+              {{ 'calendar.previous' | translate }}
             </button>
             <button
               mat-raised-button
@@ -26,7 +27,7 @@
               mwlCalendarToday
               [(viewDate)]="viewDate"
             >
-              Today
+              {{ 'calendar.today' | translate }}
             </button>
             <button
               mat-raised-button
@@ -37,17 +38,17 @@
               [(viewDate)]="viewDate"
               (viewDateChange)="closeOpenMonthViewDay()"
             >
-              Next
+              {{ 'calendar.next' | translate}}
             </button>
-          </div>
-        </div>
 
-        <div class="col-md-4 date">
-          <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
-        </div>
+            <span class="spacer "></span>
 
-        <div class="col-md-4">
-          <div class="btn-group">
+            <div class="col-md-4 date">
+              <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+            </div>
+
+            <span class="spacer "></span>
+
             <button
               mat-raised-button
               color="primary"
@@ -55,7 +56,7 @@
               (click)="setView(CalendarView.Month)"
               [class.active]="view === CalendarView.Month"
             >
-              Month
+              {{ 'calendar.month' | translate}}
             </button>
             <button
               mat-raised-button
@@ -64,7 +65,7 @@
               (click)="setView(CalendarView.Week)"
               [class.active]="view === CalendarView.Week"
             >
-              Week
+              {{ 'calendar.week' | translate}}
             </button>
             <button
               mat-raised-button
@@ -73,7 +74,7 @@
               (click)="setView(CalendarView.Day)"
               [class.active]="view === CalendarView.Day"
             >
-              Day
+              {{ 'calendar.day' | translate}}
             </button>
           </div>
         </div>
@@ -110,34 +111,6 @@
         >
         </mwl-calendar-day-view>
       </div>
-
-      <!-- Everything you see below is just for the demo, you don't need to include it in your app -->
-
-      <br /><br /><br />
-
-      <ng-template #modalContent let-close="close">
-        <div class="modal-header">
-          <h5 class="modal-title">Event action occurred</h5>
-          <button type="button" class="close" (click)="close()">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div>
-            Action:
-            <pre>{{ modalData?.action }}</pre>
-          </div>
-          <div>
-            Event:
-            <pre>{{ modalData?.event | json }}</pre>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" (click)="close()">
-            OK
-          </button>
-        </div>
-      </ng-template>
 
     </div>
   </div>

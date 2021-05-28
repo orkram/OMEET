@@ -5,11 +5,11 @@ import {MatPaginator} from '@angular/material/paginator';
 import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
 import {MatSort} from '@angular/material/sort';
 import {ActivatedRoute} from '@angular/router';
-import {MeetingsDataSource} from '../../../services/meetings.datasource';
-import {MeetingsService} from '../../../services/meetings.service';
-import {JWTTokenService} from '../../../services/JWTTokenService';
-import {ParticipantsService} from '../../../services/ParticipantsService';
-import {SettingsService} from '../../../services/SettingsService';
+import {MeetingsDataSource} from '../../../services/datasource/meetings.datasource';
+import {MeetingsService} from '../../../services/backend.api/meetings.service';
+import {JWTTokenService} from '../../../services/auth/JWTTokenService';
+import {ParticipantsService} from '../../../services/backend.api/ParticipantsService';
+import {SettingsService} from '../../../services/backend.api/SettingsService';
 
 @Component({
   selector: 'app-meetings-list',
@@ -35,6 +35,8 @@ export class MeetingsListComponent implements OnInit, AfterViewInit{
   expandedMeeting: any;
 
   displayedColumns = ['id', 'name', 'status', 'date'];
+
+  messageBoxContent = 'messagebox.warning.text';
 
   dataSource!: MeetingsDataSource;
 

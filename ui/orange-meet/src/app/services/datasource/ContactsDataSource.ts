@@ -1,8 +1,8 @@
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject, Observable, of, Subscription} from 'rxjs';
 import {catchError, finalize} from 'rxjs/operators';
-import {Contact} from '../model/contacts';
-import {UserService} from './UserService';
+import {Contact} from '../../model/contacts';
+import {UserService} from '../backend.api/UserService';
 
 
 export class ContactsDataSource extends DataSource<Contact> {

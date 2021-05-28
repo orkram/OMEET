@@ -1,9 +1,10 @@
+@import "../../../../custom-theme.scss";
+
 .example-container {
   display: flex;
   flex-direction: column;
   min-width: 300px;
-  margin-top: 10px;
-  margin-left: 20px;
+  margin: 10px;
   font: 400 16px/16px Roboto, "Helvetica Neue", sans-serif;
 
 }
@@ -71,12 +72,10 @@
   hyphens: auto;
 }
 .contact-table {
-  margin-top: 10px;
-  margin-left: 20px;
+  margin: 10px
 }
 .contact-paginator{
-  margin-left: 20px;
-  margin-right: 20px;
+  margin: 10px
 }
 
 .element-row:not(.expanded):hover {
@@ -84,4 +83,18 @@
 }
 .mat-paginator{
   border-radius: 25px;
+}
+
+.spacer{
+  flex: 65%;
+  flex-grow: 1;
+}
+
+.mat-raised-button{
+  margin: 20px;
+  align-items: flex-end;
+}
+
+.remove-button{
+  background-color: $warn !important;
 }

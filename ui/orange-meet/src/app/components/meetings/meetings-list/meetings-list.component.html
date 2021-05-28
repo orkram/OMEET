@@ -1,8 +1,8 @@
 <div class="find-meeting">
   <p>
     <mat-form-field appearance="outline" >
-      <mat-label>Find meeting(by name)</mat-label>
-      <input matInput placeholder="Search" autocomplete="off" #input >
+      <mat-label>{{'meeting.find-meeting-by-name' | translate}} </mat-label>
+      <input matInput placeholder ="{{ 'meeting.search' | translate}}" autocomplete="off" #input >
     </mat-form-field>
   </p>
 </div>
@@ -16,26 +16,26 @@
              matSortActive="id" matSortDirection="asc" matSortDisableClear>
 
     <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef> id </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef> {{'meeting.id' | translate}}  </mat-header-cell>
       <mat-cell *matCellDef="let meeting"> {{meeting.idMeeting}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef > Name </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef > {{ 'meetings.name' | translate }} </mat-header-cell>
       <mat-cell *matCellDef="let meeting"> {{meeting.name}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="status">
-      <mat-header-cell *matHeaderCellDef > Status </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef > {{ 'meetings.status' | translate }} </mat-header-cell>
       <mat-cell *matCellDef="let meeting">
 
-        <mat-chip class="chip" color="gray" selected> Active
+        <mat-chip class="chip" color="gray" selected> {{ 'meetings.active-state'| translate }}
         </mat-chip>
       </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="date">
-      <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef> {{ 'meetings.date' | translate }} </mat-header-cell>
       <mat-cell *matCellDef="let meeting">
         {{meeting.date | date }}
       </mat-cell>
@@ -49,7 +49,7 @@
             Title: {{detail.meeting.name}}
             </div>
             <mat-chip-list>
-              <mat-chip class="chip" color="$success" selected> Active
+              <mat-chip class="chip" color="$success" selected>  {{ 'meetings.active-state'| translate }} Active
               </mat-chip>
             </mat-chip-list>
 <!--
@@ -61,12 +61,13 @@
         -->
 
             <div>
-              Invited participants: {{detail.meeting.participants}}
+              {{ 'meetings.invited-participants'| translate }}
+              {{detail.meeting.participants}}
             </div>
           </div>
 
          <span class="description-spacer"></span>
-        <button mat-raised-button color="primary" (click)="joinMeeting(detail.meeting)">Join</button>
+        <button mat-raised-button color="primary" (click)="joinMeeting(detail.meeting)">{{ 'meetings.join'| translate }}</button>
         </div>
       </mat-cell>
     </ng-container>

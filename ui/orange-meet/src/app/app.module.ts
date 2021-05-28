@@ -16,7 +16,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {UserListComponent} from './components/users-component/user-list/user-list.component';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
 import {MatListModule} from '@angular/material/list';
 import {MatTableModule} from '@angular/material/table';
 import {MatSelectModule} from '@angular/material/select';
@@ -34,31 +34,35 @@ import {MatChipsModule} from '@angular/material/chips';
 import {LoginComponent} from './components/login/login.component';
 import {RegistrationComponent} from './components/registration/registration.component';
 import {LoginFormComponent} from './components/login/login-form/login-form.component';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {LoginService} from './services/LoginService';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
+import {LoginService} from './services/backend.api/LoginService';
 import {RegistrationFormComponent} from './components/registration/registration-form/registration-form.component';
 import {AppInterceptor} from './services/AppInterceptor';
-import {JWTTokenService} from './services/JWTTokenService';
-import {CookieService} from './services/CookieService';
-import {LogoutService} from './services/LogoutService';
+import {JWTTokenService} from './services/auth/JWTTokenService';
+import {CookieService} from './services/auth/CookieService';
+import {LogoutService} from './services/backend.api/LogoutService';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MeetingsService} from './services/meetings.service';
+import {MeetingsService} from './services/backend.api/meetings.service';
 import {JoinDialogComponent} from './components/meetings/join-dialog/join-dialog.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {CreateMeetingDialogComponent} from './components/meetings/create-meeting-dialog/create-meeting-dialog.component';
 import {CommonModule, DatePipe} from '@angular/common';
-import {UserService} from './services/UserService';
+import {UserService} from './services/backend.api/UserService';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {ParticipantsService} from './services/ParticipantsService';
+import {ParticipantsService} from './services/backend.api/ParticipantsService';
 import {JitsiComponent} from './components/jitsi/jitsi.component';
-import {SelectedUsersService} from './services/SelectedUsersService';
+import {SelectedUsersService} from './services/backend.api/SelectedUsersService';
 import {CreateMeetingComponent} from './components/users-component/create-meeting/create-meeting.component';
-import {SettingsService} from './services/SettingsService';
+import {SettingsService} from './services/backend.api/SettingsService';
 import {CalendarModule, DateAdapter} from 'angular-calendar';
 import {adapterFactory} from 'angular-calendar/date-adapters/date-fns';
 import {CalendarComponent} from './components/calendar/calendar.component';
 import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
 import {FlatpickrModule} from 'angularx-flatpickr';
+import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {PaginatorIntlService} from './model/MatPaginator';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
 
 @NgModule({
@@ -99,7 +103,6 @@ import {FlatpickrModule} from 'angularx-flatpickr';
     MatTableModule,
     MatSelectModule,
     MatCheckboxModule,
-    FormsModule,
     MatSortModule,
     MatCardModule,
     MatSlideToggleModule,
@@ -107,8 +110,8 @@ import {FlatpickrModule} from 'angularx-flatpickr';
     MatRippleModule,
     A11yModule,
     MatChipsModule,
+    FontAwesomeModule,
     MatProgressSpinnerModule,
-    FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     MatDialogModule,
@@ -122,6 +125,13 @@ import {FlatpickrModule} from 'angularx-flatpickr';
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpTranslateLoader,
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [
     MeetingsService,
@@ -134,6 +144,11 @@ import {FlatpickrModule} from 'angularx-flatpickr';
     SettingsService,
     SelectedUsersService,
     ParticipantsService,
+    TranslateService,
+    { provide: MatPaginatorIntl,
+      useClass: PaginatorIntlService,
+      deps: [TranslateService]
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AppInterceptor,
@@ -143,3 +158,7 @@ import {FlatpickrModule} from 'angularx-flatpickr';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function httpTranslateLoader(http: HttpClient): TranslateHttpLoader {
+  return new TranslateHttpLoader(http);
+}

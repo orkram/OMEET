@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {LoginService} from '../../../services/LoginService';
+import {LoginService} from '../../../services/backend.api/LoginService';
 import {Router} from '@angular/router';
-import {CookieService} from '../../../services/CookieService';
-import {JWTTokenService} from '../../../services/JWTTokenService';
+import {CookieService} from '../../../services/auth/CookieService';
+import {JWTTokenService} from '../../../services/auth/JWTTokenService';
 
 @Component({
   selector: 'app-login-form',
@@ -20,7 +20,7 @@ export class LoginFormComponent implements OnInit {
 
   form: FormGroup = new FormGroup({
     username: new FormControl(null, [Validators.required]),
-    password: new FormControl(null, Validators.compose([Validators.required, Validators.minLength(8)])),
+    password: new FormControl(null, Validators.compose([Validators.required])),
   });
 
   hide = true;

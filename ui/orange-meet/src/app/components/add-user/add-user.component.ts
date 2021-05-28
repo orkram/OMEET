@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import {JWTTokenService} from '../../services/JWTTokenService';
-import {UserService} from '../../services/UserService';
+import {JWTTokenService} from '../../services/auth/JWTTokenService';
+import {UserService} from '../../services/backend.api/UserService';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {flatMap} from 'rxjs/internal/operators';
@@ -46,12 +46,15 @@ export class AddUserComponent implements OnInit {
             console.log(res);
           },
           err => {
+            console.log(err);
             this.hide = false;
             this.errorMessage = true;
           },
           () => {
+            this.hide = true;
+            this.errorMessage = false;
             window.location.reload();
-          }// TODO Refresh list?
+          }
         );
     }
   }

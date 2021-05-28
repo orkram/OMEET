@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {JWTTokenService} from '../../../services/JWTTokenService';
+import {JWTTokenService} from '../../../services/auth/JWTTokenService';
 
 @Component({
   selector: 'app-user-info',

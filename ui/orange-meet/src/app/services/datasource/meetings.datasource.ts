@@ -1,9 +1,9 @@
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject, Observable, of, Subscription} from 'rxjs';
 import {catchError, finalize} from 'rxjs/operators';
-import {MeetingsService} from './meetings.service';
-import {Meeting} from '../model/meeting';
-import {ParticipantsService} from './ParticipantsService';
+import {MeetingsService} from '../backend.api/meetings.service';
+import {Meeting} from '../../model/meeting';
+import {ParticipantsService} from '../backend.api/ParticipantsService';
 
 
 export class MeetingsDataSource extends DataSource<Meeting> {

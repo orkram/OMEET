@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
-import {LoginService} from '../../../services/LoginService';
+import {LoginService} from '../../../services/backend.api/LoginService';
 import {Router} from '@angular/router';
 
 @Component({
@@ -27,7 +27,7 @@ export class RegistrationFormComponent implements OnInit {
 
   errorMessage = false;
 
-  successMessage = true;
+  successMessage = false;
 
   @Input() error!: string;
 

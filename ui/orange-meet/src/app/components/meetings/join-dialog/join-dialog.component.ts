@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {JWTTokenService} from '../../../services/JWTTokenService';
-import {SettingsService} from '../../../services/SettingsService';
+import {JWTTokenService} from '../../../services/auth/JWTTokenService';
+import {SettingsService} from '../../../services/backend.api/SettingsService';
 
 @Component({
   selector: 'app-join-dialog',

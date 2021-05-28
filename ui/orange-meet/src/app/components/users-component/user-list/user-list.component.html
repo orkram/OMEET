@@ -1,9 +1,17 @@
 <div class="find-contact">
   <p>
     <mat-form-field appearance="outline" >
-      <mat-label>Find user</mat-label>
-      <input matInput placeholder="Search" autocomplete="off" #input >
+      <mat-label> {{'users.find-user' | translate }} </mat-label>
+      <input matInput placeholder="{{ 'user.search' | translate}}" autocomplete="off" #input >
     </mat-form-field>
+  </p>
+  <span class = "spacer"> </span>
+  <p>
+    <button mat-raised-button color="primary" class="remove-button" (click)="remove()"> {{'users.remove-selected' | translate }}</button>
+  </p>
+
+  <p>
+    <button mat-raised-button color="primary" (click)="unselect()"> {{'users.unselect-all' | translate }}</button>
   </p>
 </div>
 
@@ -24,12 +32,12 @@
     </ng-container>
 
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef > Name </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef > {{'users.user-name' | translate }} </mat-header-cell>
       <mat-cell *matCellDef="let contact"> {{contact.firstName}} {{contact.lastName}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="email">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>{{'users.find-email' | translate }}  </mat-header-cell>
       <mat-cell *matCellDef="let contact">{{contact.eMail}}
       </mat-cell>
     </ng-container>
@@ -51,13 +59,15 @@
   <mat-paginator class = "contact-paginator"
                  [pageSize]="defaultPageSize"
                  [pageSizeOptions]="defaultPageSizes()"
+                 aria-label="dawd"
   >
-    <!-- TODO length, relate pagesizeoptions and screen size,-->
+
   </mat-paginator>
 </div>
 
 <p class="persons-counter">
-  Options selected: 1
+  {{'users.options-selected' | translate }}
+    {{selectedUsers().length}}
 </p>
 
 

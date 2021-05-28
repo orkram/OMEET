@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {CookieService} from '../../services/CookieService';
+import {CookieService} from '../../services/auth/CookieService';
 import {Router} from '@angular/router';
-import {JWTTokenService} from '../../services/JWTTokenService';
+import {JWTTokenService} from '../../services/auth/JWTTokenService';
 
 @Component({
   selector: 'app-header',

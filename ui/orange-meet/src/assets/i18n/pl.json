@@ -1,0 +1,96 @@
+{
+	"calendar": {
+		"day": "",
+		"month": "",
+		"next": "",
+		"previous": "",
+		"today": "",
+		"week": ""
+	},
+	"header": {
+		"log-out": "Wygłoguj się"
+	},
+	"login": {
+		"complete-field": "",
+		"create": "Utwórz",
+		"forgot": "",
+		"invalid-password": "",
+		"language": "Język",
+		"nouser": "",
+		"password": "Hasło",
+		"signup": "Załoguj się",
+		"username": "Nazwa użytkownika"
+	},
+	"meeting": {
+		"complete-field": "",
+		"create": "",
+		"enter-meeting-id": "",
+		"find-meeting-by-name": "",
+		"id": "",
+		"join": "",
+		"meeting-description": "",
+		"meeting-id": "",
+		"meeting-name": "",
+		"participants": "",
+		"search": ""
+	},
+	"meetings": {
+		"active-state": "",
+		"create": "",
+		"date": "",
+		"invited-participants": "",
+		"join": "",
+		"join-with-id": "",
+		"name": "",
+		"status": "",
+		"title": ""
+	},
+	"paginator": {
+		"items_per_page": "",
+		"next_page": "",
+		"of": "",
+		"previous_page": ""
+	},
+	"registration": {
+		"back-login": "",
+		"complete-field": "",
+		"create-account": "",
+		"error": "",
+		"incorrect-format-error": "",
+		"password": "",
+		"password-not-match": "",
+		"password-policy": "",
+		"success": ""
+	},
+	"settings": {
+		"change-profile-picture": "",
+		"default-camera-on": "",
+		"default-microphone-on": "",
+		"is-private": "",
+		"save-button": "",
+		"saved-success": "",
+		"title": ""
+	},
+	"user": {
+		"add-contact": "",
+		"find-new-contact": "",
+		"search": ""
+	},
+	"users": {
+		"complete-field": "",
+		"create-button": "",
+		"create-dialog-title": "",
+		"create-meeting": "",
+		"enter-user-id": "",
+		"find-email": "",
+		"find-user": "",
+		"meeting-description": "",
+		"name": "",
+		"options-selected": "",
+		"remove-selected": "",
+		"start-hint": "",
+		"title": "",
+		"unselect-all": "",
+		"user-name": ""
+	}
+}

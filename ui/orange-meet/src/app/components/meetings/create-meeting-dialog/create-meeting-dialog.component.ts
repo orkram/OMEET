@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {JWTTokenService} from '../../../services/JWTTokenService';
-import {MeetingsService} from '../../../services/meetings.service';
+import {JWTTokenService} from '../../../services/auth/JWTTokenService';
+import {MeetingsService} from '../../../services/backend.api/meetings.service';
 import {MatDialogRef} from '@angular/material/dialog';
 import {Observable} from 'rxjs';
 import {flatMap} from 'rxjs/internal/operators';
 import {map} from 'rxjs/operators';
-import {UserService} from '../../../services/UserService';
+import {UserService} from '../../../services/backend.api/UserService';
 
 @Component({
   selector: 'app-create-meeting-dialog',

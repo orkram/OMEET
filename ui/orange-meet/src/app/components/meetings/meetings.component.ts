@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {JWTTokenService} from '../../services/JWTTokenService';
+import {JWTTokenService} from '../../services/auth/JWTTokenService';
 import {MatDialog} from '@angular/material/dialog';
 import {JoinDialogComponent} from './join-dialog/join-dialog.component';
 import {CreateMeetingDialogComponent} from './create-meeting-dialog/create-meeting-dialog.component';

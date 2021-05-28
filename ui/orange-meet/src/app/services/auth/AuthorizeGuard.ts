@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 import {Observable, of} from 'rxjs';
-import {LoginService} from './LoginService';
+import {LoginService} from '../backend.api/LoginService';
 import {CookieService} from './CookieService';
 import {JWTTokenService} from './JWTTokenService';
 import {catchError} from 'rxjs/operators';

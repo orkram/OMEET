@@ -16,10 +16,12 @@ export class SettingsService {
   }
 
   requestBody(micOn: boolean,
-              cameraOn: boolean): string {
+              cameraOn: boolean,
+              isPrivate: boolean): string {
    const r = JSON.stringify( {
       isDefaultCamOn: micOn,
-      isDefaultMicOn: cameraOn
+      isDefaultMicOn: cameraOn,
+      private: isPrivate
     });
    return JSON.parse(r);
 }
@@ -27,9 +29,10 @@ export class SettingsService {
   setSettings(
     username: string,
     micOn: boolean,
-    cameraOn: boolean): Observable<any> {
+    cameraOn: boolean,
+    isPrivate: boolean): Observable<any> {
 
-    return this.http.put(`http://130.61.186.61:9000/api/v1/users/settings/${username}`, this.requestBody(micOn, cameraOn));
+    return this.http.put(`http://130.61.186.61:9000/api/v1/users/settings/${username}`, this.requestBody(micOn, cameraOn, isPrivate));
   }
 }
 
