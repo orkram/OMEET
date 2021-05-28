@@ -63,6 +63,7 @@ import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {PaginatorIntlService} from './model/MatPaginator';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import {JitsiViewComponent} from './jitsi-view/jitsi-view.component';
 
 
 @NgModule({
@@ -85,7 +86,8 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
     CreateMeetingDialogComponent,
     JitsiComponent,
     CreateMeetingComponent,
-    CalendarComponent
+    CalendarComponent,
+    JitsiViewComponent
   ],
   imports: [
     BrowserModule,

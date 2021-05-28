@@ -7,6 +7,7 @@ import {LoginComponent} from './components/login/login.component';
 import {RegistrationComponent} from './components/registration/registration.component';
 import {AuthorizeGuard} from './services/auth/AuthorizeGuard';
 import {CalendarComponent} from './components/calendar/calendar.component';
+import {JitsiViewComponent} from './jitsi-view/jitsi-view.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path: 'meetings', component: MeetingsComponent, canActivate: [AuthorizeGuard]},
   {path: 'contacts', component: UsersComponentComponent, canActivate: [AuthorizeGuard]},
   {path: 'calendar', component: CalendarComponent, canActivate: [AuthorizeGuard]}, // TODO ComponentComponent
+  {path: 'meeting/:id', component: JitsiViewComponent, canActivate: [AuthorizeGuard]},
   {path: 'login', component: LoginComponent},
   {path: 'registration', component: RegistrationComponent}
 ];

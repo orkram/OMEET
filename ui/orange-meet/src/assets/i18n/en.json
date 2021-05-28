@@ -10,6 +10,9 @@
 	"header": {
 		"log-out": "Log out?"
 	},
+	"join": {
+		"join-meeting": " Join meeting"
+	},
 	"login": {
 		"complete-field": "Complete field",
 		"create": "Create account",
@@ -37,6 +40,7 @@
 	"meetings": {
 		"active-state": "Active",
 		"create": "+ Create",
+		"create-meeting": "Create meeting",
 		"date": "Date",
 		"invited-participants": "Invited participants",
 		"join": "Join",
@@ -57,15 +61,18 @@
 		"create-account": "Create account",
 		"error": "Failed to create new user for given inputs.",
 		"incorrect-format-error": "",
+		"lsatname": "Nazwisko",
+		"name": "Imię",
 		"password": "Password",
 		"password-not-match": "Passwords do not match.",
 		"password-policy": "Password should contain at least 8 characters.",
+		"repeat": "Repeat password",
 		"success": "New user successfully created!"
 	},
 	"settings": {
 		"change-profile-picture": "Change profile picture:",
 		"default-camera-on": "Default camera on:",
-		"default-microphone-on": "Default camera microphone on:",
+		"default-microphone-on": "Default microphone on:",
 		"is-private": "Hidden from other users",
 		"save-button": "Save",
 		"saved-success": "Your settings were successfully saved.",
@@ -85,7 +92,7 @@
 		"find-email": "Email",
 		"find-user": "Find user",
 		"meeting-description": "Meeting description",
-		"name": " Meeting name",
+		"name": "Meeting name",
 		"options-selected": "Options selected: ",
 		"remove-selected": "Remove selected users",
 		"start-hint": "Start meeting by selecting users and pressing create meeting",
