@@ -117,8 +117,11 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
     }
 
     override fun requestPermissions(permissions: Array<out String>?, requestCode: Int, listener: PermissionListener?) {
-        JitsiMeetActivityDelegate.requestPermissions(this, permissions, requestCode, listener);
+        JitsiMeetActivityDelegate.requestPermissions(this, permissions, requestCode, listener)
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        JitsiMeetActivityDelegate.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
 
 }
