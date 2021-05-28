@@ -62,7 +62,6 @@ import {FlatpickrModule} from 'angularx-flatpickr';
 import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {PaginatorIntlService} from './model/MatPaginator';
-import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {JitsiViewComponent} from './jitsi-view/jitsi-view.component';
 
 
@@ -94,8 +93,7 @@ import {JitsiViewComponent} from './jitsi-view/jitsi-view.component';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatToolbarModule,
-    MatIconModule,
+    MatToolbarModule, MatIconModule,
     MatButtonToggleModule,
     MatFormFieldModule,
     MatInputModule,
@@ -112,7 +110,6 @@ import {JitsiViewComponent} from './jitsi-view/jitsi-view.component';
     MatRippleModule,
     A11yModule,
     MatChipsModule,
-    FontAwesomeModule,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
     HttpClientModule,
