@@ -2,12 +2,12 @@ import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {ActivatedRoute} from '@angular/router';
-import {JWTTokenService} from '../../../services/JWTTokenService';
-import {ContactsDataSource} from '../../../services/ContactsDataSource';
-import {UserService} from '../../../services/UserService';
+import {JWTTokenService} from '../../../services/auth/JWTTokenService';
+import {ContactsDataSource} from '../../../services/datasource/ContactsDataSource';
+import {UserService} from '../../../services/backend.api/UserService';
 import {fromEvent, merge} from 'rxjs';
 import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
-import {SelectedUsersService} from '../../../services/SelectedUsersService';
+import {SelectedUsersService} from '../../../services/backend.api/SelectedUsersService';
 
 @Component({
   selector: 'app-user-list',
@@ -43,13 +43,38 @@ export class UserListComponent implements OnInit, AfterViewInit {
   defaultPageSize = 5;
 
   selectedUsers(): Array<string>{
-  return Object.keys(this.selected).filter((username: string) => this.selected[username]);
-}
+    return Object.keys(this.selected).filter((username: string) => this.selected[username]);
+  }
+
+  remove(): void {
+    this.selectedUsersService
+      .getSelectedUsers()
+      .map( (user: any) =>
+        this.userService.removeConnection(this.tokenService.getUsername(), user)
+          .subscribe(
+            next => {},
+            error => {},
+            () => {
+              this.dataSource.loadContacts(
+                this.tokenService.getUsername(),
+                this.input.nativeElement.value,
+                true,
+                this.paginator.pageIndex + 1,
+                this.paginator.pageSize
+              );
+            }
+          )
+      );
+  }
+
+  unselect(): void{
+    this.selectedUsersService.clear();
+    this.selected = {};
+  }
 
   onSelect(checked: boolean, contact: any): void{
    this.selected[contact.userName] = checked;
    this.selectedUsersService.setSelectedUsers(this.selectedUsers());
-   console.log(this.selectedUsers());
   }
 
   defaultPageSizes(): Array<number> {

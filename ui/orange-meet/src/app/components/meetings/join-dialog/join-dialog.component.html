@@ -1,18 +1,20 @@
-<h1 mat-dialog-title>Join meeting</h1>
+<h1 mat-dialog-title>
+  {{'join.join-meeting' | translate}}
+</h1>
 <div mat-dialog-content>
-  Enter meeting id:
+  {{'meeting.enter-meeting-id' | translate }}
 
-  <form [formGroup]="form" (ngSubmit)="submit()">
+  <form [formGroup]="form" (submit)="submit()">
     <p>
     <mat-form-field appearance="outline">
-      <mat-label>Meeting id</mat-label>
+      <mat-label>{{'meeting.meeting-id' | translate }}</mat-label>
       <input type="text" matInput formControlName="id" required>
-      <mat-error *ngIf="form.get('id')?.invalid">Complete field</mat-error>
+      <mat-error *ngIf="form.get('id')?.invalid">{{'meeting.complete-field' | translate}}</mat-error>
     </mat-form-field>
     </p>
 
     <div class="button">
-      <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid || submitted" >Join</button>
+      <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid || submitted" > {{ 'meeting.join' | translate }}</button>
     </div>
   </form>
 

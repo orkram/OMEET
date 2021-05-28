@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {JWTTokenService} from '../../services/JWTTokenService';
+import {JWTTokenService} from '../../services/auth/JWTTokenService';
 import {Router} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +10,10 @@ import {Router} from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private token: JWTTokenService, private router: Router) { }
+  constructor(private token: JWTTokenService, private router: Router, public translate: TranslateService) {
+    this.selected = this.translate.currentLang;
+    console.log(this.translate.currentLang);
+  }
 
   langs: Lang[] = [
     {value: 'en', viewValue: 'English'},
@@ -18,12 +22,17 @@ export class LoginComponent implements OnInit {
 
   selected = 'en';
 
+  setLocale(): void{
+    this.translate.setDefaultLang(this.selected);
+    this.translate.use(this.selected);
+    localStorage.setItem('appLanguage', this.selected);
+  }
+
   ngOnInit(): void {
     if (!this.token.isAccessTokenExpired()) {
       this.router.navigateByUrl('/login');
     }
   }
-
 }
 
 interface Lang {

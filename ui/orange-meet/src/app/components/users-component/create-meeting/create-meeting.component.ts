@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {JWTTokenService} from '../../../services/JWTTokenService';
-import {MeetingsService} from '../../../services/meetings.service';
+import {JWTTokenService} from '../../../services/auth/JWTTokenService';
+import {MeetingsService} from '../../../services/backend.api/meetings.service';
 import {MatDialogRef} from '@angular/material/dialog';
 import {CreateMeetingDialogComponent} from '../../meetings/create-meeting-dialog/create-meeting-dialog.component';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {SelectedUsersService} from '../../../services/SelectedUsersService';
+import {SelectedUsersService} from '../../../services/backend.api/SelectedUsersService';
 
 @Component({
   selector: 'app-create-meeting',

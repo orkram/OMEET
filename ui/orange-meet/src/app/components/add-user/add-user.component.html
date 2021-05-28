@@ -1,11 +1,13 @@
 <div class="add-user">
-  <h1> Contacts</h1>
+  <h1> {{'users.title' | translate}}</h1>
 
   <div class="sub-container">
 
   <form class='add-user-form' [formGroup]="form" (ngSubmit)="submit()" >
       <mat-form-field class="full-width">
-        <mat-label>Find new contact</mat-label>
+        <mat-label>
+          {{ 'user.find-new-contact' | translate}}
+        </mat-label>
         <input type="text"
                aria-label="Name"
                matInput
@@ -20,8 +22,9 @@
         </mat-autocomplete>
       </mat-form-field>
 
-      <button mat-raised-button  class="add-button " color="primary" >Add contact</button>
+      <button mat-raised-button  class="add-button " color="primary" >{{'user.add-contact' | translate }}</button>
       </form>
+
   </div>
 
   <p *ngIf="!hide"> {{ errorMessage? errorText: responseText }} </p>

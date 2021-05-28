@@ -7,8 +7,8 @@
   <div class="login-content-box">
     <div class="lang-selector">
     <mat-form-field  color="primary" appearance="outline">
-      <mat-label >Language</mat-label>
-      <mat-select [(value)] = "selected" >
+      <mat-label > {{ 'login.language' | translate }} </mat-label>
+      <mat-select [(value)] = "selected" ngDefaultControl [ngModel]=selected (selectionChange)="setLocale()">
         <mat-option *ngFor="let lang of langs" [value]="lang.value">
           {{lang.viewValue}}
         </mat-option>

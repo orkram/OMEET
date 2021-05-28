@@ -1,0 +1,103 @@
+{
+	"calendar": {
+		"day": "Dzień",
+		"month": "Miesiąc",
+		"next": "Następny",
+		"previous": "Poprzedni",
+		"today": "Dzisiaj",
+		"week": "Tydzień"
+	},
+	"header": {
+		"log-out": "Wygłoguj się"
+	},
+	"join": {
+		"join-meeting": "Dołącz się do spotkania"
+	},
+	"login": {
+		"complete-field": "Pole nie może być puste",
+		"create": "Utwórz",
+		"forgot": "Zapomniałeś hasło?",
+		"invalid-password": "Hasło powinno zawierać co najmniej 8 znaków.",
+		"language": "Język",
+		"nouser": "Nie znaleziono użytkownika dla podanych danych",
+		"password": "Hasło",
+		"signup": "Załoguj się",
+		"username": "Nazwa użytkownika"
+	},
+	"meeting": {
+		"complete-field": "Pole nie może być puste",
+		"create": "Utworz",
+		"enter-meeting-id": "Podaj id spotkania: ",
+		"find-meeting-by-name": "Szukaj spotkanie(po nazwie)",
+		"id": "Id",
+		"join": "Dołącz",
+		"meeting-description": "Opis",
+		"meeting-id": "Id spotkania",
+		"meeting-name": "Nazwa spotkania",
+		"participants": "Uczstnicy",
+		"search": "Szukaj"
+	},
+	"meetings": {
+		"active-state": "Aktywne",
+		"create": "+ Utworz",
+		"create-meeting": "Utworz spotkanie",
+		"date": "Data",
+		"invited-participants": "Zaproszeni uczestnicy",
+		"join": "Dołacz",
+		"join-with-id": "ALBO DOŁĄCZ PRZEZ ID",
+		"name": "Nazwa",
+		"status": "Stan",
+		"title": "Spotkania"
+	},
+	"paginator": {
+		"items_per_page": "Elementów na stronie",
+		"next_page": "Kolejna",
+		"of": "z",
+		"previous_page": "Poprzednia"
+	},
+	"registration": {
+		"back-login": "Powrót do logowania",
+		"complete-field": "Pole nie może być puste",
+		"create-account": "Utworz konto",
+		"error": "Nie udało się utworzyć nowego użytkownika dla podanych danych wejściowych.",
+		"incorrect-format-error": "Nieprawidłowy format",
+		"lsatname": "Nazwisko",
+		"name": "Imię",
+		"password": "Hasło",
+		"password-not-match": "Hasła są róźne",
+		"password-policy": "Hasło powinno zawierać co najmniej 8 znaków.",
+		"repeat": "Powtórz hasło",
+		"success": "Utworzono nowego użytkownika"
+	},
+	"settings": {
+		"change-profile-picture": "Zmień zdjęcie profilowe:",
+		"default-camera-on": "Domyślnie kamera włączona:",
+		"default-microphone-on": "Domyślnie mikrofon włączony:",
+		"is-private": "Prywatne konto",
+		"save-button": "Zapisz",
+		"saved-success": "Twoje ustawienia zostały pomyślnie zapisane.",
+		"title": "Konfiguracje kont"
+	},
+	"user": {
+		"add-contact": "Dodaj do znajomych",
+		"find-new-contact": "Szukaj nowych znajomych",
+		"search": "Szukaj"
+	},
+	"users": {
+		"complete-field": "Pole nie może być puste",
+		"create-button": "Utworz",
+		"create-dialog-title": "Utworz spotkanie",
+		"create-meeting": "Utworz spotkanie",
+		"enter-user-id": "Podaj Id użytkownika",
+		"find-email": "Email",
+		"find-user": "Znajdź użytkownika",
+		"meeting-description": "Opis spotkania",
+		"name": "Nazwa spotkania",
+		"options-selected": "Wybrane opcje: ",
+		"remove-selected": "Usuń odznaczone kontakty",
+		"start-hint": "Rozpocznij spotkanie, wybierając użytkowników i naciskając przycisk Utwórz spotkanie",
+		"title": "Kontakty",
+		"unselect-all": "Odznacz wszystko",
+		"user-name": "Nazwa"
+	}
+}

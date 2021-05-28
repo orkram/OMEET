@@ -1,0 +1,103 @@
+{
+	"calendar": {
+		"day": "Day",
+		"month": "Month",
+		"next": "Next",
+		"previous": "Previous",
+		"today": "Today",
+		"week": "Week"
+	},
+	"header": {
+		"log-out": "Log out?"
+	},
+	"join": {
+		"join-meeting": " Join meeting"
+	},
+	"login": {
+		"complete-field": "Complete field",
+		"create": "Create account",
+		"forgot": "Forgot password?",
+		"invalid-password": "Password should contain at least 8 characters.",
+		"language": "Language",
+		"nouser": "Didn't find user for entered username and password.",
+		"password": "Password",
+		"signup": "Sign up",
+		"username": "Username"
+	},
+	"meeting": {
+		"complete-field": "Complete field",
+		"create": "Create",
+		"enter-meeting-id": "Enter meeting id:",
+		"find-meeting-by-name": "Find meeting(by name)",
+		"id": "id",
+		"join": "Join",
+		"meeting-description": "Meeting's description",
+		"meeting-id": "Meeting id",
+		"meeting-name": "Meeting name",
+		"participants": "Invite participants",
+		"search": "Search"
+	},
+	"meetings": {
+		"active-state": "Active",
+		"create": "+ Create",
+		"create-meeting": "Create meeting",
+		"date": "Date",
+		"invited-participants": "Invited participants",
+		"join": "Join",
+		"join-with-id": "OR JOIN USING ID",
+		"name": "Name",
+		"status": "Status",
+		"title": "Meetings"
+	},
+	"paginator": {
+		"items_per_page": "Items per page: ",
+		"next_page": "Next",
+		"of": "out of",
+		"previous_page": "Prev."
+	},
+	"registration": {
+		"back-login": "Back to login",
+		"complete-field": "Complete filed",
+		"create-account": "Create account",
+		"error": "Failed to create new user for given inputs.",
+		"incorrect-format-error": "",
+		"lsatname": "Nazwisko",
+		"name": "Imię",
+		"password": "Password",
+		"password-not-match": "Passwords do not match.",
+		"password-policy": "Password should contain at least 8 characters.",
+		"repeat": "Repeat password",
+		"success": "New user successfully created!"
+	},
+	"settings": {
+		"change-profile-picture": "Change profile picture:",
+		"default-camera-on": "Default camera on:",
+		"default-microphone-on": "Default microphone on:",
+		"is-private": "Hidden from other users",
+		"save-button": "Save",
+		"saved-success": "Your settings were successfully saved.",
+		"title": "Account configurations"
+	},
+	"user": {
+		"add-contact": "Add contact",
+		"find-new-contact": "Find new contact",
+		"search": "Search"
+	},
+	"users": {
+		"complete-field": "Complete field",
+		"create-button": "Create",
+		"create-dialog-title": " Create meeting",
+		"create-meeting": "Create meeting",
+		"enter-user-id": "Enter users id:",
+		"find-email": "Email",
+		"find-user": "Find user",
+		"meeting-description": "Meeting description",
+		"name": "Meeting name",
+		"options-selected": "Options selected: ",
+		"remove-selected": "Remove selected users",
+		"start-hint": "Start meeting by selecting users and pressing create meeting",
+		"title": "Contacts",
+		"unselect-all": "Unselect all",
+		"user-name": "Name"
+	}
+}

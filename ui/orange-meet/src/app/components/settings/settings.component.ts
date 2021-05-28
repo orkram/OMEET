@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {SettingsService} from '../../services/SettingsService';
-import {JWTTokenService} from '../../services/JWTTokenService';
+import {SettingsService} from '../../services/backend.api/SettingsService';
+import {JWTTokenService} from '../../services/auth/JWTTokenService';
 
 @Component({
   selector: 'app-settings',
@@ -19,6 +19,8 @@ export class SettingsComponent implements OnInit {
 
   cameraOn = true;
 
+  isPrivate = false;
+
   message = 'Settings successfully saved!';
 
   displaySuccess = false;
@@ -28,6 +30,7 @@ export class SettingsComponent implements OnInit {
       next => {
         this.micOn = next.defaultMicOn;
         this.cameraOn = next.defaultCamOn;
+        this.isPrivate = next.private;
       },
       err => { console.log(err); },
       () => {
@@ -42,7 +45,7 @@ export class SettingsComponent implements OnInit {
 
   saveSettings(): void{
     console.log(this.micOn);
-    this.settings.setSettings(this.token.getUsername(), this.micOn, this.cameraOn).subscribe(
+    this.settings.setSettings(this.token.getUsername(), this.micOn, this.cameraOn, this.isPrivate).subscribe(
       next => console.log(next),
       err => console.log(err),
       () => {

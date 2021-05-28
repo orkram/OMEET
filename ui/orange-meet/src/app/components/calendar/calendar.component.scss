@@ -1,6 +1,7 @@
 
 h3 {
   margin: 0 0 10px;
+  width: 150px;
 }
 
 pre {
@@ -12,14 +13,22 @@ pre {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  overflow: visible;
   margin: 20px;
+  overflow-y: scroll;
 }
 :host{
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   width: 100%;
+}
+
+.spacer{
+  flex: 0 0 23%;
+}
+
+.h3{
+  font: 400 32px/32px Roboto, "Helvetica Neue", sans-serif
 }
 
 .main-content{
@@ -41,6 +50,9 @@ pre {
   flex-direction: row;
 }
 
+.row{
+  width: 100%;
+}
 .mat-raised-button {
   margin: 10px;
 }

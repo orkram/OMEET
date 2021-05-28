@@ -6,7 +6,7 @@
 
   <div class="meetings-style">
 
-    <h1>Meetings</h1>
+    <h1>{{'meetings.title' | translate}}</h1>
 
     <app-meetings-list></app-meetings-list>
 
@@ -15,10 +15,10 @@
       <span class="create-spacer"></span>
 
       <div class="create-or-join">
-        <button  class="create-button" mat-raised-button color="primary" (click)="createMeeting()">+ Create</button>
+        <button  class="create-button" mat-raised-button color="primary" (click)="createMeeting()"> {{ 'meetings.create'| translate }}</button>
 
         <button mat-button class="create-button" color="primary">
-          <div class="text-button" (click)="joinMeeting()" > OR JOIN USING ID </div>
+          <div class="text-button" (click)="joinMeeting()" >{{ 'meetings.join-with-id'| translate }}</div>
         </button>
       </div>
 

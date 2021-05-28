@@ -4,12 +4,11 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {MatPaginator} from '@angular/material/paginator';
 import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
 import {MatSort} from '@angular/material/sort';
-import {ActivatedRoute} from '@angular/router';
-import {MeetingsDataSource} from '../../../services/meetings.datasource';
-import {MeetingsService} from '../../../services/meetings.service';
-import {JWTTokenService} from '../../../services/JWTTokenService';
-import {ParticipantsService} from '../../../services/ParticipantsService';
-import {SettingsService} from '../../../services/SettingsService';
+import {Router} from '@angular/router';
+import {MeetingsDataSource} from '../../../services/datasource/meetings.datasource';
+import {MeetingsService} from '../../../services/backend.api/meetings.service';
+import {JWTTokenService} from '../../../services/auth/JWTTokenService';
+import {ParticipantsService} from '../../../services/backend.api/ParticipantsService';
 
 @Component({
   selector: 'app-meetings-list',
@@ -26,15 +25,17 @@ import {SettingsService} from '../../../services/SettingsService';
 export class MeetingsListComponent implements OnInit, AfterViewInit{
 
   constructor(
-    private route: ActivatedRoute,
+    private router: Router,
     private meetingsService: MeetingsService,
     private tokenService: JWTTokenService,
-    private participantsService: ParticipantsService,
-    private settings: SettingsService) {}
+    private participantsService: ParticipantsService
+  ) {}
 
   expandedMeeting: any;
 
   displayedColumns = ['id', 'name', 'status', 'date'];
+
+  messageBoxContent = 'messagebox.warning.text';
 
   dataSource!: MeetingsDataSource;
 
@@ -44,7 +45,7 @@ export class MeetingsListComponent implements OnInit, AfterViewInit{
 
   @ViewChild('input', { static: true }) input!: ElementRef;
 
-  defaultPageSize = 7;
+  defaultPageSize = 6;
 
   ngOnInit(): void {
     this.dataSource = new MeetingsDataSource(this.meetingsService, this.participantsService);
@@ -110,17 +111,7 @@ export class MeetingsListComponent implements OnInit, AfterViewInit{
   isExpansionDetailRow = (i: number, row: object) => row.hasOwnProperty('detailRow');
 
   joinMeeting(meeting: any): void{
-
-    let micMuted = false;
-    let VidMuted = false;
-    this.settings.getSettings(this.tokenService.getUsername()).subscribe(
-      next => {
-        micMuted = !next.defaultMicOn;
-        VidMuted = next.defaultCamOn;
-      }
-    );
-
-    window.open(`https://130.61.186.61/${meeting.idMeeting}#userInfo.displayName=%22${this.tokenService.getEmail()}%22&config.subject="Test meeting"&config.startWithVideoMuted=${VidMuted}&config.startSilent=false`);
+    this.router.navigateByUrl(`/meeting/${meeting.idMeeting}`);
   }
 
 }

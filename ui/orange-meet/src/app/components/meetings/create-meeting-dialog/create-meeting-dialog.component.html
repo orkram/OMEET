@@ -1,27 +1,29 @@
-<h1 mat-dialog-title>Create meeting</h1>
+<h1 mat-dialog-title>
+  {{'meetings.create-meeting' | translate}}
+</h1>
 <div mat-dialog-content>
-  Enter meeting id:
+  {{'meeting.enter-meeting-id' | translate }}
 
   <form [formGroup]="form" (ngSubmit)="submit()">
     <p>
       <mat-form-field appearance="outline">
-        <mat-label>Meeting name</mat-label>
+        <mat-label>{{'meeting.meeting-name' | translate }}</mat-label>
         <input type="text" matInput formControlName="name" required>
-        <mat-error *ngIf="form.get('id')?.invalid">Complete field</mat-error>
+        <mat-error *ngIf="form.get('id')?.invalid"> {{'meeting.complete-field' | translate }}</mat-error>
       </mat-form-field>
     </p>
 
     <p>
       <mat-form-field appearance="outline">
-        <mat-label>Meeting description</mat-label>
+        <mat-label>{{'meeting.meeting-description' | translate }}</mat-label>
         <input type="text" matInput formControlName="description" required>
-        <mat-error *ngIf="form.get('id')?.invalid">Complete field</mat-error>
+        <mat-error *ngIf="form.get('id')?.invalid"> {{'meeting.complete-field' | translate }} </mat-error>
       </mat-form-field>
     </p>
 
     <p>
       <mat-form-field appearance="outline">
-        <mat-label>Participants</mat-label>
+        <mat-label> {{'meeting.participants' | translate }} </mat-label>
 
         <input type="text"
                aria-label="Name"
@@ -40,7 +42,7 @@
     </p>
 
     <div class="button">
-      <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid || submitted" >Create</button>
+      <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid || submitted" >{{'meeting.create' | translate }}</button>
     </div>
   </form>
 

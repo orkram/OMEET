@@ -1,5 +1,5 @@
 export class SelectedUsersService{
-  selectedUsers: Array<string> = [];
+  private selectedUsers: Array<string> = [];
 
   setSelectedUsers(users: Array<string>): void{
     this.selectedUsers = users;
@@ -7,5 +7,9 @@ export class SelectedUsersService{
 
   getSelectedUsers(): Array<string>{
     return this.selectedUsers;
+  }
+
+  clear(): void{
+    this.selectedUsers = [];
   }
 }

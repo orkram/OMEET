@@ -6,9 +6,11 @@ import {Observable} from 'rxjs';
 @Injectable()
 export class UserService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   payload = 'payload';
+
   findContacts(
     username: string,
     filter = '', sortOrder = true,
@@ -40,9 +42,16 @@ export class UserService {
   createConnection(username: string, friendName: string): Observable<any> {
     return this.http.post(`http://130.61.186.61:9000/api/v1/contacts/add`, '', {
       params: new HttpParams()
-      .set('user-f', friendName)
-      .set('user-o', username)
+        .set('user-f', friendName)
+        .set('user-o', username)
     });
   }
-}
 
+  removeConnection(username: string, friend: string): Observable<any> {
+    return this.http.delete(`http://130.61.186.61:9000/api/v1/contacts/friends/${username}`, {
+        params: new HttpParams()
+          .set('friend', friend)
+      }
+    );
+  }
+}
