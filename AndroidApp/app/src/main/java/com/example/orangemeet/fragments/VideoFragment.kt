@@ -1,5 +1,6 @@
 package com.example.orangemeet.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -114,6 +115,7 @@ class VideoFragment : Fragment() {
 
             val colorScheme = Bundle()
 
+
             val dialogColorScheme = Bundle()
             dialogColorScheme.putString("buttonBackground", Util.rgbString(resources.getColor(R.color.orange, requireContext().theme)))
             colorScheme.putBundle("Dialog", dialogColorScheme)
@@ -123,6 +125,10 @@ class VideoFragment : Fragment() {
             headerColorScheme.putString("statusBar", "null")
             colorScheme.putBundle("Header", headerColorScheme)
 
+            val chatColorScheme = Bundle()
+            chatColorScheme.putString("localMsgBackground","rgb(241, 110, 0)")
+            chatColorScheme.putString("remoteMsgBackground","rgb(239, 158, 88)")
+            colorScheme.putBundle("Chat", chatColorScheme)
 
             if(!UserInfo.isInConference){
                 (activity as MainActivity).customJitsiFragment
