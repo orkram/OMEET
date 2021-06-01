@@ -1,21 +1,41 @@
 package com.orange.OrangeCommunicatorBackend.api.v1.users.requestBody;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UserUpdateRequestBody {
 
-    private final String eMail;
-    private final String firstName;
-    private final String lastName;
-    private final String imgUrl;
+    private String eMail;
+    private String firstName;
+    private String lastName;
+    private String imgUrl;
 
 
     @JsonCreator
-    public UserUpdateRequestBody(String eMail, String firstName, String lastName,  String imgUrl) {
+    public UserUpdateRequestBody(@JsonProperty("eMail") String eMail,
+                                 @JsonProperty("firstName") String firstName,
+                                 @JsonProperty("lastName") String lastName,
+                                 @JsonProperty("imgUrl") String imgUrl) {
         this.eMail = eMail;
         this.firstName = firstName;
         this.imgUrl = imgUrl;
         this.lastName = lastName;
+    }
+
+    public void seteMail(String eMail) {
+        this.eMail = eMail;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
     public String getEMail() {
@@ -29,7 +49,6 @@ public class UserUpdateRequestBody {
     public String getLastName() {
         return lastName;
     }
-
 
     public String getImgURL() {
         return imgUrl;

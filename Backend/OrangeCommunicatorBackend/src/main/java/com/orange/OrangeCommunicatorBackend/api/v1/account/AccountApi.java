@@ -11,6 +11,7 @@ import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountT
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,7 @@ public class AccountApi {
         this.accountService = accountService;
     }
 
-    @PostMapping(path="/register", produces = "application/json")
+    @PostMapping(path="/register")
     @ApiOperation("Register new account")
     @ApiResponses(value = {
             @ApiResponse(code = 409, message = "Account already exists")
@@ -38,14 +39,14 @@ public class AccountApi {
         return ResponseEntity.status(HttpStatus.CREATED).body(accountRegisterResponseBody);
     }
 
-    @PostMapping(path="/login", produces = "application/json")
+    @PostMapping(path="/login")
     @ApiOperation("Login user and get tokens")
     public ResponseEntity<AccountTokenResponseBody> login(@RequestBody AccountLoginRequestBody accountLoginRequestBody) {
         AccountTokenResponseBody accountTokenResponseBody = accountService.login(accountLoginRequestBody);
         return ResponseEntity.status(HttpStatus.OK).body(accountTokenResponseBody);
     }
 
-    @PostMapping(path="/{username}/refresh-token", produces = "application/json")
+    @PostMapping(path="/{username}/refresh-token")
     @ApiOperation("Refresh token for user")
     public ResponseEntity<AccountTokenResponseBody>
                 refresh(@ApiParam(value = "The username of user which token needs to be refreshed.", required = true)
@@ -55,7 +56,7 @@ public class AccountApi {
         return ResponseEntity.status(HttpStatus.OK).body(accountTokenResponseBody);
     }
 
-    @PostMapping(path="/{username}/logout", produces = "application/json")
+    @PostMapping(path="/{username}/logout")
     @ApiOperation("Log out user")
     public ResponseEntity<AccountLogoutResponseBody> logout(
             @ApiParam(value = "The username of user who wants to be logged out.", required = true) @PathVariable String username) {
@@ -63,7 +64,7 @@ public class AccountApi {
         return ResponseEntity.status(HttpStatus.OK).body(accountLogoutResponseBody);
     }
 
-    @PostMapping(path="/{username}/change-password", produces = "application/json")
+    @PostMapping(path="/{username}/change-password")
     @ApiOperation("Change password of user")
     public ResponseEntity<Void> logout(@ApiParam(value = "The username of user who wants to change password.", required = true)
                 @PathVariable String username,

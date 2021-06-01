@@ -26,7 +26,7 @@ public class UsersApi {
     }
 
 
-    @GetMapping(path="/{username}", produces = "application/json")
+    @GetMapping(path="/{username}")
     @ApiOperation("Get certain user's data")
     public ResponseEntity<UserResponseBody> find(
             @ApiParam(value = "The username of user for which information should be returned.", required = true) @PathVariable String username) {
@@ -34,7 +34,7 @@ public class UsersApi {
         return ResponseEntity.status(HttpStatus.OK).body(userResponseBody);
     }
 
-    @PutMapping(path="/{username}", produces = "application/json")
+    @PutMapping(path="/{username}")
     @ApiOperation("Update user's data")
     public ResponseEntity<UserResponseBody> update(
             @ApiParam(value = "The username of user for which information should be updated.", required = true) @PathVariable String username,
@@ -43,7 +43,7 @@ public class UsersApi {
         return ResponseEntity.status(HttpStatus.OK).body(userResponseBody);
     }
 
-    @GetMapping(path="/page", produces = "application/json")
+    @GetMapping(path="/page")
     @ApiOperation("Find all users with pagination")
     public ResponseEntity<FoundUsersPageResponseBody> findPaginated(@ApiParam(value = "The number of page to return.", required = true)
                                                                     @RequestParam("page") int page,
@@ -64,7 +64,7 @@ public class UsersApi {
     }
 
 
-    @GetMapping(produces = "application/json")
+    @GetMapping()
     @ApiOperation("Find all users")
     public ResponseEntity<List<UserResponseBody>> findUsers( @ApiParam(value = "The searching words, by which users will be found.")
                                                                  @RequestParam(name="query", defaultValue="") List<String> query,

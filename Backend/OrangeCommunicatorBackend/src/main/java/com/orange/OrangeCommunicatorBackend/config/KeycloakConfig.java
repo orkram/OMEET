@@ -16,6 +16,7 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 
 @KeycloakConfiguration
@@ -42,6 +43,8 @@ public class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
     public KeycloakConfigResolver keycloakConfigResolver() {
         return new KeycloakSpringBootConfigResolver();
     }
+
+
 
     @Override
     public void configure(WebSecurity web) throws Exception {

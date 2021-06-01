@@ -1,6 +1,7 @@
 package com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AccountRegisterResponseBody {
 
@@ -12,7 +13,11 @@ public class AccountRegisterResponseBody {
 
 
     @JsonCreator
-    public AccountRegisterResponseBody(String userName, String eMail, String firstName, String imgUrl, String lastName) {
+    public AccountRegisterResponseBody(@JsonProperty("userName") String userName,
+                                       @JsonProperty("eMail") String eMail,
+                                       @JsonProperty("firstName") String firstName,
+                                       @JsonProperty("imgUrl") String imgUrl,
+                                       @JsonProperty("lastName") String lastName) {
         this.username = userName;
         this.eMail = eMail;
         this.firstName = firstName;

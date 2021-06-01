@@ -7,6 +7,7 @@ import com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody.UserRespon
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +29,7 @@ public class ContactsApi {
         this.contactsService = contactsService;
     }
 
-    @PostMapping("/add")
+    @PostMapping(path="/add")
     @ApiOperation("Add friend")
     public String create(@ApiParam(value = "The username of one of users who wants to be friends", required = true)
                          @RequestParam("user-o") String userO,
@@ -59,7 +60,7 @@ public class ContactsApi {
 
     }
 
-    @GetMapping(path="/friends/{username}", produces = "application/json")
+    @GetMapping(path="/friends/{username}")
     @ApiOperation("Find friends of users")
     public @ResponseBody ResponseEntity<List<UserResponseBody>> find(@ApiParam(value = "The username of user whose friends should be found.", required = true)
                                                        @PathVariable String username,
@@ -77,7 +78,7 @@ public class ContactsApi {
         return ResponseEntity.status(HttpStatus.OK).body(responseBodyList);
     }
 
-    @GetMapping(path="/friends/{username}/page", produces = "application/json")
+    @GetMapping(path="/friends/{username}/page")
     @ApiOperation("Find friends of users paginated")
     public @ResponseBody ResponseEntity<FoundUsersPageResponseBody> findPaginated(@ApiParam(value = "The username of user whose friends should be found.", required = true)
                                                                     @PathVariable String username,
@@ -97,7 +98,7 @@ public class ContactsApi {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @DeleteMapping(path="/friends/{username}", produces = "application/json")
+    @DeleteMapping(path="/friends/{username}")
     @ApiOperation("Delete friend from friend's list")
     public @ResponseBody ResponseEntity<Void> delete(@ApiParam(value = "The username of one of users to delete relationship between.", required = true) @PathVariable String username,
                                                      @ApiParam(value = "The username of one of users to delete relationship between.", required = true) @RequestParam("friend") String friend) {
@@ -105,7 +106,7 @@ public class ContactsApi {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PostMapping(path="/send-invite", produces = "application/json")
+    @PostMapping(path="/send-invite")
     @ApiOperation("Send invite")
     @ApiResponses(value = {
             @ApiResponse(code = 302, message = "Friendship already exists"),

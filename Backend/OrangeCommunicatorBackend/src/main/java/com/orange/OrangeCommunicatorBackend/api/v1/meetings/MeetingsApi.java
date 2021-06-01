@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,14 +28,14 @@ public class MeetingsApi {
     }
 
 
-    @PostMapping(produces = "application/json")
+    @PostMapping()
     @ApiOperation("Create new meeting")
     public ResponseEntity<MeetingResponseBody> create(@RequestBody NewMeetingRequestBody newMeetingRequestBody) {
         MeetingResponseBody meetingResponseBody = meetingsService.create(newMeetingRequestBody);
         return ResponseEntity.status(HttpStatus.CREATED).body(meetingResponseBody);
     }
 
-    @GetMapping(path="/{id}", produces = "application/json")
+    @GetMapping(path="/{id}")
     @ApiOperation("Get informations about meeting")
     public ResponseEntity<MeetingResponseBody> find(
             @ApiParam(value = "The id of meeting for which information should be returned.", required = true) @PathVariable Long id) {
@@ -42,7 +43,7 @@ public class MeetingsApi {
         return ResponseEntity.status(HttpStatus.OK).body(meetingResponseBody);
     }
 
-    @DeleteMapping(path="/{id}", produces = "application/json")
+    @DeleteMapping(path="/{id}")
     @ApiOperation("Cancel meeting")
     public ResponseEntity<Void> delete(
             @ApiParam(value = "The id of meeting which should be removed.", required = true) @PathVariable Long id) {
@@ -50,7 +51,7 @@ public class MeetingsApi {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PutMapping(path="/{id}", produces = "application/json")
+    @PutMapping(path="/{id}")
     @ApiOperation("Update meeting")
     public ResponseEntity<MeetingResponseBody> update(
             @ApiParam(value = "The id of meeting for which information should be updated.", required = true) @PathVariable Long id,
@@ -59,7 +60,7 @@ public class MeetingsApi {
         return ResponseEntity.status(HttpStatus.OK).body(meetingResponseBody);
     }
 
-    @GetMapping(path="/owner/{username}", produces = "application/json")
+    @GetMapping(path="/owner/{username}")
     @ApiOperation("Get all meetings of owner")
     public ResponseEntity<List<MeetingResponseBody>>
             getOwnersMeetings(@ApiParam(value = "The username of user for which meetings should be returned.", required = true) @PathVariable String username,
@@ -76,7 +77,7 @@ public class MeetingsApi {
         return ResponseEntity.status(HttpStatus.OK).body(meetingResponseBody);
     }
 
-    @GetMapping(path="/owner/{username}/page", produces = "application/json")
+    @GetMapping(path="/owner/{username}/page")
     @ApiOperation("Get all meetings of owner paginated")
     public ResponseEntity<MeetingsPageResponseBody>
             getOwnersMeetingsPaginated(@ApiParam(value = "The username of user for which meetings should be returned.", required = true) @PathVariable String username,

@@ -1,6 +1,7 @@
 package com.orange.OrangeCommunicatorBackend.api.v1.users.settings.responseBody;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SettingsResponseBody {
 
@@ -10,7 +11,10 @@ public class SettingsResponseBody {
     private final boolean isDefaultCamOn;
 
     @JsonCreator
-    public SettingsResponseBody(String username, boolean isPrivate, boolean isDefaultMicOn, boolean isDefaultCamOn) {
+    public SettingsResponseBody(@JsonProperty("username") String username,
+                                @JsonProperty("isPrivate") boolean isPrivate,
+                                @JsonProperty("isDefaultMicOn") boolean isDefaultMicOn,
+                                @JsonProperty("isDefaultCamOn")boolean isDefaultCamOn) {
         this.isPrivate = isPrivate;
         this.isDefaultMicOn = isDefaultMicOn;
         this.isDefaultCamOn = isDefaultCamOn;

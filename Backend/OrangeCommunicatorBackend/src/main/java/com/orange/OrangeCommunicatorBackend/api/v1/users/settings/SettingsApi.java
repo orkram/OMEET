@@ -22,7 +22,7 @@ public class SettingsApi {
         this.settingsService = settingsService;
     }
 
-    @GetMapping(path="/{username}", produces = "application/json")
+    @GetMapping(path="/{username}")
     @ApiOperation("Find certain user's settings")
     public ResponseEntity<SettingsResponseBody> find(
             @ApiParam(value = "The username of user for which settings should be returned.", required = true)
@@ -31,7 +31,7 @@ public class SettingsApi {
         return ResponseEntity.status(HttpStatus.OK).body(settingsResponseBody);
     }
 
-    @PutMapping(path="/{username}", produces = "application/json")
+    @PutMapping(path="/{username}")
     @ApiOperation("Update user's settings")
     public ResponseEntity<SettingsResponseBody> update(
             @ApiParam(value = "The username of user for which settings should be updated.", required = true)

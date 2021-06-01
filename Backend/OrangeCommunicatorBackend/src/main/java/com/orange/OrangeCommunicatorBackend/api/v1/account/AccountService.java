@@ -43,6 +43,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class AccountService {
@@ -70,7 +71,6 @@ public class AccountService {
 
     public AccountTokenResponseBody login(AccountLoginRequestBody accountLoginRequestBody){
         String stringResponse = getToken(accountLoginRequestBody);
-
         return accountMaper.toAccountTokenBody(stringResponse);
     }
 
@@ -89,6 +89,7 @@ public class AccountService {
     }
 
     public void changePassword(AccountChangePasswordRequestBody accountChangePasswordRequestBody, String userName){
+
         Keycloak keycloak = KeycloakClientConfig.keycloak();
         User user = userRepository.findById(userName).orElseThrow(UserExceptionSupplier.userNotFoundException(userName));
 
@@ -205,7 +206,6 @@ public class AccountService {
         post.setEntity(new UrlEncodedFormEntity(urlParameters));
 
         HttpResponse response = client.execute(post);
-
         if(response.getStatusLine().getStatusCode() != HttpStatus.SC_OK){
             throw AccountExceptionSupplier.tokenAcquireException().get();
         }

@@ -1,13 +1,18 @@
 package com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AccountRefreshTokenRequestBody {
 
-    private final String refreshToken;
+    private String refreshToken;
 
     @JsonCreator
-    public AccountRefreshTokenRequestBody(String refreshToken) {
+    public AccountRefreshTokenRequestBody(@JsonProperty("refreshToken") String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
 

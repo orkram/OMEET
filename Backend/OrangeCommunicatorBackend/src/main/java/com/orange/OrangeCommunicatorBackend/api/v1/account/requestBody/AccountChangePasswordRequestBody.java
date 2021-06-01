@@ -1,15 +1,20 @@
 package com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AccountChangePasswordRequestBody {
 
 
-    private final String password;
+    private String password;
 
     @JsonCreator
-    public AccountChangePasswordRequestBody(String password) {
+    public AccountChangePasswordRequestBody(@JsonProperty("password") String password) {
 
+        this.password = password;
+    }
+
+    public void setPassword(String password) {
         this.password = password;
     }
 

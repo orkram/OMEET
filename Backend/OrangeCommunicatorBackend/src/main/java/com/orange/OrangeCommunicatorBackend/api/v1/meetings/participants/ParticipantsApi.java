@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class ParticipantsApi {
         this.participantsService = participantsService;
     }
 
-    @PostMapping
+    @PostMapping()
     @ApiOperation("Add participant to meeting")
     public ResponseEntity<Void> create(
             @ApiParam(value = "The id of the meeting to which the user is to be added.", required = true) @RequestParam(name="meetingId") long id,
@@ -44,7 +45,7 @@ public class ParticipantsApi {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @GetMapping(path="/meeting/{id}", produces = "application/json")
+    @GetMapping(path="/meeting/{id}")
     @ApiOperation("Get meeting's participants")
     public ResponseEntity<List<UserResponseBody>> findParticipants(
                                                   @ApiParam(value = "The id of meeting for which participants should be returned.", required = true)
@@ -64,7 +65,7 @@ public class ParticipantsApi {
         return ResponseEntity.status(HttpStatus.OK).body(responseBodies);
     }
 
-    @GetMapping(path="/meeting/{id}/page", produces = "application/json")
+    @GetMapping(path="/meeting/{id}/page")
     @ApiOperation("Get page of meeting's participants ")
     public ResponseEntity<FoundUsersPageResponseBody>
             findParticipantsPaginated(@ApiParam(value = "The id of meeting for which participants should be returned.", required = true)
@@ -89,7 +90,7 @@ public class ParticipantsApi {
     }
 
 
-    @GetMapping(path="/user/{username}", produces = "application/json")
+    @GetMapping(path="/user/{username}")
     @ApiOperation("Get user's meetings ")
     public ResponseEntity<List<MeetingResponseBody>>
             findMeetings(@ApiParam(value = "The username of user for which meetings should be returned.", required = true)
@@ -107,7 +108,7 @@ public class ParticipantsApi {
         return ResponseEntity.status(HttpStatus.OK).body(responseBodies);
     }
 
-    @GetMapping(path="/user/{username}/page", produces = "application/json")
+    @GetMapping(path="/user/{username}/page")
     @ApiOperation("Get user's meetings ")
     public ResponseEntity<MeetingsPageResponseBody>
             findMeetingsPaginated(@ApiParam(value = "The username of user for which meetings should be returned.", required = true)

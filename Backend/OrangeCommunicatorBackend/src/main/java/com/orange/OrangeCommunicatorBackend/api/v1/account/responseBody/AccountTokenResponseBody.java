@@ -1,6 +1,7 @@
 package com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AccountTokenResponseBody {
 
@@ -14,9 +15,14 @@ public class AccountTokenResponseBody {
     private final String scope;
 
     @JsonCreator
-    public AccountTokenResponseBody(String accessToken, long expiresIn, long refreshExpiresIn,
-                                    String refreshToken, String tokenType, long notBeforePolicy,
-                                    String sessionState, String scope) {
+    public AccountTokenResponseBody(@JsonProperty("accessToken") String accessToken,
+                                    @JsonProperty("expiresIn") long expiresIn,
+                                    @JsonProperty("refreshExpiresIn") long refreshExpiresIn,
+                                    @JsonProperty("refreshToken") String refreshToken,
+                                    @JsonProperty("tokenType") String tokenType,
+                                    @JsonProperty("notBeforePolicy") long notBeforePolicy,
+                                    @JsonProperty("sessionState") String sessionState,
+                                    @JsonProperty("scope") String scope) {
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
         this.refreshExpiresIn = refreshExpiresIn;

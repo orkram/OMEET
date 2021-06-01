@@ -1,6 +1,7 @@
 package com.orange.OrangeCommunicatorBackend.api.v1.users.settings.requestBody;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Column;
 
@@ -11,7 +12,9 @@ public class UpdateSettingsRequestBody {
     private final boolean isDefaultCamOn;
 
     @JsonCreator
-    public UpdateSettingsRequestBody(boolean isPrivate, boolean isDefaultMicOn, boolean isDefaultCamOn) {
+    public UpdateSettingsRequestBody(@JsonProperty("isPrivate") boolean isPrivate,
+                                     @JsonProperty("isDefaultMicOn")boolean isDefaultMicOn,
+                                     @JsonProperty("isDefaultCamOn") boolean isDefaultCamOn) {
         this.isPrivate = isPrivate;
         this.isDefaultMicOn = isDefaultMicOn;
         this.isDefaultCamOn = isDefaultCamOn;
