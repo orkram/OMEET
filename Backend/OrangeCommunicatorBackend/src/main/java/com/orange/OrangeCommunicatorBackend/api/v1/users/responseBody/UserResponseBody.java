@@ -1,34 +1,37 @@
 package com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UserResponseBody {
     private final String username;
-    private final String e_mail;
-    private final String first_name;
-    private final String last_name;
-    private final String img_url;
+    private final String eMail;
+    private final String firstName;
+    private final String lastName;
+    private final String imgUrl;
 
 
     @JsonCreator
-    public UserResponseBody(String userName, String eMail, String firstName, String lastName,  String imgUrl) {
+    public UserResponseBody(@JsonProperty("userName") String userName,
+                            @JsonProperty("eMail") String eMail,
+                            @JsonProperty("firstName") String firstName,
+                            @JsonProperty("lastName") String lastName,
+                            @JsonProperty("imgUrl") String imgUrl) {
         this.username = userName;
-        this.e_mail = eMail;
-        this.first_name = firstName;
-        this.img_url = imgUrl;
-        this.last_name = lastName;
+        this.eMail = eMail;
+        this.firstName = firstName;
+        this.imgUrl = imgUrl;
+        this.lastName = lastName;
     }
 
-    public String geteMail() {
-        return e_mail;
-    }
+    public String geteMail() { return eMail; }
 
     public String getFirstName() {
-        return first_name;
+        return firstName;
     }
 
     public String getLastName() {
-        return last_name;
+        return lastName;
     }
 
     public String getUserName() {
@@ -36,6 +39,6 @@ public class UserResponseBody {
     }
 
     public String getImgURL() {
-        return img_url;
+        return imgUrl;
     }
 }

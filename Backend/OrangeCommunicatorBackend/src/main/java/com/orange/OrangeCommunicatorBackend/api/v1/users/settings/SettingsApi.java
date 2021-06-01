@@ -1,8 +1,13 @@
 package com.orange.OrangeCommunicatorBackend.api.v1.users.settings;
 
+import com.orange.OrangeCommunicatorBackend.api.v1.users.settings.requestBody.UpdateSettingsRequestBody;
+import com.orange.OrangeCommunicatorBackend.api.v1.users.settings.responseBody.SettingsResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -11,16 +16,29 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class SettingsApi {
 
-    @GetMapping("/{id}")
-    @ApiOperation("Find certain user's settings")
-    public String find(@PathVariable Long id) {
-        return "/users/settings GET {id} endpoint";
+    private final SettingsService settingsService;
+
+    public SettingsApi(SettingsService settingsService) {
+        this.settingsService = settingsService;
     }
 
-    @PutMapping
+    @GetMapping(path="/{username}")
+    @ApiOperation("Find certain user's settings")
+    public ResponseEntity<SettingsResponseBody> find(
+            @ApiParam(value = "The username of user for which settings should be returned.", required = true)
+            @PathVariable String username) {
+        SettingsResponseBody settingsResponseBody = settingsService.getSettings(username);
+        return ResponseEntity.status(HttpStatus.OK).body(settingsResponseBody);
+    }
+
+    @PutMapping(path="/{username}")
     @ApiOperation("Update user's settings")
-    public String update(@RequestBody String s) {
-        return "/users/settings PUT endpoint";
+    public ResponseEntity<SettingsResponseBody> update(
+            @ApiParam(value = "The username of user for which settings should be updated.", required = true)
+            @PathVariable String username,
+            @RequestBody UpdateSettingsRequestBody updateSettingsRequestBody) {
+        SettingsResponseBody settingsResponseBody = settingsService.updateSettings(username, updateSettingsRequestBody);
+        return ResponseEntity.status(HttpStatus.OK).body(settingsResponseBody);
     }
 
 }

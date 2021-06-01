@@ -1,23 +1,24 @@
 package com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AccountLoginRequestBody {
-    private final String client_id;
-    private final String username;
-    private final String password;
-    private final String client_secret;
+    private String username;
+    private String password;
 
     @JsonCreator
-    public AccountLoginRequestBody(String client_id, String username, String password, String client_secret) {
-        this.client_id = client_id;
+    public AccountLoginRequestBody(@JsonProperty("username") String username, @JsonProperty("password") String password) {
         this.username = username;
         this.password = password;
-        this.client_secret = client_secret;
     }
 
-    public String getClient_id() {
-        return client_id;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getUsername() {
@@ -28,7 +29,4 @@ public class AccountLoginRequestBody {
         return password;
     }
 
-    public String getClient_secret() {
-        return client_secret;
-    }
 }

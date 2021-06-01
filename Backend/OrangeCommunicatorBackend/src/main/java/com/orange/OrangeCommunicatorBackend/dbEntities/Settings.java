@@ -9,61 +9,37 @@ import javax.persistence.*;
 public class Settings {
 
     @Id
-    private String user_name;
+    @Column(name = "user_name")
+    private String userName;
 
-    private String setting_1;
+    @Column(name = "is_private")
+    private boolean isPrivate;
 
-    private String setting_2;
+    @Column(name = "is_mic_enabled_on_entry")
+    private boolean isDefaultMicOn;
 
-    private String setting_3;
+    @Column(name = "is_camera_enabled_on_entry")
+    private boolean isDefaultCamOn;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_name")
     @MapsId
     private User user;
 
-    Settings() {
+    public Settings() {
 
     }
 
-    public Settings(String user_name, String setting_1, String setting_2, String setting_3, User user) {
-        this.user_name = user_name;
-        this.setting_1 = setting_1;
-        this.setting_2 = setting_2;
-        this.setting_3 = setting_3;
+    public Settings(boolean isPrivate, boolean isDefaultMicOn, boolean isDefaultCamOn, User user) {
+        this.userName = user.getUserName();
+        this.isPrivate = isPrivate;
+        this.isDefaultMicOn = isDefaultMicOn;
+        this.isDefaultCamOn = isDefaultCamOn;
         this.user = user;
     }
 
-    public String getId_user() {
-        return user_name;
-    }
-
-    public void setId_user(String id_user) {
-        this.user_name = id_user;
-    }
-
-    public String getSetting_1() {
-        return setting_1;
-    }
-
-    public void setSetting_1(String setting_1) {
-        this.setting_1 = setting_1;
-    }
-
-    public String getSetting_2() {
-        return setting_2;
-    }
-
-    public void setSetting_2(String setting_2) {
-        this.setting_2 = setting_2;
-    }
-
-    public String getSetting_3() {
-        return setting_3;
-    }
-
-    public void setSetting_3(String setting_3) {
-        this.setting_3 = setting_3;
+    public String getUserName() {
+        return userName;
     }
 
     public User getUser() {
@@ -72,6 +48,30 @@ public class Settings {
 
     public void setUser(User user) {
         this.user = user;
+        this.userName = user.getUserName();
     }
 
+    public boolean isPrivate() {
+        return isPrivate;
+    }
+
+    public void setPrivate(boolean aPrivate) {
+        isPrivate = aPrivate;
+    }
+
+    public boolean isDefaultMicOn() {
+        return isDefaultMicOn;
+    }
+
+    public void setDefaultMicOn(boolean defaultMicOn) {
+        isDefaultMicOn = defaultMicOn;
+    }
+
+    public boolean isDefaultCamOn() {
+        return isDefaultCamOn;
+    }
+
+    public void setDefaultCamOn(boolean defaultCamOn) {
+        isDefaultCamOn = defaultCamOn;
+    }
 }

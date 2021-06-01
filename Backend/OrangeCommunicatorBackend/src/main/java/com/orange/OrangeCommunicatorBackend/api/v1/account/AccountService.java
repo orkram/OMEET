@@ -7,11 +7,20 @@ import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountRe
 import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountLogoutResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountRegisterResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountTokenResponseBody;
+import com.orange.OrangeCommunicatorBackend.api.v1.account.support.AccountExceptionSupplier;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.support.AccountMaper;
+import com.orange.OrangeCommunicatorBackend.api.v1.account.support.exceptions.AccountExistsException;
+import com.orange.OrangeCommunicatorBackend.api.v1.contacts.support.ContactExceptionSupplier;
+import com.orange.OrangeCommunicatorBackend.api.v1.users.settings.support.SettingsMapper;
+import com.orange.OrangeCommunicatorBackend.api.v1.users.support.UserExceptionSupplier;
 import com.orange.OrangeCommunicatorBackend.config.KeycloakClientConfig;
+import com.orange.OrangeCommunicatorBackend.dbEntities.Settings;
 import com.orange.OrangeCommunicatorBackend.dbEntities.User;
+import com.orange.OrangeCommunicatorBackend.dbRepositories.SettingsRepository;
 import com.orange.OrangeCommunicatorBackend.dbRepositories.UserRepository;
+import com.orange.OrangeCommunicatorBackend.generalServicies.MailService;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -24,31 +33,44 @@ import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import javax.ws.rs.core.Response;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
+import java.util.Locale;
 
 @Service
 public class AccountService {
     private final UserRepository userRepository;
     private final AccountMaper accountMaper;
+    private final SettingsRepository settingsRepository;
+    private final SettingsMapper settingsMapper;
+    private final MailService mailService;
 
-    public AccountService(UserRepository userRepository, AccountMaper accountMaper) {
+    @Value("${auth.client}")
+    private String clientForAccounts;
+    @Value("${auth.secret}")
+    private String secretForAccounts;
+
+    public AccountService(UserRepository userRepository, AccountMaper accountMaper, SettingsRepository settingsRepository, SettingsMapper settingsMapper, MailService mailService) {
         this.userRepository = userRepository;
         this.accountMaper = accountMaper;
+
+        this.settingsRepository = settingsRepository;
+        this.settingsMapper = settingsMapper;
+        this.mailService = mailService;
     }
 
 
 
     public AccountTokenResponseBody login(AccountLoginRequestBody accountLoginRequestBody){
         String stringResponse = getToken(accountLoginRequestBody);
-
         return accountMaper.toAccountTokenBody(stringResponse);
     }
 
@@ -59,20 +81,20 @@ public class AccountService {
 
     public AccountLogoutResponseBody logout(String userName){
 
-        // dodać wyjątki
-        User user = userRepository.findById(userName).orElseThrow();
+        User user = userRepository.findById(userName).orElseThrow(UserExceptionSupplier.userNotFoundException(userName));
         Keycloak keycloak = KeycloakClientConfig.keycloak();
         UsersResource userResource = keycloak.realm(KeycloakClientConfig.getRealm()).users();
-        userResource.get(user.getKeycloak_id()).logout();
+        userResource.get(user.getKeycloakId()).logout();
         return new AccountLogoutResponseBody("true");
     }
 
     public void changePassword(AccountChangePasswordRequestBody accountChangePasswordRequestBody, String userName){
+
         Keycloak keycloak = KeycloakClientConfig.keycloak();
-        User user = userRepository.findById(userName).orElseThrow();
+        User user = userRepository.findById(userName).orElseThrow(UserExceptionSupplier.userNotFoundException(userName));
 
         UsersResource usersResource = keycloak.realm(KeycloakClientConfig.getRealm()).users();
-        usersResource.get(user.getKeycloak_id()).resetPassword(createPasswordCredentials(accountChangePasswordRequestBody.
+        usersResource.get(user.getKeycloakId()).resetPassword(createPasswordCredentials(accountChangePasswordRequestBody.
                 getPassword()));
     }
 
@@ -88,40 +110,53 @@ public class AccountService {
 
             statusId = result.getStatus();
 
-            if (statusId == 201) {
+            if (statusId == HttpStatus.SC_CREATED) {
 
                 String userId = result.getLocation().getPath().replaceAll(".*/([^/]+)$", "$1");
 
                 usersResource.get(userId).resetPassword(createPasswordCredentials(accountRegisterRequestBody.
                         getPassword()));
 
+                user.setEmail(accountRegisterRequestBody.geteMail());
+                usersResource.get(userId).update(user);
 
                 RealmResource realmResource = keycloak.realm(KeycloakClientConfig.getRealm());
 
                 RoleRepresentation roleRepresentation = realmResource.roles().get("ROLE_USER").toRepresentation();
                 realmResource.users().get(userId).roles().realmLevel().add(Arrays.asList(roleRepresentation));
                 User u = accountMaper.toUser(accountRegisterRequestBody);
-                u.setKeycloak_id(userId);
-                userRepository.save(u);
+                u.setKeycloakId(userId);
+                try {
+                    userRepository.save(u);
+                    Settings settings = settingsMapper.createDefaultSettings(u);
+                    settingsRepository.save(settings);
 
+                    //sendConfirm(u);
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    usersResource.get(userId).remove();
+                    if (userRepository.existsById(u.getUserName())) {
+                        userRepository.deleteById(u.getUserName());
+                    }
+                    throw AccountExceptionSupplier.creatingAccountException().get();
+                }
                 return accountMaper.toAccountRegisterResponse(u);
-
             }
 
-            else if (statusId == 409) {
-
-
+            else if (statusId == HttpStatus.SC_CONFLICT) {
+                throw AccountExceptionSupplier.accountExistsException().get();
             } else {
-
-
+                throw AccountExceptionSupplier.creatingAccountException().get();
             }
 
+        } catch (AccountExistsException e){
+            throw AccountExceptionSupplier.accountExistsException().get();
         } catch (Exception e) {
             e.printStackTrace();
-
+            throw AccountExceptionSupplier.creatingAccountException().get();
         }
-
-        return null;
     }
 
 
@@ -146,15 +181,17 @@ public class AccountService {
 
             List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
             urlParameters.add(new BasicNameValuePair("grant_type", "password"));
-            urlParameters.add(new BasicNameValuePair("client_id", accountLoginRequestBody.getClient_id()));
+            urlParameters.add(new BasicNameValuePair("client_id", clientForAccounts));
             urlParameters.add(new BasicNameValuePair("username", accountLoginRequestBody.getUsername()));
             urlParameters.add(new BasicNameValuePair("password", accountLoginRequestBody.getPassword()));
-            urlParameters.add(new BasicNameValuePair("client_secret", accountLoginRequestBody.getClient_secret()));
+            urlParameters.add(new BasicNameValuePair("client_secret", secretForAccounts));
+
 
             responseToken = sendPost(urlParameters);
 
         } catch (Exception e) {
             e.printStackTrace();
+            throw AccountExceptionSupplier.tokenAcquireException().get();
         }
 
         return responseToken;
@@ -169,6 +206,9 @@ public class AccountService {
         post.setEntity(new UrlEncodedFormEntity(urlParameters));
 
         HttpResponse response = client.execute(post);
+        if(response.getStatusLine().getStatusCode() != HttpStatus.SC_OK){
+            throw AccountExceptionSupplier.tokenAcquireException().get();
+        }
 
         BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
@@ -188,17 +228,24 @@ public class AccountService {
 
             List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
             urlParameters.add(new BasicNameValuePair("grant_type", "refresh_token"));
-            urlParameters.add(new BasicNameValuePair("client_id", accountRefreshTokenRequestBody.getClient_id()));
-            urlParameters.add(new BasicNameValuePair("refresh_token", accountRefreshTokenRequestBody.getRefresh_token()));
-            urlParameters.add(new BasicNameValuePair("client_secret", accountRefreshTokenRequestBody.getClient_secret()));
+            urlParameters.add(new BasicNameValuePair("client_id", clientForAccounts));
+            urlParameters.add(new BasicNameValuePair("refresh_token", accountRefreshTokenRequestBody.getRefreshToken()));
+            urlParameters.add(new BasicNameValuePair("client_secret", secretForAccounts));
 
             responseToken = sendPost(urlParameters);
 
         } catch (Exception e) {
             e.printStackTrace();
-
+            throw AccountExceptionSupplier.tokenAcquireException().get();
         }
         return responseToken;
+    }
+
+    private void sendConfirm(User user) throws MessagingException {
+        String email = user.getEMail();
+        String subject = "Kaliber-Confirmation";
+        String emailText = "Hey,<br>Account of user \"" + user.getUserName() + "\" was successfully created!!<br>";
+        mailService.sendMail(email, subject, emailText, true);
     }
 
 }
