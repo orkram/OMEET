@@ -47,7 +47,7 @@
 
                 <ImageView
                     style="@style/input_field_box_icon_box_icon"
-                    app:srcCompat="@drawable/username_icon" />
+                    app:srcCompat="@drawable/all_username_icon" />
 
             </FrameLayout>
 
@@ -82,7 +82,7 @@
 
                 <ImageView
                     style="@style/input_field_box_icon_box_icon"
-                    app:srcCompat="@drawable/password_star" />
+                    app:srcCompat="@drawable/all_password_star" />
 
             </FrameLayout>
 
@@ -111,7 +111,7 @@
                 android:onClick="showHidePassword"
                 android:paddingRight="10dp"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/visibility_off_24" />
+                app:srcCompat="@drawable/all_visibility_off" />
 
         </LinearLayout>
 

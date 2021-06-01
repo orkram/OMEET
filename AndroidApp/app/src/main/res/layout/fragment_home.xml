@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.HomeFragment">
+    tools:context=".ui.main.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -26,7 +26,7 @@
         android:id="@+id/imageView3"
         android:layout_width="113dp"
         android:layout_height="63dp"
-        android:src="@drawable/ic_videocam"
+        android:src="@drawable/all_cam"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OrangeMeet.NoActionBar"
         android:usesCleartextTraffic="true"
-        android:name=".ApplicationController">
+        android:name=".App">
 
         <activity
             android:name=".ui.login.LoginActivity"
@@ -24,12 +24,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.RegisterActivity"
+        <activity android:name=".ui.register.RegisterActivity"
             android:label="@string/title_activity_register"
             android:screenOrientation="portrait">
+
         </activity>
 
-        <activity android:name=".activities.MainActivity"
+        <activity android:name=".ui.main.MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:supportsPictureInPicture="true"> <!-- android:configChanges="uiMode"-->
