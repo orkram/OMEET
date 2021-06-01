@@ -61,6 +61,7 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            accCreateButton.isEnabled = false
 
             BackendCommunication.register(this,
                 email.text.toString(),
@@ -73,6 +74,7 @@ class RegisterActivity : AppCompatActivity() {
                     goToLoginActivity()
                 },
                 Response.ErrorListener {
+                    accCreateButton.isEnabled = true
                     Toast.makeText(
                         applicationContext,
                         R.string.registed_failed,

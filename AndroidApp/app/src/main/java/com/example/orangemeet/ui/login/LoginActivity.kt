@@ -61,7 +61,6 @@ class LoginActivity : AppCompatActivity() {
                     return@Observer
                 }
 
-                loginButton.isEnabled = true
                 //loginButton.isEnabled = loginFormState.isDataValid
                 loginFormState.usernameError?.let {
                     usernameEditText.error = getString(it)
@@ -79,11 +78,15 @@ class LoginActivity : AppCompatActivity() {
                     showLoginFailed(it)
                 }
                 loginResult.success?.let {
+                    loginButton.isEnabled = false
+                    registerButton.isEnabled = false
                     BackendCommunication.login(this, usernameEditText.text.toString(), passwordEditText.text.toString(),
                             Response.Listener {
                                 goToMainActivity()
                             },
                             Response.ErrorListener {
+                                loginButton.isEnabled = true
+                                registerButton.isEnabled = true
                                 Toast.makeText(applicationContext, R.string.login_failed, Toast.LENGTH_LONG).show()
                             }
                     )
