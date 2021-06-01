@@ -471,5 +471,36 @@ class BackendCommunication {
 
             requestQueue.add(request)
         }
+
+        fun getSettings(context: Context,
+                        listener: Response.Listener<JSONObject>?,
+                        errorListener: Response.ErrorListener?){
+            val requestQueue = Volley.newRequestQueue(context)
+
+            val request = BackendRequestJsonObject(
+                    Request.Method.GET,
+                    backendUrl + "/api/v1/users/settings/" + username,
+                    JSONObject(),
+                    Response.Listener { listener?.onResponse(it) },
+                    Response.ErrorListener { error ->
+                        handleAuthorizationError(context,
+                                error,
+                                Response.Listener {
+                                    getSettings(
+                                            context,
+                                            listener,
+                                            errorListener
+                                    )
+                                },
+                                Response.ErrorListener {
+                                    Timber.e("GetSettings failed: %s", error.message)
+                                    errorListener?.onErrorResponse(error)
+                                })
+                    },
+                    accessToken
+            )
+
+            requestQueue.add(request)
+        }
     }
 }

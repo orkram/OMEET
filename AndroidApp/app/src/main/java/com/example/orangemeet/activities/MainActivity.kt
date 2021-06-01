@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -17,6 +18,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
+import com.android.volley.Response
 import com.example.orangemeet.BackendCommunication
 import com.example.orangemeet.CustomJitsiFragment
 import com.example.orangemeet.R
@@ -37,6 +40,22 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        BackendCommunication.getSettings(applicationContext,
+                Response.Listener {settingsJson ->
+                    val prefs = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+                    with (prefs.edit()) {
+                        putBoolean("start_with_audio", settingsJson.getBoolean("defaultMicOn"))
+                        putBoolean("start_with_video", settingsJson.getBoolean("defaultCamOn"))
+                        putBoolean("private_user", settingsJson.getBoolean("private"))
+                        apply()
+                    }
+                },
+                Response.ErrorListener {
+                    Toast.makeText(applicationContext, "Nie udało się wczytać ustawień", Toast.LENGTH_LONG).show()
+                })
+
+
 
 
         setContentView(R.layout.activity_main)
