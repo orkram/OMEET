@@ -1,4 +1,4 @@
-package com.example.orangemeet
+package com.example.orangemeet.data.model
 
 import android.graphics.drawable.Drawable
 import android.media.Image
@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.orangemeet.R
+import com.example.orangemeet.utils.Util
 import org.json.JSONObject
 
 
@@ -34,7 +36,7 @@ class User {
     }
 
     companion object{
-        fun createFromJson(jsonObject: JSONObject) : User{
+        fun createFromJson(jsonObject: JSONObject) : User {
             val str = jsonObject.toString()
             val username = jsonObject.getString("userName")
             val email = jsonObject.getString("eMail")

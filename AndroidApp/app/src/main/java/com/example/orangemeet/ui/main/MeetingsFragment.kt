@@ -1,13 +1,6 @@
-package com.example.orangemeet.fragments
+package com.example.orangemeet.ui.main
 
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.drawable.AnimatedStateListDrawable
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
@@ -16,7 +9,11 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.android.volley.Response
 import com.example.orangemeet.*
-import java.lang.reflect.Type
+import com.example.orangemeet.data.model.Meeting
+import com.example.orangemeet.data.model.User
+import com.example.orangemeet.services.BackendCommunication
+import com.example.orangemeet.UserInfo
+import com.example.orangemeet.utils.Util
 import java.text.SimpleDateFormat
 
 class MeetingsFragment : Fragment() {

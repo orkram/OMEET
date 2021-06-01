@@ -1,4 +1,4 @@
-package com.example.orangemeet.fragments
+package com.example.orangemeet.ui.main
 
 import android.os.Bundle
 import android.view.*
@@ -6,6 +6,10 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import com.android.volley.Response
 import com.example.orangemeet.*
+import com.example.orangemeet.data.model.User
+import com.example.orangemeet.services.BackendCommunication
+import com.example.orangemeet.UserInfo
+import com.example.orangemeet.utils.Util
 
 
 class FindContactFragment : Fragment() {

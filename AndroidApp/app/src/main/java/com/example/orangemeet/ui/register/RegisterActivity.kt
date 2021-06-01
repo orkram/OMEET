@@ -1,4 +1,4 @@
-package com.example.orangemeet.activities
+package com.example.orangemeet.ui.register
 
 import android.os.Bundle
 import android.view.View
@@ -8,9 +8,9 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Response
-import com.example.orangemeet.BackendCommunication
+import com.example.orangemeet.services.BackendCommunication
 import com.example.orangemeet.R
-import com.example.orangemeet.Util
+import com.example.orangemeet.utils.Util
 import com.google.android.material.textfield.TextInputEditText
 
 class RegisterActivity : AppCompatActivity() {

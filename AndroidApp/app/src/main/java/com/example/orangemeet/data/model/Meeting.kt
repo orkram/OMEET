@@ -1,11 +1,12 @@
-package com.example.orangemeet
+package com.example.orangemeet.data.model
 
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.StateListDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.orangemeet.R
+import com.example.orangemeet.utils.Util
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
@@ -24,7 +25,7 @@ class Meeting {
         id = Random().nextLong()
         name = "Name" + Util.generateRandomString(8)
         owner = User()
-        participants = List(3){ i -> User()}
+        participants = List(3){ i -> User() }
         date = Date()
     }
 
@@ -41,7 +42,7 @@ class Meeting {
     }
 
     companion object{
-        fun createFromJson(jsonObject: JSONObject) : Meeting{
+        fun createFromJson(jsonObject: JSONObject) : Meeting {
             val name = jsonObject.getString("name")
             val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(jsonObject.getString("date"))
             val id = jsonObject.getString("idMeeting").toLong()

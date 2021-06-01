@@ -1,7 +1,6 @@
-package com.example.orangemeet.fragments
+package com.example.orangemeet.ui.main
 
 import android.os.Bundle
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,10 @@ import com.android.volley.Response
 import com.applandeo.materialcalendarview.CalendarView
 import com.applandeo.materialcalendarview.EventDay
 import com.example.orangemeet.*
+import com.example.orangemeet.data.model.Meeting
+import com.example.orangemeet.services.BackendCommunication
+import com.example.orangemeet.UserInfo
+import com.example.orangemeet.utils.Util
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -115,6 +118,6 @@ class CalendarFragment : Fragment() {
     companion object {
 
         fun newInstance(param1: String, param2: String) =
-            CalendarFragment()
+                CalendarFragment()
     }
 }

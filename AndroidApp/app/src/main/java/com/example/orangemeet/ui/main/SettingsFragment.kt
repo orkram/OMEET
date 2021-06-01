@@ -1,17 +1,12 @@
-package com.example.orangemeet.fragments
+package com.example.orangemeet.ui.main
 
-import android.app.UiModeManager
-import android.content.Context
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
-import com.android.volley.Response
-import com.example.orangemeet.BackendCommunication
+import com.example.orangemeet.services.BackendCommunication
 import com.example.orangemeet.R
-import com.example.orangemeet.RemoteSettings
+import com.example.orangemeet.data.model.RemoteSettings
 
 class SettingsFragment : PreferenceFragmentCompat() {
 

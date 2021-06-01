@@ -7,49 +7,49 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.orangemeet.fragments.HomeFragment"
+        android:name="com.example.orangemeet.ui.main.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_contacts"
-        android:name="com.example.orangemeet.fragments.ContactsFragment"
+        android:name="com.example.orangemeet.ui.main.ContactsFragment"
         android:label="@string/menu_contacts"
         tools:layout="@layout/fragment_contacts" />
 
     <fragment
         android:id="@+id/nav_settings"
-        android:name="com.example.orangemeet.fragments.SettingsFragment"
+        android:name="com.example.orangemeet.ui.main.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@xml/root_preferences" />
 
     <fragment
         android:id="@+id/nav_meetings"
-        android:name="com.example.orangemeet.fragments.MeetingsFragment"
+        android:name="com.example.orangemeet.ui.main.MeetingsFragment"
         android:label="@string/menu_meetings"
         tools:layout="@layout/fragment_meetings" />
 
     <fragment
         android:id="@+id/nav_video"
-        android:name="com.example.orangemeet.fragments.VideoFragment"
+        android:name="com.example.orangemeet.ui.main.VideoFragment"
         android:label="@string/menu_video"
         tools:layout="@layout/fragment_video" />
 
     <fragment
         android:id="@+id/nav_find_contact"
-        android:name="com.example.orangemeet.fragments.FindContactFragment"
+        android:name="com.example.orangemeet.ui.main.FindContactFragment"
         android:label="@string/menu_find_contact"
         tools:layout="@layout/fragment_find_contact" />
 
     <fragment
         android:id="@+id/nav_calendar"
-        android:name="com.example.orangemeet.fragments.CalendarFragment"
+        android:name="com.example.orangemeet.ui.main.CalendarFragment"
         android:label="@string/menu_calendar"
         tools:layout="@layout/fragment_calendar" />
 
     <fragment
         android:id="@+id/nav_create_meeting"
-        android:name="com.example.orangemeet.fragments.CreateMeetingFragment"
+        android:name="com.example.orangemeet.ui.main.CreateMeetingFragment"
         android:label="@string/menu_create_meeting"
         tools:layout="@layout/fragment_create_meeting" >
         <argument
@@ -61,7 +61,7 @@
 
     <fragment
         android:id="@+id/nav_jitsi"
-        android:name="com.example.orangemeet.CustomJitsiFragment"
+        android:name="com.example.orangemeet.ui.main.CustomJitsiFragment"
         android:label="Jitsi"
         tools:layout="@layout/fragment_jitsi" />
 

@@ -1,4 +1,4 @@
-package com.example.orangemeet.fragments
+package com.example.orangemeet.ui.main
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -9,10 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.android.volley.Response
-import com.example.orangemeet.BackendCommunication
+import com.example.orangemeet.services.BackendCommunication
 import com.example.orangemeet.R
-import com.example.orangemeet.User
-import com.example.orangemeet.Util
+import com.example.orangemeet.data.model.User
+import com.example.orangemeet.utils.Util
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
 import java.text.SimpleDateFormat

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:orientation="vertical"
-    tools:context=".fragments.ContactsFragment">
+    tools:context=".ui.main.ContactsFragment">
 
     <include
         android:id="@+id/notFoundPlaceholder"
@@ -68,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:context=".fragments.ContactsFragment">
+            tools:context=".ui.main.ContactsFragment">
 
             <LinearLayout
                 android:id="@+id/contactsLayout"

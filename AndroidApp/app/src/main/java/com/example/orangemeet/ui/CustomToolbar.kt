@@ -1,4 +1,4 @@
-package com.example.orangemeet
+package com.example.orangemeet.ui
 
 import android.content.Context
 import android.graphics.Typeface
@@ -8,6 +8,7 @@ import android.view.Gravity
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
+import com.example.orangemeet.R
 
 
 class CustomToolbar : Toolbar {
@@ -23,7 +24,7 @@ class CustomToolbar : Toolbar {
     fun init(context: Context?, attrs: AttributeSet?) {
         context!!.theme.obtainStyledAttributes(
             attrs,
-            R.styleable.CenteredToolbar,
+                R.styleable.CenteredToolbar,
             0, 0).apply {
             try {
                 typeface = ResourcesCompat.getFont(context, getResourceId(R.styleable.CenteredToolbar_typeface, 0))!!

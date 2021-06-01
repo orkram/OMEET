@@ -1,25 +1,17 @@
-package com.example.orangemeet
+package com.example.orangemeet.ui.main
 
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.add
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.example.orangemeet.activities.MainActivity
-import com.example.orangemeet.fragments.VideoFragment
-import com.facebook.react.ReactInstanceManager
+import com.example.orangemeet.UserInfo
 import org.jitsi.meet.sdk.*
 
 import timber.log.Timber
-import java.net.URL
 
 class CustomJitsiFragment : JitsiMeetFragment() {
 

@@ -1,4 +1,4 @@
-package com.example.orangemeet.activities
+package com.example.orangemeet.ui.main
 
 
 import android.content.Intent
@@ -20,8 +20,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.android.volley.Response
-import com.example.orangemeet.BackendCommunication
-import com.example.orangemeet.CustomJitsiFragment
+import com.example.orangemeet.services.BackendCommunication
 import com.example.orangemeet.R
 import com.example.orangemeet.UserInfo
 import com.example.orangemeet.ui.login.LoginActivity

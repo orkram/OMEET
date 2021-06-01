@@ -1,4 +1,4 @@
-package com.example.orangemeet
+package com.example.orangemeet.services
 
 import com.android.volley.NetworkResponse
 import com.android.volley.Response
@@ -33,7 +33,7 @@ abstract class BackendRequest<T>(
 }
 
 open class BackendRequestJsonObject :
-    BackendRequest<JSONObject> {
+        BackendRequest<JSONObject> {
 
     constructor(method: Int,
                 url: String?,
@@ -69,7 +69,7 @@ open class BackendRequestJsonObject :
 }
 
 open class BackendRequestJsonArray :
-    BackendRequest<JSONArray> {
+        BackendRequest<JSONArray> {
 
     constructor(method: Int,
                 url: String?,

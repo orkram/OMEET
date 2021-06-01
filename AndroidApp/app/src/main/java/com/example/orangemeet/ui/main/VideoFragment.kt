@@ -1,6 +1,5 @@
-package com.example.orangemeet.fragments
+package com.example.orangemeet.ui.main
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,11 +10,9 @@ import android.widget.ProgressBar
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.preference.PreferenceManager
-import com.example.orangemeet.CustomJitsiFragment
 import com.example.orangemeet.R
 import com.example.orangemeet.UserInfo
-import com.example.orangemeet.Util
-import com.example.orangemeet.activities.MainActivity
+import com.example.orangemeet.utils.Util
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import org.jitsi.meet.sdk.JitsiMeetUserInfo
 import java.net.URL

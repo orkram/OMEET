@@ -1,4 +1,4 @@
-package com.example.orangemeet
+package com.example.orangemeet.data.model
 
 class RemoteSettings(val startWithMic : Boolean,
                      val startWithCam : Boolean,
