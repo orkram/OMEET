@@ -26,7 +26,7 @@
         android:id="@+id/imageView3"
         android:layout_width="113dp"
         android:layout_height="63dp"
-        android:src="@drawable/ic_videocam"
+        android:src="@drawable/all_cam"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

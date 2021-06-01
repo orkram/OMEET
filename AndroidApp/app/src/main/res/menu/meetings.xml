@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/addMeeting"
-        android:icon="@drawable/add"
+        android:icon="@drawable/all_plus_sign"
         android:title="Add meeting"
         app:showAsAction="always" />
 </menu>

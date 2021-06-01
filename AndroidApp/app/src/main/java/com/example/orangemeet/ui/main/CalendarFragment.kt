@@ -61,7 +61,7 @@ class CalendarFragment : Fragment() {
                 this.meetings!!.forEach { meeting ->
                     val calendar = Calendar.getInstance()
                     calendar.time = meeting.date
-                    events.add(EventDay(calendar, R.drawable.baseline_groups_24))
+                    events.add(EventDay(calendar, R.drawable.main_meeting))
                     meetingDateView.setText(SimpleDateFormat("dd-MM-yy").format(Calendar.getInstance().time))
                     CreateMeetingViews(Calendar.getInstance(), inflater)
                 }

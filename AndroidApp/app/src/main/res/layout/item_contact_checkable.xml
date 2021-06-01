@@ -5,7 +5,7 @@
     android:id="@+id/box"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:background="@drawable/contact_item_bg"
+    android:background="@drawable/contacts_contact_item_bg"
     android:longClickable="true"
     android:paddingStart="8dp"
     android:paddingTop="4dp"
@@ -14,7 +14,7 @@
 
 
     <include
-        layout="@layout/contact_details"
+        layout="@layout/view_contact_details"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="7" />

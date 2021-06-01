@@ -49,10 +49,10 @@ class Util {
         fun showHidePassword(passwordEditText: TextInputEditText, visibilityButton : ImageButton, context: Context){
             if(passwordEditText.transformationMethod is HideReturnsTransformationMethod){
                 passwordEditText.transformationMethod = PasswordTransformationMethod.getInstance()
-                visibilityButton.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.visibility_off_24, context.theme))
+                visibilityButton.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.all_visibility_off, context.theme))
             } else{
                 passwordEditText.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                visibilityButton.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.visibility_24, context.theme))
+                visibilityButton.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.all_visibility_on, context.theme))
             }
         }
 

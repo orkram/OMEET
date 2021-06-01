@@ -10,7 +10,7 @@
 
     <include
         android:id="@+id/notFoundPlaceholder"
-        layout="@layout/not_found"
+        layout="@layout/view_search_not_found"
         android:layout_width="0dp"
         android:layout_height="256dp"
         android:layout_marginStart="64dp"
@@ -39,8 +39,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="9"
-            android:src="@drawable/ic_search_24dp"
-            app:srcCompat="@drawable/ic_search_24dp" />
+            android:src="@drawable/main_search"
+            app:srcCompat="@drawable/main_search" />
 
         <TextView
             android:id="@+id/textView5"
@@ -81,7 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_margin="16dp"
-            android:background="@drawable/search_bg"
+            android:background="@drawable/all_search_bg"
             android:foreground="@color/transparent"
             android:iconifiedByDefault="false"
             android:queryBackground="@color/transparent"
@@ -93,7 +93,7 @@
             android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@drawable/line" />
+            android:background="@drawable/all_line" />
 
         <androidx.core.widget.NestedScrollView
             style="@style/default_scrollview"

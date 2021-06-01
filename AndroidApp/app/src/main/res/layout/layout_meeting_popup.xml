@@ -69,12 +69,12 @@
                 android:id="@+id/view5"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:background="@drawable/line"
+                android:background="@drawable/all_line"
                 android:backgroundTint="@color/orange" />
 
             <include
                 android:id="@+id/owner"
-                layout="@layout/contact_details_small"
+                layout="@layout/view_contact_details_small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -95,7 +95,7 @@
                 android:id="@+id/view2"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:background="@drawable/line"
+                android:background="@drawable/all_line"
                 android:backgroundTint="@color/orange" />
 
             <androidx.core.widget.NestedScrollView
@@ -121,7 +121,7 @@
                 android:id="@+id/view3"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:background="@drawable/line"
+                android:background="@drawable/all_line"
                 android:backgroundTint="@color/orange" />
 
         </LinearLayout>

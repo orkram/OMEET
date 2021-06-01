@@ -5,7 +5,7 @@
     android:id="@+id/box"
     android:layout_width="match_parent"
     android:layout_height="@dimen/contacts_meetings_list_item_height"
-    android:background="@drawable/contact_item_bg"
+    android:background="@drawable/contacts_contact_item_bg"
     android:longClickable="true"
     android:paddingStart="8dp"
     android:paddingTop="4dp"
@@ -14,7 +14,7 @@
 
 
     <include
-        layout="@layout/contact_details"
+        layout="@layout/view_contact_details"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1" />
@@ -25,10 +25,10 @@
         android:layout_height="48dp"
         android:layout_gravity="center"
         android:layout_margin="8dp"
-        android:background="@drawable/pressed_bg"
+        android:background="@drawable/all_pressed_bg"
         android:padding="4dp"
         android:scaleType="fitCenter"
         android:tint="@color/orange"
-        app:srcCompat="@drawable/baseline_call_24" />
+        app:srcCompat="@drawable/main_call" />
 
 </LinearLayout>

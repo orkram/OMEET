@@ -53,7 +53,7 @@ class Meeting {
         }
 
         fun createView(inflater : LayoutInflater, root : ViewGroup, meeting: Meeting, background: Drawable?) : View {
-            val view = inflater.inflate(R.layout.meeting_item, root, false)
+            val view = inflater.inflate(R.layout.item_meeting, root, false)
 
             val dateTextView = view.findViewById<TextView>(R.id.date)
             val ownerTextView = view.findViewById<TextView>(R.id.meetingOwner)
