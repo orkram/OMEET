@@ -9,7 +9,6 @@ export class MeetingsService {
 
   constructor(private http: HttpClient, public datepipe: DatePipe) {}
 
-
   payload = 'payload';
   findMeetings(
     username: string,
@@ -25,10 +24,17 @@ export class MeetingsService {
     });
     }
 
+    getAllMeetings(
+      username: string
+    ): Observable<any>{
+      return this.http.get(`http://130.61.186.61:9000/api/v1/meetings/owner/${username}`);
+    }
+
   createMeeting(username: string, name: string, participants: string[]): Observable<any> {
     console.log(participants);
     return this.http.post(`http://130.61.186.61:9000/api/v1/meetings`, {
-     date: this.datepipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+     date: this.
+     datepipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss'),
       name,
       ownerUserName: username,
       participants

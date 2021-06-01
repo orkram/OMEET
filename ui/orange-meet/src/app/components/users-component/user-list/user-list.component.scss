@@ -17,6 +17,10 @@
   height: 50%;
 }
 
+.filter-field{
+  margin-left: 5px;
+  margin-top:5px;
+}
 .mat-list-option{
   width: 100%;
   flex-grow: 1;
@@ -30,9 +34,7 @@
 :host{
   border-radius: 15px;
   box-shadow: rgb(100 100 111 / 20%) 0px 7px 29px 0px;
-  margin: 15px;
-}
-
+  margin: 15px;}
 
 .persons-counter{
   margin: 10px;
@@ -41,14 +43,18 @@
 .find-contact{
   display: flex;
   margin: 25px;
-  height: 50px;
+  height: 70px;
+  border-color: #555555;
+  border-radius: 10px;
+  border-width: 2px;
+  border-style: solid;
+  box-shadow: rgb(105 105 105 / 60%) 0px 2px 8px 0px;
 }
 
 .mat-checkbox{
   margin: 13px;
   position: absolute;
-  left: 94%;
-}
+  left: 94%;}
 
 .table-image{
   position: relative;
@@ -91,7 +97,8 @@
 }
 
 .mat-raised-button{
-  margin: 20px;
+  margin-right: 5px;
+  margin-top: 15px;
   align-items: flex-end;
 }
 

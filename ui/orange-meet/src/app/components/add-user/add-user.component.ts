@@ -27,7 +27,7 @@ export class AddUserComponent implements OnInit {
 
   filterUsers: Observable<Array<any>> =
     this.myControl.valueChanges.pipe(
-      flatMap  (value => this.userService.findContactToAdd(value.toLowerCase())
+      flatMap  (value => this.userService.findContactToAdd(value)
         .pipe(map((x: any) => x.foundUsers))
       ));
 

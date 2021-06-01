@@ -52,8 +52,8 @@ export class UserListComponent implements OnInit, AfterViewInit {
       .map( (user: any) =>
         this.userService.removeConnection(this.tokenService.getUsername(), user)
           .subscribe(
-            next => {},
-            error => {},
+            _ => {},
+            _ => {},
             () => {
               this.dataSource.loadContacts(
                 this.tokenService.getUsername(),

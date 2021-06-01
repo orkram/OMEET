@@ -1,8 +1,11 @@
-import {Component, TemplateRef, ViewChild} from '@angular/core';
-import {addHours, endOfDay, isSameDay, isSameMonth, startOfDay} from 'date-fns';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {endOfDay, isSameDay, isSameMonth, startOfDay} from 'date-fns';
 import {Subject} from 'rxjs';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView} from 'angular-calendar';
+import {Router} from '@angular/router';
+import {MeetingsService} from '../../services/backend.api/meetings.service';
+import {JWTTokenService} from '../../services/auth/JWTTokenService';
 
 const colors: any = {
   red: {
@@ -24,7 +27,7 @@ const colors: any = {
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
 })
-export class CalendarComponent{
+export class CalendarComponent implements OnInit{
   // @ts-ignore
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
 
@@ -57,75 +60,54 @@ export class CalendarComponent{
 
 
   actions: CalendarEventAction[] = [
-    //{
-    //label: '<p> Edit </p>',
-    //a11yLabel: 'Edit',
-    //onClick: ({ event }: { event: CalendarEvent }): void => {
-    //  this.handleEvent('Edited', event);
-    // },
-    //},
     {
-      label: '<p> Remove </p>',
+      label: '<i class="fas fa-fw fa-trash-alt"></i>',
       a11yLabel: 'Delete',
+      cssClass: 'icons',
       onClick: ({ event }: { event: CalendarEvent }): void => {
         this.events = this.events.filter((iEvent) => iEvent !== event);
         this.handleEvent('Deleted', event);
       },
     },
+    {
+      label: '<i class="fas text-icon fa-door-open"></i>',
+      a11yLabel: 'Join',
+      cssClass: 'icons',
+      onClick: ({ event }: { event: CalendarEvent }): void => {
+        console.log(event);
+        this.router.navigateByUrl(`/meeting/${event.id}`);
+        this.handleEvent('Join', event);
+      },
+    }
   ];
 
   refresh: Subject<any> = new Subject();
 
-  events: CalendarEvent[] = [
-    {
-      start: addHours(startOfDay(new Date()), 2),
-      end: addHours(new Date(), 2),
-      title: 'Business meeting',
-      color: colors.yellow,
-      actions: this.actions,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-    {
-      start: addHours(startOfDay(new Date()), 2),
-      end: addHours(new Date(), 2),
-      title: 'Important meeting',
-      color: colors.yellow,
-      actions: this.actions,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    }
-  ];
+  events: CalendarEvent[] = [];
 
   activeDayIsOpen = true;
 
-  constructor(private modal: NgbModal) {}
+  constructor(
+    private modal: NgbModal,
+    private router: Router,
+    private meetingsService: MeetingsService,
+    private tokenService: JWTTokenService
+  ) {}
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
-      if (
-        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
-        events.length === 0
-      ) {
-        this.activeDayIsOpen = false;
-      } else {
-        this.activeDayIsOpen = true;
-      }
+      this.activeDayIsOpen = !((isSameDay(this.viewDate, date) && this.activeDayIsOpen) ||
+        events.length === 0);
       this.viewDate = date;
     }
   }
 
-  eventTimesChanged({
-                      event,
-                      newStart,
-                      newEnd,
-                    }: CalendarEventTimesChangedEvent): void {
+  eventTimesChanged(
+    {
+    event,
+    newStart,
+    newEnd,
+  }: CalendarEventTimesChangedEvent): void {
     this.events = this.events.map((iEvent) => {
       if (iEvent === event) {
         return {
@@ -161,15 +143,34 @@ export class CalendarComponent{
     ];
   }
 
-  deleteEvent(eventToDelete: CalendarEvent): void {
-    this.events = this.events.filter((event) => event !== eventToDelete);
-  }
-
   setView(view: CalendarView): void {
     this.view = view;
   }
 
   closeOpenMonthViewDay(): void {
     this.activeDayIsOpen = false;
+  }
+
+  ngOnInit(): void {
+     this.meetingsService.getAllMeetings(this.tokenService.getUsername()).subscribe(
+      next => {
+                this.events = next.map( (meeting: any) => {
+                  return {
+                    id: meeting.idMeeting,
+                    start: new Date(meeting.date),
+                    title: meeting.name,
+                    color: colors.red,
+                    actions: this.actions,
+                    resizable: {
+                      beforeStart: true,
+                      afterEnd: true,
+                    },
+                    draggable: true,
+                  };
+                }
+      );
+      }
+    );
+
   }
 }

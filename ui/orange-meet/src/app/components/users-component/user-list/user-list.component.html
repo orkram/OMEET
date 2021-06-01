@@ -1,6 +1,6 @@
 <div class="find-contact">
   <p>
-    <mat-form-field appearance="outline" >
+    <mat-form-field  class="filter-field" appearance="outline" >
       <mat-label> {{'users.find-user' | translate }} </mat-label>
       <input matInput placeholder="{{ 'user.search' | translate}}" autocomplete="off" #input >
     </mat-form-field>
@@ -25,7 +25,7 @@
              matSortActive="id" matSortDirection="asc" matSortDisableClear>
 
     <ng-container matColumnDef="image">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-header-cell *matHeaderCellDef ></mat-header-cell>
       <mat-cell *matCellDef="let contact">
         <img class="table-image" src="{{imagePlaceholder}}"/>
       </mat-cell>
@@ -37,7 +37,7 @@
     </ng-container>
 
     <ng-container matColumnDef="email">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>{{'users.find-email' | translate }}  </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef >{{'users.find-email' | translate }}  </mat-header-cell>
       <mat-cell *matCellDef="let contact">{{contact.eMail}}
       </mat-cell>
     </ng-container>

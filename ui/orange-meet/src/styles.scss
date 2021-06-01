@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
+@import "../node_modules/@fortawesome/fontawesome-free/css/all.css";
 
 html, body {
   height: 100vh;
@@ -11,6 +12,11 @@ body {
 ::ng-deep h1{
   margin: 15px;
   font: 400 32px/32px Roboto, "Helvetica Neue", sans-serif;
+}
+
+.icons{
+  color: #e64a19;
+  font: 400 22px/16px Roboto, "Helvetica Neue", sans-serif;
 }
 
 

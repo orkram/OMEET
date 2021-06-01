@@ -30,9 +30,10 @@
                matInput
                [formControl]="myControl"
                [matAutocomplete]="auto"
-               formControlName="participants">
+               [value]="usersToAdd.toString()"
+        >
 
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)=" updateUsers($event.option.value)">
           <mat-option *ngFor="let y of filterUsers | async" [value]="y.userName">
             {{'' + y.firstName + ' ' + y.lastName }}
           </mat-option>

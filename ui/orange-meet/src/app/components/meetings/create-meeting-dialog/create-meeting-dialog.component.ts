@@ -4,8 +4,8 @@ import {JWTTokenService} from '../../../services/auth/JWTTokenService';
 import {MeetingsService} from '../../../services/backend.api/meetings.service';
 import {MatDialogRef} from '@angular/material/dialog';
 import {Observable} from 'rxjs';
-import {flatMap} from 'rxjs/internal/operators';
 import {map} from 'rxjs/operators';
+import {flatMap} from 'rxjs/internal/operators';
 import {UserService} from '../../../services/backend.api/UserService';
 
 @Component({
@@ -29,10 +29,11 @@ export class CreateMeetingDialogComponent implements OnInit {
   });
 
   myControl = new FormControl();
+  usersToAdd: string[] = [];
 
   filterUsers: Observable<Array<any>> =
     this.myControl.valueChanges.pipe(
-      flatMap  (value => this.userService.findContactToAdd(value.toLowerCase())
+      flatMap  (value => this.userService.findContactToAdd(value)
         .pipe(map((x: any) => x.foundUsers))
       ));
 
@@ -41,6 +42,13 @@ export class CreateMeetingDialogComponent implements OnInit {
   submitted = false;
 
   errorMessage = false;
+
+  updateUsers(user: any): void {
+    console.log(user);
+    if (!user.isEmpty){
+      this.usersToAdd.push(user);
+    }
+  }
 
   ngOnInit(): void {
   }
