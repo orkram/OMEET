@@ -471,5 +471,79 @@ class BackendCommunication {
 
             requestQueue.add(request)
         }
+
+        fun getSettings(context: Context,
+                        listener: Response.Listener<JSONObject>?,
+                        errorListener: Response.ErrorListener?){
+            val requestQueue = Volley.newRequestQueue(context)
+
+            val request = BackendRequestJsonObject(
+                    Request.Method.GET,
+                    backendUrl + "/api/v1/users/settings/" + username,
+                    JSONObject(),
+                    Response.Listener {
+                        Timber.i("GetSettings success")
+                        listener?.onResponse(it)
+                    },
+                    Response.ErrorListener { error ->
+                        handleAuthorizationError(context,
+                                error,
+                                Response.Listener {
+                                    getSettings(
+                                            context,
+                                            listener,
+                                            errorListener
+                                    )
+                                },
+                                Response.ErrorListener {
+                                    Timber.e("GetSettings failed: %s", error.message)
+                                    errorListener?.onErrorResponse(error)
+                                })
+                    },
+                    accessToken
+            )
+
+            requestQueue.add(request)
+        }
+
+        fun updateSettings(context: Context, newSettings : RemoteSettings,
+                        listener: Response.Listener<JSONObject>?,
+                        errorListener: Response.ErrorListener?){
+            val requestQueue = Volley.newRequestQueue(context)
+
+            val settingsJson = JSONObject()
+                    .put("isDefaultCamOn", newSettings.startWithCam)
+                    .put("isDefaultMicOn", newSettings.startWithMic)
+                    .put("isPrivate", newSettings.privateUser)
+
+            val request = BackendRequestJsonObject(
+                    Request.Method.PUT,
+                    backendUrl + "/api/v1/users/settings/" + username,
+                    settingsJson,
+                    Response.Listener {
+                        Timber.i("UpdateSettings success")
+                        listener?.onResponse(it)
+                    },
+                    Response.ErrorListener { error ->
+                        handleAuthorizationError(context,
+                                error,
+                                Response.Listener {
+                                    updateSettings(
+                                            context,
+                                            newSettings,
+                                            listener,
+                                            errorListener
+                                    )
+                                },
+                                Response.ErrorListener {
+                                    Timber.e("UpdateSettings failed: %s", error.message)
+                                    errorListener?.onErrorResponse(error)
+                                })
+                    },
+                    accessToken
+            )
+
+            requestQueue.add(request)
+        }
     }
 }
