@@ -15,6 +15,7 @@ import com.android.volley.Response
 import com.example.orangemeet.services.BackendCommunication
 
 import com.example.orangemeet.R
+import com.example.orangemeet.services.BackendRequestQueue
 import com.example.orangemeet.utils.Util
 import com.example.orangemeet.ui.main.MainActivity
 import com.example.orangemeet.ui.register.RegisterActivity
@@ -29,14 +30,10 @@ class LoginActivity : AppCompatActivity() {
     lateinit var visibilityButton : ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val dayNightMode = sharedPreferences.getBoolean("day_night", false)
-        AppCompatDelegate.setDefaultNightMode(if (dayNightMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
+        loginViewModel = ViewModelProvider(this, LoginViewModelFactory(PreferenceManager.getDefaultSharedPreferences(this)))
             .get(LoginViewModel::class.java)
 
         visibilityButton = findViewById(R.id.visibilityButton)
@@ -56,12 +53,11 @@ class LoginActivity : AppCompatActivity() {
                     return@Observer
                 }
 
-                //loginButton.isEnabled = loginFormState.isDataValid
-                loginFormState.usernameError?.let {
-                    usernameEditText.error = getString(it)
+                loginFormState.usernameError?.let {stringRes ->
+                    usernameEditText.error = getString(stringRes)
                 }
-                loginFormState.passwordError?.let {
-                    passwordEditText.error = getString(it)
+                loginFormState.passwordError?.let {stringRes ->
+                    passwordEditText.error = getString(stringRes)
                 }
             })
 
@@ -75,7 +71,7 @@ class LoginActivity : AppCompatActivity() {
                 loginResult.success?.let {
                     loginButton.isEnabled = false
                     registerButton.isEnabled = false
-                    BackendCommunication.login(this, usernameEditText.text.toString(), passwordEditText.text.toString(),
+                    BackendCommunication.login(BackendRequestQueue.getInstance(applicationContext).requestQueue, usernameEditText.text.toString(), passwordEditText.text.toString(),
                             Response.Listener {
                                 goToMainActivity()
                             },

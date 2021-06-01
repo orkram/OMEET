@@ -9,6 +9,7 @@ import com.example.orangemeet.*
 import com.example.orangemeet.data.model.User
 import com.example.orangemeet.services.BackendCommunication
 import com.example.orangemeet.UserInfo
+import com.example.orangemeet.services.BackendRequestQueue
 import com.example.orangemeet.utils.Util
 
 
@@ -60,11 +61,11 @@ class FindContactFragment : Fragment() {
         progressBar.visibility = View.VISIBLE
         searchPlaceholder.visibility = View.GONE
 
-        BackendCommunication.getUsers(requireContext(),
+        BackendCommunication.getUsers(BackendRequestQueue.getInstance(requireContext()).requestQueue,
             null,
             Response.Listener { users ->
                 this.users = users
-                BackendCommunication.getContactsList(requireContext(),
+                BackendCommunication.getContactsList(BackendRequestQueue.getInstance(requireContext()).requestQueue,
                 Response.Listener { contacts ->
                     this.contacts = contacts;
                     progressBar.visibility = View.GONE
@@ -122,7 +123,7 @@ class FindContactFragment : Fragment() {
             val inviteButton = view.findViewById<Button>(R.id.inviteButton)
             val sentText = view.findViewById<TextView>(R.id.sentText)
             inviteButton.setOnClickListener {
-                BackendCommunication.addContact(requireContext(),
+                BackendCommunication.addContact(BackendRequestQueue.getInstance(requireContext()).requestQueue,
                     contact.username,
                     Response.Listener {
                         inviteButton.visibility = View.GONE

@@ -13,6 +13,7 @@ import com.example.orangemeet.data.model.Meeting
 import com.example.orangemeet.data.model.User
 import com.example.orangemeet.services.BackendCommunication
 import com.example.orangemeet.UserInfo
+import com.example.orangemeet.services.BackendRequestQueue
 import com.example.orangemeet.utils.Util
 import java.text.SimpleDateFormat
 
@@ -82,7 +83,7 @@ class MeetingsFragment : Fragment() {
 
         progressBar.visibility = View.VISIBLE
         BackendCommunication.getMeetings(
-            requireContext(),
+                BackendRequestQueue.getInstance(requireContext()).requestQueue,
             Response.Listener { meetings ->
                 this.meetings.value = meetings.toMutableList()
                 progressBar.visibility = View.GONE
@@ -153,7 +154,7 @@ class MeetingsFragment : Fragment() {
                 }
 
 
-                BackendCommunication.getMeetingParticipants(requireContext(), meeting.id,
+                BackendCommunication.getMeetingParticipants(BackendRequestQueue.getInstance(requireContext()).requestQueue, meeting.id,
                     Response.Listener {contacts ->
                         contacts.forEach {contact ->
                             val contactView = User.createSmallView(inflater, meetingPopupParticipants, contact, null)

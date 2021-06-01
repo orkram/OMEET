@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Response
 import com.example.orangemeet.services.BackendCommunication
 import com.example.orangemeet.R
+import com.example.orangemeet.services.BackendRequestQueue
 import com.example.orangemeet.utils.Util
 import com.google.android.material.textfield.TextInputEditText
 
@@ -63,7 +64,7 @@ class RegisterActivity : AppCompatActivity() {
 
             accCreateButton.isEnabled = false
 
-            BackendCommunication.register(this,
+            BackendCommunication.register(BackendRequestQueue.getInstance(applicationContext).requestQueue,
                 email.text.toString(),
                 firstName.text.toString(),
                 lastName.text.toString(),

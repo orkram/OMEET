@@ -23,6 +23,7 @@ import com.android.volley.Response
 import com.example.orangemeet.services.BackendCommunication
 import com.example.orangemeet.R
 import com.example.orangemeet.UserInfo
+import com.example.orangemeet.services.BackendRequestQueue
 import com.example.orangemeet.ui.login.LoginActivity
 import com.facebook.react.modules.core.PermissionListener
 import com.google.android.material.navigation.NavigationView
@@ -40,7 +41,7 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        BackendCommunication.getSettings(applicationContext,
+        BackendCommunication.getSettings(BackendRequestQueue.getInstance(applicationContext).requestQueue,
                 Response.Listener {settingsJson ->
                     val prefs = PreferenceManager.getDefaultSharedPreferences(applicationContext)
                     with (prefs.edit()) {
@@ -106,7 +107,7 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
     private fun goToLoginActivity(){
         val intent = Intent(this, LoginActivity::class.java)
         BackendCommunication.logout(
-            applicationContext
+                BackendRequestQueue.getInstance(applicationContext).requestQueue
         ) {
             startActivity(intent)
             finish()

@@ -7,6 +7,7 @@ import androidx.preference.SwitchPreferenceCompat
 import com.example.orangemeet.services.BackendCommunication
 import com.example.orangemeet.R
 import com.example.orangemeet.data.model.RemoteSettings
+import com.example.orangemeet.services.BackendRequestQueue
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -43,7 +44,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun updateRemoteSettings(newSettings: RemoteSettings){
-        BackendCommunication.updateSettings(requireContext(),
+        BackendCommunication.updateSettings(BackendRequestQueue.getInstance(requireContext()).requestQueue,
                 newSettings,
                 null, null)
     }

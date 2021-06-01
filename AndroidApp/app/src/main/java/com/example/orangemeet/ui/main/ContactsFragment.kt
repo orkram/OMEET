@@ -12,6 +12,7 @@ import com.android.volley.Response
 import com.example.orangemeet.*
 import com.example.orangemeet.data.model.User
 import com.example.orangemeet.services.BackendCommunication
+import com.example.orangemeet.services.BackendRequestQueue
 import com.example.orangemeet.utils.Util
 
 
@@ -68,7 +69,7 @@ class ContactsFragment : Fragment() {
 
         progressBar.visibility = View.VISIBLE
         BackendCommunication.getContactsList(
-            requireContext(),
+            BackendRequestQueue.getInstance(requireContext()).requestQueue,
             Response.Listener { contactsList ->
                 this.contactsList.value = contactsList.toMutableList()
                 progressBar.visibility = View.GONE
@@ -124,7 +125,7 @@ class ContactsFragment : Fragment() {
                             .setTitle(R.string.delete_from_contacts)
                             .setMessage(R.string.delete_contact_dialog_message)
                             .setPositiveButton(R.string.yes) { dialog, which ->
-                                BackendCommunication.deleteContact(requireContext(),
+                                BackendCommunication.deleteContact(BackendRequestQueue.getInstance(requireContext()).requestQueue,
                                     contact.username,
                                     Response.Listener {
                                         Toast.makeText(
@@ -133,7 +134,7 @@ class ContactsFragment : Fragment() {
                                             Toast.LENGTH_SHORT
                                         ).show()
                                         BackendCommunication.getContactsList(
-                                            requireContext(),
+                                                BackendRequestQueue.getInstance(requireContext()).requestQueue,
                                             Response.Listener {
                                                 contactsList.value = it.toMutableList()
                                             },

@@ -12,6 +12,7 @@ import com.android.volley.Response
 import com.example.orangemeet.services.BackendCommunication
 import com.example.orangemeet.R
 import com.example.orangemeet.data.model.User
+import com.example.orangemeet.services.BackendRequestQueue
 import com.example.orangemeet.utils.Util
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
@@ -75,7 +76,7 @@ class CreateMeetingFragment : Fragment() {
             }
 
             BackendCommunication.createMeeting(
-                requireContext(),
+                    BackendRequestQueue.getInstance(requireContext()).requestQueue,
                 pickedDate.value!!,
                 meetingNameView.text.toString(),
                 checkedContacts,
@@ -108,7 +109,7 @@ class CreateMeetingFragment : Fragment() {
         })
 
         BackendCommunication.getContactsList(
-            requireContext(),
+                BackendRequestQueue.getInstance(requireContext()).requestQueue,
             Response.Listener { contacts ->
                 this.contacts = contacts
                 checkedContacts.clear();

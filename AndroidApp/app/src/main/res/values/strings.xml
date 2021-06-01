@@ -152,8 +152,8 @@
     <string name="action_sign_in">Zaloguj</string>
     <string name="action_register">Utwórz konto</string>
     <string name="welcome">"Witaj "</string>
-    <string name="invalid_username">Nieprawidłowa nazwa użytkownika</string>
-    <string name="invalid_password">Hasło musi mieć conajmniej 6 znaków</string>
+    <string name="username_must_not_be_empty">Nazwa użytkownika nie może być pusta</string>
+    <string name="password_must_not_be_empty">Hasło nie może być puste</string>
     <string name="login_failed">Nie udało się zalogować</string>
     <string name="menu_login">Logowanie</string>
     <string name="menu_register">Rejestracja</string>

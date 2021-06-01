@@ -1,7 +1,7 @@
 package com.example.orangemeet.services
 
-import android.content.Context
 import com.android.volley.Request
+import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
@@ -25,10 +25,9 @@ class BackendCommunication {
         private var accessToken : String? = null
         private var refreshToken : String? = null
 
-        private fun refreshAccessToken(context : Context,
+        private fun refreshAccessToken(requestQueue : RequestQueue,
                                        listener: Response.Listener<JSONObject>?,
                                        errorListener: Response.ErrorListener?){
-            val requestQueue = Volley.newRequestQueue(context)
 
             val tokenUrl = backendUrl + "/api/v1/account/" + username + "/refresh-token"
 
@@ -55,10 +54,8 @@ class BackendCommunication {
             requestQueue.add(tokenRequest)
         }
 
-        fun login(context : Context, username : String, password : String, listener: Response.Listener<JSONObject>?,
+        fun login(requestQueue: RequestQueue, username : String, password : String, listener: Response.Listener<JSONObject>?,
                   errorListener: Response.ErrorListener?){
-
-            val requestQueue = Volley.newRequestQueue(context)
 
             val loginUrl = backendUrl + "/api/v1/account/login"
 
@@ -86,12 +83,10 @@ class BackendCommunication {
             UserInfo.userName = username
         }
 
-        fun logout(context : Context, onLogout: () -> Unit){
+        fun logout(requestQueue: RequestQueue, onLogout: () -> Unit){
 
             if(username == null)
                 return
-
-            val requestQueue = Volley.newRequestQueue(context)
 
             val logoutUrl = backendUrl + "/api/v1/account/" + username + "/logout"
 
@@ -113,11 +108,10 @@ class BackendCommunication {
             requestQueue.add(logoutRequest)
         }
 
-        fun register(context : Context, email : String, firstName : String, lastName : String,
+        fun register(requestQueue: RequestQueue, email : String, firstName : String, lastName : String,
                      imgUrl : String, username : String, password : String,
                      listener: Response.Listener<JSONObject>?,
                      errorListener: Response.ErrorListener?){
-            val requestQueue = Volley.newRequestQueue(context)
 
             val registerUrl = backendUrl + "/api/v1/account/register"
 
@@ -147,21 +141,21 @@ class BackendCommunication {
         }
 
         private fun handleAuthorizationError(
-                context: Context,
+                requestQueue: RequestQueue,
                 error : VolleyError,
                 listener: Response.Listener<JSONObject>?,
                 errorListener: Response.ErrorListener?)
         {
             if(error.networkResponse.statusCode == 401){
                 refreshAccessToken(
-                        context,
+                        requestQueue,
                         Response.Listener {
                             listener?.onResponse(it)
                         },
                         Response.ErrorListener { refreshError ->
                             if (refreshError.networkResponse.statusCode == 401) {
                                 login(
-                                        context,
+                                        requestQueue,
                                         username!!,
                                         password!!,
                                         Response.Listener {
@@ -175,9 +169,8 @@ class BackendCommunication {
             }
         }
 
-        fun getContactsList(context: Context, listener: Response.Listener<List<User>>?,
+        fun getContactsList(requestQueue: RequestQueue, listener: Response.Listener<List<User>>?,
                             errorListener: Response.ErrorListener?){
-            val requestQueue = Volley.newRequestQueue(context)
 
             val request = BackendRequestJsonArray(
                     Request.Method.GET,
@@ -192,11 +185,11 @@ class BackendCommunication {
                         listener?.onResponse(contactsList)
                     },
                     Response.ErrorListener { error ->
-                        handleAuthorizationError(context,
+                        handleAuthorizationError(requestQueue,
                                 error,
                                 Response.Listener {
                                     getContactsList(
-                                            context,
+                                            requestQueue,
                                             listener,
                                             errorListener
                                     )
@@ -212,9 +205,8 @@ class BackendCommunication {
             requestQueue.add(request)
         }
 
-        fun deleteContact(context: Context, friend: String, listener: Response.Listener<JSONObject>?,
+        fun deleteContact(requestQueue: RequestQueue, friend: String, listener: Response.Listener<JSONObject>?,
                           errorListener: Response.ErrorListener?){
-            val requestQueue = Volley.newRequestQueue(context)
 
             val request = BackendRequestJsonObject(
                     Request.Method.DELETE,
@@ -225,11 +217,11 @@ class BackendCommunication {
                         listener!!.onResponse(it)
                     },
                     Response.ErrorListener { error ->
-                        handleAuthorizationError(context,
+                        handleAuthorizationError(requestQueue,
                                 error,
                                 Response.Listener {
                                     deleteContact(
-                                            context,
+                                            requestQueue,
                                             friend,
                                             listener,
                                             errorListener
@@ -246,9 +238,8 @@ class BackendCommunication {
             requestQueue.add(request)
         }
 
-        fun getUsers(context: Context, query : String?, listener: Response.Listener<List<User>>?,
+        fun getUsers(requestQueue: RequestQueue, query : String?, listener: Response.Listener<List<User>>?,
                      errorListener: Response.ErrorListener?){
-            val requestQueue = Volley.newRequestQueue(context)
 
             val request = BackendRequestJsonArray(
                     Request.Method.GET,
@@ -263,11 +254,11 @@ class BackendCommunication {
                         listener!!.onResponse(contacts)
                     },
                     Response.ErrorListener { error ->
-                        handleAuthorizationError(context,
+                        handleAuthorizationError(requestQueue,
                                 error,
                                 Response.Listener {
                                     getUsers(
-                                            context,
+                                            requestQueue,
                                             query,
                                             listener,
                                             errorListener
@@ -285,9 +276,8 @@ class BackendCommunication {
             requestQueue.add(request)
         }
 
-        fun addContact(context: Context, friend: String, listener: Response.Listener<JSONObject>?,
+        fun addContact(requestQueue: RequestQueue, friend: String, listener: Response.Listener<JSONObject>?,
                        errorListener: Response.ErrorListener?){
-            val requestQueue = Volley.newRequestQueue(context)
 
             val request = BackendRequestJsonObject(
                     Request.Method.POST,
@@ -298,11 +288,11 @@ class BackendCommunication {
                         listener!!.onResponse(it)
                     },
                     Response.ErrorListener { error ->
-                        handleAuthorizationError(context,
+                        handleAuthorizationError(requestQueue,
                                 error,
                                 Response.Listener {
                                     addContact(
-                                            context,
+                                            requestQueue,
                                             friend,
                                             listener,
                                             errorListener
@@ -319,9 +309,8 @@ class BackendCommunication {
             requestQueue.add(request)
         }
 
-        fun sendInvite(context: Context, friend: String, listener: Response.Listener<JSONObject>?,
+        fun sendInvite(requestQueue: RequestQueue, friend: String, listener: Response.Listener<JSONObject>?,
                        errorListener: Response.ErrorListener?){
-            val requestQueue = Volley.newRequestQueue(context)
 
             val request = BackendRequestJsonObject(
                     Request.Method.POST,
@@ -332,11 +321,11 @@ class BackendCommunication {
                         listener!!.onResponse(it)
                     },
                     Response.ErrorListener { error ->
-                        handleAuthorizationError(context,
+                        handleAuthorizationError(requestQueue,
                                 error,
                                 Response.Listener {
                                     sendInvite(
-                                            context,
+                                            requestQueue,
                                             friend,
                                             listener,
                                             errorListener
@@ -353,9 +342,8 @@ class BackendCommunication {
             requestQueue.add(request)
         }
 
-        fun getMeetings(context: Context, listener: Response.Listener<List<Meeting>>?,
+        fun getMeetings(requestQueue: RequestQueue, listener: Response.Listener<List<Meeting>>?,
                         errorListener: Response.ErrorListener?){
-            val requestQueue = Volley.newRequestQueue(context)
 
             val request = BackendRequestJsonArray(
                     Request.Method.GET,
@@ -369,11 +357,11 @@ class BackendCommunication {
                         listener!!.onResponse(meetings)
                     },
                     Response.ErrorListener { error ->
-                        handleAuthorizationError(context,
+                        handleAuthorizationError(requestQueue,
                                 error,
                                 Response.Listener {
                                     getMeetings(
-                                            context,
+                                            requestQueue,
                                             listener,
                                             errorListener
                                     )
@@ -389,10 +377,9 @@ class BackendCommunication {
             requestQueue.add(request)
         }
 
-        fun createMeeting(context: Context, date : Date, name : String, participants : List<User>,
+        fun createMeeting(requestQueue: RequestQueue, date : Date, name : String, participants : List<User>,
                           listener: Response.Listener<JSONObject>?,
                           errorListener: Response.ErrorListener?){
-            val requestQueue = Volley.newRequestQueue(context)
 
             val participantsJsonArray = JSONArray()
             participants.forEach{participant -> participantsJsonArray.put(participant.username)}
@@ -414,11 +401,11 @@ class BackendCommunication {
                         listener?.onResponse(jsonObject)
                     },
                     Response.ErrorListener { error ->
-                        handleAuthorizationError(context,
+                        handleAuthorizationError(requestQueue,
                                 error,
                                 Response.Listener {
                                     createMeeting(
-                                            context,
+                                            requestQueue,
                                             date,
                                             name,
                                             participants,
@@ -437,10 +424,9 @@ class BackendCommunication {
             requestQueue.add(request)
         }
 
-        fun getMeetingParticipants(context: Context, meetingId : Long,
+        fun getMeetingParticipants(requestQueue: RequestQueue, meetingId : Long,
                                    listener: Response.Listener<List<User>>?,
                                    errorListener: Response.ErrorListener?){
-            val requestQueue = Volley.newRequestQueue(context)
 
             val request = BackendRequestJsonArray(
                     Request.Method.GET,
@@ -455,11 +441,11 @@ class BackendCommunication {
                         listener?.onResponse(contacts)
                     },
                     Response.ErrorListener { error ->
-                        handleAuthorizationError(context,
+                        handleAuthorizationError(requestQueue,
                                 error,
                                 Response.Listener {
                                     getMeetingParticipants(
-                                            context,
+                                            requestQueue,
                                             meetingId,
                                             listener,
                                             errorListener
@@ -476,10 +462,9 @@ class BackendCommunication {
             requestQueue.add(request)
         }
 
-        fun getSettings(context: Context,
+        fun getSettings(requestQueue: RequestQueue,
                         listener: Response.Listener<JSONObject>?,
                         errorListener: Response.ErrorListener?){
-            val requestQueue = Volley.newRequestQueue(context)
 
             val request = BackendRequestJsonObject(
                     Request.Method.GET,
@@ -490,11 +475,11 @@ class BackendCommunication {
                         listener?.onResponse(it)
                     },
                     Response.ErrorListener { error ->
-                        handleAuthorizationError(context,
+                        handleAuthorizationError(requestQueue,
                                 error,
                                 Response.Listener {
                                     getSettings(
-                                            context,
+                                            requestQueue,
                                             listener,
                                             errorListener
                                     )
@@ -510,10 +495,9 @@ class BackendCommunication {
             requestQueue.add(request)
         }
 
-        fun updateSettings(context: Context, newSettings : RemoteSettings,
+        fun updateSettings(requestQueue: RequestQueue, newSettings : RemoteSettings,
                            listener: Response.Listener<JSONObject>?,
                            errorListener: Response.ErrorListener?){
-            val requestQueue = Volley.newRequestQueue(context)
 
             val settingsJson = JSONObject()
                     .put("isDefaultCamOn", newSettings.startWithCam)
@@ -529,11 +513,11 @@ class BackendCommunication {
                         listener?.onResponse(it)
                     },
                     Response.ErrorListener { error ->
-                        handleAuthorizationError(context,
+                        handleAuthorizationError(requestQueue,
                                 error,
                                 Response.Listener {
                                     updateSettings(
-                                            context,
+                                            requestQueue,
                                             newSettings,
                                             listener,
                                             errorListener

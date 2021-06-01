@@ -16,6 +16,7 @@ import com.example.orangemeet.*
 import com.example.orangemeet.data.model.Meeting
 import com.example.orangemeet.services.BackendCommunication
 import com.example.orangemeet.UserInfo
+import com.example.orangemeet.services.BackendRequestQueue
 import com.example.orangemeet.utils.Util
 import java.text.SimpleDateFormat
 import java.util.*
@@ -55,7 +56,7 @@ class CalendarFragment : Fragment() {
 
         val events: MutableList<EventDay> = ArrayList()
 
-        BackendCommunication.getMeetings(requireContext(),
+        BackendCommunication.getMeetings(BackendRequestQueue.getInstance(requireContext()).requestQueue,
             Response.Listener { meetings ->
                 this.meetings = meetings
                 this.meetings!!.forEach { meeting ->

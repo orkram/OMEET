@@ -1,5 +1,6 @@
 package com.example.orangemeet.ui.login
 
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.orangemeet.data.LoginDataSource
@@ -9,16 +10,16 @@ import com.example.orangemeet.data.LoginRepository
  * ViewModel provider factory to instantiate LoginViewModel.
  * Required given LoginViewModel has a non-empty constructor
  */
-class LoginViewModelFactory : ViewModelProvider.Factory {
+class LoginViewModelFactory(private val sharedPrefs : SharedPreferences) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
             return LoginViewModel(
-                loginRepository = LoginRepository(
-                    dataSource = LoginDataSource()
-                )
-            ) as T
+                    loginRepository = LoginRepository(
+                            dataSource = LoginDataSource()
+                    )
+                    ,sharedPrefs = sharedPrefs) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
