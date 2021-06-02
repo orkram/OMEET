@@ -7,14 +7,19 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.android.volley.Response
 import com.example.orangemeet.services.BackendCommunication
 import com.example.orangemeet.R
+import com.example.orangemeet.data.BackendRepository
 import com.example.orangemeet.services.BackendRequestQueue
 import com.example.orangemeet.utils.Util
 import com.google.android.material.textfield.TextInputEditText
 
 class RegisterActivity : AppCompatActivity() {
+
+    lateinit var registerViewModel: RegisterViewModel
 
     lateinit var passwordVisibilityButton : ImageButton
     lateinit var passwordRepVisibilityButton : ImageButton
@@ -24,6 +29,8 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+
+        registerViewModel = ViewModelProvider(this).get(RegisterViewModel::class.java)
 
         passwordVisibilityButton = findViewById(R.id.passwordVisibilityButton)
         passwordRepVisibilityButton = findViewById(R.id.passwordRepVisibilityButton)
@@ -36,6 +43,19 @@ class RegisterActivity : AppCompatActivity() {
         password.setText("")
         repeatPassword = findViewById(R.id.password_repeat)
         repeatPassword.setText("")
+
+        registerViewModel.registerResult.observe(this,
+            Observer {registerResult ->
+                if(registerResult.success){
+                    goToLoginActivity()
+                }else{
+                    Toast.makeText(
+                        applicationContext,
+                        getString(registerResult.error!!),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
 
         accCreateButton.setOnClickListener{
             if(username.text.isEmpty() or email.text.isEmpty()
@@ -64,7 +84,14 @@ class RegisterActivity : AppCompatActivity() {
 
             accCreateButton.isEnabled = false
 
-            BackendCommunication.register(BackendRequestQueue.getInstance(applicationContext).requestQueue,
+            registerViewModel.register(email.text.toString(),
+                firstName.text.toString(),
+                lastName.text.toString(),
+                "imgurl",
+                username.text.toString(),
+                password.text.toString())
+
+            /*BackendCommunication.register(BackendRequestQueue.getInstance(applicationContext).requestQueue,
                 email.text.toString(),
                 firstName.text.toString(),
                 lastName.text.toString(),
@@ -81,7 +108,7 @@ class RegisterActivity : AppCompatActivity() {
                         R.string.registed_failed,
                         Toast.LENGTH_LONG
                     ).show()
-                })
+                })*/
 
         }
     }

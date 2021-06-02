@@ -7,6 +7,7 @@ import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.orangemeet.UserInfo
+import com.example.orangemeet.data.BackendRepository
 import com.example.orangemeet.data.model.Meeting
 import com.example.orangemeet.data.model.RemoteSettings
 import com.example.orangemeet.data.model.User
@@ -18,12 +19,12 @@ import java.util.*
 
 class BackendCommunication {
     companion object{
-        private const val backendUrl = "http://130.61.186.61:9000"
+        val backendUrl = "http://130.61.186.61:9000"
 
-        private var username : String? = null
-        private var password : String? = null
-        private var accessToken : String? = null
-        private var refreshToken : String? = null
+        var username : String? = null
+        var password : String? = null
+        var accessToken : String? = null
+        var refreshToken : String? = null
 
         private fun refreshAccessToken(requestQueue : RequestQueue,
                                        listener: Response.Listener<JSONObject>?,

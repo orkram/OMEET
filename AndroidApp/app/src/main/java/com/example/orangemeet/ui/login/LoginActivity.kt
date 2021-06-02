@@ -5,6 +5,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.annotation.StringRes
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
@@ -15,11 +17,13 @@ import com.android.volley.Response
 import com.example.orangemeet.services.BackendCommunication
 
 import com.example.orangemeet.R
+import com.example.orangemeet.data.model.LoggedInUser
 import com.example.orangemeet.services.BackendRequestQueue
 import com.example.orangemeet.utils.Util
 import com.example.orangemeet.ui.main.MainActivity
 import com.example.orangemeet.ui.register.RegisterActivity
 import com.google.android.material.textfield.TextInputEditText
+import timber.log.Timber
 
 class LoginActivity : AppCompatActivity() {
 
@@ -28,6 +32,9 @@ class LoginActivity : AppCompatActivity() {
     lateinit var usernameEditText : TextInputEditText
     lateinit var passwordEditText : TextInputEditText
     lateinit var visibilityButton : ImageButton
+    lateinit var loginButton : Button
+    lateinit var registerButton: Button
+    lateinit var progressBar : ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,13 +46,11 @@ class LoginActivity : AppCompatActivity() {
         visibilityButton = findViewById(R.id.visibilityButton)
         usernameEditText = findViewById(R.id.username)
         passwordEditText = findViewById(R.id.password)
-        val loginButton = findViewById<Button>(R.id.login)
-        val registerButton = findViewById<Button>(R.id.register)
-        //val loadingProgressBar = findViewById<ProgressBar>(R.id.loading)
+        loginButton = findViewById(R.id.login)
+        registerButton = findViewById(R.id.register)
+        progressBar = findViewById(R.id.progressBar)
 
-        registerButton.setOnClickListener {
-            goToRegisterActivity()
-        }
+        loginButton.isEnabled = false
 
         loginViewModel.loginFormState.observe(this,
             Observer { loginFormState ->
@@ -53,46 +58,24 @@ class LoginActivity : AppCompatActivity() {
                     return@Observer
                 }
 
-                loginFormState.usernameError?.let {stringRes ->
-                    usernameEditText.error = getString(stringRes)
-                }
-                loginFormState.passwordError?.let {stringRes ->
-                    passwordEditText.error = getString(stringRes)
-                }
+                loginButton.isEnabled = loginFormState.isDataValid
             })
 
         loginViewModel.loginResult.observe(this,
             Observer { loginResult ->
                 loginResult ?: return@Observer
-                //loadingProgressBar.visibility = View.GONE
                 loginResult.error?.let {
+                    progressBar.visibility = View.GONE
                     showLoginFailed(it)
                 }
                 loginResult.success?.let {
-                    loginButton.isEnabled = false
-                    registerButton.isEnabled = false
-                    BackendCommunication.login(BackendRequestQueue.getInstance(applicationContext).requestQueue, usernameEditText.text.toString(), passwordEditText.text.toString(),
-                            Response.Listener {
-                                goToMainActivity()
-                            },
-                            Response.ErrorListener {
-                                loginButton.isEnabled = true
-                                registerButton.isEnabled = true
-                                Toast.makeText(applicationContext, R.string.login_failed, Toast.LENGTH_LONG).show()
-                            }
-                    )
-                    //updateUiWithUser(it)
+                    goToMainActivity()
                 }
             })
 
-        /*val afterTextChangedListener = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // ignore
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                // ignore
-            }
+        val afterTextChangedListener = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) { } // ignore
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) { } // ignore
 
             override fun afterTextChanged(s: Editable) {
                 loginViewModel.loginDataChanged(
@@ -101,29 +84,37 @@ class LoginActivity : AppCompatActivity() {
                 )
             }
         }
+
         usernameEditText.addTextChangedListener(afterTextChangedListener)
-        passwordEditText.addTextChangedListener(afterTextChangedListener)*/
+        passwordEditText.addTextChangedListener(afterTextChangedListener)
+
         passwordEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                loginViewModel.login(
-                    usernameEditText.text.toString(),
-                    passwordEditText.text.toString()
-                )
+                login()
             }
             false
         }
 
         loginButton.setOnClickListener {
-            //loadingProgressBar.visibility = View.VISIBLE
-            loginViewModel.login(
+            if(loginViewModel.loginFormState.value == null)
+                return@setOnClickListener
+
+            if(loginViewModel.loginFormState.value!!.isDataValid){
+                login()
+            }
+        }
+
+        registerButton.setOnClickListener {
+            goToRegisterActivity()
+        }
+    }
+
+    private fun login(){
+        progressBar.visibility = View.VISIBLE
+        loginViewModel.login(
                 usernameEditText.text.toString(),
                 passwordEditText.text.toString()
-            )
-            loginViewModel.loginDataChanged(
-                    usernameEditText.text.toString(),
-                    passwordEditText.text.toString()
-            )
-        }
+        )
     }
 
     private fun goToMainActivity()
@@ -137,13 +128,6 @@ class LoginActivity : AppCompatActivity() {
     {
         val intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)
-    }
-
-    private fun updateUiWithUser(model: LoggedInUserView) {
-        val welcome = getString(R.string.welcome) + model.displayName
-        // TODO : initiate successful logged in experience
-        val appContext = applicationContext ?: return
-        Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {

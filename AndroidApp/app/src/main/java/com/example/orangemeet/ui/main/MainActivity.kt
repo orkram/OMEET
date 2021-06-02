@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -33,6 +34,8 @@ import org.jitsi.meet.sdk.JitsiMeetActivityInterface
 
 class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
 
+    private lateinit var mainViewModel : MainViewModel
+
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     lateinit var customJitsiFragment: CustomJitsiFragment
@@ -40,6 +43,8 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         BackendCommunication.getSettings(BackendRequestQueue.getInstance(applicationContext).requestQueue,
                 Response.Listener {settingsJson ->
@@ -65,7 +70,7 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
 
         val logoutButton = findViewById<Button>(R.id.logout)
         logoutButton.setOnClickListener {
-            goToLoginActivity()
+            logout()
         }
 
 
@@ -104,14 +109,11 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
         super.onResume()
     }
 
-    private fun goToLoginActivity(){
+    private fun logout(){
+        mainViewModel.logout()
         val intent = Intent(this, LoginActivity::class.java)
-        BackendCommunication.logout(
-                BackendRequestQueue.getInstance(applicationContext).requestQueue
-        ) {
-            startActivity(intent)
-            finish()
-        }
+        startActivity(intent)
+        finish()
     }
 
     override fun onUserLeaveHint() {

@@ -1,18 +1,22 @@
 package com.example.orangemeet.ui.login
 
-import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.orangemeet.data.LoginRepository
-import com.example.orangemeet.data.Result
+import androidx.lifecycle.viewModelScope
+import com.android.volley.Response
+import com.example.orangemeet.data.BackendRepository
 
 import com.example.orangemeet.R
-import com.example.orangemeet.services.BackendCommunication
+import com.example.orangemeet.data.Result
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 
-class LoginViewModel(private val loginRepository: LoginRepository, private val sharedPrefs : SharedPreferences) : ViewModel() {
+class LoginViewModel(private val sharedPrefs : SharedPreferences) : ViewModel() {
 
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
@@ -26,14 +30,16 @@ class LoginViewModel(private val loginRepository: LoginRepository, private val s
     }
 
     fun login(username: String, password: String) {
-        // can be launched in a separate asynchronous job
-        val result = loginRepository.login(username, password)
-
-        if (result is Result.Success) {
-            _loginResult.value =
-                LoginResult(success = LoggedInUserView(displayName = result.data.displayName))
-        } else {
-            _loginResult.value = LoginResult(error = R.string.login_failed)
+        viewModelScope.launch {
+            withContext(Dispatchers.IO){
+                val result = BackendRepository.login(username, password)
+                if(result is Result.Success){
+                    _loginResult.postValue(LoginResult(success = result.data))
+                }else{
+                    Timber.e(result.toString())
+                    _loginResult.postValue(LoginResult(error = R.string.login_failed))
+                }
+            }
         }
     }
 

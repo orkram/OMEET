@@ -27,6 +27,7 @@ class User {
         this.email = email
     }
 
+
     override fun equals(other: Any?): Boolean {
         if(other !is User)
             return false;
