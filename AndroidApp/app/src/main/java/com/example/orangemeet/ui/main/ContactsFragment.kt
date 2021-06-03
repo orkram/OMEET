@@ -71,12 +71,29 @@ class ContactsFragment : Fragment() {
             }
         })
 
-        contactsViewModel.getContactsResult.observe(viewLifecycleOwner,
-            Observer {users ->
-                if(users == null)
-                    return@Observer
+        contactsViewModel.deleteContactResult.observe(viewLifecycleOwner,
+            Observer {deleteContactResult ->
+                if(deleteContactResult.success){
+                    contactsViewModel.getContacts()
+                }else{
+                    Toast.makeText(
+                        requireContext(),
+                        getString(deleteContactResult.error!!),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        )
 
-                contactsList.value = users as MutableList<User>?
+        contactsViewModel.getContactsResult.observe(viewLifecycleOwner,
+            Observer {getContactsResult ->
+                if(getContactsResult.success != null) {
+                    contactsList.value = getContactsResult.success as MutableList<User>?
+                }else{
+                    Toast.makeText(context, getString(getContactsResult.error!!), Toast.LENGTH_LONG)
+                            .show()
+                    progressBar.visibility = View.GONE
+                }
             })
         contactsList.observe(viewLifecycleOwner, Observer { createContactViews(inflater) })
 
@@ -139,7 +156,8 @@ class ContactsFragment : Fragment() {
                             .setTitle(R.string.delete_from_contacts)
                             .setMessage(R.string.delete_contact_dialog_message)
                             .setPositiveButton(R.string.yes) { dialog, which ->
-                                BackendCommunication.deleteContact(BackendRequestQueue.getInstance(requireContext()).requestQueue,
+                                contactsViewModel.deleteContact(contact.username)
+                               /* BackendCommunication.deleteContact(BackendRequestQueue.getInstance(requireContext()).requestQueue,
                                     contact.username,
                                     Response.Listener {
                                         Toast.makeText(
@@ -166,7 +184,7 @@ class ContactsFragment : Fragment() {
                                             R.string.contact_delete_fail,
                                             Toast.LENGTH_LONG
                                         ).show()
-                                    })
+                                    })*/
                             }
                         .setNegativeButton(R.string.no) { dialog, which -> }
                         .show()

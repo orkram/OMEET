@@ -238,9 +238,12 @@
     <string name="create_meeting_success">Pomyślnie utworzono spotkanie</string>
     <string name="create_meeting_fail">Nie udało się utworzyć spotkania</string>
     <string name="get_meetings_fail">Nie udało się pobrać listy spotkań</string>
+    <string name="get_meetings_participants_failed">Nie udało się pobrać listy uczestników</string>
     <string name="get_users_fail">Nie udało się pobrać listy użytkowników</string>
     <string name="find_contact_error">Wprowadź przynajmniej 3 znaki, aby wyszukać</string>
     <string name="could_not_find">Nie udało się nic znaleźć</string>
+    <string name="get_settings_failed">Nie udało się pobrać ustawień</string>
+    <string name="update_settings_failed">Nie udało się zaktualizować ustawień</string>
 
 
 </resources>

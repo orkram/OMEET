@@ -8,6 +8,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.android.volley.Response
 import com.applandeo.materialcalendarview.CalendarView
@@ -30,6 +31,8 @@ import kotlin.collections.ArrayList
  */
 class CalendarFragment : Fragment() {
 
+    lateinit var calendarViewModel : CalendarViewModel
+
     lateinit var calendarView : CalendarView
     lateinit var meetingsView : ViewGroup
     lateinit var meetingDateView : TextView
@@ -49,6 +52,8 @@ class CalendarFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_calendar, container, false)
 
+        calendarViewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
+
         calendarView = view.findViewById(R.id.calendarView)
         meetingsView = view.findViewById(R.id.meetingsView)
         meetingDateView = view.findViewById(R.id.meetingDate)
@@ -56,7 +61,26 @@ class CalendarFragment : Fragment() {
 
         val events: MutableList<EventDay> = ArrayList()
 
-        BackendCommunication.getMeetings(BackendRequestQueue.getInstance(requireContext()).requestQueue,
+        calendarViewModel.getMeetingsResult.observe(viewLifecycleOwner,
+        androidx.lifecycle.Observer {result ->
+            if(result.success != null){
+                this.meetings = result.success
+                this.meetings!!.forEach { meeting ->
+                    val calendar = Calendar.getInstance()
+                    calendar.time = meeting.date
+                    events.add(EventDay(calendar, R.drawable.main_meeting))
+                    meetingDateView.setText(SimpleDateFormat("dd-MM-yy").format(Calendar.getInstance().time))
+                    CreateMeetingViews(Calendar.getInstance(), inflater)
+                }
+                calendarView.setEvents(events)
+            }else{
+                Toast.makeText(requireContext(), R.string.get_meetings_fail, Toast.LENGTH_LONG).show()
+            }
+        })
+
+        calendarViewModel.getMeetings()
+
+        /*BackendCommunication.getMeetings(BackendRequestQueue.getInstance(requireContext()).requestQueue,
             Response.Listener { meetings ->
                 this.meetings = meetings
                 this.meetings!!.forEach { meeting ->
@@ -70,7 +94,7 @@ class CalendarFragment : Fragment() {
             },
             Response.ErrorListener {
                 Toast.makeText(requireContext(), "Nie udało się załadować spotkań", Toast.LENGTH_LONG).show()
-            })
+            })*/
 
         calendarView.setOnDayClickListener {eventDay ->
             val clickedDayCalendar = eventDay.calendar

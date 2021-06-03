@@ -4,16 +4,17 @@ import android.os.Bundle
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
-import com.android.volley.Response
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.orangemeet.*
 import com.example.orangemeet.data.model.User
-import com.example.orangemeet.services.BackendCommunication
 import com.example.orangemeet.UserInfo
-import com.example.orangemeet.services.BackendRequestQueue
 import com.example.orangemeet.utils.Util
 
 
 class FindContactFragment : Fragment() {
+
+    lateinit var findContactViewModel: FindContactViewModel
 
     lateinit var progressBar : ProgressBar
     lateinit var searchBar : SearchView
@@ -32,6 +33,8 @@ class FindContactFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val findContactFragment = inflater.inflate(R.layout.fragment_find_contact, container, false)
+
+        findContactViewModel = ViewModelProvider(this).get(FindContactViewModel::class.java)
 
         contactsListView = findContactFragment.findViewById(R.id.meetingsList)
         searchPlaceholder = findContactFragment.findViewById(R.id.searchPlaceholder)
@@ -61,7 +64,37 @@ class FindContactFragment : Fragment() {
         progressBar.visibility = View.VISIBLE
         searchPlaceholder.visibility = View.GONE
 
-        BackendCommunication.getUsers(BackendRequestQueue.getInstance(requireContext()).requestQueue,
+        findContactViewModel.getUsersResult.observe(viewLifecycleOwner,
+            Observer {getUsersResult ->
+                if(getUsersResult.success != null){
+                    users = getUsersResult.success
+                    findContactViewModel.getContacts()
+                }else{
+                    Toast.makeText(
+                        requireContext(),
+                        getString(getUsersResult.error!!),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
+
+        findContactViewModel.getContactsResult.observe(viewLifecycleOwner,
+            Observer {getContactsResult ->
+                if(getContactsResult.success != null){
+                    contacts = getContactsResult.success
+                    createContactViews(inflater)
+                }else{
+                    Toast.makeText(
+                        requireContext(),
+                        getString(getContactsResult.error!!),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
+
+        findContactViewModel.getUsers()
+
+        /*BackendCommunication.getUsers(BackendRequestQueue.getInstance(requireContext()).requestQueue,
             null,
             Response.Listener { users ->
                 this.users = users
@@ -87,7 +120,7 @@ class FindContactFragment : Fragment() {
                     Toast.LENGTH_LONG
                 ).show()
                 progressBar.visibility = View.GONE
-            })
+            })*/
 
         return findContactFragment
     }
@@ -97,11 +130,11 @@ class FindContactFragment : Fragment() {
             return;
 
         val filteredContacts = users!!.filter { user ->
-            if(searchBar.query.isEmpty())
+/*            if(searchBar.query.isEmpty())
                 true
-            else
+            else*/
                 user.username.toLowerCase().contains(searchBar.query.toString().toLowerCase())
-                        && contacts!!.find{ contact -> contact.equals(user) } == null
+                        && contacts!!.find{ contact -> contact.username == user.username } == null
                         && user.username != UserInfo.userName
         }
 
@@ -122,8 +155,26 @@ class FindContactFragment : Fragment() {
             )
             val inviteButton = view.findViewById<Button>(R.id.inviteButton)
             val sentText = view.findViewById<TextView>(R.id.sentText)
+
+
             inviteButton.setOnClickListener {
-                BackendCommunication.addContact(BackendRequestQueue.getInstance(requireContext()).requestQueue,
+                findContactViewModel.addContactResult.observe(viewLifecycleOwner,
+                    Observer {addContactResult ->
+                        findContactViewModel.addContactResult.removeObservers(viewLifecycleOwner)
+
+                        if(addContactResult.success){
+                            inviteButton.visibility = View.GONE
+                            sentText.visibility = View.VISIBLE
+                        }else{
+                            Toast.makeText(
+                                requireContext(),
+                                getString(addContactResult.error!!),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    })
+                findContactViewModel.addContact(contact.username)
+                /*BackendCommunication.addContact(BackendRequestQueue.getInstance(requireContext()).requestQueue,
                     contact.username,
                     Response.Listener {
                         inviteButton.visibility = View.GONE
@@ -135,7 +186,7 @@ class FindContactFragment : Fragment() {
                             getString(R.string.add_contact_fail),
                             Toast.LENGTH_LONG
                         ).show()
-                    })
+                    })*/
             }
             contactsListView.addView(view)
             evenView = !evenView

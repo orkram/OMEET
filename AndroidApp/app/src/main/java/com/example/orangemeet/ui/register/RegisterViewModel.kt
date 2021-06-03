@@ -5,13 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.orangemeet.R
-import com.example.orangemeet.data.BackendRepository
+import com.example.orangemeet.data.DataRepository
 import com.example.orangemeet.data.Result
-import com.example.orangemeet.ui.login.LoginFormState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 class RegisterViewModel() : ViewModel() {
 
@@ -25,7 +23,7 @@ class RegisterViewModel() : ViewModel() {
 
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                val result = BackendRepository.register(email, firstName, lastName, imgUrl, username, password)
+                val result = DataRepository.register(email, firstName, lastName, imgUrl, username, password)
                 if(result is Result.Success)
                     _registerResult.postValue(RegisterResult(true, null))
                 else

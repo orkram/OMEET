@@ -203,9 +203,12 @@
     <string name="create_meeting_success">Meeting created successfully</string>
     <string name="create_meeting_fail">Meeting creation failed</string>
     <string name="get_meetings_fail">Loading meetings failed</string>
+    <string name="get_meetings_participants_failed">Loading meetings participants failed</string>
     <string name="get_users_fail">Loading users failed</string>
     <string name="find_contact_error">Enter at least 3 characters to search</string>
     <string name="could_not_find">Could not find anything</string>
+    <string name="get_settings_failed">Loading settings failed</string>
+    <string name="update_settings_failed">Updating settings failed</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_calendar">Calendar</string>

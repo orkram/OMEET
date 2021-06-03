@@ -9,11 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.android.volley.Response
-import com.example.orangemeet.services.BackendCommunication
 import com.example.orangemeet.R
-import com.example.orangemeet.data.BackendRepository
-import com.example.orangemeet.services.BackendRequestQueue
 import com.example.orangemeet.utils.Util
 import com.google.android.material.textfield.TextInputEditText
 

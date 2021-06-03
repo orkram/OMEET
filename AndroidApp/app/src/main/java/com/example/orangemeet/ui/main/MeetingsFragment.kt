@@ -6,20 +6,19 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.android.volley.Response
 import com.example.orangemeet.*
 import com.example.orangemeet.data.model.Meeting
 import com.example.orangemeet.data.model.User
-import com.example.orangemeet.services.BackendCommunication
 import com.example.orangemeet.UserInfo
-import com.example.orangemeet.services.BackendRequestQueue
 import com.example.orangemeet.utils.Util
+import timber.log.Timber
 import java.text.SimpleDateFormat
 
 class MeetingsFragment : Fragment() {
 
-    var testMeetings = Array(20){ i -> Meeting() }
+    lateinit var meetingsViewModel: MeetingsViewModel
 
     val meetings = MutableLiveData<MutableList<Meeting>?>()
     lateinit var searchBar : SearchView
@@ -53,6 +52,8 @@ class MeetingsFragment : Fragment() {
     ): View? {
         setHasOptionsMenu(true)
 
+        meetingsViewModel = ViewModelProvider(this).get(MeetingsViewModel::class.java)
+
         meetingsFragment = inflater.inflate(R.layout.fragment_meetings, container, false)
 
         notFoundPlaceholder = meetingsFragment.findViewById(R.id.notFoundPlaceholder)
@@ -82,7 +83,24 @@ class MeetingsFragment : Fragment() {
         meetings.observe(viewLifecycleOwner, Observer { createMeetingViews(inflater, meetings.value) })
 
         progressBar.visibility = View.VISIBLE
-        BackendCommunication.getMeetings(
+
+        meetingsViewModel.getMeetingsResult.observe(viewLifecycleOwner,
+                Observer {getMeetingsResult ->
+                    if(getMeetingsResult.success != null){
+                        this.meetings.value = getMeetingsResult.success as MutableList<Meeting>?
+                        progressBar.visibility = View.GONE
+                    }else{
+                        Toast.makeText(
+                                requireContext(),
+                                getString(getMeetingsResult.error!!),
+                                Toast.LENGTH_LONG
+                        ).show()
+                        progressBar.visibility = View.GONE
+                    }
+                })
+
+        meetingsViewModel.getMeetings()
+        /*BackendCommunication.getMeetings(
                 BackendRequestQueue.getInstance(requireContext()).requestQueue,
             Response.Listener { meetings ->
                 this.meetings.value = meetings.toMutableList()
@@ -95,7 +113,7 @@ class MeetingsFragment : Fragment() {
                     Toast.LENGTH_LONG
                 ).show()
                 progressBar.visibility = View.GONE
-            })
+            })*/
 
 
         return meetingsFragment
@@ -153,8 +171,34 @@ class MeetingsFragment : Fragment() {
                     findNavController().navigate(R.id.nav_video)
                 }
 
+                var observerSet = false
+                val observer = object : Observer<GetMeetingParticipantsResult>{
+                    override fun onChanged(result: GetMeetingParticipantsResult?) {
+                        if(!observerSet)
+                            return
+                        if(result!!.success != null){
+                            result!!.success!!.forEach { contact ->
+                                val contactView = User.createSmallView(inflater, meetingPopupParticipants, contact, null)
+                                meetingPopupParticipants.addView(contactView)
+                            }
+                        }else{
 
-                BackendCommunication.getMeetingParticipants(BackendRequestQueue.getInstance(requireContext()).requestQueue, meeting.id,
+                        }
+                        meetingsViewModel.getMeetingParticipantsResult.removeObserver(this)
+                    }
+                }
+                meetingsViewModel.getMeetingParticipantsResult.observe(viewLifecycleOwner, observer)
+                observerSet = true
+/*
+                meetingViewModel.getMeetingsParticipantsResult.observe(viewLifecycleOwner,
+                        Observer {result ->
+
+                        })
+                meetingViewModel.getMeetingsParticipantsResult.removeObservers(viewLifecycleOwner)*/
+
+                meetingsViewModel.getMeetingParticipants(meeting)
+
+                /*BackendCommunication.getMeetingParticipants(BackendRequestQueue.getInstance(requireContext()).requestQueue, meeting.id,
                     Response.Listener {contacts ->
                         contacts.forEach {contact ->
                             val contactView = User.createSmallView(inflater, meetingPopupParticipants, contact, null)
@@ -163,7 +207,7 @@ class MeetingsFragment : Fragment() {
                     },
                     Response.ErrorListener {
 
-                    })
+                    })*/
 
                 meetingPopup.visibility = View.VISIBLE
             }

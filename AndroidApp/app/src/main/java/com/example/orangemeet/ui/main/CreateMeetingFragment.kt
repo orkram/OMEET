@@ -7,12 +7,11 @@ import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.android.volley.Response
-import com.example.orangemeet.services.BackendCommunication
 import com.example.orangemeet.R
 import com.example.orangemeet.data.model.User
-import com.example.orangemeet.services.BackendRequestQueue
 import com.example.orangemeet.utils.Util
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
@@ -21,6 +20,8 @@ import java.util.*
 
 
 class CreateMeetingFragment : Fragment() {
+
+    lateinit var createMeetingViewModel: CreateMeetingViewModel
 
     lateinit var progressBar : ProgressBar
 
@@ -47,6 +48,9 @@ class CreateMeetingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val createMeetingFragment = inflater.inflate(R.layout.fragment_create_meeting, container, false)
+
+        createMeetingViewModel = ViewModelProvider(this).get(CreateMeetingViewModel::class.java)
+
         val calendar = Calendar.getInstance()
 
         includedContact = arguments?.getString("username")
@@ -69,13 +73,32 @@ class CreateMeetingFragment : Fragment() {
 
         progressBar.visibility = View.VISIBLE
 
+        createMeetingViewModel.createMeetingResult.observe(viewLifecycleOwner, Observer {createMeetingResult ->
+            if(createMeetingResult.success){
+                Toast.makeText(
+                        requireContext(),
+                        getString(R.string.create_meeting_success),
+                        Toast.LENGTH_SHORT
+                ).show()
+                findNavController().navigateUp()
+            }else{
+                Toast.makeText(
+                        requireContext(),
+                        getString(createMeetingResult.error!!),
+                        Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+
         createMeetingButton.setOnClickListener {
             if(meetingNameView.text!!.isEmpty()){
                 Toast.makeText(requireContext(), getString(R.string.meeting_name_empty), Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
-            BackendCommunication.createMeeting(
+            createMeetingViewModel.createMeeting(pickedDate.value!!, meetingNameView.text.toString(), checkedContacts)
+
+            /*BackendCommunication.createMeeting(
                     BackendRequestQueue.getInstance(requireContext()).requestQueue,
                 pickedDate.value!!,
                 meetingNameView.text.toString(),
@@ -94,7 +117,7 @@ class CreateMeetingFragment : Fragment() {
                         getString(R.string.create_meeting_fail),
                         Toast.LENGTH_SHORT
                     ).show()
-                })
+                })*/
         }
 
         searchView.setOnQueryTextListener( object : SearchView.OnQueryTextListener{
@@ -108,7 +131,22 @@ class CreateMeetingFragment : Fragment() {
             }
         })
 
-        BackendCommunication.getContactsList(
+        createMeetingViewModel.getContactsResult.observe(viewLifecycleOwner,
+                Observer {getContactsResult ->
+                    this.contacts = getContactsResult.success
+                    checkedContacts.clear();
+                    contacts!!.forEach {contact ->
+                        if(includedContact != null && contact.username == includedContact){
+                            checkedContacts.add(contact)
+                        }
+                    }
+                    progressBar.visibility = View.GONE;
+                    createViews()
+                })
+
+        createMeetingViewModel.getContacts()
+
+        /*BackendCommunication.getContactsList(
                 BackendRequestQueue.getInstance(requireContext()).requestQueue,
             Response.Listener { contacts ->
                 this.contacts = contacts
@@ -128,7 +166,7 @@ class CreateMeetingFragment : Fragment() {
                     Toast.LENGTH_LONG
                 ).show()
                 progressBar.visibility = View.GONE;
-            })
+            })*/
 
         dateBox.setOnClickListener {
             DatePickerDialog(requireContext(),

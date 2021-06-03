@@ -6,8 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.viewModelScope
-import com.android.volley.Response
-import com.example.orangemeet.data.BackendRepository
+import com.example.orangemeet.data.DataRepository
 
 import com.example.orangemeet.R
 import com.example.orangemeet.data.Result
@@ -32,7 +31,7 @@ class LoginViewModel(private val sharedPrefs : SharedPreferences) : ViewModel() 
     fun login(username: String, password: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                val result = BackendRepository.login(username, password)
+                val result = DataRepository.login(username, password)
                 if(result is Result.Success){
                     _loginResult.postValue(LoginResult(success = result.data))
                 }else{

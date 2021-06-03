@@ -12,20 +12,22 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
-class ContactsViewModel() : ViewModel() {
+class FindContactViewModel() : ViewModel() {
+    private var _getUsersResult = MutableLiveData<GetUsersResult>()
+    val getUsersResult : LiveData<GetUsersResult> = _getUsersResult
 
     private var _getContactsResult = MutableLiveData<GetContactsResult>()
     val getContactsResult : LiveData<GetContactsResult> = _getContactsResult
 
-    private var _deleteContactResult = MutableLiveData<DeleteContactResult>()
-    val deleteContactResult : LiveData<DeleteContactResult> = _deleteContactResult
+    private var _addContactResult = MutableLiveData<AddContactResult>()
+    val addContactResult : LiveData<AddContactResult> = _addContactResult
 
     fun getContacts(){
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 val result = DataRepository.getContacts()
                 if(result is Result.Success){
-                    _getContactsResult.postValue(GetContactsResult(result.data!!, null))
+                    _getContactsResult.postValue(GetContactsResult(result.data, null))
                     Timber.i("getContacts success")
                 }else{
                     _getContactsResult.postValue(GetContactsResult(null, R.string.get_contacts_fail))
@@ -35,15 +37,27 @@ class ContactsViewModel() : ViewModel() {
         }
     }
 
-    fun deleteContact(contact : String){
+    fun getUsers(){
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                val result = DataRepository.deleteContact(contact)
+                val result = DataRepository.getUsers()
                 if(result is Result.Success){
-                    _deleteContactResult.postValue(DeleteContactResult(true, null))
+                    _getUsersResult.postValue(GetUsersResult(result.data, null))
                 }else{
-                    _deleteContactResult.postValue(DeleteContactResult(false, R.string.contact_delete_fail))
-                    Timber.e("deleteContact failed: %s", result.toString())
+                    _getUsersResult.postValue(GetUsersResult(null, R.string.get_users_fail))
+                }
+            }
+        }
+    }
+
+    fun addContact(username : String){
+        viewModelScope.launch {
+            withContext(Dispatchers.IO){
+                val result = DataRepository.addContact(username)
+                if(result is Result.Success){
+                    _addContactResult.postValue(AddContactResult(true, null))
+                }else{
+                    _addContactResult.postValue(AddContactResult(false, R.string.add_contact_fail))
                 }
             }
         }

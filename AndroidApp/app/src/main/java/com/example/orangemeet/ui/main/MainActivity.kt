@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -46,7 +47,25 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
 
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        BackendCommunication.getSettings(BackendRequestQueue.getInstance(applicationContext).requestQueue,
+        mainViewModel.getSettingsResult.observe(this,
+                Observer {result ->
+                    if(result.success != null){
+                        val settingsJson = result.success!!
+                        val prefs = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+                        with (prefs.edit()) {
+                            putBoolean("start_with_audio", settingsJson.getBoolean("defaultMicOn"))
+                            putBoolean("start_with_video", settingsJson.getBoolean("defaultCamOn"))
+                            putBoolean("private_user", settingsJson.getBoolean("private"))
+                            apply()
+                        }
+                    }else{
+                        Toast.makeText(applicationContext, result.error!!, Toast.LENGTH_LONG).show()
+                    }
+                })
+
+        mainViewModel.getSettings()
+
+       /* BackendCommunication.getSettings(BackendRequestQueue.getInstance(applicationContext).requestQueue,
                 Response.Listener {settingsJson ->
                     val prefs = PreferenceManager.getDefaultSharedPreferences(applicationContext)
                     with (prefs.edit()) {
@@ -59,7 +78,7 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
                 Response.ErrorListener {
                     Toast.makeText(applicationContext, "Nie udało się wczytać ustawień", Toast.LENGTH_LONG).show()
                 })
-
+*/
 
 
 
