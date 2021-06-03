@@ -21,12 +21,10 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
-import com.android.volley.Response
-import com.example.orangemeet.services.BackendCommunication
 import com.example.orangemeet.R
 import com.example.orangemeet.UserInfo
-import com.example.orangemeet.services.BackendRequestQueue
 import com.example.orangemeet.ui.login.LoginActivity
+import com.example.orangemeet.ui.main.calling.CustomJitsiFragment
 import com.facebook.react.modules.core.PermissionListener
 import com.google.android.material.navigation.NavigationView
 import org.jitsi.meet.sdk.JitsiMeetActivityDelegate

@@ -1,4 +1,4 @@
-package com.example.orangemeet.ui.main
+package com.example.orangemeet.ui.main.contacts
 
 import android.os.Bundle
 import android.view.*

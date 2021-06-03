@@ -11,19 +11,14 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
-import com.android.volley.Response
-import com.example.orangemeet.services.BackendCommunication
 
 import com.example.orangemeet.R
-import com.example.orangemeet.data.model.LoggedInUser
-import com.example.orangemeet.services.BackendRequestQueue
+import com.example.orangemeet.UserInfo
 import com.example.orangemeet.utils.Util
 import com.example.orangemeet.ui.main.MainActivity
 import com.example.orangemeet.ui.register.RegisterActivity
 import com.google.android.material.textfield.TextInputEditText
-import timber.log.Timber
 
 class LoginActivity : AppCompatActivity() {
 
@@ -65,6 +60,9 @@ class LoginActivity : AppCompatActivity() {
             Observer { loginResult ->
                 loginResult ?: return@Observer
                 if(loginResult.success){
+                    val loggedInUser = loginResult.data!!
+                    UserInfo.userName = loggedInUser.username
+                    UserInfo.userEmail = loggedInUser.email
                     goToMainActivity()
                 }else{
                     progressBar.visibility = View.GONE

@@ -1,4 +1,4 @@
-package com.example.orangemeet.ui.main
+package com.example.orangemeet.ui.main.calling
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,6 +12,7 @@ import androidx.fragment.app.replace
 import androidx.preference.PreferenceManager
 import com.example.orangemeet.R
 import com.example.orangemeet.UserInfo
+import com.example.orangemeet.ui.main.MainActivity
 import com.example.orangemeet.utils.Util
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import org.jitsi.meet.sdk.JitsiMeetUserInfo

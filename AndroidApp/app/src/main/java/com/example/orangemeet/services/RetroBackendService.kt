@@ -1,17 +1,14 @@
 package com.example.orangemeet.services
 
-import com.example.orangemeet.data.model.LoginResponse
-import com.example.orangemeet.data.model.MeetingData
-import com.example.orangemeet.data.model.User
-import com.example.orangemeet.data.model.UserData
+import com.example.orangemeet.data.model.network.MeetingData
+import com.example.orangemeet.data.model.network.UserData
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.*
-import java.util.*
 
 interface RetroBackendService{
     @POST("api/v1/account/login")
-    fun login(@Body loginJson : JsonObject) : Call<LoginResponse>
+    fun login(@Body loginJson : JsonObject) : Call<JsonObject>
 
     @POST("api/v1/account/{username}/logout")
     fun logout(@Path("username") username : String) : Call<Void>
@@ -45,4 +42,7 @@ interface RetroBackendService{
 
     @PUT("api/v1/users/settings/{username}")
     fun updateSettings(@Path("username") username: String, @Body settingsJson : JsonObject, @Header("authorization") authorization : String) : Call<Void>
+
+    @POST("api/v1/account/{username}/refresh-token")
+    fun refreshAccessToken(@Path("username") username: String, @Body refreshTokenJson : JsonObject) : Call<JsonObject>
 }

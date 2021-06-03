@@ -1,4 +1,4 @@
-package com.example.orangemeet.ui.main
+package com.example.orangemeet.ui.main.contacts
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -8,13 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
-import com.android.volley.Response
 import com.example.orangemeet.*
 import com.example.orangemeet.data.model.User
-import com.example.orangemeet.services.BackendCommunication
-import com.example.orangemeet.services.BackendRequestQueue
 import com.example.orangemeet.utils.Util
 
 

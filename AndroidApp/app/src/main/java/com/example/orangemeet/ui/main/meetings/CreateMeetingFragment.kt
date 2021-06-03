@@ -1,4 +1,4 @@
-package com.example.orangemeet.ui.main
+package com.example.orangemeet.ui.main.meetings
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog

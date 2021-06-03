@@ -1,4 +1,4 @@
-package com.example.orangemeet.ui.main
+package com.example.orangemeet.ui.main.contacts
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

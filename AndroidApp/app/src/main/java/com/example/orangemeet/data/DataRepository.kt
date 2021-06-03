@@ -3,6 +3,7 @@ package com.example.orangemeet.data
 import com.example.orangemeet.data.model.LoggedInUser
 import com.example.orangemeet.data.model.Meeting
 import com.example.orangemeet.data.model.User
+import com.example.orangemeet.services.BackendService
 import com.example.orangemeet.services.DataSource
 import org.json.JSONObject
 import java.util.*
@@ -25,20 +26,6 @@ object DataRepository {
     fun logout() {
         if(user == null)
             return
-
-        /*val logoutUrl = BackendCommunication.backendUrl + "/api/v1/account/" + user!!.username + "/logout"
-
-        val logoutRequest = JsonObjectRequest(
-                Request.Method.POST, logoutUrl, JSONObject(),
-                Response.Listener {response ->
-                    Timber.i("Logout success")
-                },
-                Response.ErrorListener {error ->
-                    Timber.e("Logout failed")
-                }
-        )
-
-        BackendRequestQueue.getInstance().requestQueue.add(logoutRequest)*/
 
         dataSource.logout(user!!.username)
         user = null

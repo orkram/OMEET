@@ -1,4 +1,4 @@
-package com.example.orangemeet.data.model
+package com.example.orangemeet.data.model.network
 
 import com.google.gson.annotations.SerializedName
 

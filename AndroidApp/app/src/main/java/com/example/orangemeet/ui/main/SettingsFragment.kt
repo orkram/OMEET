@@ -7,10 +7,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
-import com.example.orangemeet.services.BackendCommunication
 import com.example.orangemeet.R
 import com.example.orangemeet.data.model.RemoteSettings
-import com.example.orangemeet.services.BackendRequestQueue
 import org.json.JSONObject
 
 class SettingsFragment : PreferenceFragmentCompat() {

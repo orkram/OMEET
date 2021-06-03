@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/jitsiFragment"
-        android:name="com.example.orangemeet.ui.main.CustomJitsiFragment"
+        android:name="com.example.orangemeet.ui.main.calling.CustomJitsiFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

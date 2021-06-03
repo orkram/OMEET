@@ -1,4 +1,4 @@
-package com.example.orangemeet.ui
+package com.example.orangemeet.ui.utils
 
 import android.content.Context
 import android.graphics.Typeface

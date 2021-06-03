@@ -1,4 +1,4 @@
-package com.example.orangemeet.ui.main
+package com.example.orangemeet.ui.main.meetings
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,14 +10,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.android.volley.Response
 import com.applandeo.materialcalendarview.CalendarView
 import com.applandeo.materialcalendarview.EventDay
 import com.example.orangemeet.*
 import com.example.orangemeet.data.model.Meeting
-import com.example.orangemeet.services.BackendCommunication
 import com.example.orangemeet.UserInfo
-import com.example.orangemeet.services.BackendRequestQueue
 import com.example.orangemeet.utils.Util
 import java.text.SimpleDateFormat
 import java.util.*
