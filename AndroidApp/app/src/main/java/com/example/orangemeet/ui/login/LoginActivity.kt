@@ -64,12 +64,11 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loginResult.observe(this,
             Observer { loginResult ->
                 loginResult ?: return@Observer
-                loginResult.error?.let {
-                    progressBar.visibility = View.GONE
-                    showLoginFailed(it)
-                }
-                loginResult.success?.let {
+                if(loginResult.success){
                     goToMainActivity()
+                }else{
+                    progressBar.visibility = View.GONE
+                    showLoginFailed(loginResult.error!!)
                 }
             })
 

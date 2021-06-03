@@ -7,14 +7,16 @@ import androidx.lifecycle.viewModelScope
 import com.example.orangemeet.R
 import com.example.orangemeet.data.DataRepository
 import com.example.orangemeet.data.Result
+import com.example.orangemeet.ui.utils.ResultInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 
 class MainViewModel() : ViewModel() {
 
-    private val _getSettingsResult = MutableLiveData<GetSettingsResult>()
-    val getSettingsResult : LiveData<GetSettingsResult> = _getSettingsResult
+    private val _getSettingsResult = MutableLiveData<ResultInfo<JSONObject>>()
+    val getSettingsResult : LiveData<ResultInfo<JSONObject>> = _getSettingsResult
 
     fun logout(){
         viewModelScope.launch {
@@ -29,9 +31,9 @@ class MainViewModel() : ViewModel() {
             withContext(Dispatchers.IO){
                 val result = DataRepository.getSettings()
                 if(result is Result.Success){
-                    _getSettingsResult.postValue(GetSettingsResult(result.data, null))
+                    _getSettingsResult.postValue(ResultInfo(true, result.data, null))
                 }else{
-                    _getSettingsResult.postValue(GetSettingsResult(null, R.string.get_settings_failed))
+                    _getSettingsResult.postValue(ResultInfo(false, null, R.string.get_settings_failed))
                 }
             }
         }

@@ -133,15 +133,24 @@ class CreateMeetingFragment : Fragment() {
 
         createMeetingViewModel.getContactsResult.observe(viewLifecycleOwner,
                 Observer {getContactsResult ->
-                    this.contacts = getContactsResult.success
-                    checkedContacts.clear();
-                    contacts!!.forEach {contact ->
-                        if(includedContact != null && contact.username == includedContact){
-                            checkedContacts.add(contact)
+                    if(getContactsResult.success){
+                        this.contacts = getContactsResult.data
+                        checkedContacts.clear();
+                        contacts!!.forEach {contact ->
+                            if(includedContact != null && contact.username == includedContact){
+                                checkedContacts.add(contact)
+                            }
                         }
+                        progressBar.visibility = View.GONE;
+                        createViews()
+                    }else{
+                        Toast.makeText(
+                                requireContext(),
+                                getString(getContactsResult.error!!),
+                                Toast.LENGTH_LONG
+                        ).show()
+                        progressBar.visibility = View.GONE;
                     }
-                    progressBar.visibility = View.GONE;
-                    createViews()
                 })
 
         createMeetingViewModel.getContacts()
@@ -160,12 +169,7 @@ class CreateMeetingFragment : Fragment() {
                 createViews()
             },
             Response.ErrorListener {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.get_meetings_fail),
-                    Toast.LENGTH_LONG
-                ).show()
-                progressBar.visibility = View.GONE;
+
             })*/
 
         dateBox.setOnClickListener {

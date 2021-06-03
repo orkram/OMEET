@@ -12,8 +12,8 @@ import com.example.orangemeet.*
 import com.example.orangemeet.data.model.Meeting
 import com.example.orangemeet.data.model.User
 import com.example.orangemeet.UserInfo
+import com.example.orangemeet.ui.utils.ResultInfo
 import com.example.orangemeet.utils.Util
-import timber.log.Timber
 import java.text.SimpleDateFormat
 
 class MeetingsFragment : Fragment() {
@@ -86,8 +86,8 @@ class MeetingsFragment : Fragment() {
 
         meetingsViewModel.getMeetingsResult.observe(viewLifecycleOwner,
                 Observer {getMeetingsResult ->
-                    if(getMeetingsResult.success != null){
-                        this.meetings.value = getMeetingsResult.success as MutableList<Meeting>?
+                    if(getMeetingsResult.success){
+                        this.meetings.value = getMeetingsResult.data as MutableList<Meeting>?
                         progressBar.visibility = View.GONE
                     }else{
                         Toast.makeText(
@@ -172,17 +172,15 @@ class MeetingsFragment : Fragment() {
                 }
 
                 var observerSet = false
-                val observer = object : Observer<GetMeetingParticipantsResult>{
-                    override fun onChanged(result: GetMeetingParticipantsResult?) {
+                val observer = object : Observer<ResultInfo<List<User>>>{
+                    override fun onChanged(result: ResultInfo<List<User>>?) {
                         if(!observerSet)
                             return
-                        if(result!!.success != null){
-                            result!!.success!!.forEach { contact ->
+                        if(result!!.success){
+                            result.data!!.forEach { contact ->
                                 val contactView = User.createSmallView(inflater, meetingPopupParticipants, contact, null)
                                 meetingPopupParticipants.addView(contactView)
                             }
-                        }else{
-
                         }
                         meetingsViewModel.getMeetingParticipantsResult.removeObserver(this)
                     }

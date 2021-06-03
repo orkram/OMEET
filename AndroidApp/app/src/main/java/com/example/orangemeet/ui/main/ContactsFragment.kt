@@ -87,8 +87,8 @@ class ContactsFragment : Fragment() {
 
         contactsViewModel.getContactsResult.observe(viewLifecycleOwner,
             Observer {getContactsResult ->
-                if(getContactsResult.success != null) {
-                    contactsList.value = getContactsResult.success as MutableList<User>?
+                if(getContactsResult.success) {
+                    contactsList.value = getContactsResult.data as MutableList<User>?
                 }else{
                     Toast.makeText(context, getString(getContactsResult.error!!), Toast.LENGTH_LONG)
                             .show()

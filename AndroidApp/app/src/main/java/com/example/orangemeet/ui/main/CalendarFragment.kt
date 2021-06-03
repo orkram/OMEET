@@ -63,8 +63,8 @@ class CalendarFragment : Fragment() {
 
         calendarViewModel.getMeetingsResult.observe(viewLifecycleOwner,
         androidx.lifecycle.Observer {result ->
-            if(result.success != null){
-                this.meetings = result.success
+            if(result.success){
+                this.meetings = result.data
                 this.meetings!!.forEach { meeting ->
                     val calendar = Calendar.getInstance()
                     calendar.time = meeting.date

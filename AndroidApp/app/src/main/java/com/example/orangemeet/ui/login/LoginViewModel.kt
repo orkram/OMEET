@@ -10,6 +10,8 @@ import com.example.orangemeet.data.DataRepository
 
 import com.example.orangemeet.R
 import com.example.orangemeet.data.Result
+import com.example.orangemeet.data.model.LoggedInUser
+import com.example.orangemeet.ui.utils.ResultInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -20,8 +22,8 @@ class LoginViewModel(private val sharedPrefs : SharedPreferences) : ViewModel() 
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
 
-    private val _loginResult = MutableLiveData<LoginResult>()
-    val loginResult: LiveData<LoginResult> = _loginResult
+    private val _loginResult = MutableLiveData<ResultInfo<LoggedInUser>>()
+    val loginResult: LiveData<ResultInfo<LoggedInUser>> = _loginResult
 
     init {
         val dayNightMode = sharedPrefs.getBoolean("day_night", false)
@@ -33,10 +35,10 @@ class LoginViewModel(private val sharedPrefs : SharedPreferences) : ViewModel() 
             withContext(Dispatchers.IO){
                 val result = DataRepository.login(username, password)
                 if(result is Result.Success){
-                    _loginResult.postValue(LoginResult(success = result.data))
+                    _loginResult.postValue(ResultInfo(true, data = result.data))
                 }else{
                     Timber.e(result.toString())
-                    _loginResult.postValue(LoginResult(error = R.string.login_failed))
+                    _loginResult.postValue(ResultInfo(false, error = R.string.login_failed))
                 }
             }
         }

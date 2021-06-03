@@ -7,14 +7,15 @@ import androidx.lifecycle.viewModelScope
 import com.example.orangemeet.R
 import com.example.orangemeet.data.DataRepository
 import com.example.orangemeet.data.Result
+import com.example.orangemeet.ui.utils.ResultInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class RegisterViewModel() : ViewModel() {
 
-    private val _registerResult = MutableLiveData<RegisterResult>()
-    val registerResult: LiveData<RegisterResult> = _registerResult
+    private val _registerResult = MutableLiveData<ResultInfo<Nothing>>()
+    val registerResult: LiveData<ResultInfo<Nothing>> = _registerResult
 
     //registerresult
 
@@ -25,9 +26,9 @@ class RegisterViewModel() : ViewModel() {
             withContext(Dispatchers.IO){
                 val result = DataRepository.register(email, firstName, lastName, imgUrl, username, password)
                 if(result is Result.Success)
-                    _registerResult.postValue(RegisterResult(true, null))
+                    _registerResult.postValue(ResultInfo(true))
                 else
-                    _registerResult.postValue(RegisterResult(false, R.string.registed_failed))
+                    _registerResult.postValue(ResultInfo(false, error =  R.string.registed_failed))
             }
         }
     }

@@ -66,8 +66,8 @@ class FindContactFragment : Fragment() {
 
         findContactViewModel.getUsersResult.observe(viewLifecycleOwner,
             Observer {getUsersResult ->
-                if(getUsersResult.success != null){
-                    users = getUsersResult.success
+                if(getUsersResult.success){
+                    users = getUsersResult.data
                     findContactViewModel.getContacts()
                 }else{
                     Toast.makeText(
@@ -80,8 +80,8 @@ class FindContactFragment : Fragment() {
 
         findContactViewModel.getContactsResult.observe(viewLifecycleOwner,
             Observer {getContactsResult ->
-                if(getContactsResult.success != null){
-                    contacts = getContactsResult.success
+                if(getContactsResult.success){
+                    contacts = getContactsResult.data
                     createContactViews(inflater)
                 }else{
                     Toast.makeText(

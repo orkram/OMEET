@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.orangemeet.R
 import com.example.orangemeet.data.DataRepository
 import com.example.orangemeet.data.Result
+import com.example.orangemeet.ui.utils.ResultInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -14,17 +15,17 @@ import org.json.JSONObject
 
 class SettingsViewModel : ViewModel() {
 
-    private val _updateSettingsResult = MutableLiveData<UpdateSettingsResult>()
-    val updateSettingsResult : LiveData<UpdateSettingsResult> = _updateSettingsResult
+    private val _updateSettingsResult = MutableLiveData<ResultInfo<List<Nothing>>>()
+    val updateSettingsResult : LiveData<ResultInfo<List<Nothing>>> = _updateSettingsResult
 
     fun updateSettings(settingsJson : JSONObject){
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 val result = DataRepository.updateSettings(settingsJson)
                 if(result is Result.Success){
-                    _updateSettingsResult.postValue(UpdateSettingsResult(true, null))
+                    _updateSettingsResult.postValue(ResultInfo(true, null, null))
                 }else{
-                    _updateSettingsResult.postValue(UpdateSettingsResult(false, R.string.get_settings_failed))
+                    _updateSettingsResult.postValue(ResultInfo(false, null, R.string.get_settings_failed))
                 }
             }
         }

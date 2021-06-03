@@ -49,8 +49,8 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
 
         mainViewModel.getSettingsResult.observe(this,
                 Observer {result ->
-                    if(result.success != null){
-                        val settingsJson = result.success!!
+                    if(result.success){
+                        val settingsJson = result.data!!
                         val prefs = PreferenceManager.getDefaultSharedPreferences(applicationContext)
                         with (prefs.edit()) {
                             putBoolean("start_with_audio", settingsJson.getBoolean("defaultMicOn"))
