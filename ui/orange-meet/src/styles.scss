@@ -3,9 +3,13 @@
 @import "../node_modules/@fortawesome/fontawesome-free/css/all.css";
 
 html, body {
+  display: -webkit-flex;
+  display: flex;
   height: 100vh;
   overflow: hidden;
 }
+.page-content { overflow: auto; }
+
 body {
   margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
 }
@@ -18,5 +22,32 @@ body {
   color: #e64a19;
   font: 400 22px/16px Roboto, "Helvetica Neue", sans-serif;
 }
+
+.main{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar
+{
+  width: 8px;
+  background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #555;
+}
+
 
 

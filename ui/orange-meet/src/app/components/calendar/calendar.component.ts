@@ -66,6 +66,7 @@ export class CalendarComponent implements OnInit{
       cssClass: 'icons',
       onClick: ({ event }: { event: CalendarEvent }): void => {
         this.events = this.events.filter((iEvent) => iEvent !== event);
+        this.meetingsService.cancelMeeting(event.id).subscribe();
         this.handleEvent('Deleted', event);
       },
     },
@@ -171,6 +172,5 @@ export class CalendarComponent implements OnInit{
       );
       }
     );
-
   }
 }

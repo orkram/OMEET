@@ -5,7 +5,9 @@
 .main-container{
   display: flex;
   flex-direction: row;
-  height: 100vh;
+  flex-grow: 1;
+  position: fixed;
+  height: 100%;
   width: 100%;
   flex-wrap: nowrap;
   align-items: stretch;

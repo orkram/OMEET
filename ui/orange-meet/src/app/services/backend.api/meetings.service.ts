@@ -30,6 +30,12 @@ export class MeetingsService {
       return this.http.get(`http://130.61.186.61:9000/api/v1/meetings/owner/${username}`);
     }
 
+    cancelMeeting(
+     id: any
+    ): Observable<any> {
+      return this.http.delete(`http://130.61.186.61:9000/api/v1/meetings/${id}`);
+  }
+
   createMeeting(username: string, name: string, participants: string[]): Observable<any> {
     console.log(participants);
     return this.http.post(`http://130.61.186.61:9000/api/v1/meetings`, {

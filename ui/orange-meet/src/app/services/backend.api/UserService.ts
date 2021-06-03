@@ -39,6 +39,16 @@ export class UserService {
     });
   }
 
+  findAllContacts(username: string, filter: string): Observable<any> {
+    return this.http.get(`http://130.61.186.61:9000/api/v1/contacts/friends/${username}`, {
+      params: new HttpParams()
+        .set('query', filter)
+        .set('lastNameSortAscending', 'true')
+        .set('userNameSortAscending', 'false')
+        .set('firstNameSortAscending', 'false')
+    });
+  }
+
   createConnection(username: string, friendName: string): Observable<any> {
     return this.http.post(`http://130.61.186.61:9000/api/v1/contacts/add`, '', {
       params: new HttpParams()

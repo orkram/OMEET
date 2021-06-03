@@ -30,27 +30,12 @@ export class JitsiViewComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
 
-    console.log( this.router.url);
-
     const url = this.router.url.split('/');
     this.room =  url[url.length - 1];
-
-    if (!this.token.isAccessTokenExpired()) {
-      this.router.navigateByUrl(`/meeting/${this.room}`);
-    }
 
     this.user = {
       name: this.token.getUsername()
     };
-
-    this.settings.getSettings(this.token.getUsername()).subscribe(
-      (next) => {
-        this.isAudioMuted = !next.defaultMicOn;
-        this.isVideoMuted = next.defaultCamOn;
-      },
-      err => {},
-      () => {}
-    );
   }
 
   ngAfterViewInit(): void {
@@ -67,10 +52,7 @@ export class JitsiViewComponent implements OnInit, AfterViewInit {
     };
 
     this.api = new JitsiMeetExternalAPI(this.domain, this.options);
-
-    console.log(this.api);
-
-    // Event handlers
+// Event handlers
     this.api.addEventListeners({
       readyToClose: this.handleClose,
       participantLeft: this.handleParticipantLeft,
@@ -81,6 +63,20 @@ export class JitsiViewComponent implements OnInit, AfterViewInit {
       videoMuteStatusChanged: this.handleVideoStatus
     });
 
+
+    this.settings.getSettings(this.token.getUsername()).subscribe(
+      (next) => {
+       if (!next.defaultMicOn){
+         this.api.executeCommand('toggleAudio');
+       }
+
+       if (!next.defaultCamOn){
+          this.api.executeCommand('toggleVideo');
+        }
+      },
+      err => {},
+      () => {}
+    );
   }
 
   handleClose = () => {
@@ -108,10 +104,8 @@ export class JitsiViewComponent implements OnInit, AfterViewInit {
   }
 
   handleMuteStatus = (audio: any) => {
-    console.log('handleMuteStatus', audio);
   }
   handleVideoStatus = (video: any) => {
-    console.log('handleVideoStatus', video);
   }
 
   getParticipants(): Promise<any> {

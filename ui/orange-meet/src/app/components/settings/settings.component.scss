@@ -21,7 +21,6 @@
 
 .main-content{
   display: flex;
-  position: absolute;
   height: 100%;
   width: 100%;
 }
@@ -29,12 +28,7 @@
 .mat-list-item{
   width: 300px;
 }
-.right-side{
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  width: 100%;
-}
+
 
 .bottom-bar{
   display: flex;
@@ -85,4 +79,55 @@
   border-radius: 15px;
   box-shadow: rgb(100 100 111 / 20%) 0px 7px 29px 0px;
   margin: 15px;
+}
+
+.fade-in {
+  animation: fadeIn 2s;
+  opacity: 1;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#delayed p {
+  animation: fadein 1;
+  -webkit-animation: fadein 1s; /* Safari and Chrome */
+}
+@keyframes fadein {
+  from {
+    opacity:0;
+  }
+  to {
+    opacity:1;
+  }
+}
+@-moz-keyframes fadein { /* Firefox */
+  from {
+    opacity:0;
+  }
+  to {
+    opacity:1;
+  }
+}
+@-webkit-keyframes fadein { /* Safari and Chrome */
+  from {
+    opacity:0;
+  }
+  to {
+    opacity:1;
+  }
+}
+@-o-keyframes fadein { /* Opera */
+  from {
+    opacity:0;
+  }
+  to {
+    opacity: 1;
+  }
 }

@@ -50,7 +50,6 @@ import {CommonModule, DatePipe} from '@angular/common';
 import {UserService} from './services/backend.api/UserService';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {ParticipantsService} from './services/backend.api/ParticipantsService';
-import {JitsiComponent} from './components/jitsi/jitsi.component';
 import {SelectedUsersService} from './services/backend.api/SelectedUsersService';
 import {CreateMeetingComponent} from './components/users-component/create-meeting/create-meeting.component';
 import {SettingsService} from './services/backend.api/SettingsService';
@@ -83,7 +82,6 @@ import {JitsiViewComponent} from './jitsi-view/jitsi-view.component';
     RegistrationFormComponent,
     JoinDialogComponent,
     CreateMeetingDialogComponent,
-    JitsiComponent,
     CreateMeetingComponent,
     CalendarComponent,
     JitsiViewComponent

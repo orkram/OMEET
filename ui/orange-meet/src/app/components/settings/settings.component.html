@@ -1,4 +1,4 @@
-<div>
+<div class="main">
   <app-header></app-header>
 
   <div class="main-content">
@@ -60,18 +60,17 @@
   </div>
 
 
-  <div class="bottom-bar">
+  <div class="bottom-bar" id="test">
     <span class="bottom-bar-spacer"></span>
     <div class="column">
     <button class = "save-button" mat-raised-button color="primary" (click)="saveSettings()">
       {{'settings.save-button' | translate }}
     </button>
-    <p *ngIf="displaySuccess" class="success">
+    <p  *ngIf="displaySuccess" class="success">
       {{'settings.saved-success' | translate }}
     </p>
     </div>
   </div>
-
 </div>
   </div>
 </div>

@@ -21,26 +21,34 @@
       </mat-form-field>
     </p>
 
-    <p>
-      <mat-form-field appearance="outline">
-        <mat-label> {{'meeting.participants' | translate }} </mat-label>
 
-        <input type="text"
-               aria-label="Name"
-               matInput
-               [formControl]="myControl"
-               [matAutocomplete]="auto"
-               [value]="usersToAdd.toString()"
-        >
-
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)=" updateUsers($event.option.value)">
-          <mat-option *ngFor="let y of filterUsers | async" [value]="y.userName">
-            {{'' + y.firstName + ' ' + y.lastName }}
+    <mat-form-field>
+      <mat-select (openedChange)="openedChange($event)" placeholder="{{'meeting.participants' | translate }}" [formControl]="selectFormControl" multiple>
+        <mat-select-trigger>
+          {{selectFormControl.value ? selectFormControl.value[0] : ''}}
+          <span *ngIf="selectFormControl.value?.length > 1" class="additional-selection">
+        (+{{selectFormControl.value.length - 1}} {{selectFormControl.value?.length === 2 ? 'other' : 'others'}})
+      </span>
+        </mat-select-trigger>
+        <div class="select-container">
+          <mat-optgroup >
+            <mat-form-field style="width:100%;">
+              <input #search autocomplete="off" placeholder="Search" aria-label="Search" matInput [formControl]="searchTextboxControl">
+              <button [disableRipple]="true" *ngIf="search.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch($event)">
+                <mat-icon >close</mat-icon>
+              </button>
+            </mat-form-field>
+          </mat-optgroup>
+          <mat-optgroup *ngIf="(filteredOptions | async)?.length == 0">
+            <div>No results found!</div>
+          </mat-optgroup>
+          <mat-option (onSelectionChange)="selectionChange($event)" *ngFor="let option of filteredOptions | async" [value]="option.userName">
+            {{option.firstName + ' ' + option.lastName}}
           </mat-option>
-        </mat-autocomplete>
+        </div>
+      </mat-select>
+    </mat-form-field>
 
-      </mat-form-field>
-    </p>
 
     <div class="button">
       <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid || submitted" >{{'meeting.create' | translate }}</button>

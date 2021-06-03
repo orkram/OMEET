@@ -1,7 +1,6 @@
-
 h3 {
   margin: 0 0 10px;
-  width: 150px;
+  width: 200px;
 }
 
 pre {
@@ -10,11 +9,15 @@ pre {
 }
 
 .main-style{
+  overflow: auto;
   display: flex;
   flex-direction: column;
+  width: 100%;
   flex-grow: 1;
   margin: 20px;
-  overflow-y: scroll;
+  border-radius: 15px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  font: 300 16px/16px Roboto, "Helvetica Neue", sans-serif;
 }
 :host{
   display: flex;
@@ -24,7 +27,7 @@ pre {
 }
 
 .spacer{
-  flex: 0 0 23%;
+  flex: 0 0 25%;
 }
 .cal-month-view{
   font: 400 22px/16px Roboto, "Helvetica Neue", sans-serif;
@@ -36,17 +39,11 @@ pre {
 
 .main-content{
   display: flex;
-  position: absolute;
   height: 100%;
   width: 100%;
 }
 
-.right-side{
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  width: 100%;
-}
+
 
 .btn-group{
   display: flex;

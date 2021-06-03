@@ -15,6 +15,7 @@
 
 .mat-toolbar{
   height: 80px;
+  width: 100%;
   background-color: #333333;
 }
 
@@ -47,4 +48,10 @@
 }
 .logout-button{
   margin-left: 10px;
+}
+
+:host{
+  display: flex;
+  flex-grow: 1;
+  width: 100%;
 }

@@ -1,11 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {JWTTokenService} from '../../../services/auth/JWTTokenService';
 import {MeetingsService} from '../../../services/backend.api/meetings.service';
 import {MatDialogRef} from '@angular/material/dialog';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {flatMap} from 'rxjs/internal/operators';
+import {map, startWith} from 'rxjs/operators';
 import {UserService} from '../../../services/backend.api/UserService';
 
 @Component({
@@ -28,29 +27,79 @@ export class CreateMeetingDialogComponent implements OnInit {
     participants: new FormControl(''),
   });
 
-  myControl = new FormControl();
-  usersToAdd: string[] = [];
+  usersToAdd: string[] = [this.tokenService.getUsername()];
 
-  filterUsers: Observable<Array<any>> =
-    this.myControl.valueChanges.pipe(
-      flatMap  (value => this.userService.findContactToAdd(value)
-        .pipe(map((x: any) => x.foundUsers))
-      ));
-
-  hide = true;
+  searchTextboxControl: FormControl = new FormControl();
 
   submitted = false;
 
   errorMessage = false;
 
-  updateUsers(user: any): void {
-    console.log(user);
-    if (!user.isEmpty){
-      this.usersToAdd.push(user);
+  @ViewChild('search')
+  searchTextBox!: ElementRef;
+
+  selectFormControl = new FormControl();
+  selectedValues: any = [];
+  data: any[] = [{
+    lastName: '',
+    firstName: ''
+  }];
+
+
+  filteredOptions!: Observable<Array<any>>;
+
+  ngOnInit(): void {
+
+    this.userService.findAllContacts(this.tokenService.getUsername(), '').subscribe(
+      next => { this.data = next; }
+    );
+
+    this.filteredOptions = this.searchTextboxControl.valueChanges
+      .pipe(
+        startWith<string>(''),
+        map(name => this._filter(name))
+      );
+  }
+
+
+  private _filter(name: string): string[] {
+    const filterValue = name.toLowerCase();
+    this.setSelectedValues();
+    this.selectFormControl.patchValue(this.selectedValues);
+    return this.data.filter(option => option.firstName.toLowerCase().indexOf(filterValue) === 0 ||
+      option.lastName.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+  selectionChange(event: any): void {
+    if (event.isUserInput && event.source.selected === false) {
+      const index = this.selectedValues.indexOf(event.source.value);
+      this.selectedValues.splice(index, 1);
     }
   }
 
-  ngOnInit(): void {
+  openedChange(e: any): void {
+    this.searchTextboxControl.patchValue('');
+    // Focus to search textbox while clicking on selectbox
+    if (e === true) {
+      this.searchTextBox.nativeElement.focus();
+    }
+  }
+
+
+  clearSearch(event: any): void {
+    event.stopPropagation();
+    this.searchTextboxControl.patchValue('');
+  }
+
+
+  setSelectedValues(): void {
+    if (this.selectFormControl.value && this.selectFormControl.value.length > 0) {
+      this.selectFormControl.value.forEach((e: any) => {
+        if (this.selectedValues.indexOf(e) === -1) {
+          this.selectedValues.push(e);
+        }
+      });
+    }
   }
 
   submit(): void{
@@ -62,19 +111,20 @@ export class CreateMeetingDialogComponent implements OnInit {
         .createMeeting(
           this.tokenService.getUsername(),
           this.form.value.name,
-          this.form.value.participants.split(',').map((x: string) => x.trim())
+          this.selectFormControl.value
         )
         .subscribe(
         res => { console.log(res); },
         _ => {
           this.submitted = false;
           this.errorMessage = true;
-          window.location.reload();
         },
-          () => { this.dialogRef.close(); }
+          () => {
+          this.dialogRef.close();
+          window.location.reload();
+        }
       );
     }
-    window.location.reload();
   }
 
 }

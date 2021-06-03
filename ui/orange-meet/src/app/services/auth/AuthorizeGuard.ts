@@ -29,12 +29,10 @@ export class AuthorizeGuard implements CanActivate {
             },
             _ => {
               console.log('Error while fetching new token');
-              window.location.reload();
               this.router.navigateByUrl('/login');
-              return false;
             },
             () => {
-              return true;
+              window.location.reload();
             }
         );
         this.router.navigateByUrl('/login');
