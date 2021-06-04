@@ -16,7 +16,7 @@ class FindContactFragment : Fragment() {
 
     lateinit var findContactViewModel: FindContactViewModel
 
-    lateinit var loadContactsProgressBar : ProgressBar
+    lateinit var loadUsersProgressBar : ProgressBar
     lateinit var searchBar : SearchView
 
     lateinit var contactsListView : LinearLayout
@@ -39,7 +39,7 @@ class FindContactFragment : Fragment() {
         contactsListView = view.findViewById(R.id.meetingsList)
         searchPlaceholder = view.findViewById(R.id.searchPlaceholder)
         notFoundPlaceholder = view.findViewById(R.id.notFoundPlaceholder)
-        loadContactsProgressBar = view.findViewById(R.id.progressBar)
+        loadUsersProgressBar = view.findViewById(R.id.progressBar)
         searchBar = view.findViewById(R.id.searchView)
 
         searchPlaceholder.visibility = View.GONE
@@ -58,14 +58,14 @@ class FindContactFragment : Fragment() {
         findContactViewModel.displayedUsers.observe(viewLifecycleOwner,
             Observer {displayedUsers ->
                 displayUsers(displayedUsers, inflater)
-                loadContactsProgressBar.visibility = View.GONE
+                loadUsersProgressBar.visibility = View.GONE
             })
 
         findContactViewModel.setOnErrorListener {error ->
             showError(error)
         }
 
-        loadContactsProgressBar.visibility = View.VISIBLE
+        loadUsersProgressBar.visibility = View.VISIBLE
         findContactViewModel.refreshUsers()
 
         return view

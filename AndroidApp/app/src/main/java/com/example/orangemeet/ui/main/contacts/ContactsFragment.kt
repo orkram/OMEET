@@ -18,7 +18,7 @@ class ContactsFragment : Fragment() {
 
     lateinit var contactsViewModel : ContactsViewModel
 
-    lateinit var progressBar : ProgressBar
+    lateinit var loadContactsProgressBar : ProgressBar
     lateinit var searchBar : SearchView
     lateinit var notFoundPlaceholder : View
     lateinit var contactsListLayout : LinearLayout
@@ -46,7 +46,7 @@ class ContactsFragment : Fragment() {
 
         notFoundPlaceholder = view.findViewById(R.id.notFoundPlaceholder)
         contactsListLayout = view.findViewById(R.id.contactsLayout)
-        progressBar = view.findViewById(R.id.progressBar)
+        loadContactsProgressBar = view.findViewById(R.id.progressBar)
         searchBar = view.findViewById(R.id.searchView)
 
         searchBar.setOnClickListener { v -> searchBar.isIconified = false }
@@ -60,13 +60,17 @@ class ContactsFragment : Fragment() {
         })
 
         contactsViewModel.displayedContacts.observe(viewLifecycleOwner,
-            Observer {contacts -> displayContacts(contacts, inflater) })
+            Observer {contacts ->
+                displayContacts(contacts, inflater)
+                loadContactsProgressBar.visibility = View.GONE
+            })
 
         contactsViewModel.setOnErrorListener{
             error -> showError(error)
         }
 
-        contactsViewModel.getContacts()
+        loadContactsProgressBar.visibility = View.VISIBLE
+        contactsViewModel.refreshContacts()
 
         return view
     }

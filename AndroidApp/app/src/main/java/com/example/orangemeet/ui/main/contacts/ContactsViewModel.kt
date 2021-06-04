@@ -53,7 +53,7 @@ class ContactsViewModel() : ViewModel() {
         return displayedContacts
     }
 
-    fun getContacts(){
+    fun refreshContacts(){
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 val result = DataRepository.getContacts()
@@ -72,7 +72,7 @@ class ContactsViewModel() : ViewModel() {
             withContext(Dispatchers.IO){
                 val result = DataRepository.deleteContact(contact)
                 if(result is Result.Success) {
-                    getContacts()
+                    refreshContacts()
                 }else{
                     errorListener?.onError(R.string.contact_delete_fail)
                 }
