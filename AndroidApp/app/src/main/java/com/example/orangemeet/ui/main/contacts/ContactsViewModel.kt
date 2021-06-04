@@ -8,30 +8,60 @@ import com.example.orangemeet.R
 import com.example.orangemeet.data.DataRepository
 import com.example.orangemeet.data.Result
 import com.example.orangemeet.data.model.User
-import com.example.orangemeet.ui.utils.ResultInfo
+import com.example.orangemeet.ui.utils.ErrorListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import java.util.*
 
 class ContactsViewModel() : ViewModel() {
 
-    private var _getContactsResult = MutableLiveData<ResultInfo<List<User>>>()
-    val getContactsResult : LiveData<ResultInfo<List<User>>> = _getContactsResult
+    private var errorListener : ErrorListener? = null
 
-    private var _deleteContactResult = MutableLiveData<ResultInfo<Nothing>>()
-    val deleteContactResult : LiveData<ResultInfo<Nothing>> = _deleteContactResult
+    private val _displayedContacts = MutableLiveData<List<User>>()
+    val displayedContacts : LiveData<List<User>> = _displayedContacts
+
+    private var contacts : List<User>? = null
+    private var query : String = ""
+
+    fun setOnErrorListener(onError: (Int) -> Unit){
+        this.errorListener = object : ErrorListener{
+            override fun onError(error: Int) {
+                onError
+            }
+        }
+    }
+
+    fun updateQuery(query : String){
+        if(contacts != null){
+                this.query = query
+                _displayedContacts.value = filteredContacts(query)
+        }
+    }
+
+    private fun filteredContacts(query: String) : List<User>{
+        if(contacts == null)
+            return emptyList()
+
+        val displayedContacts = contacts!!.filter  { contact ->
+            if(query.isEmpty())
+                true
+            else
+                contact.username.toLowerCase(Locale.ROOT).contains(query.toString().toLowerCase(Locale.ROOT))
+        }
+
+        return displayedContacts
+    }
 
     fun getContacts(){
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 val result = DataRepository.getContacts()
                 if(result is Result.Success){
-                    _getContactsResult.postValue(ResultInfo(true, result.data!!, null))
-                    Timber.i("getContacts success")
+                    contacts = result.data!!
+                    _displayedContacts.postValue(filteredContacts(query))
                 }else{
-                    _getContactsResult.postValue(ResultInfo(false, null, R.string.get_contacts_fail))
-                    Timber.e("getContacts failed: %s", result.toString())
+                    errorListener?.onError(R.string.get_contacts_fail)
                 }
             }
         }
@@ -41,11 +71,10 @@ class ContactsViewModel() : ViewModel() {
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 val result = DataRepository.deleteContact(contact)
-                if(result is Result.Success){
-                    _deleteContactResult.postValue(ResultInfo(true, null, null))
+                if(result is Result.Success) {
+                    getContacts()
                 }else{
-                    _deleteContactResult.postValue(ResultInfo(false, null, R.string.contact_delete_fail))
-                    Timber.e("deleteContact failed: %s", result.toString())
+                    errorListener?.onError(R.string.contact_delete_fail)
                 }
             }
         }
