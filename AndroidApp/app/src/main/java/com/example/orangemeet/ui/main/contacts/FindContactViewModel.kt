@@ -8,58 +8,104 @@ import com.example.orangemeet.R
 import com.example.orangemeet.data.DataRepository
 import com.example.orangemeet.data.Result
 import com.example.orangemeet.data.model.User
+import com.example.orangemeet.ui.utils.ErrorListener
 import com.example.orangemeet.ui.utils.ResultInfo
+import com.example.orangemeet.ui.utils.ResultInfoListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 class FindContactViewModel() : ViewModel() {
-    private var _getUsersResult = MutableLiveData<ResultInfo<List<User>>>()
-    val getUsersResult : LiveData<ResultInfo<List<User>>> = _getUsersResult
 
-    private var _getContactsResult = MutableLiveData<ResultInfo<List<User>>>()
-    val getContactsResult : LiveData<ResultInfo<List<User>>> = _getContactsResult
+    private var errorListener : ErrorListener? = null
 
-    private var _addContactResult = MutableLiveData<ResultInfo<Nothing>>()
-    val addContactResult : LiveData<ResultInfo<Nothing>> = _addContactResult
+    private val _displayedUsers = MutableLiveData<List<User>>()
+    val displayedUsers : LiveData<List<User>> = _displayedUsers
 
-    fun getContacts(){
+    private var contacts : List<User>? = null
+    private var users : List<User>? = null
+
+    private var query : String = ""
+
+    fun setOnErrorListener(onError : (Int) -> Unit){
+        this.errorListener = object : ErrorListener{
+            override fun onError(error: Int) {
+                onError(error)
+            }
+        }
+    }
+
+    fun updateQuery(query : String){
+        this.query = query
+        _displayedUsers.value = filteredUsers()
+    }
+
+    private fun filteredUsers() : List<User>{
+        if(contacts == null || users == null)
+            return emptyList()
+
+        return users!!.filter { user ->
+            contacts!!.none { contact -> contact.username == user.username } &&
+                    user.username != DataRepository.loggedInUser!!.username &&
+                    user.username.contains(query, ignoreCase = true)
+        }
+    }
+
+    fun refreshUsers(){
+        getContacts()
+        getUsers()
+    }
+
+    private fun getContacts(){
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 val result = DataRepository.getContacts()
                 if(result is Result.Success){
-                    _getContactsResult.postValue(ResultInfo(true, result.data, null))
-                    Timber.i("getContacts success")
+                    contacts = result.data
+                    if(users != null){
+                        _displayedUsers.postValue(filteredUsers())
+                    }else{ }
                 }else{
-                    _getContactsResult.postValue(ResultInfo(false, null, R.string.get_contacts_fail))
-                    Timber.e("getContacts failed: %s", result.toString())
+                    errorListener?.onError(R.string.get_contacts_fail)
                 }
             }
         }
     }
 
-    fun getUsers(){
+    private fun getUsers(){
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 val result = DataRepository.getUsers()
                 if(result is Result.Success){
-                    _getUsersResult.postValue(ResultInfo(true, result.data, null))
+                    users = result.data
+                    if(contacts != null)
+                        _displayedUsers.postValue(filteredUsers())
+                    else{ }
                 }else{
-                    _getUsersResult.postValue(ResultInfo(false, null, R.string.get_users_fail))
+                    errorListener?.onError(R.string.get_users_fail)
                 }
             }
         }
     }
 
-    fun addContact(username : String){
+    fun addContact(username : String, onResultInfo : (ResultInfo<Nothing>) -> Unit){
+        val onResultInfoListener = object : ResultInfoListener<Nothing>{
+            override fun onResult(resultInfo: ResultInfo<Nothing>) {
+                onResultInfo(resultInfo)
+            }
+        }
+
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 val result = DataRepository.addContact(username)
-                if(result is Result.Success){
-                    _addContactResult.postValue(ResultInfo(true, null, null))
-                }else{
-                    _addContactResult.postValue(ResultInfo(false, null, R.string.add_contact_fail))
+                viewModelScope.launch {
+                    withContext(Dispatchers.Main){
+                        if(result is Result.Success){
+                            onResultInfoListener.onResult(ResultInfo(true))
+                        }else{
+                            onResultInfoListener.onResult(ResultInfo(false, error = R.string.add_contact_fail))
+                        }
+                    }
                 }
             }
         }

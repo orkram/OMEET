@@ -17,29 +17,29 @@ object DataRepository {
 
     val dataSource : DataSource = BackendService()
 
-    var user: LoggedInUser? = null
+    var loggedInUser: LoggedInUser? = null
         private set
 
     val isLoggedIn: Boolean
-        get() = user != null
+        get() = loggedInUser != null
 
     fun logout() {
-        if(user == null)
+        if(loggedInUser == null)
             return
 
-        dataSource.logout(user!!.username)
-        user = null
+        dataSource.logout(loggedInUser!!.username)
+        loggedInUser = null
     }
 
     fun login(username: String, password: String) : Result<LoggedInUser> {
         val result = dataSource.login(username, password)
         if(result is Result.Success)
-            user = result.data
+            loggedInUser = result.data
         return result
     }
 
     fun register(email : String, firstName : String, lastName : String,
-                 imgUrl : String, username : String, password : String) : Result<Void>{
+                 imgUrl : String, username : String, password : String) : Result<Nothing>{
         return dataSource.register(email, firstName, lastName, imgUrl, username, password)
     }
 
@@ -47,7 +47,7 @@ object DataRepository {
         return dataSource.getContacts()
     }
 
-    fun deleteContact(contact: String) : Result<Void>{
+    fun deleteContact(contact: String): Result<Nothing> {
         return dataSource.deleteContact(contact)
     }
 
@@ -55,7 +55,7 @@ object DataRepository {
         return dataSource.getUsers()
     }
 
-    fun addContact(contact : String) : Result<Void>{
+    fun addContact(contact: String): Result<Nothing> {
         return dataSource.addContact(contact)
     }
 
@@ -63,7 +63,7 @@ object DataRepository {
         return dataSource.getMeetings()
     }
 
-    fun createMeeting(date: Date, name: String, participants: List<User>): Result<Void>{
+    fun createMeeting(date: Date, name: String, participants: List<User>): Result<Nothing>{
         return dataSource.createMeeting(date, name, participants)
     }
 
@@ -75,7 +75,7 @@ object DataRepository {
         return dataSource.getSettings()
     }
 
-    fun updateSettings(settingsJson : JSONObject) : Result<Void>{
+    fun updateSettings(settingsJson : JSONObject) : Result<Nothing>{
         return dataSource.updateSettings(settingsJson)
     }
 }
