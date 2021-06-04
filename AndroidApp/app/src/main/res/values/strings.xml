@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Kaliber</string>
+    <string name="app_name" translatable="false">Kaliber</string>
     <string name="action_settings">Settings</string>
-    <string name="version">v 1.0</string>
+    <string name="version" translatable="false">v 1.0</string>
 
     <string name="menu_home">Strona główna</string>
     <string name="menu_contacts">Kontakty</string>
@@ -201,6 +201,7 @@
     <string name="prompt_meeting_date">Data</string>
     <string name="meeting_time">Godzina</string>
     <string name="prompt_meeting_participants">Uczestnicy</string>
+    <string name="account_create_success">Pomyślnie utworzono konto</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

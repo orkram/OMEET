@@ -17,11 +17,32 @@ class RegisterViewModel() : ViewModel() {
     private val _registerResult = MutableLiveData<ResultInfo<Nothing>>()
     val registerResult: LiveData<ResultInfo<Nothing>> = _registerResult
 
-    //registerresult
+    private fun inputsValid(email : String, firstName : String, lastName : String,
+                            imgUrl : String, username : String, password : String, passwordRepeat : String) : Boolean{
 
-    fun register(email : String, firstName : String, lastName : String,
-                 imgUrl : String, username : String, password : String){
+        if(email.isEmpty() or firstName.isEmpty() or lastName.isEmpty() or imgUrl.isEmpty()
+                or username.isEmpty() or password.isEmpty() or passwordRepeat.isEmpty()){
+            _registerResult.value = ResultInfo(false, error = R.string.fields_must_be_not_empty)
+            return false
+        }
+        if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            _registerResult.value = ResultInfo(false, error = R.string.email_not_correct)
+            return false
+        }
+        if(password != passwordRepeat) {
+            _registerResult.value = ResultInfo(false, error = R.string.passwords_dont_match)
+            return false
+        }
+        if(password.length < 8) {
+            _registerResult.value = ResultInfo(false, error = R.string.password_too_short)
+            return false
+        }
 
+        return true //no errors
+    }
+
+    private fun launchRegisterCoroutine(email : String, firstName : String, lastName : String,
+                                        imgUrl : String, username : String, password : String, passwordRepeat : String){
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 val result = DataRepository.register(email, firstName, lastName, imgUrl, username, password)
@@ -31,5 +52,14 @@ class RegisterViewModel() : ViewModel() {
                     _registerResult.postValue(ResultInfo(false, error =  R.string.registed_failed))
             }
         }
+    }
+
+    fun register(email : String, firstName : String, lastName : String,
+                 imgUrl : String, username : String, password : String, passwordRepeat : String){
+
+        if(!inputsValid(email, firstName, lastName, imgUrl, username, password, passwordRepeat))
+            return
+
+        launchRegisterCoroutine(email, firstName, lastName, imgUrl, username, password, passwordRepeat)
     }
 }

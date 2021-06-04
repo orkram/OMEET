@@ -1,7 +1,5 @@
 <resources>
-    <string name="app_name">Kaliber</string>
     <string name="action_settings">Settings</string>
-    <string name="version">v 1.0</string>
 
     <string name="menu_home">Home page</string>
     <string name="menu_contacts">Contacts</string>
@@ -209,6 +207,7 @@
     <string name="could_not_find">Could not find anything</string>
     <string name="get_settings_failed">Loading settings failed</string>
     <string name="update_settings_failed">Updating settings failed</string>
+    <string name="account_create_success">Account created successfully</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_calendar">Calendar</string>
@@ -241,4 +240,5 @@
         <item>November</item>
         <item>December</item>
     </array>
+    <string name="password_too_short">Password must must by at least 8 characters</string>
 </resources>
