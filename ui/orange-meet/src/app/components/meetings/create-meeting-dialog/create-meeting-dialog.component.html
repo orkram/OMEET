@@ -13,14 +13,6 @@
       </mat-form-field>
     </p>
 
-    <p>
-      <mat-form-field appearance="outline">
-        <mat-label>{{'meeting.meeting-description' | translate }}</mat-label>
-        <input type="text" matInput formControlName="description" required>
-        <mat-error *ngIf="form.get('id')?.invalid"> {{'meeting.complete-field' | translate }} </mat-error>
-      </mat-form-field>
-    </p>
-
 
     <mat-form-field>
       <mat-select (openedChange)="openedChange($event)" placeholder="{{'meeting.participants' | translate }}" [formControl]="selectFormControl" multiple>

@@ -17,7 +17,7 @@
       </div>
       <span class="change-picture-spacer"></span>
       <button type="button" mat-raised-button (click)="fileInput.click()">{{fileInput.name}}</button>
-      <input hidden (change)="onFileSelected()" #fileInput type="file" id="file" name="Choose File">
+      <input hidden (change)="onFileSelected($event)" #fileInput type="file" id="file" name="Choose File">
     </mat-list-item>
     <mat-list-item role="listitem">
       <div class="setting-text">

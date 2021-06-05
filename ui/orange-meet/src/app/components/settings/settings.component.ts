@@ -25,6 +25,8 @@ export class SettingsComponent implements OnInit {
 
   displaySuccess = false;
 
+  image: any;
+
   ngOnInit(): void {
     this.settings.getSettings(this.token.getUsername()).subscribe(
       next => {
@@ -38,19 +40,32 @@ export class SettingsComponent implements OnInit {
     );
   }
 
-  onFileSelected(): void{
-    // upload to s3
+  onFileSelected(event: any): void{
+    this.image = event.target.files[0];
   }
 
 
   saveSettings(): void{
     console.log(this.micOn);
     this.settings.setSettings(this.token.getUsername(), this.micOn, this.cameraOn, this.isPrivate).subscribe(
-      next => console.log(next),
-      err => console.log(err),
+      (next) => {},
+      err => {},
       () => {
-
-        this.displaySuccess = true;
+        if (this.image) {
+          this.settings.uploadImage(this.token.getUsername(), this.image).subscribe(
+            (next) => {
+              console.log(next);
+            },
+            () => {
+            },
+            () => {
+              this.displaySuccess = true;
+            }
+          );
+        }
+          else {
+            this.displaySuccess = true;
+          }
       }
     );
   }
