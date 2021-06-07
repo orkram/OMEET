@@ -232,4 +232,13 @@ class BackendService : DataSource {
         )
         return result
     }
+
+    fun getImageUrl(username : String) : Result<String> {
+        val result = requestWithAuthorizationHandling(
+                {retroBackendService.getImageUrl(username, getAuthorization())},
+                {response -> Result.Success(response.body()!!.get("imgUpdateUrl").asString) },
+                {response -> Result.Error(IOException("Error code: " + response.code().toString())) }
+        )
+        return result
+    }
 }
