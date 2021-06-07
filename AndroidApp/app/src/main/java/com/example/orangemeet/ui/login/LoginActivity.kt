@@ -1,3 +1,7 @@
+//Autorzy kodu źródłowego: Konrad Stręk, Michał Skrok
+//Kod został utworzony w ramach kursu Projekt Zespołowy
+//na Politechnice Wrocławskiej
+
 package com.example.orangemeet.ui.login
 
 import android.content.Intent
@@ -5,24 +9,19 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.annotation.StringRes
 import android.os.Bundle
-import android.text.InputType
-import android.text.method.HideReturnsTransformationMethod
-import android.text.method.PasswordTransformationMethod
-import android.text.method.TransformationMethod
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.res.ResourcesCompat
 import androidx.preference.PreferenceManager
 import com.android.volley.Response
-import com.example.orangemeet.BackendCommunication
-import com.example.orangemeet.activities.MainActivity
+import com.example.orangemeet.services.BackendCommunication
 
 import com.example.orangemeet.R
-import com.example.orangemeet.Util
-import com.example.orangemeet.activities.RegisterActivity
+import com.example.orangemeet.utils.Util
+import com.example.orangemeet.ui.main.MainActivity
+import com.example.orangemeet.ui.register.RegisterActivity
 import com.google.android.material.textfield.TextInputEditText
 
 class LoginActivity : AppCompatActivity() {
@@ -61,7 +60,6 @@ class LoginActivity : AppCompatActivity() {
                     return@Observer
                 }
 
-                loginButton.isEnabled = true
                 //loginButton.isEnabled = loginFormState.isDataValid
                 loginFormState.usernameError?.let {
                     usernameEditText.error = getString(it)
@@ -79,11 +77,15 @@ class LoginActivity : AppCompatActivity() {
                     showLoginFailed(it)
                 }
                 loginResult.success?.let {
+                    loginButton.isEnabled = false
+                    registerButton.isEnabled = false
                     BackendCommunication.login(this, usernameEditText.text.toString(), passwordEditText.text.toString(),
                             Response.Listener {
                                 goToMainActivity()
                             },
                             Response.ErrorListener {
+                                loginButton.isEnabled = true
+                                registerButton.isEnabled = true
                                 Toast.makeText(applicationContext, R.string.login_failed, Toast.LENGTH_LONG).show()
                             }
                     )

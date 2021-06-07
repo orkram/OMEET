@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:orientation="vertical"
-    tools:context=".fragments.ContactsFragment">
+    tools:context=".ui.main.ContactsFragment">
 
     <include
         android:id="@+id/notFoundPlaceholder"
-        layout="@layout/not_found"
+        layout="@layout/view_search_not_found"
         android:layout_width="0dp"
         android:layout_height="256dp"
         android:layout_marginTop="128dp"
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_margin="16dp"
-            android:background="@drawable/search_bg"
+            android:background="@drawable/all_search_bg"
             android:foreground="@color/transparent"
             android:iconifiedByDefault="false"
             android:queryBackground="@color/transparent"
@@ -61,14 +61,14 @@
             android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@drawable/line" />
+            android:background="@drawable/all_line" />
 
         <androidx.core.widget.NestedScrollView
             style="@style/default_scrollview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:context=".fragments.ContactsFragment">
+            tools:context=".ui.main.ContactsFragment">
 
             <LinearLayout
                 android:id="@+id/contactsLayout"

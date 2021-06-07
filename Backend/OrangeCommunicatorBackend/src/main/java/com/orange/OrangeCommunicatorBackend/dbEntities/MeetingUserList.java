@@ -11,10 +11,12 @@ import javax.persistence.*;
 public class MeetingUserList {
 
     @Id
-    private long id_meeting;
+    @Column(name = "id_meeting")
+    private long idMeeting;
 
     @Id
-    private String user_name;
+    @Column(name = "user_name")
+    private String userName;
 
 
 
@@ -28,8 +30,26 @@ public class MeetingUserList {
     @MapsId
     private User user;
 
-    MeetingUserList() {
+    public MeetingUserList() {
 
     }
 
+
+    public Meeting getMeeting() {
+        return meeting;
+    }
+
+    public void setMeeting(Meeting meeting) {
+        this.meeting = meeting;
+        this.idMeeting = meeting.getIdMeeting();
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        this.userName = user.getUserName();
+    }
 }

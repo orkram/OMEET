@@ -9,7 +9,7 @@
     <style name="input_field_box" parent="Theme.OrangeMeet.NoActionBar">
         <item name="android:layout_width">320dp</item>
         <item name="android:layout_height">50dp</item>
-        <item name="android:foreground">@drawable/outline_box_rounded</item>
+        <item name="android:foreground">@drawable/all_outline_box_rounded</item>
         <item name="android:orientation">horizontal</item>
     </style>
 
@@ -30,7 +30,7 @@
     <style name="input_field_box_icon_box_bg" parent="Theme.OrangeMeet.NoActionBar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="srcCompat">@drawable/input_field_icon_box</item>
+        <item name="srcCompat">@drawable/all_input_field_icon_box</item>
     </style>
 
     <style name="input_field_box_icon_box_icon" parent="Theme.OrangeMeet.NoActionBar">

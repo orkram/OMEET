@@ -40,7 +40,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@drawable/outline_box_rounded"
+            android:background="@drawable/all_outline_box_rounded"
             android:hint="@string/prompt_meeting_name"
             app:boxCollapsedPaddingTop="4dp"
             app:boxStrokeWidth="0dp"
@@ -71,7 +71,7 @@
                 android:id="@+id/dateBox"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="@drawable/outline_box_rounded"
+                android:background="@drawable/all_outline_box_rounded"
                 android:orientation="vertical"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp">
@@ -99,7 +99,7 @@
                 android:id="@+id/timeBox"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="@drawable/outline_box_rounded"
+                android:background="@drawable/all_outline_box_rounded"
                 android:gravity="start|center_vertical"
                 android:orientation="vertical"
                 android:paddingLeft="20dp"
@@ -139,7 +139,7 @@
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@drawable/search_bg"
+            android:background="@drawable/all_search_bg"
             android:foreground="@color/transparent"
             android:iconifiedByDefault="false"
             android:queryBackground="@color/transparent"
@@ -164,7 +164,7 @@
             android:id="@+id/view4"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@drawable/line" />
+            android:background="@drawable/all_line" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -189,7 +189,7 @@
             android:id="@+id/view6"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@drawable/line" />
+            android:background="@drawable/all_line" />
 
     </LinearLayout>
 
