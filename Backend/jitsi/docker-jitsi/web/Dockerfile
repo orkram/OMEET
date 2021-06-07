@@ -1,5 +1,6 @@
 ARG JITSI_REPO=jitsi
-FROM ${JITSI_REPO}/base
+ARG BASE_TAG=latest
+FROM ${JITSI_REPO}/base:${BASE_TAG}
 
 ADD https://raw.githubusercontent.com/acmesh-official/acme.sh/2.8.8/acme.sh /opt
 COPY rootfs/ /
@@ -15,6 +16,9 @@ RUN \
 	apt-cleanup && \
 	rm -rf /tmp/pkg /var/cache/apt
 
+
 EXPOSE 80 443
+#COPY ./customFiles/images /usr/share/jitsi-meet/images
+#COPY ./customFiles/css /usr/share/jitsi-meet/css
 
 VOLUME ["/config", "/usr/share/jitsi-meet/transcripts"]

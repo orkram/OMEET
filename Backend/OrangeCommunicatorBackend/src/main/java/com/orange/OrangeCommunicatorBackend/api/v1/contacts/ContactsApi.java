@@ -29,7 +29,7 @@ public class ContactsApi {
         this.contactsService = contactsService;
     }
 
-    @PostMapping(path="/add")
+    @GetMapping(path="/add")
     @ApiOperation("Add friend")
     public String create(@ApiParam(value = "The username of one of users who wants to be friends", required = true)
                          @RequestParam("user-o") String userO,
@@ -73,8 +73,11 @@ public class ContactsApi {
                                                        @ApiParam(value = "The sort type by username.")
                                                        @RequestParam(name="userNameSortAscending", defaultValue="true") boolean uNameAsc,
                                                        @ApiParam(value = "The sort type by email.")
-                                                       @RequestParam(name="emailSortAscending", defaultValue="true") boolean emailAsc) {
-        List<UserResponseBody> responseBodyList = contactsService.findAll(username, query, fNameAsc, lNameAsc, uNameAsc, emailAsc);
+                                                       @RequestParam(name="emailSortAscending", defaultValue="true") boolean emailAsc,
+                                                       @ApiParam(value = "Optionally get avatar.")
+                                                       @RequestParam(name="getAvatar", defaultValue="true") boolean isGettingAvatar) {
+        List<UserResponseBody> responseBodyList = contactsService.findAll(username, query, fNameAsc,
+                lNameAsc, uNameAsc, emailAsc, isGettingAvatar);
         return ResponseEntity.status(HttpStatus.OK).body(responseBodyList);
     }
 
@@ -93,8 +96,11 @@ public class ContactsApi {
                                                                     @ApiParam(value = "The sort type by username.")
                                                                     @RequestParam(name="userNameSortAscending", defaultValue="true") boolean uNameAsc,
                                                                     @ApiParam(value = "The sort type by email.")
-                                                                    @RequestParam(name="emailSortAscending", defaultValue="true") boolean emailAsc) {
-        FoundUsersPageResponseBody response = contactsService.findPaginated(page, size, username, query, fNameAsc, lNameAsc, uNameAsc, emailAsc);
+                                                                    @RequestParam(name="emailSortAscending", defaultValue="true") boolean emailAsc,
+                                                                    @ApiParam(value = "Optionally get avatar.")
+                                                                    @RequestParam(name="getAvatar", defaultValue="true") boolean isGettingAvatar) {
+        FoundUsersPageResponseBody response = contactsService.findPaginated(page, size, username, query, fNameAsc,
+                lNameAsc, uNameAsc, emailAsc, isGettingAvatar);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

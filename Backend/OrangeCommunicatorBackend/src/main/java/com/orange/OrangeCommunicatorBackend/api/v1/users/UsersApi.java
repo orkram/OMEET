@@ -29,8 +29,11 @@ public class UsersApi {
     @GetMapping(path="/{username}")
     @ApiOperation("Get certain user's data")
     public ResponseEntity<UserResponseBody> find(
-            @ApiParam(value = "The username of user for which information should be returned.", required = true) @PathVariable String username) {
-        UserResponseBody userResponseBody = userService.getUser(username);
+            @ApiParam(value = "The username of user for which information should be returned.", required = true)
+            @PathVariable String username,
+            @ApiParam(value = "Optionally get avatar.")
+            @RequestParam(name="getAvatar", defaultValue="true") boolean isGettingAvatar) {
+        UserResponseBody userResponseBody = userService.getUser(username, isGettingAvatar);
         return ResponseEntity.status(HttpStatus.OK).body(userResponseBody);
     }
 
@@ -58,8 +61,10 @@ public class UsersApi {
                                                                     @ApiParam(value = "The sort type by username.")
                                                                     @RequestParam(name="userNameSortAscending", defaultValue="true") boolean uNameAsc,
                                                                     @ApiParam(value = "The sort type by email.")
-                                                                    @RequestParam(name="emailSortAscending", defaultValue="true") boolean emailAsc) {
-        FoundUsersPageResponseBody resp = userService.findPaginated(page, size, query, fNameAsc, lNameAsc, uNameAsc, emailAsc);
+                                                                    @RequestParam(name="emailSortAscending", defaultValue="true") boolean emailAsc,
+                                                                    @ApiParam(value = "Optionally get avatar.")
+                                                                    @RequestParam(name="getAvatar", defaultValue="true") boolean isGettingAvatar) {
+        FoundUsersPageResponseBody resp = userService.findPaginated(page, size, query, fNameAsc, lNameAsc, uNameAsc, emailAsc, isGettingAvatar);
         return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
 
@@ -67,16 +72,18 @@ public class UsersApi {
     @GetMapping()
     @ApiOperation("Find all users")
     public ResponseEntity<List<UserResponseBody>> findUsers( @ApiParam(value = "The searching words, by which users will be found.")
-                                                                 @RequestParam(name="query", defaultValue="") List<String> query,
+                                                             @RequestParam(name="query", defaultValue="") List<String> query,
                                                              @ApiParam(value = "The sort type by first name.")
-                                                                 @RequestParam(name="firstNameSortAscending", defaultValue="true") boolean fNameAsc,
+                                                             @RequestParam(name="firstNameSortAscending", defaultValue="true") boolean fNameAsc,
                                                              @ApiParam(value = "The sort type by last name.")
-                                                                 @RequestParam(name="lastNameSortAscending", defaultValue="true") boolean lNameAsc,
+                                                             @RequestParam(name="lastNameSortAscending", defaultValue="true") boolean lNameAsc,
                                                              @ApiParam(value = "The sort type by username.")
-                                                                 @RequestParam(name="userNameSortAscending", defaultValue="true") boolean uNameAsc,
+                                                             @RequestParam(name="userNameSortAscending", defaultValue="true") boolean uNameAsc,
                                                              @ApiParam(value = "The sort type by email.")
-                                                                 @RequestParam(name="emailSortAscending", defaultValue="true") boolean emailAsc){
-        List<UserResponseBody> resp = userService.findUsers(query, fNameAsc, lNameAsc, uNameAsc, emailAsc);
+                                                             @RequestParam(name="emailSortAscending", defaultValue="true") boolean emailAsc,
+                                                             @ApiParam(value = "Optionally get avatar.")
+                                                             @RequestParam(name="getAvatar", defaultValue="true") boolean isGettingAvatar){
+        List<UserResponseBody> resp = userService.findUsers(query, fNameAsc, lNameAsc, uNameAsc, emailAsc, isGettingAvatar);
         return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
 

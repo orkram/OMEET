@@ -11,6 +11,8 @@ import com.orange.OrangeCommunicatorBackend.dbRepositories.SettingsRepository;
 import com.orange.OrangeCommunicatorBackend.dbRepositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Locale;
+
 @Service
 public class SettingsService {
 
@@ -27,6 +29,8 @@ public class SettingsService {
 
 
     public SettingsResponseBody getSettings(String username) {
+        username = username.toLowerCase(Locale.ROOT);
+
         User user = userRepository.findById(username).
                 orElseThrow(UserExceptionSupplier.userNotFoundException(username));
         Settings settings = settingsRepository.findById(username)
@@ -35,6 +39,8 @@ public class SettingsService {
     }
 
     public SettingsResponseBody updateSettings(String username, UpdateSettingsRequestBody updateSettingsRequestBody) {
+        username = username.toLowerCase(Locale.ROOT);
+
         User user = userRepository.findById(username).
                 orElseThrow(UserExceptionSupplier.userNotFoundException(username));
         Settings settings = settingsRepository.findById(username)

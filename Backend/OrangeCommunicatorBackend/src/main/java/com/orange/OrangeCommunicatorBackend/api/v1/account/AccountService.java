@@ -10,7 +10,6 @@ import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountT
 import com.orange.OrangeCommunicatorBackend.api.v1.account.support.AccountExceptionSupplier;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.support.AccountMaper;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.support.exceptions.AccountExistsException;
-import com.orange.OrangeCommunicatorBackend.api.v1.contacts.support.ContactExceptionSupplier;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.settings.support.SettingsMapper;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.support.UserExceptionSupplier;
 import com.orange.OrangeCommunicatorBackend.config.KeycloakClientConfig;
@@ -70,6 +69,7 @@ public class AccountService {
 
 
     public AccountTokenResponseBody login(AccountLoginRequestBody accountLoginRequestBody){
+        accountLoginRequestBody.setUsername(accountLoginRequestBody.getUsername().toLowerCase(Locale.ROOT));
         String stringResponse = getToken(accountLoginRequestBody);
         return accountMaper.toAccountTokenBody(stringResponse);
     }
@@ -80,6 +80,7 @@ public class AccountService {
     }
 
     public AccountLogoutResponseBody logout(String userName){
+        userName = userName.toLowerCase(Locale.ROOT);
 
         User user = userRepository.findById(userName).orElseThrow(UserExceptionSupplier.userNotFoundException(userName));
         Keycloak keycloak = KeycloakClientConfig.keycloak();
@@ -89,6 +90,7 @@ public class AccountService {
     }
 
     public void changePassword(AccountChangePasswordRequestBody accountChangePasswordRequestBody, String userName){
+        userName = userName.toLowerCase(Locale.ROOT);
 
         Keycloak keycloak = KeycloakClientConfig.keycloak();
         User user = userRepository.findById(userName).orElseThrow(UserExceptionSupplier.userNotFoundException(userName));
@@ -99,6 +101,10 @@ public class AccountService {
     }
 
     public AccountRegisterResponseBody register(AccountRegisterRequestBody accountRegisterRequestBody){
+        accountRegisterRequestBody.setUserName(accountRegisterRequestBody.getUserName().toLowerCase(Locale.ROOT));
+        if(accountRegisterRequestBody.getImgURL().equals("")){
+            accountRegisterRequestBody.setImgURL(null);
+        }
 
         int statusId = 0;
         try {

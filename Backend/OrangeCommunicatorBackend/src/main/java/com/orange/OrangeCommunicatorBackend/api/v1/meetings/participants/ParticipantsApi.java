@@ -59,9 +59,11 @@ public class ParticipantsApi {
                                                   @ApiParam(value = "The sort type by username.")
                                                   @RequestParam(name="userNameSortAscending", defaultValue="true") boolean uNameAsc,
                                                   @ApiParam(value = "The sort type by email.")
-                                                  @RequestParam(name="emailSortAscending", defaultValue="true") boolean emailAsc) {
+                                                  @RequestParam(name="emailSortAscending", defaultValue="true") boolean emailAsc,
+                                                  @ApiParam(value = "Optionally get avatar.")
+                                                  @RequestParam(name="getAvatar", defaultValue="true") boolean isGettingAvatar) {
         List<UserResponseBody> responseBodies = participantsService.findParticipants(id, query,
-                fNameAsc,  lNameAsc, uNameAsc, emailAsc);
+                fNameAsc,  lNameAsc, uNameAsc, emailAsc, isGettingAvatar);
         return ResponseEntity.status(HttpStatus.OK).body(responseBodies);
     }
 
@@ -83,9 +85,12 @@ public class ParticipantsApi {
                                       @ApiParam(value = "The sort type by username.")
                                       @RequestParam(name="userNameSortAscending", defaultValue="true") boolean uNameAsc,
                                       @ApiParam(value = "The sort type by email.")
-                                      @RequestParam(name="emailSortAscending", defaultValue="true") boolean emailAsc) {
+                                      @RequestParam(name="emailSortAscending", defaultValue="true") boolean emailAsc,
+                                      @ApiParam(value = "Optionally get avatar.")
+                                      @RequestParam(name="getAvatar", defaultValue="true") boolean isGettingAvatar) {
         FoundUsersPageResponseBody responseBodies =
-                participantsService.findParticipantsPaginated(id, query, page, size, fNameAsc, lNameAsc, uNameAsc, emailAsc);
+                participantsService.findParticipantsPaginated(id, query, page, size, fNameAsc, lNameAsc,
+                        uNameAsc, emailAsc, isGettingAvatar);
         return ResponseEntity.status(HttpStatus.OK).body(responseBodies);
     }
 

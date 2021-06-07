@@ -12,6 +12,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Component
 public class MeetingSupport {
@@ -42,6 +43,8 @@ public class MeetingSupport {
     }
 
     public Specification<Meeting> nameContains(List<String> query, User user) {
+
+        user.setUserName(user.getUserName().toLowerCase(Locale.ROOT));
 
         Specification<Meeting> spec = new Specification<Meeting>() {
             @Override

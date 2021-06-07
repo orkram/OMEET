@@ -26,7 +26,7 @@ public class AccountRegisterRequestBody {
         this.password = password;
     }
 
-    public void setUsername(String username) {
+    public void setUserName(String username) {
         this.username = username;
     }
 
@@ -42,7 +42,7 @@ public class AccountRegisterRequestBody {
         this.lastName = lastName;
     }
 
-    public void setImgUrl(String imgUrl) {
+    public void setImgURL(String imgUrl) {
         this.imgUrl = imgUrl;
     }
 

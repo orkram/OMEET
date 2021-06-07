@@ -4,6 +4,7 @@ services:
     # Frontend
     web:
         image: jitsi/web:stable-5142-4
+        #build: ./web
         restart: ${RESTART_POLICY}
         ports:
             - '${HTTP_PORT}:80'
@@ -11,6 +12,9 @@ services:
         volumes:
             - ${CONFIG}/web:/config:Z
             - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
+            - ./web/customFiles/images:/usr/share/jitsi-meet/images
+            #- ./web/customFiles/css:/usr/share/jitsi-meet/css
+            - ./replace/interface_config.js:/usr/share/jitsi-meet/interface_config.js
         environment:
             - ENABLE_LETSENCRYPT
             - ENABLE_HTTP_REDIRECT
@@ -104,6 +108,7 @@ services:
     # XMPP server
     prosody:
         image: jitsi/prosody:stable-5142-4
+        #build: ./prosody
         restart: ${RESTART_POLICY}
         expose:
             - '5222'
@@ -173,6 +178,7 @@ services:
     # Focus component
     jicofo:
         image: jitsi/jicofo:stable-5142-4
+        #build: ./jicofo
         restart: ${RESTART_POLICY}
         volumes:
             - ${CONFIG}/jicofo:/config:Z
@@ -202,6 +208,7 @@ services:
     # Video bridge
     jvb:
         image: jitsi/jvb:stable-5142-4
+        #build: ./jvb
         restart: ${RESTART_POLICY}
         ports:
             - '${JVB_PORT}:${JVB_PORT}/udp'

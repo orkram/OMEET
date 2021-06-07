@@ -12,7 +12,6 @@ import com.orange.OrangeCommunicatorBackend.dbEntities.User;
 import com.orange.OrangeCommunicatorBackend.dbRepositories.UserRepository;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
-import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,12 +19,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
+
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,13 +43,23 @@ public class UserService {
     }
 
 
-    public UserResponseBody getUser(String userName){
+    public UserResponseBody getUser(String userName, boolean isGettingAvatar){
+        userName = userName.toLowerCase(Locale.ROOT);
+
         User user = userRepository.findById(userName)
                 .orElseThrow(UserExceptionSupplier.userNotFoundException(userName));
+
+        userSupport.processAvatar(user, isGettingAvatar);
         return userMapper.toUserResponseBody(user);
     }
 
     public UserResponseBody updateUser(String userName, UserUpdateRequestBody userUpdateRequestBody){
+        userName = userName.toLowerCase(Locale.ROOT);
+
+        if(userUpdateRequestBody.getImgURL().equals("")){
+            userUpdateRequestBody.setImgUrl(null);
+        }
+
         User user = userRepository.findById(userName)
                 .orElseThrow(UserExceptionSupplier.userNotFoundException(userName));
 
@@ -75,7 +81,7 @@ public class UserService {
 
     public FoundUsersPageResponseBody findPaginated(int pageNr, int size, List<String> query, boolean fNameAscending,
                                                     boolean lNameAscending, boolean uNameAscending,
-                                                    boolean emailAscending){
+                                                    boolean emailAscending, boolean isGettingAvatar){
         Sort sort = userSupport.getSort(fNameAscending, lNameAscending, uNameAscending, emailAscending);
 
         if(pageNr <= 0){
@@ -95,12 +101,13 @@ public class UserService {
         Page<User> page = userRepository.findAll(spec, pageRequest);
         //List<User> users = userRepository.findAll(spec);
         List<User> users = page.getContent();
-        List<UserResponseBody>  usersResponse = users.stream().map(userMapper::toUserResponseBody).collect(Collectors.toList());
+        List<UserResponseBody>  usersResponse = users.stream().map(u -> userSupport.processAvatar(u, isGettingAvatar))
+                .map(userMapper::toUserResponseBody).collect(Collectors.toList());
         return userMapper.toUserFoundPaged(usersResponse, page.getTotalElements(), page.getTotalPages());
     }
 
     public List<UserResponseBody> findUsers(List<String> query, boolean fNameAsc, boolean lNameAsc,
-                                            boolean uNameAsc, boolean emailAsc){
+                                            boolean uNameAsc, boolean emailAsc, boolean isGettingAvatar){
 
         Sort sort = userSupport.getSort(fNameAsc, lNameAsc, uNameAsc, emailAsc);
 
@@ -111,7 +118,8 @@ public class UserService {
 
         Specification<User> spec = userSupport.nameContains(query);
         List<User> users = userRepository.findAll(spec, sort);
-        List<UserResponseBody>  usersResponse = users.stream().map(userMapper::toUserResponseBody).collect(Collectors.toList());
+        List<UserResponseBody>  usersResponse = users.stream().map(u -> userSupport.processAvatar(u, isGettingAvatar)).
+                map(userMapper::toUserResponseBody).collect(Collectors.toList());
         return usersResponse;
     }
 

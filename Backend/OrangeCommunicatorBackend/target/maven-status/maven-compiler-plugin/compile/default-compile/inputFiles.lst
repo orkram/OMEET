@@ -59,6 +59,7 @@ C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\account\AccountApi.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\dbRepositories\MeetingUserListRepository.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\generalServicies\MailService.java
+C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\config\WebConfig.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\account\responseBody\AccountLogoutResponseBody.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\account\AccountService.java
 C:\Users\Qneds\Documents\GitHub\OMEET\Backend\OrangeCommunicatorBackend\src\main\java\com\orange\OrangeCommunicatorBackend\api\v1\users\support\UserMapper.java

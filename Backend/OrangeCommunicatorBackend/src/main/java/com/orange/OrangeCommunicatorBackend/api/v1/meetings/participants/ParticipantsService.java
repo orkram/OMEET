@@ -24,6 +24,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,6 +57,8 @@ public class ParticipantsService {
     }
 
     public void create(long id, String username) {
+        username = username.toLowerCase(Locale.ROOT);
+
         User user = userRepository.findById(username)
                 .orElseThrow(UserExceptionSupplier.userNotFoundException(username));
         Meeting meeting = meetingRepository.findById(id)
@@ -65,6 +68,8 @@ public class ParticipantsService {
     }
 
     public void delete(long id, String username) {
+        username = username.toLowerCase(Locale.ROOT);
+
         User user = userRepository.findById(username)
                 .orElseThrow(UserExceptionSupplier.userNotFoundException(username));
         Meeting meeting = meetingRepository.findById(id)
@@ -73,7 +78,8 @@ public class ParticipantsService {
         meetingUserListRepository.delete(participantsMapper.toMeetingParticipant(meeting, user));
     }
 
-    public List<UserResponseBody> findParticipants(Long id, List<String> query, boolean fNameAsc, boolean lNameAsc, boolean uNameAsc, boolean emailAsc) {
+    public List<UserResponseBody> findParticipants(Long id, List<String> query, boolean fNameAsc, boolean lNameAsc, boolean uNameAsc,
+                                                   boolean emailAsc, boolean isGettingAvatar) {
 
         Meeting meeting = meetingRepository.findById(id)
                 .orElseThrow(MeetingsExceptionSupplier.meetingNotFoundException(id));
@@ -88,13 +94,14 @@ public class ParticipantsService {
         Specification<User> spec = participantsSupport.specificationForUsers(query, usernames);
 
         List<User> users = userRepository.findAll(spec, sort);
-        List<UserResponseBody>  responseBodies = users.stream().map(userMapper::toUserResponseBody).collect(Collectors.toList());
+        List<UserResponseBody>  responseBodies = users.stream().map(u -> userSupport.processAvatar(u, isGettingAvatar))
+                .map(userMapper::toUserResponseBody).collect(Collectors.toList());
         return responseBodies;
     }
 
     public FoundUsersPageResponseBody
             findParticipantsPaginated(Long id, List<String> query, int page, int size,
-                                      boolean fNameAsc, boolean lNameAsc, boolean uNameAsc, boolean emailAsc) {
+                                      boolean fNameAsc, boolean lNameAsc, boolean uNameAsc, boolean emailAsc, boolean isGettingAvatar) {
 
 
         Meeting meeting = meetingRepository.findById(id)
@@ -118,13 +125,16 @@ public class ParticipantsService {
         PageRequest pageRequest = PageRequest.of(page - 1, size, sort);
         Specification<User> spec = participantsSupport.specificationForUsers(query, usernames);
         Page<User> pageOfUsers = userRepository.findAll(spec, pageRequest);
-        List<UserResponseBody>  usersResponse = pageOfUsers.get().map(userMapper::toUserResponseBody).collect(Collectors.toList());
+        List<UserResponseBody>  usersResponse = pageOfUsers.get().map(u -> userSupport.processAvatar(u, isGettingAvatar))
+                .map(userMapper::toUserResponseBody).collect(Collectors.toList());
         return userMapper.toUserFoundPaged(usersResponse, pageOfUsers.getTotalElements(), pageOfUsers.getTotalPages());
 
     }
 
 
     public List<MeetingResponseBody> findMeetings(String username, List<String> query, boolean mNameAsc, boolean idAsc, boolean dateAsc) {
+        username = username.toLowerCase(Locale.ROOT);
+
 
         User user = userRepository.findById(username)
                 .orElseThrow(UserExceptionSupplier.userNotFoundException(username));
@@ -143,6 +153,7 @@ public class ParticipantsService {
 
     public MeetingsPageResponseBody fingMeetingsPaginated(String username, int page, int size,
                                                           boolean mNameAsc, List<String> query, boolean idAsc, boolean dateAsc) {
+        username = username.toLowerCase(Locale.ROOT);
 
         User user = userRepository.findById(username)
                 .orElseThrow(UserExceptionSupplier.userNotFoundException(username));
