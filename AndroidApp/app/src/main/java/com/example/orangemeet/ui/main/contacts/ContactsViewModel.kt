@@ -27,7 +27,7 @@ class ContactsViewModel() : ViewModel() {
     fun setOnErrorListener(onError: (Int) -> Unit){
         this.errorListener = object : ErrorListener{
             override fun onError(error: Int) {
-                onError
+                onError(error)
             }
         }
     }

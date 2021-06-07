@@ -3,8 +3,8 @@ package com.example.orangemeet.ui.main.meetings
 import android.os.Bundle
 import android.view.*
 import android.widget.*
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -12,7 +12,6 @@ import com.example.orangemeet.*
 import com.example.orangemeet.data.model.Meeting
 import com.example.orangemeet.data.model.User
 import com.example.orangemeet.UserInfo
-import com.example.orangemeet.ui.utils.ResultInfo
 import com.example.orangemeet.utils.Util
 import java.text.SimpleDateFormat
 
@@ -20,17 +19,15 @@ class MeetingsFragment : Fragment() {
 
     lateinit var meetingsViewModel: MeetingsViewModel
 
-    val meetings = MutableLiveData<MutableList<Meeting>?>()
     lateinit var searchBar : SearchView
     lateinit var meetingsListView : LinearLayout
-    lateinit var progressBar : ProgressBar
+    lateinit var getMeetingsProgressBar : ProgressBar
     lateinit var addMeetingButton : MenuItem
     lateinit var meetingPopup : View
     lateinit var meetingPopupOwner : View
     lateinit var meetingPopupParticipants : LinearLayout
     lateinit var meetingPopupName : TextView
     lateinit var meetingPopupDateTime : TextView
-    lateinit var meetingsFragment : View
     lateinit var meetingPopupButton: Button
     lateinit var notFoundPlaceholder : View
 
@@ -50,14 +47,14 @@ class MeetingsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val view = inflater.inflate(R.layout.fragment_meetings, container, false)
         setHasOptionsMenu(true)
 
         meetingsViewModel = ViewModelProvider(this).get(MeetingsViewModel::class.java)
 
-        meetingsFragment = inflater.inflate(R.layout.fragment_meetings, container, false)
+        notFoundPlaceholder = view.findViewById(R.id.notFoundPlaceholder)
 
-        notFoundPlaceholder = meetingsFragment.findViewById(R.id.notFoundPlaceholder)
-        meetingPopup = meetingsFragment.findViewById(R.id.meetingPopup)
+        meetingPopup = view.findViewById(R.id.meetingPopup)
         meetingPopupOwner = meetingPopup.findViewById(R.id.owner)
         meetingPopupParticipants = meetingPopup.findViewById(R.id.participantsList)
         meetingPopupName = meetingPopup.findViewById(R.id.meetingName)
@@ -65,152 +62,94 @@ class MeetingsFragment : Fragment() {
         meetingPopupButton = meetingPopup.findViewById(R.id.joinMeetingButton)
         meetingPopup.setOnClickListener { meetingPopup.visibility = View.GONE }
 
-        meetingsListView = meetingsFragment.findViewById(R.id.meetingsList)
-        progressBar = meetingsFragment.findViewById(R.id.progressBar)
-        searchBar = meetingsFragment.findViewById(R.id.searchView)
-        searchBar.setOnQueryTextListener( object : SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
+        meetingsListView = view.findViewById(R.id.meetingsList)
+        getMeetingsProgressBar = view.findViewById(R.id.progressBar)
+        searchBar = view.findViewById(R.id.searchView)
 
+        searchBar.setOnQueryTextListener( object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean { return true }
             override fun onQueryTextChange(newText: String?): Boolean {
-                createMeetingViews(inflater, meetings.value)
+                if(newText != null)
+                    meetingsViewModel.updateQuery(newText)
                 return true
             }
         })
 
-        meetings.value = null
-        meetings.observe(viewLifecycleOwner, Observer { createMeetingViews(inflater, meetings.value) })
+        meetingsViewModel.displayedMeetings.observe(viewLifecycleOwner,
+            Observer {meetings ->
+                getMeetingsProgressBar.visibility = View.GONE
+                displayMeetings(inflater, meetings)
+            })
 
-        progressBar.visibility = View.VISIBLE
-
-        meetingsViewModel.getMeetingsResult.observe(viewLifecycleOwner,
-                Observer {getMeetingsResult ->
-                    if(getMeetingsResult.success){
-                        this.meetings.value = getMeetingsResult.data as MutableList<Meeting>?
-                        progressBar.visibility = View.GONE
-                    }else{
-                        Toast.makeText(
-                                requireContext(),
-                                getString(getMeetingsResult.error!!),
-                                Toast.LENGTH_LONG
-                        ).show()
-                        progressBar.visibility = View.GONE
+        meetingsViewModel.meetingsParticipants.observe(viewLifecycleOwner,
+                Observer {participants ->
+                    participants.forEach{participant ->
+                        val contactView = User.createSmallView(inflater, meetingPopupParticipants, participant, null)
+                        meetingPopupParticipants.addView(contactView)
                     }
                 })
 
-        meetingsViewModel.getMeetings()
-        /*BackendCommunication.getMeetings(
-                BackendRequestQueue.getInstance(requireContext()).requestQueue,
-            Response.Listener { meetings ->
-                this.meetings.value = meetings.toMutableList()
-                progressBar.visibility = View.GONE
-            },
-            Response.ErrorListener {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.get_meetings_fail),
-                    Toast.LENGTH_LONG
-                ).show()
-                progressBar.visibility = View.GONE
-            })*/
-
-
-        return meetingsFragment
-    }
-
-    private fun createMeetingViews(inflater : LayoutInflater, meetings : List<Meeting>?){
-        if(meetings == null)
-            return
-
-        val filteredMeetings = meetings.filter { meeting ->
-            if(searchBar.query.isEmpty())
-                true
-            else
-                meeting.name.toLowerCase().contains(searchBar.query.toString().toLowerCase())
+        meetingsViewModel.setOnErrorListener { error ->
+            showError(error)
         }
 
-        meetingsListView.removeAllViews()
+        getMeetingsProgressBar.visibility = View.VISIBLE
+        meetingsViewModel.getMeetings()
 
-        if(filteredMeetings.isEmpty())
-            notFoundPlaceholder.visibility = View.VISIBLE
-        else
-            notFoundPlaceholder.visibility = View.GONE
+        return view
+    }
 
-        var evenView = false
-        filteredMeetings.forEach {meeting ->
+    private fun showError(@StringRes error : Int){
+        Toast.makeText(requireContext(), error, Toast.LENGTH_LONG).show()
+    }
 
-            val view = Meeting.createView(
+    private fun createMeetingItem(meeting : Meeting, inflater: LayoutInflater, evenView : Boolean) : View{
+        val meetingItem = Meeting.createView(
                 inflater,
                 meetingsListView,
                 meeting,
                 Util.createTintedBackground(requireContext(), evenView)
-            )
+        )
 
-            val joinMeetingButton = view.findViewById<ImageButton>(R.id.imageButton)
+        val joinMeetingButton = meetingItem.findViewById<ImageButton>(R.id.imageButton)
 
-            joinMeetingButton.setOnClickListener {
+        joinMeetingButton.setOnClickListener {
+            UserInfo.conferenceName = meeting.name.toString()
+            UserInfo.conferenceId = meeting.id.toString()
+            findNavController().navigate(R.id.nav_video)
+        }
+
+        meetingItem.setOnClickListener {
+            val owner = meeting.owner
+            val username = meetingPopupOwner.findViewById<TextView>(R.id.contactUsername)
+            username.text = owner.username
+
+            meetingPopupName.text = meeting.name
+            meetingPopupDateTime.text = SimpleDateFormat("dd-MM-yyyy    kk:mm").format(meeting.date)
+
+            meetingPopupButton.setOnClickListener {
                 UserInfo.conferenceName = meeting.name.toString()
                 UserInfo.conferenceId = meeting.id.toString()
                 findNavController().navigate(R.id.nav_video)
             }
 
-            view.setOnClickListener {
-                val owner = meeting.owner
+            meetingPopupParticipants.removeAllViews()
+            meetingsViewModel.getMeetingParticipants(meeting)
 
-                val username = meetingPopupOwner.findViewById<TextView>(R.id.contactUsername)
+            meetingPopup.visibility = View.VISIBLE
+        }
 
-                username.text = owner.username
+        return meetingItem
+    }
 
-                meetingPopupName.text = meeting.name
-                meetingPopupDateTime.text = SimpleDateFormat("dd-MM-yyyy    kk:mm").format(meeting.date)
-                meetingPopupParticipants.removeAllViews()
-                meetingPopupButton.setOnClickListener {
-                    UserInfo.conferenceName = meeting.name.toString()
-                    UserInfo.conferenceId = meeting.id.toString()
-                    findNavController().navigate(R.id.nav_video)
-                }
+    private fun displayMeetings(inflater : LayoutInflater, meetings : List<Meeting>){
+        meetingsListView.removeAllViews()
 
-                var observerSet = false
-                val observer = object : Observer<ResultInfo<List<User>>>{
-                    override fun onChanged(result: ResultInfo<List<User>>?) {
-                        if(!observerSet)
-                            return
-                        if(result!!.success){
-                            result.data!!.forEach { contact ->
-                                val contactView = User.createSmallView(inflater, meetingPopupParticipants, contact, null)
-                                meetingPopupParticipants.addView(contactView)
-                            }
-                        }
-                        meetingsViewModel.getMeetingParticipantsResult.removeObserver(this)
-                    }
-                }
-                meetingsViewModel.getMeetingParticipantsResult.observe(viewLifecycleOwner, observer)
-                observerSet = true
-/*
-                meetingViewModel.getMeetingsParticipantsResult.observe(viewLifecycleOwner,
-                        Observer {result ->
+        notFoundPlaceholder.visibility = if (meetings.isEmpty()) View.VISIBLE else View.GONE
 
-                        })
-                meetingViewModel.getMeetingsParticipantsResult.removeObservers(viewLifecycleOwner)*/
-
-                meetingsViewModel.getMeetingParticipants(meeting)
-
-                /*BackendCommunication.getMeetingParticipants(BackendRequestQueue.getInstance(requireContext()).requestQueue, meeting.id,
-                    Response.Listener {contacts ->
-                        contacts.forEach {contact ->
-                            val contactView = User.createSmallView(inflater, meetingPopupParticipants, contact, null)
-                            meetingPopupParticipants.addView(contactView)
-                        }
-                    },
-                    Response.ErrorListener {
-
-                    })*/
-
-                meetingPopup.visibility = View.VISIBLE
-            }
-
-            meetingsListView.addView(view)
+        var evenView = false
+        meetings.forEach {meeting ->
+            meetingsListView.addView(createMeetingItem(meeting, inflater, evenView))
             evenView = !evenView
         }
     }
