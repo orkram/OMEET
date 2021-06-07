@@ -119,6 +119,8 @@ class ContactsFragment : Fragment() {
     private fun displayContacts(contacts : List<User>, inflater: LayoutInflater){
         contactsListLayout.removeAllViews()
 
+        notFoundPlaceholder.visibility = if (contacts.isEmpty()) View.VISIBLE else View.GONE
+
         var evenView = false
         contacts.forEach {contact ->
             val contactView = createContactItem(contact, inflater, evenView)
