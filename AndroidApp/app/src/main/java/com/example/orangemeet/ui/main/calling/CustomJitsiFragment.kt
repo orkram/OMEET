@@ -1,8 +1,4 @@
-//Autorzy kodu źródłowego: Konrad Stręk, Michał Skrok
-//Kod został utworzony w ramach kursu Projekt Zespołowy
-//na Politechnice Wrocławskiej
-
-package com.example.orangemeet.ui.main
+package com.example.orangemeet.ui.main.calling
 
 import android.content.Context
 import android.content.Intent
@@ -13,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.orangemeet.UserInfo
+import com.example.orangemeet.ui.main.MainActivity
 import org.jitsi.meet.sdk.*
 
 import timber.log.Timber

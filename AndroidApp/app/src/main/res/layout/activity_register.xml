@@ -208,11 +208,11 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageButton
-                android:id="@+id/passwordVisibilityButton"
+                android:id="@+id/passwordVisibilityBtn"
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:onClick="ShowHidePassword"
+                android:onClick="showHidePassword"
                 android:paddingRight="10dp"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/all_visibility_off" />
@@ -254,11 +254,11 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageButton
-                android:id="@+id/passwordRepVisibilityButton"
+                android:id="@+id/passwordRepeatVisibilityBtn"
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:onClick="ShowHideRepeatPassword"
+                android:onClick="showHideRepeatPassword"
                 android:paddingRight="10dp"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/all_visibility_off" />
