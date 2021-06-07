@@ -12,6 +12,8 @@ import com.example.orangemeet.*
 import com.example.orangemeet.data.model.Meeting
 import com.example.orangemeet.data.model.User
 import com.example.orangemeet.UserInfo
+import com.example.orangemeet.ui.utils.MeetingUiUtils
+import com.example.orangemeet.ui.utils.UserUiUtils
 import com.example.orangemeet.utils.Util
 import java.text.SimpleDateFormat
 
@@ -84,7 +86,7 @@ class MeetingsFragment : Fragment() {
         meetingsViewModel.meetingsParticipants.observe(viewLifecycleOwner,
                 Observer {participants ->
                     participants.forEach{participant ->
-                        val contactView = User.createSmallView(inflater, meetingPopupParticipants, participant, null)
+                        val contactView = UserUiUtils.createSmallView(inflater, meetingPopupParticipants, participant, null)
                         meetingPopupParticipants.addView(contactView)
                     }
                 })
@@ -104,7 +106,7 @@ class MeetingsFragment : Fragment() {
     }
 
     private fun createMeetingItem(meeting : Meeting, inflater: LayoutInflater, evenView : Boolean) : View{
-        val meetingItem = Meeting.createView(
+        val meetingItem = MeetingUiUtils.createView(
                 inflater,
                 meetingsListView,
                 meeting,

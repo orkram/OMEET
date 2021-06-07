@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.orangemeet.*
 import com.example.orangemeet.data.model.User
+import com.example.orangemeet.ui.utils.UserUiUtils
 import com.example.orangemeet.utils.Util
 
 
@@ -80,7 +81,7 @@ class FindContactFragment : Fragment() {
     }
 
     private fun createUserItem(user: User, inflater: LayoutInflater, evenView : Boolean) : View{
-        val userItem = User.createInviteView(
+        val userItem = UserUiUtils.createInviteView(
                 inflater,
                 contactsListView,
                 user,

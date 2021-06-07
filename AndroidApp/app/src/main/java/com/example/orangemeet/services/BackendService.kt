@@ -1,12 +1,7 @@
 package com.example.orangemeet.services
 
-import com.example.orangemeet.data.Result
+import com.example.orangemeet.data.model.Result
 import com.example.orangemeet.data.model.*
-import com.example.orangemeet.data.model.network.MeetingData
-import com.example.orangemeet.data.model.network.UserData
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
@@ -15,6 +10,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import com.example.orangemeet.data.model.User
+import com.google.gson.*
 
 class BackendService : DataSource {
 
@@ -22,10 +19,12 @@ class BackendService : DataSource {
     lateinit var retroBackendService: RetroBackendService
     private var loggedInUser : LoggedInUser? = null
 
+    private val gson: Gson = GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create()
+
     init {
         val retrofit = Retrofit.Builder()
             .baseUrl(backendUrl)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 
         retroBackendService = retrofit.create(RetroBackendService::class.java)
@@ -33,29 +32,21 @@ class BackendService : DataSource {
 
     private fun getAuthorization() = "Bearer ${loggedInUser!!.accessToken}"
 
-    private fun meetingsFromMeetingDatas(meetingDatas : List<MeetingData>) : List<Meeting>{
+    private fun meetingsFromMeetingDatas(meetingDatas : List<Meeting>) : List<Meeting>{
         val meetings = mutableListOf<Meeting>()
 
         meetingDatas.forEach{meetingData ->
             val meeting = Meeting(
-                    meetingData.meetingId,
+                    meetingData.id,
                     meetingData.name,
-                    SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(meetingData.date),
-                    User(meetingData.owner.username, meetingData.owner.email),
+                    meetingData.date,
+                    User(meetingData.owner.username, meetingData.owner.email, "todo", "todo"),
                     meetingData.roomUrl
             )
             meetings.add(meeting)
         }
 
         return meetings
-    }
-
-    private fun usersFromUserDatas(userDatas : List<UserData>) : List<User>{
-        val users = mutableListOf<User>()
-        userDatas.forEach { userData ->
-            users.add(User(userData.username, userData.email))
-        }
-        return users
     }
 
     private fun refreshAccessToken() : Boolean{
@@ -151,7 +142,7 @@ class BackendService : DataSource {
     override fun getContacts(): Result<List<User>> {
         val result = requestWithAuthorizationHandling(
                 {retroBackendService.getContacts(loggedInUser!!.username, getAuthorization())},
-                {response -> Result.Success(usersFromUserDatas(response.body()!!)) },
+                {response -> Result.Success(response.body()!!) },
                 {response -> Result.Error(IOException("Error code: " + response.code().toString())) }
         )
         return result
@@ -169,7 +160,7 @@ class BackendService : DataSource {
     override fun getUsers(): Result<List<User>> {
         val result = requestWithAuthorizationHandling(
                 {retroBackendService.getUsers(getAuthorization())},
-                {response -> Result.Success(usersFromUserDatas(response.body()!!)) },
+                {response -> Result.Success(response.body()!!) },
                 {response -> Result.Error(IOException("Error code: " + response.code().toString())) }
         )
         return result
@@ -215,7 +206,7 @@ class BackendService : DataSource {
     override fun getMeetingParticipants(meeting: Meeting): Result<List<User>> {
         val result = requestWithAuthorizationHandling(
                 {retroBackendService.getMeetingParticipants(meeting.id, getAuthorization())},
-                {response -> Result.Success(usersFromUserDatas(response.body()!!)) },
+                {response -> Result.Success(response.body()!!) },
                 {response -> Result.Error(IOException("Error code: " + response.code().toString())) }
         )
         return result

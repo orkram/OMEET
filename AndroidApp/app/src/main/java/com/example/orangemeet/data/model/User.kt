@@ -10,16 +10,32 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.example.orangemeet.R
 import com.example.orangemeet.utils.Util
+import com.google.gson.annotations.SerializedName
 import org.json.JSONObject
+import java.lang.UnsupportedOperationException
 
 
-data class User(val username : String, val email : String) : Parcelable{
+data class User(
+        @SerializedName("userName")
+        val username : String,
+        @SerializedName("eMail")
+        val email : String,
+        @SerializedName("firstName")
+        val firstname : String,
+        @SerializedName("lastName")
+        val lastname : String) : Parcelable{
 
-    constructor(parcel: Parcel) : this(parcel.readString()!!, parcel.readString()!!)
+    constructor(parcel: Parcel) : this(
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!)
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(username)
         parcel.writeString(email)
+        parcel.writeString(firstname)
+        parcel.writeString(lastname)
     }
 
     override fun describeContents(): Int {
@@ -34,51 +50,17 @@ data class User(val username : String, val email : String) : Parcelable{
             }
 
             override fun newArray(size: Int): Array<User?> {
-                return arrayOfNulls(size)
+                throw UnsupportedOperationException()
             }
         }
 
-        fun createFromJson(jsonObject: JSONObject) : User {
-            val str = jsonObject.toString()
-            val username = jsonObject.getString("userName")
-            val email = jsonObject.getString("eMail")
-            return User(username, email)
+        fun fromJson(jsonObject: JSONObject) : User {
+            return User(
+                    jsonObject.getString("userName"),
+                    jsonObject.getString("eMail"),
+                    jsonObject.getString("firstName"),
+                    jsonObject.getString("lastName"))
         }
 
-        private fun populateView(view : View, contact : User, background: Drawable?) : View{
-            val userNameTextView = view.findViewById<TextView>(R.id.contactUsername)
-            val emailTextView = view.findViewById<TextView>(R.id.contactEmail)
-            val box = view.findViewById<View>(R.id.box)
-            userNameTextView?.text = contact.username
-            emailTextView?.text = contact.email
-            if(background != null)
-                box.background = background
-            return view
-        }
-
-        fun createSmallView(inflater : LayoutInflater, root : ViewGroup, contact: User, background: Drawable?) : View{
-            val view = inflater.inflate(R.layout.view_contact_details_small, root, false)
-            view.findViewById<TextView>(R.id.contactUsername).text = contact.username
-            return view
-        }
-
-        fun createView(inflater : LayoutInflater, root : ViewGroup, contact: User, background: Drawable?) : View{
-            val view = inflater.inflate(R.layout.item_contact, root, false)
-            return populateView(view, contact, background)
-        }
-
-        fun createInviteView(inflater : LayoutInflater, root : ViewGroup, contact: User, background: Drawable?) : View{
-            val view = inflater.inflate(R.layout.item_contact_invite, root, false)
-            return populateView(view, contact, background)
-        }
-
-        fun createCheckView(inflater : LayoutInflater, root : ViewGroup, contact: User, background: Drawable?) : View{
-            val view = inflater.inflate(R.layout.item_contact_checkable, root, false)
-            return populateView(view, contact, background)
-        }
     }
-
-
-
-
 }

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.orangemeet.R
 import com.example.orangemeet.data.DataRepository
-import com.example.orangemeet.data.Result
+import com.example.orangemeet.data.model.Result
 import com.example.orangemeet.data.model.User
 import com.example.orangemeet.ui.utils.ErrorListener
 import com.example.orangemeet.ui.utils.ResultInfo

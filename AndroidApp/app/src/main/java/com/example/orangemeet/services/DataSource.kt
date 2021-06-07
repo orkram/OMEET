@@ -1,6 +1,6 @@
 package com.example.orangemeet.services
 
-import com.example.orangemeet.data.Result
+import com.example.orangemeet.data.model.Result
 import com.example.orangemeet.data.model.LoggedInUser
 import com.example.orangemeet.data.model.Meeting
 import com.example.orangemeet.data.model.User

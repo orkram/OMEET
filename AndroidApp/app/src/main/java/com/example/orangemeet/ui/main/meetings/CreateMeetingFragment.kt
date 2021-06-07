@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.orangemeet.R
 import com.example.orangemeet.data.model.User
+import com.example.orangemeet.ui.utils.UserUiUtils
 import com.example.orangemeet.utils.Util
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
@@ -163,7 +164,7 @@ class CreateMeetingFragment : Fragment() {
 
     private fun createContactItem(contact : User, evenView : Boolean) : View {
         val contactItem =
-                User.createCheckView(
+                UserUiUtils.createCheckView(
                         layoutInflater,
                         contactsLayout,
                         contact,

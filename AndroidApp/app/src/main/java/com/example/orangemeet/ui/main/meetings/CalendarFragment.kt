@@ -16,6 +16,7 @@ import com.applandeo.materialcalendarview.EventDay
 import com.example.orangemeet.*
 import com.example.orangemeet.data.model.Meeting
 import com.example.orangemeet.UserInfo
+import com.example.orangemeet.ui.utils.MeetingUiUtils
 import com.example.orangemeet.utils.Util
 import java.text.SimpleDateFormat
 import java.util.*
@@ -100,7 +101,7 @@ class CalendarFragment : Fragment() {
     }
 
     private fun createMeetingItem(meeting: Meeting, evenView : Boolean) : View {
-        val meetingItem = Meeting.createView(layoutInflater, meetingsView, meeting, Util.createTintedBackground(requireContext(), evenView))
+        val meetingItem = MeetingUiUtils.createView(layoutInflater, meetingsView, meeting, Util.createTintedBackground(requireContext(), evenView))
 
         meetingItem.findViewById<ImageButton>(R.id.imageButton).setOnClickListener {
             UserInfo.conferenceName = meeting.name.toString()

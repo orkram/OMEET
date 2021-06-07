@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.orangemeet.*
 import com.example.orangemeet.data.model.User
+import com.example.orangemeet.ui.utils.UserUiUtils
 import com.example.orangemeet.utils.Util
 
 
@@ -87,7 +88,7 @@ class ContactsFragment : Fragment() {
 
     private fun createContactItem(contact : User, inflater: LayoutInflater, evenView : Boolean) : View{
 
-        val contactView = User.createView(
+        val contactView = UserUiUtils.createView(
                 inflater,
                 contactsListLayout,
                 contact,
