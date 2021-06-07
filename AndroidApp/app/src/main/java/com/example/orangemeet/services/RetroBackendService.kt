@@ -25,7 +25,7 @@ interface RetroBackendService{
     @GET("api/v1/users")
     fun getUsers(@Header("authorization") authorization : String) : Call<List<UserData>>
 
-    @POST("api/v1/contacts/add")
+    @GET("api/v1/contacts/add")
     fun addContact(@Query("user-f") username: String, @Query("user-o") contact : String, @Header("authorization") authorization : String) : Call<Void>
 
     @GET("api/v1/meetings/participants/user/{username}?meetingNameSortAscending=true")
