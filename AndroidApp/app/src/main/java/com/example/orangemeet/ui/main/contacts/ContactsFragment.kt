@@ -81,7 +81,7 @@ class ContactsFragment : Fragment() {
 
     private fun goCreateMeetingWithUser(contact: User){
         val includedContactBundle = Bundle();
-        includedContactBundle.putString("username",  contact.username);
+        includedContactBundle.putParcelable("user",  contact);
         findNavController().navigate(R.id.nav_create_meeting, includedContactBundle)
     }
 

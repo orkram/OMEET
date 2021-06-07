@@ -2,6 +2,8 @@ package com.example.orangemeet.data.model
 
 import android.graphics.drawable.Drawable
 import android.media.Image
+import android.os.Parcel
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,32 +13,31 @@ import com.example.orangemeet.utils.Util
 import org.json.JSONObject
 
 
-class User {
-    lateinit var username : String
-    lateinit var email : String
-    lateinit var avatar : Image
-    var selected = false
+data class User(val username : String, val email : String) : Parcelable{
 
-    constructor(){
-        username = "TestUsername" + Util.generateRandomString(8)
-        email = "Test@Email.com"
+    constructor(parcel: Parcel) : this(parcel.readString()!!, parcel.readString()!!)
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(username)
+        parcel.writeString(email)
     }
 
-    constructor(username : String, email : String){
-        this.username = username
-        this.email = email
-    }
-
-
-    override fun equals(other: Any?): Boolean {
-        if(other !is User)
-            return false;
-        else{
-            return (other as User).username == this.username
-        }
+    override fun describeContents(): Int {
+        return 0
     }
 
     companion object{
+
+        val CREATOR = object : Parcelable.Creator<User>{
+            override fun createFromParcel(parcel: Parcel): User {
+                return User(parcel)
+            }
+
+            override fun newArray(size: Int): Array<User?> {
+                return arrayOfNulls(size)
+            }
+        }
+
         fun createFromJson(jsonObject: JSONObject) : User {
             val str = jsonObject.toString()
             val username = jsonObject.getString("userName")
@@ -76,5 +77,8 @@ class User {
             return populateView(view, contact, background)
         }
     }
+
+
+
 
 }

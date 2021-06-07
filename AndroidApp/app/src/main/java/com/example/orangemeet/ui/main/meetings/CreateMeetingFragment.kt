@@ -5,6 +5,8 @@ import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.*
 import android.widget.*
+import androidx.annotation.StringRes
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
@@ -23,7 +25,7 @@ class CreateMeetingFragment : Fragment() {
 
     lateinit var createMeetingViewModel: CreateMeetingViewModel
 
-    lateinit var progressBar : ProgressBar
+    lateinit var getContactsProgressBar : ProgressBar
 
     lateinit var dateBox : View
     lateinit var timeBox : View
@@ -34,12 +36,6 @@ class CreateMeetingFragment : Fragment() {
     lateinit var createMeetingButton : Button
     lateinit var meetingNameView : TextInputEditText
 
-    val pickedDate = MutableLiveData<Date>()
-
-    var contacts : List<User>? = null
-
-    val checkedContacts = mutableListOf<User>()
-    var includedContact : String? = null
 
 
     override fun onCreateView(
@@ -51,17 +47,16 @@ class CreateMeetingFragment : Fragment() {
 
         createMeetingViewModel = ViewModelProvider(this).get(CreateMeetingViewModel::class.java)
 
-        val calendar = Calendar.getInstance()
+        val includedUser = arguments?.getParcelable<User>("user")
+        if(includedUser != null)
+            createMeetingViewModel.setIncludedContact(includedUser)
 
-        includedContact = arguments?.getString("username")
-
-        pickedDate.value = calendar.time
-        pickedDate.observe(viewLifecycleOwner, androidx.lifecycle.Observer {newDate ->
+        createMeetingViewModel.pickedDate.observe(viewLifecycleOwner, androidx.lifecycle.Observer {newDate ->
             dateView.text = SimpleDateFormat("dd-MM-yyyy", Locale("PL")).format(newDate).toString()
             timeView.text = SimpleDateFormat("kk:mm", Locale("PL")).format(newDate).toString()
         })
 
-        progressBar = createMeetingFragment.findViewById(R.id.progressBar)
+        getContactsProgressBar = createMeetingFragment.findViewById(R.id.progressBar)
         searchView = createMeetingFragment.findViewById(R.id.searchView)
         contactsLayout = createMeetingFragment.findViewById(R.id.contactsLayout)
         dateBox = createMeetingFragment.findViewById(R.id.dateBox)
@@ -71,164 +66,127 @@ class CreateMeetingFragment : Fragment() {
         createMeetingButton = createMeetingFragment.findViewById(R.id.createMeeting)
         meetingNameView = createMeetingFragment.findViewById(R.id.meetingName)
 
-        progressBar.visibility = View.VISIBLE
-
-        createMeetingViewModel.createMeetingResult.observe(viewLifecycleOwner, Observer {createMeetingResult ->
-            if(createMeetingResult.success){
-                Toast.makeText(
-                        requireContext(),
-                        getString(R.string.create_meeting_success),
-                        Toast.LENGTH_SHORT
-                ).show()
+        createMeetingViewModel.createMeetingResult.observe(viewLifecycleOwner, Observer {result ->
+            if(result.success){
+                showMessage(R.string.create_meeting_success)
                 findNavController().navigateUp()
             }else{
-                Toast.makeText(
-                        requireContext(),
-                        getString(createMeetingResult.error!!),
-                        Toast.LENGTH_SHORT
-                ).show()
+                showError(R.string.create_meeting_fail)
             }
         })
+
+        meetingNameView.setText(createMeetingViewModel.meetingName)
+        meetingNameView.addTextChangedListener {text ->
+            if (text != null) {
+                createMeetingViewModel.meetingName = text.toString()
+            }
+        }
 
         createMeetingButton.setOnClickListener {
             if(meetingNameView.text!!.isEmpty()){
-                Toast.makeText(requireContext(), getString(R.string.meeting_name_empty), Toast.LENGTH_LONG).show()
+                showMessage(R.string.meeting_name_empty)
                 return@setOnClickListener
             }
-
-            createMeetingViewModel.createMeeting(pickedDate.value!!, meetingNameView.text.toString(), checkedContacts)
-
-            /*BackendCommunication.createMeeting(
-                    BackendRequestQueue.getInstance(requireContext()).requestQueue,
-                pickedDate.value!!,
-                meetingNameView.text.toString(),
-                checkedContacts,
-                Response.Listener {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.create_meeting_success),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    findNavController().navigateUp()
-                },
-                Response.ErrorListener {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.create_meeting_fail),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                })*/
+            createMeetingViewModel.createMeeting()
         }
 
         searchView.setOnQueryTextListener( object : SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
-
+            override fun onQueryTextSubmit(query: String?): Boolean { return true }
             override fun onQueryTextChange(newText: String?): Boolean {
-                createViews()
+                if(newText != null)
+                    createMeetingViewModel.updateQuery(newText)
                 return true
             }
         })
 
-        createMeetingViewModel.getContactsResult.observe(viewLifecycleOwner,
-                Observer {getContactsResult ->
-                    if(getContactsResult.success){
-                        this.contacts = getContactsResult.data
-                        checkedContacts.clear();
-                        contacts!!.forEach {contact ->
-                            if(includedContact != null && contact.username == includedContact){
-                                checkedContacts.add(contact)
-                            }
-                        }
-                        progressBar.visibility = View.GONE;
-                        createViews()
-                    }else{
-                        Toast.makeText(
-                                requireContext(),
-                                getString(getContactsResult.error!!),
-                                Toast.LENGTH_LONG
-                        ).show()
-                        progressBar.visibility = View.GONE;
-                    }
+        createMeetingViewModel.displayedContacts.observe(viewLifecycleOwner,
+                Observer {contacts ->
+                    getContactsProgressBar.visibility = View.GONE;
+                    displayContacts(contacts)
                 })
 
-        createMeetingViewModel.getContacts()
-
-        /*BackendCommunication.getContactsList(
-                BackendRequestQueue.getInstance(requireContext()).requestQueue,
-            Response.Listener { contacts ->
-                this.contacts = contacts
-                checkedContacts.clear();
-                contacts.forEach {contact ->
-                    if(includedContact != null && contact.username == includedContact){
-                        checkedContacts.add(contact)
-                    }
-                }
-                progressBar.visibility = View.GONE;
-                createViews()
-            },
-            Response.ErrorListener {
-
-            })*/
-
         dateBox.setOnClickListener {
-            DatePickerDialog(requireContext(),
-                    DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                        calendar.set(year, month, dayOfMonth)
-                        pickedDate.value = calendar.time
-                    },
-                    calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH) ).show()
+            setDateDialog()
         }
 
         timeBox.setOnClickListener {
-            TimePickerDialog(context,
-                    TimePickerDialog.OnTimeSetListener{ timePicker: TimePicker, hour: Int, minute: Int ->
-                        calendar.set(Calendar.HOUR_OF_DAY, hour)
-                        calendar.set(Calendar.MINUTE, minute)
-                        val dat = calendar.time
-                        pickedDate.value = calendar.time
-                    },
-                    calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true ).show()
+            setTimeDialog()
         }
+
+        createMeetingViewModel.setOnErrorListener { error ->
+            showError(error)
+        }
+
+        getContactsProgressBar.visibility = View.VISIBLE
+        createMeetingViewModel.getContacts()
 
         return createMeetingFragment
     }
 
-    private fun createViews(){
-        if(contacts == null)
-            return
+    private fun setDateDialog() {
+        val meetingCalendar = createMeetingViewModel.getMeetingCalendar()
+        DatePickerDialog(requireContext(),
+                DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                    createMeetingViewModel.setMeetingDate(year, month, dayOfMonth)
+                },
+                meetingCalendar.get(Calendar.YEAR),
+                meetingCalendar.get(Calendar.MONTH),
+                meetingCalendar.get(Calendar.DAY_OF_MONTH) ).show()
+    }
 
-        val filteredContacts = contacts!!
-                .filter { contact -> contact.username.toLowerCase().contains(searchView.query.toString().toLowerCase()) }
-                .sortedBy { contact -> contact.username != includedContact}
+    private fun setTimeDialog() {
+        val meetingCalendar = createMeetingViewModel.getMeetingCalendar()
+        TimePickerDialog(context,
+                TimePickerDialog.OnTimeSetListener{ timePicker: TimePicker, hour: Int, minute: Int ->
+                    createMeetingViewModel.setMeetingTime(hour, minute)
+                },
+                meetingCalendar.get(Calendar.HOUR_OF_DAY),
+                meetingCalendar.get(Calendar.MINUTE),
+                true ).show()
+    }
 
+    private fun showError(@StringRes error : Int) {
+        Toast.makeText(
+                requireContext(),
+                getString(error),
+                Toast.LENGTH_LONG
+        ).show()
+    }
+
+    private fun showMessage(@StringRes message : Int) {
+        Toast.makeText(
+                requireContext(),
+                getString(message),
+                Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    private fun createContactItem(contact : User, evenView : Boolean) : View {
+        val contactItem =
+                User.createCheckView(
+                        layoutInflater,
+                        contactsLayout,
+                        contact,
+                        Util.createTintedBackground(requireContext(), evenView)
+                )
+
+        val checkBox = contactItem.findViewById<CheckBox>(R.id.checkBox)
+
+        checkBox.isChecked = createMeetingViewModel.isContactChecked(contact)
+
+        checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+            createMeetingViewModel.setContactChecked(contact, isChecked)
+        }
+
+        return contactItem
+    }
+
+    private fun displayContacts(contacts : List<User>){
         contactsLayout.removeAllViews()
 
         var evenView = false
-        filteredContacts.forEach { contact ->
-
-            val contactView =
-                User.createCheckView(
-                    layoutInflater,
-                    contactsLayout,
-                    contact,
-                    Util.createTintedBackground(requireContext(), evenView)
-                )
-
-            val checkBox = contactView.findViewById<CheckBox>(R.id.checkBox)
-
-            if(checkedContacts.contains(contact))
-                checkBox.isChecked = true
-
-            checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
-                if(isChecked)
-                    checkedContacts.add(contact)
-                else
-                    checkedContacts.remove(contact)
-            }
-
-            contactsLayout.addView(contactView)
+        contacts.forEach { contact ->
+            contactsLayout.addView(createContactItem(contact, evenView))
             evenView = !evenView
         }
     }

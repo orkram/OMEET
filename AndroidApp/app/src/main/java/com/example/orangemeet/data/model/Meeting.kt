@@ -20,15 +20,6 @@ class Meeting {
     lateinit var roomUrl : String
     var isActive : Boolean = false
 
-
-    constructor(){
-        id = Random().nextLong()
-        name = "Name" + Util.generateRandomString(8)
-        owner = User()
-        participants = List(3){ i -> User() }
-        date = Date()
-    }
-
     constructor(id : Long, name : String, date : Date, owner : User, roomUrl : String){
         this.name = name
         this.id = id
