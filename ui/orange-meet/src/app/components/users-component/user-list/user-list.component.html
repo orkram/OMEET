@@ -27,7 +27,7 @@
     <ng-container matColumnDef="image">
       <mat-header-cell *matHeaderCellDef ></mat-header-cell>
       <mat-cell *matCellDef="let contact">
-        <img class="table-image" src="{{imagePlaceholder}}"/>
+        <img class="table-image"  src= "{{contact.imgURL}}" (error)="errorHandler($event)" />
       </mat-cell>
     </ng-container>
 

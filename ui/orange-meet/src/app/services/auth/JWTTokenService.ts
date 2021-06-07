@@ -36,14 +36,12 @@ export class JWTTokenService {
   }
 
   isAccessTokenExpired(): boolean {
-    console.log(this.accessToken());
     if (this.accessToken()) {
       const expiryTime: number = +JSON.parse(JSON.stringify(this.accessToken())).exp;
       if (expiryTime) {
-        console.log('Access token is expired');
-        return ((1000 * expiryTime) - (new Date()).getTime()) < 5000;
+        return ((1000 * expiryTime) - (new Date()).getTime()) < 10000;
       } else {
-        return false;
+        return true;
       }
     } else {
       return true;

@@ -20,9 +20,7 @@ export class UserInfoComponent implements OnInit {
   ngOnInit(): void {
     this.userService.getUserImage(this.jwtToken.getUsername()).subscribe(
       next => {
-        console.log(next.url);
-        this.userImage.nativeElement.src = next.url ;
-      }
+        this.userImage.nativeElement.src = next.imgURL ; }
     );
 
   }

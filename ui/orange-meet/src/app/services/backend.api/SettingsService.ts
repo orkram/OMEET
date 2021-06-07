@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {mergeMap} from 'rxjs/operators';
 
@@ -20,18 +20,15 @@ export class SettingsService {
               cameraOn: boolean,
               isPrivate: boolean): string {
    const r = JSON.stringify( {
-      isDefaultCamOn: micOn,
-      isDefaultMicOn: cameraOn,
+      isDefaultCamOn: cameraOn,
+      isDefaultMicOn: micOn,
       private: isPrivate
     });
    return JSON.parse(r);
 }
 
   uploadImage(username: string, image: any): Observable<any>{
-     return this.http.get(`http://localhost:8083/upload`, {
-      params: new HttpParams()
-        .set('username', username)
-    }).pipe(
+     return this.http.get(`http://130.61.186.61:9000/api/v1/users/${username}/avatar/update`).pipe(
        mergeMap ((response: any) => {
          console.log(response);
 
@@ -43,7 +40,7 @@ export class SettingsService {
          );
 
          return this.http.put(
-           response.url,
+           response.imgUpdateUrl,
            image,
            {headers}
            );

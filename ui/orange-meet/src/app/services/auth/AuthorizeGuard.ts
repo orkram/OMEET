@@ -35,7 +35,6 @@ export class AuthorizeGuard implements CanActivate {
               window.location.reload();
             }
         );
-        this.router.navigateByUrl('/login');
         return !!k;      // TODO wasn't tested
       } else {
         return true;

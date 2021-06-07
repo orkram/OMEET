@@ -51,10 +51,7 @@ export class UserService {
   }
 
   getUserImage(username: string): Observable<any>{
-    return this.http.get(`http://localhost:8083/download`, {
-      params: new HttpParams()
-        .set('username', username)
-    });
+    return this.http.get(`http://130.61.186.61:9000/api/v1/users/${username}`);
   }
 
   createConnection(username: string, friendName: string): Observable<any> {
