@@ -1,9 +1,19 @@
 package com.orange.OrangeCommunicatorBackend.api.v1.meetings;
 
+import com.orange.OrangeCommunicatorBackend.api.v1.meetings.requestBody.NewMeetingRequestBody;
+import com.orange.OrangeCommunicatorBackend.api.v1.meetings.requestBody.UpdateMeetingRequestBody;
+import com.orange.OrangeCommunicatorBackend.api.v1.meetings.responseBody.MeetingResponseBody;
+import com.orange.OrangeCommunicatorBackend.api.v1.meetings.responseBody.MeetingsPageResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/meetings")
@@ -11,28 +21,86 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class MeetingsApi {
 
-    @PostMapping
+    private final MeetingsService meetingsService;
+
+    public MeetingsApi(MeetingsService meetingsService) {
+        this.meetingsService = meetingsService;
+    }
+
+
+    @PostMapping()
     @ApiOperation("Create new meeting")
-    public String create(@RequestBody String s) {
-        return "/meetings POST endpoint";
+    public ResponseEntity<MeetingResponseBody> create(@RequestBody NewMeetingRequestBody newMeetingRequestBody) {
+        MeetingResponseBody meetingResponseBody = meetingsService.create(newMeetingRequestBody);
+        return ResponseEntity.status(HttpStatus.CREATED).body(meetingResponseBody);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(path="/{id}")
     @ApiOperation("Get informations about meeting")
-    public String find(@PathVariable Long id) {
-        return "/meetings GET endpoint";
+    public ResponseEntity<MeetingResponseBody> find(
+            @ApiParam(value = "The id of meeting for which information should be returned.", required = true)
+            @PathVariable Long id,
+            @ApiParam(value = "Optionally get avatar.")
+            @RequestParam(name="getAvatar", defaultValue="true") boolean isGettingAvatar) {
+        MeetingResponseBody meetingResponseBody = meetingsService.get(id, isGettingAvatar);
+        return ResponseEntity.status(HttpStatus.OK).body(meetingResponseBody);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(path="/{id}")
     @ApiOperation("Cancel meeting")
-    public String delete(@PathVariable Long id) {
-        return "/meetings DELETE endpoint";
+    public ResponseEntity<Void> delete(
+            @ApiParam(value = "The id of meeting which should be removed.", required = true) @PathVariable Long id) {
+        meetingsService.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(path="/{id}")
     @ApiOperation("Update meeting")
-    public String update(@PathVariable Long id) {
-        return "/meetings PUT endpoint";
+    public ResponseEntity<MeetingResponseBody> update(
+            @ApiParam(value = "The id of meeting for which information should be updated.", required = true) @PathVariable Long id,
+            @RequestBody UpdateMeetingRequestBody updateMeetingRequestBody) {
+        MeetingResponseBody meetingResponseBody = meetingsService.update(id, updateMeetingRequestBody);
+        return ResponseEntity.status(HttpStatus.OK).body(meetingResponseBody);
+    }
+
+    @GetMapping(path="/owner/{username}")
+    @ApiOperation("Get all meetings of owner")
+    public ResponseEntity<List<MeetingResponseBody>>
+            getOwnersMeetings(@ApiParam(value = "The username of user for which meetings should be returned.", required = true) @PathVariable String username,
+                              @ApiParam(value = "The searching words, by which user's meetings will be found.")
+                              @RequestParam(name="query", defaultValue="") List<String> query,
+                              @ApiParam(value = "The sort type by meeting's name.")
+                              @RequestParam(name="meetingNameSortAscending", defaultValue="true") boolean mNameAsc,
+                              @ApiParam(value = "The sort type by meeting's id.")
+                              @RequestParam(name="idSortAscending", defaultValue="true") boolean idAsc,
+                              @ApiParam(value = "The sort type by meeting's date.")
+                              @RequestParam(name="meetingDateSortAscending", defaultValue="true") boolean dateAsc,
+                              @ApiParam(value = "Optionally get avatar.")
+                              @RequestParam(name="getAvatar", defaultValue="true") boolean isGettingAvatar) {
+        List<MeetingResponseBody> meetingResponseBody = meetingsService.getOwnersMeeting(username, query, mNameAsc,
+                idAsc, dateAsc, isGettingAvatar);
+        return ResponseEntity.status(HttpStatus.OK).body(meetingResponseBody);
+    }
+
+    @GetMapping(path="/owner/{username}/page")
+    @ApiOperation("Get all meetings of owner paginated")
+    public ResponseEntity<MeetingsPageResponseBody>
+            getOwnersMeetingsPaginated(@ApiParam(value = "The username of user for which meetings should be returned.", required = true) @PathVariable String username,
+                                       @ApiParam(value = "The number of page to return.", required = true) @RequestParam("page") int page,
+                                       @ApiParam(value = "The amount of meetings per page to return.", required = true) @RequestParam("size")  int size,
+                                       @ApiParam(value = "The searching words, by which user's meetings will be found.")
+                                       @RequestParam(name="query", defaultValue="") List<String> query,
+                                       @ApiParam(value = "The sort type by meeting's name.")
+                                       @RequestParam(name="meetingNameSortAscending", defaultValue="true") boolean mNameAsc,
+                                       @ApiParam(value = "The sort type by meeting's id.")
+                                       @RequestParam(name="idSortAscending", defaultValue="true") boolean idAsc,
+                                       @ApiParam(value = "The sort type by meeting's date.")
+                                       @RequestParam(name="meetingDateSortAscending", defaultValue="true") boolean dateAsc,
+                                       @ApiParam(value = "Optionally get avatar.")
+                                       @RequestParam(name="getAvatar", defaultValue="true") boolean isGettingAvatar) {
+        MeetingsPageResponseBody meetingResponseBody =
+                meetingsService.getOwnersMeetingPaginated(username, query, page, size, mNameAsc, idAsc, dateAsc, isGettingAvatar);
+        return ResponseEntity.status(HttpStatus.OK).body(meetingResponseBody);
     }
 
 

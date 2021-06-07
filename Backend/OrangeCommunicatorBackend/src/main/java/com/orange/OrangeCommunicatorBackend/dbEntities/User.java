@@ -12,26 +12,26 @@ public class User {
 
     @Id
     @Column(name="user_name")
-    private String user_name;
+    private String userName;
 
-    @Column(name="e_mail", nullable=false, length = 32)
-    private String e_mail;
+    @Column(name="e_mail", nullable=false)
+    private String eMail;
 
-    @Column(name="first_name", nullable=false, length = 32)
-    private String first_name;
+    @Column(name="first_name", nullable=false, length = 64)
+    private String firstName;
 
-    @Column(name="last_name", nullable=false, length = 32)
-    private String last_name;
+    @Column(name="last_name", nullable=false, length = 64)
+    private String lastName;
 
     @Column(name="img_url", nullable=true)
-    private String img_url;
+    private String imgUrl;
 
     @Column(name="keycloak_id", nullable = false)
-    private String keycloak_id;
+    private String keycloakId;
 
 
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Settings settings;
 
     @OneToMany(mappedBy = "user")
@@ -40,10 +40,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<MeetingUserList> meetingUserList;
 
-    @OneToMany(mappedBy = "user_o")
+    @OneToMany(mappedBy = "userOwn")
     private Set<ListOfFriends> listOfFriends1;
 
-    @OneToMany(mappedBy = "user_f")
+    @OneToMany(mappedBy = "userFnd")
     private Set<ListOfFriends> listOfFriends2;
 
     public User(){
@@ -51,68 +51,68 @@ public class User {
     }
 
     public User(String user_name, String e_mail, String first_name, String last_name, String img_url, String keycloak_id) {
-        this.user_name = user_name;
-        this.e_mail = e_mail;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.img_url = img_url;
-        this.keycloak_id = keycloak_id;
+        this.userName = user_name;
+        this.eMail = e_mail;
+        this.firstName = first_name;
+        this.lastName = last_name;
+        this.imgUrl = img_url;
+        this.keycloakId = keycloak_id;
     }
 
     public User(String user_name, String e_mail, String first_name, String last_name, String img_url) {
-        this.user_name = user_name;
-        this.e_mail = e_mail;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.img_url = img_url;
-        this.keycloak_id = null;
+        this.userName = user_name;
+        this.eMail = e_mail;
+        this.firstName = first_name;
+        this.lastName = last_name;
+        this.imgUrl = img_url;
+        this.keycloakId = null;
     }
 
-    public String getE_mail() {
-        return e_mail;
+    public String getEMail() {
+        return eMail;
     }
 
-    public void setE_mail(String e_mail) {
-        this.e_mail = e_mail;
+    public void setEMail(String eMail) {
+        this.eMail = eMail;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getUser_name() {
-        return user_name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getImg_url() {
-        return img_url;
+    public String getImgUrl() {
+        return imgUrl;
     }
 
-    public void setImg_url(String img_url) {
-        this.img_url = img_url;
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
-    public String getKeycloak_id() {
-        return keycloak_id;
+    public String getKeycloakId() {
+        return keycloakId;
     }
 
-    public void setKeycloak_id(String keycloak_id) {
-        this.keycloak_id = keycloak_id;
+    public void setKeycloakId(String keycloakId) {
+        this.keycloakId = keycloakId;
     }
 }

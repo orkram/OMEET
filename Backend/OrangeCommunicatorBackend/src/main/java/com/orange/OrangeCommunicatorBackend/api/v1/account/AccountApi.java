@@ -8,10 +8,10 @@ import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountRe
 import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountLogoutResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountRegisterResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.account.responseBody.AccountTokenResponseBody;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,40 +29,48 @@ public class AccountApi {
         this.accountService = accountService;
     }
 
-    @PostMapping("/register")
+    @PostMapping(path="/register")
     @ApiOperation("Register new account")
+    @ApiResponses(value = {
+            @ApiResponse(code = 409, message = "Account already exists")
+    })
     public ResponseEntity<AccountRegisterResponseBody> register(@RequestBody AccountRegisterRequestBody accountRegisterRequestBody) {
         AccountRegisterResponseBody accountRegisterResponseBody = accountService.register(accountRegisterRequestBody);
         return ResponseEntity.status(HttpStatus.CREATED).body(accountRegisterResponseBody);
     }
 
-    @PostMapping("/login")
+    @PostMapping(path="/login")
     @ApiOperation("Login user and get tokens")
     public ResponseEntity<AccountTokenResponseBody> login(@RequestBody AccountLoginRequestBody accountLoginRequestBody) {
         AccountTokenResponseBody accountTokenResponseBody = accountService.login(accountLoginRequestBody);
         return ResponseEntity.status(HttpStatus.OK).body(accountTokenResponseBody);
     }
 
-    @PostMapping("/{username}/refresh-token")
+    @PostMapping(path="/{username}/refresh-token")
     @ApiOperation("Refresh token for user")
-    public ResponseEntity<AccountTokenResponseBody> refresh(@PathVariable String username, @RequestBody AccountRefreshTokenRequestBody accountRefreshTokenRequestBody) {
+    public ResponseEntity<AccountTokenResponseBody>
+                refresh(@ApiParam(value = "The username of user which token needs to be refreshed.", required = true)
+                        @PathVariable String username,
+                        @RequestBody AccountRefreshTokenRequestBody accountRefreshTokenRequestBody) {
         AccountTokenResponseBody accountTokenResponseBody = accountService.refresh(accountRefreshTokenRequestBody);
         return ResponseEntity.status(HttpStatus.OK).body(accountTokenResponseBody);
     }
 
-    @PostMapping("/{username}/logout")
+    @PostMapping(path="/{username}/logout")
     @ApiOperation("Log out user")
-    public ResponseEntity<AccountLogoutResponseBody> logout(@PathVariable String username) {
+    public ResponseEntity<AccountLogoutResponseBody> logout(
+            @ApiParam(value = "The username of user who wants to be logged out.", required = true) @PathVariable String username) {
         AccountLogoutResponseBody accountLogoutResponseBody = accountService.logout(username);
         return ResponseEntity.status(HttpStatus.OK).body(accountLogoutResponseBody);
     }
 
-    @PostMapping("/{username}/change-password")
+    @PostMapping(path="/{username}/change-password")
     @ApiOperation("Change password of user")
-    public ResponseEntity<Void> logout(@PathVariable String username,
+    public ResponseEntity<Void> logout(@ApiParam(value = "The username of user who wants to change password.", required = true)
+                @PathVariable String username,
                 @RequestBody AccountChangePasswordRequestBody accountChangePasswordRequestBody) {
                 accountService.changePassword(accountChangePasswordRequestBody, username);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

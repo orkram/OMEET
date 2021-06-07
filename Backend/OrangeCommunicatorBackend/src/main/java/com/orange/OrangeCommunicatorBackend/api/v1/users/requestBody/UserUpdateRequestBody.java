@@ -1,38 +1,57 @@
 package com.orange.OrangeCommunicatorBackend.api.v1.users.requestBody;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UserUpdateRequestBody {
 
-    private final String e_mail;
-    private final String first_name;
-    private final String last_name;
-    private final String img_url;
+    private String eMail;
+    private String firstName;
+    private String lastName;
+    private String imgUrl;
 
 
     @JsonCreator
-    public UserUpdateRequestBody(String eMail, String firstName, String lastName,  String imgUrl) {
-        this.e_mail = eMail;
-        this.first_name = firstName;
-        this.img_url = imgUrl;
-        this.last_name = lastName;
+    public UserUpdateRequestBody(@JsonProperty("eMail") String eMail,
+                                 @JsonProperty("firstName") String firstName,
+                                 @JsonProperty("lastName") String lastName,
+                                 @JsonProperty("imgUrl") String imgUrl) {
+        this.eMail = eMail;
+        this.firstName = firstName;
+        this.imgUrl = imgUrl;
+        this.lastName = lastName;
     }
 
-    public String geteMail() {
-        return e_mail;
+    public void seteMail(String eMail) {
+        this.eMail = eMail;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    public String getEMail() {
+        return eMail;
     }
 
     public String getFirstName() {
-        return first_name;
+        return firstName;
     }
 
     public String getLastName() {
-        return last_name;
+        return lastName;
     }
 
-
     public String getImgURL() {
-        return img_url;
+        return imgUrl;
     }
 
 
