@@ -29,7 +29,7 @@ services:
   backend:
     container_name: backend
     build:
-      context: "./"
+      context: "./OrangeCommunicatorBackend/"
     depends_on: 
       - "keycloak"
       - "postgresqldb"
@@ -42,6 +42,7 @@ services:
       POSTGRES_DB_USERNAME: postgres
       POSTGRES_DB_PASSWORD: postgres
       #email
+      MAIL_SERVICE_ENABLE: "false"
       MAIL_SERVICE_HOST: smtp.gmail.com
       MAIL_SERVICE_PORT: 587
       MAIL_SERVICE_USERNAME: bp.qneds.test@gmail.com
@@ -75,41 +76,6 @@ services:
       #- "postgresqldb:postgresqldb"
     volumes: 
       - ./sql/init_keycloak_db.sql:/docker-entrypoint-initdb.d/init.sql
-    networks: 
-      - internal
-
-  backend:
-    container_name: backend
-    build:
-      context: "./"
-    depends_on: 
-      - "keycloak"
-      - "postgresqldb"
-    environment: 
-      SERVER_IP: 130.61.186.61
-      SERVICE_KEYCLOAK_REALM: OrngAuth
-      SERVICE_KEYCLOAK_BACKEND_CLIENT: admin-backend
-      SERVICE_KEYCLOAK_BACKEND_CLIENT_SECRET: d063d8ac-d63b-4ea2-88e9-cb794a062d8a
-      POSTGRES_DB_URL: jdbc:postgresql://postgresqldb:5432/kaliber_db
-      POSTGRES_DB_USERNAME: postgres
-      POSTGRES_DB_PASSWORD: postgres
-      #email
-      MAIL_SERVICE_HOST: smtp.gmail.com
-      MAIL_SERVICE_PORT: 587
-      MAIL_SERVICE_USERNAME: bp.qneds.test@gmail.com
-      MAIL_SERVICE_HOST_PASSWORD: ""
-
-      SERVICE_KEYCLOAK_SWAGGER_CLIENT: orange-backend
-      SERVICE_KEYCLOAK_SWAGGER_CLIENT_SECRET: 86d2938e-2474-4f2f-b936-cae6c875fad1
-      SERVICE_KEYCLOAK_FRONT_CLIENT: orange-app
-      SERVICE_KEYCLOAK_FRONT_CLIENT_SWAGGER: a6c73d18-cdfa-49e3-bfb9-9d4f2640c1cf
-      DB_ON_LAUNCH_MODE: update
-      #DB_ON_LAUNCH_MODE: create-drop
-
-    ports:
-      - "9000:9000"
-    links: 
-      - "keycloak:keycloak"
     networks: 
       - internal
 

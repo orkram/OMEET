@@ -55,6 +55,7 @@ spring:
     #exclude:
       #- org.keycloak.adapters.springboot.KeycloakSpringBootConfiguration
   mail:
+    enable: ${MAIL_SERVICE_ENABLE}
     host: ${MAIL_SERVICE_HOST}
     port: ${MAIL_SERVICE_PORT}
     username: ${MAIL_SERVICE_USERNAME}

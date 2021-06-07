@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -53,6 +54,8 @@ public class ContactsService {
     }
 
     public boolean sendInvite(String from, String to) throws IllegalArgumentException {
+        from = from.toLowerCase(Locale.ROOT);
+        to = to.toLowerCase(Locale.ROOT);
 
         User user = userRepository.findById(to).orElseThrow(UserExceptionSupplier.userNotFoundException(to));
         User sender = userRepository.findById(from).orElseThrow(UserExceptionSupplier.userNotFoundException(from));
@@ -82,7 +85,7 @@ public class ContactsService {
 
         String emailText = "Hey,<br>An invitation was sent to you by " + senderName + " to join his group of friends!!<br>";
         emailText += "To accept this invitation click the link below:<br>";
-        emailText += "<form method=\"post\" action=\"" + path +"\" target=\"_self\"> <button type=\"submit\">" + text + "</button></form>";
+        emailText += "<form method=\"get\" action=\"" + path +"\" target=\"_self\"> <button type=\"submit\">" + text + "</button></form>";
 
         try {
             mailService.sendMail(email, subject, emailText, true);
@@ -94,6 +97,8 @@ public class ContactsService {
     }
 
     public void delete(String username, String friend) {
+        username = username.toLowerCase(Locale.ROOT);
+        friend = friend.toLowerCase(Locale.ROOT);
 
         FriendshipId friendshipId = new FriendshipId(username, friend);
         ListOfFriends l = listOfFriendsRepository.findById(friendshipId).orElse(null);
@@ -113,6 +118,9 @@ public class ContactsService {
 
 
     public AddErrorEnum add(String userO, String userF) {
+        userF = userF.toLowerCase(Locale.ROOT);
+        userO = userO.toLowerCase(Locale.ROOT);
+
         ListOfFriends l = listOfFriendsRepository.findById(new FriendshipId(userO, userF)).orElse(null);
         if (l != null){
             return AddErrorEnum.EXISTS;
@@ -138,15 +146,17 @@ public class ContactsService {
         return AddErrorEnum.OK;
     }
 
-    public List<UserResponseBody> findAll(String username, List<String> query, boolean fNameAsc, boolean lNameAsc, boolean uNameAsc, boolean emailAsc) {
-        return findAllOrder(username, query, fNameAsc, lNameAsc, uNameAsc, emailAsc);
+    public List<UserResponseBody> findAll(String username, List<String> query, boolean fNameAsc, boolean lNameAsc,
+                                          boolean uNameAsc, boolean emailAsc, boolean isGettingAvatar) {
+
+        return findAllOrder(username, query, fNameAsc, lNameAsc, uNameAsc, emailAsc, isGettingAvatar);
     }
 
     public FoundUsersPageResponseBody findPaginated(int page, int size, String username, List<String> query,
-                                                    boolean fNameAsc, boolean lNameAsc, boolean uNameAsc, boolean emailAsc) {
+                                                    boolean fNameAsc, boolean lNameAsc, boolean uNameAsc, boolean emailAsc, boolean isGettingAvatar) {
 
 
-        List<UserResponseBody> responseBodies = findAllOrder(username, query, fNameAsc, lNameAsc, uNameAsc, emailAsc);
+        List<UserResponseBody> responseBodies = findAllOrder(username, query, fNameAsc, lNameAsc, uNameAsc, emailAsc, isGettingAvatar);
         if(page <= 0){
             page = 1;
         }
@@ -175,7 +185,10 @@ public class ContactsService {
     }
 
     private List<UserResponseBody> findAllOrder(String username, List<String> query,
-                                                boolean fNameAsc, boolean lNameAsc, boolean uNameAsc, boolean emailAsc){
+                                                boolean fNameAsc, boolean lNameAsc, boolean uNameAsc,
+                                                boolean emailAsc, boolean isGettingAvatar){
+        username = username.toLowerCase(Locale.ROOT);
+
         User u = userRepository.findById(username)
                 .orElseThrow(UserExceptionSupplier.userNotFoundException(username));
 
@@ -202,11 +215,15 @@ public class ContactsService {
             if(usernamesList.contains(user.getUserName()))
                 finalUsersList.add(user);
         }
-        List<UserResponseBody>  usersResponse = finalUsersList.stream().map(userMapper::toUserResponseBody).collect(Collectors.toList());
+        List<UserResponseBody>  usersResponse = finalUsersList.stream().map(us -> userSupport.processAvatar(us, isGettingAvatar)).
+                map(userMapper::toUserResponseBody).collect(Collectors.toList());
         return usersResponse;
     }
 
     public void checkFriendship(String user1, String user2) {
+        user1 = user1.toLowerCase(Locale.ROOT);
+        user2 = user2.toLowerCase(Locale.ROOT);
+
         userRepository.findById(user1).orElseThrow(UserExceptionSupplier.userNotFoundException(user1));
         userRepository.findById(user2).orElseThrow(UserExceptionSupplier.userNotFoundException(user2));
 

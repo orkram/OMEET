@@ -1,5 +1,6 @@
 package com.orange.OrangeCommunicatorBackend.api.v1.users.support;
 
+import com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody.UserResponseBody;
 import com.orange.OrangeCommunicatorBackend.dbEntities.Settings;
 import com.orange.OrangeCommunicatorBackend.dbEntities.User;
 import org.springframework.data.domain.Sort;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Component
 public class UserSupport {
@@ -58,7 +60,7 @@ public class UserSupport {
 
 
                 for(String text : texts){
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.or(criteriaBuilder.like(root.get(userColName), "%" + text + "%"),
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.or(criteriaBuilder.like(root.get(userColName), "%" + text.toLowerCase(Locale.ROOT) + "%"),
                             criteriaBuilder.or(criteriaBuilder.like(root.get(nameColName), "%" + text + "%")),
                             criteriaBuilder.or(criteriaBuilder.like(root.get(surnameColName), "%" + text + "%"))),
                                 criteriaBuilder.equal(j.get(privColName), false)));
@@ -68,6 +70,13 @@ public class UserSupport {
             }
         };
         return spec;
+    }
+
+    public User processAvatar(User user, boolean isToProcess) {
+
+        if(isToProcess)
+            user.setImgUrl(null);
+        return  user;
     }
 
 
