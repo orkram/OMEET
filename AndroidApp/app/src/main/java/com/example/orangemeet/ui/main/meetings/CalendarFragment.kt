@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -35,10 +36,6 @@ class CalendarFragment : Fragment() {
     lateinit var meetingDateView : TextView
     lateinit var noMeetingsPlaceholder : View
 
-    var meetings : List<Meeting>? = null
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -56,89 +53,81 @@ class CalendarFragment : Fragment() {
         meetingDateView = view.findViewById(R.id.meetingDate)
         noMeetingsPlaceholder = view.findViewById(R.id.noMeetingsPlaceholder)
 
-        val events: MutableList<EventDay> = ArrayList()
-
         calendarViewModel.getMeetingsResult.observe(viewLifecycleOwner,
         androidx.lifecycle.Observer {result ->
             if(result.success){
-                this.meetings = result.data
-                this.meetings!!.forEach { meeting ->
-                    val calendar = Calendar.getInstance()
-                    calendar.time = meeting.date
-                    events.add(EventDay(calendar, R.drawable.main_meeting))
-                    meetingDateView.setText(SimpleDateFormat("dd-MM-yy").format(Calendar.getInstance().time))
-                    CreateMeetingViews(Calendar.getInstance(), inflater)
-                }
-                calendarView.setEvents(events)
+                setEvents(result.data!!)
+                val today = Calendar.getInstance().time
+                meetingDateView.text = SimpleDateFormat("dd-MM-yy").format(today)
+                calendarViewModel.selectDay(today)
             }else{
-                Toast.makeText(requireContext(), R.string.get_meetings_fail, Toast.LENGTH_LONG).show()
+                showError(R.string.get_meetings_fail)
             }
         })
 
-        calendarViewModel.getMeetings()
-
-        /*BackendCommunication.getMeetings(BackendRequestQueue.getInstance(requireContext()).requestQueue,
-            Response.Listener { meetings ->
-                this.meetings = meetings
-                this.meetings!!.forEach { meeting ->
-                    val calendar = Calendar.getInstance()
-                    calendar.time = meeting.date
-                    events.add(EventDay(calendar, R.drawable.main_meeting))
-                    meetingDateView.setText(SimpleDateFormat("dd-MM-yy").format(Calendar.getInstance().time))
-                    CreateMeetingViews(Calendar.getInstance(), inflater)
-                }
-                calendarView.setEvents(events)
-            },
-            Response.ErrorListener {
-                Toast.makeText(requireContext(), "Nie udało się załadować spotkań", Toast.LENGTH_LONG).show()
-            })*/
+        calendarViewModel.selectedDayMeetings.observe(viewLifecycleOwner,
+            androidx.lifecycle.Observer {meetings ->
+                displayMeetings(meetings)
+            })
 
         calendarView.setOnDayClickListener {eventDay ->
             val clickedDayCalendar = eventDay.calendar
             if(calendarView.currentPageDate.get(Calendar.MONTH) ==
                 Calendar.getInstance().apply { time = clickedDayCalendar.time }.get(Calendar.MONTH) )
             {
-                meetingDateView.setText(SimpleDateFormat("dd-MM-yy").format(clickedDayCalendar.time))
-                CreateMeetingViews(clickedDayCalendar, inflater)
+                meetingDateView.text = SimpleDateFormat("dd-MM-yy").format(clickedDayCalendar.time)
+                calendarViewModel.selectDay(clickedDayCalendar.time)
             }
         }
+
+        calendarViewModel.getMeetings()
 
         return view
     }
 
-    private fun CreateMeetingViews(clickedDayCalendar : Calendar, inflater: LayoutInflater){
-        meetingsView.removeAllViews()
+    private fun setEvents(meetings : List<Meeting>) {
+        val events: MutableList<EventDay> = ArrayList()
+        meetings.forEach { meeting ->
+            val calendar = Calendar.getInstance()
+            calendar.time = meeting.date
+            events.add(EventDay(calendar, R.drawable.main_meeting))
+        }
+        calendarView.setEvents(events)
+    }
 
-        val filteredMeetings = meetings!!.filter { meeting ->
-            val meetingCalendar = Calendar.getInstance().apply { time = meeting.date }
-            meetingCalendar.get(Calendar.DAY_OF_YEAR) == clickedDayCalendar.get(Calendar.DAY_OF_YEAR) &&
-                    meetingCalendar.get(Calendar.YEAR) == clickedDayCalendar.get(Calendar.YEAR)
+    private fun showError(@StringRes error : Int) {
+        Toast.makeText(requireContext(), error, Toast.LENGTH_LONG).show()
+    }
+
+    private fun createMeetingItem(meeting: Meeting, evenView : Boolean) : View {
+        val meetingItem = Meeting.createView(layoutInflater, meetingsView, meeting, Util.createTintedBackground(requireContext(), evenView))
+
+        meetingItem.findViewById<ImageButton>(R.id.imageButton).setOnClickListener {
+            UserInfo.conferenceName = meeting.name.toString()
+            UserInfo.conferenceId = meeting.id.toString()
+            findNavController().navigate(R.id.nav_video)
         }
 
-        if(filteredMeetings.isEmpty()){
+        return meetingItem
+    }
+
+    private fun displayMeetings(meetings : List<Meeting>){
+        meetingsView.removeAllViews()
+
+        if(meetings.isEmpty()){
             noMeetingsPlaceholder.visibility = View.VISIBLE
         }else{
             noMeetingsPlaceholder.visibility = View.GONE
 
             var evenView = false
-            filteredMeetings?.forEach {meeting ->
-                val meetingView = Meeting.createView(inflater, meetingsView, meeting, Util.createTintedBackground(requireContext(), evenView))
-
-                meetingView.findViewById<ImageButton>(R.id.imageButton).setOnClickListener {
-                    UserInfo.conferenceName = meeting.name.toString()
-                    UserInfo.conferenceId = meeting.id.toString()
-                    findNavController().navigate(R.id.nav_video)
-                }
-
-                meetingsView.addView(meetingView)
+            meetings.forEach {meeting ->
+                meetingsView.addView(createMeetingItem(meeting, evenView))
                 evenView = !evenView
             }
         }
-
     }
 
     companion object {
-
         fun newInstance(param1: String, param2: String) =
                 CalendarFragment()
     }
