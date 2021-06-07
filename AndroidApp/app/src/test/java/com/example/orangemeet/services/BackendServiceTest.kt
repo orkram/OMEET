@@ -46,4 +46,14 @@ class BackendServiceTest {
             fail(REQUEST_FAIL)
         }
     }
+
+    @Test
+    fun getUser() {
+        val result = service.getUser(loggedInUser.username)
+        if (result is Result.Success) {
+            print(result.data!!)
+        } else {
+            fail(REQUEST_FAIL)
+        }
+    }
 }

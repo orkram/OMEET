@@ -48,4 +48,7 @@ interface RetroBackendService{
 
     @GET("api/v1/users/{username}/avatar/update")
     fun getImageUrl(@Path("username") username: String, @Header("authorization") authorization : String) : Call<JsonObject>
+
+    @GET("api/v1/users/{username}")
+    fun getUser(@Path("username") username: String, @Header("authorization") authorization : String) : Call<User>
 }

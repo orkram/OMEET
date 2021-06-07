@@ -27,9 +27,12 @@ data class User(
         @SerializedName("firstName")
         val firstname : String,
         @SerializedName("lastName")
-        val lastname : String) : Parcelable{
+        val lastname : String,
+        @SerializedName("imgURL")
+        val imgUrl : String) : Parcelable{
 
     constructor(parcel: Parcel) : this(
+            parcel.readString()!!,
             parcel.readString()!!,
             parcel.readString()!!,
             parcel.readString()!!,
@@ -40,6 +43,7 @@ data class User(
         parcel.writeString(email)
         parcel.writeString(firstname)
         parcel.writeString(lastname)
+        parcel.writeString(imgUrl)
     }
 
     override fun describeContents(): Int {
@@ -63,7 +67,8 @@ data class User(
                     jsonObject.getString("userName"),
                     jsonObject.getString("eMail"),
                     jsonObject.getString("firstName"),
-                    jsonObject.getString("lastName"))
+                    jsonObject.getString("lastName"),
+                    jsonObject.getString("imgURL"))
         }
 
     }

@@ -32,23 +32,6 @@ class BackendService : DataSource {
 
     private fun getAuthorization() = "Bearer ${loggedInUser!!.accessToken}"
 
-    private fun meetingsFromMeetingDatas(meetingDatas : List<Meeting>) : List<Meeting>{
-        val meetings = mutableListOf<Meeting>()
-
-        meetingDatas.forEach{meetingData ->
-            val meeting = Meeting(
-                    meetingData.id,
-                    meetingData.name,
-                    meetingData.date,
-                    User(meetingData.owner.username, meetingData.owner.email, "todo", "todo"),
-                    meetingData.roomUrl
-            )
-            meetings.add(meeting)
-        }
-
-        return meetings
-    }
-
     private fun refreshAccessToken() : Boolean{
         val response = retroBackendService.refreshAccessToken(
                 loggedInUser!!.username,
@@ -178,7 +161,7 @@ class BackendService : DataSource {
     override fun getMeetings(): Result<List<Meeting>> {
         val result = requestWithAuthorizationHandling(
                 {retroBackendService.getMeetings(loggedInUser!!.username, getAuthorization())},
-                {response -> Result.Success(meetingsFromMeetingDatas(response.body()!!)) },
+                {response -> Result.Success(response.body()!!) },
                 {response -> Result.Error(IOException("Error code: " + response.code().toString())) }
         )
         return result
@@ -237,6 +220,15 @@ class BackendService : DataSource {
         val result = requestWithAuthorizationHandling(
                 {retroBackendService.getImageUrl(username, getAuthorization())},
                 {response -> Result.Success(response.body()!!.get("imgUpdateUrl").asString) },
+                {response -> Result.Error(IOException("Error code: " + response.code().toString())) }
+        )
+        return result
+    }
+
+    fun getUser(username: String) : Result<User> {
+        val result = requestWithAuthorizationHandling(
+                {retroBackendService.getUser(username, getAuthorization())},
+                {response -> Result.Success(response.body()!!) },
                 {response -> Result.Error(IOException("Error code: " + response.code().toString())) }
         )
         return result
