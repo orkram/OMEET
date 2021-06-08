@@ -51,11 +51,11 @@ class MainViewModel() : ViewModel() {
                         _getAvatarResult.postValue(ResultInfo(true, getAvatarResult.data, null))
                     }else{
                         Timber.e(getAvatarResult.toString())
-                        _getAvatarResult.postValue(ResultInfo(false, null, R.string.get_settings_failed))
+                        _getAvatarResult.postValue(ResultInfo(false, null, R.string.avatar_load_failed))
                     }
                 } else {
                     Timber.e(getUserResult.toString())
-                    _getAvatarResult.postValue(ResultInfo(false, null, R.string.get_settings_failed))
+                    _getAvatarResult.postValue(ResultInfo(false, null, R.string.avatar_load_failed))
                 }
             }
         }
