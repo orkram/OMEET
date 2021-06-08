@@ -49,7 +49,7 @@
 .mat-chip.mat-standard-chip{
   background-color: rgba(#6200EE, 0.1);
   color: #20E574; //theme success color TODO override color scheme of orange and green.
-  font: 400 14px/16px Roboto, "Helvetica Neue", sans-serif;
+  font: 400 14px/14px Roboto, "Helvetica Neue", sans-serif;
 }
 
 .mat-header-cell, mat-cell {
@@ -71,6 +71,7 @@
 .meeting-title{
   font: 400 15px/14px Roboto, "Helvetica Neue", sans-serif;
   color: black;
+  margin: 5px;
 }
 
 .mat-chip-list{

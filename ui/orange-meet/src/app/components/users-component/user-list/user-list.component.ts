@@ -46,6 +46,10 @@ export class UserListComponent implements OnInit, AfterViewInit {
     return Object.keys(this.selected).filter((username: string) => this.selected[username]);
   }
 
+  errorHandler(event: any): void{
+    event.target.src = '../../../../assets/images/small-user-image.png';
+  }
+
   remove(): void {
     this.selectedUsersService
       .getSelectedUsers()
@@ -99,7 +103,6 @@ export class UserListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
 
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-    console.log(this.input.nativeElement);
 
     fromEvent(this.input.nativeElement, 'keyup')
       .pipe(

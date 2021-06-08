@@ -28,9 +28,10 @@
     <ng-container matColumnDef="status">
       <mat-header-cell *matHeaderCellDef > {{ 'meetings.status' | translate }} </mat-header-cell>
       <mat-cell *matCellDef="let meeting">
-
+      <mat-chip-list>
         <mat-chip class="chip" color="gray" selected> {{ 'meetings.active-state'| translate }}
         </mat-chip>
+      </mat-chip-list>
       </mat-cell>
     </ng-container>
 
@@ -46,12 +47,8 @@
         <div class="expanded-description ">
           <div class="text-description">
             <div class="meeting-title">
-            Title: {{detail.meeting.name}}
+              {{ 'meetings.name' | translate }}: {{detail.meeting.name}}
             </div>
-            <mat-chip-list>
-              <mat-chip class="chip" color="$success" selected>  {{ 'meetings.active-state'| translate }}
-              </mat-chip>
-            </mat-chip-list>
 <!--
             <div class="meeting-desc">
             Description: {{detail.meeting.description}}
@@ -59,8 +56,8 @@
               {{detail.meeting.date | date }}
             </div>
         -->
-
-            <div>
+            <span style="margin: 5px"></span>
+            <div class="meeting-title">
               {{ 'meetings.invited-participants'| translate }}
               {{detail.meeting.participants}}
             </div>

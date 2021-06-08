@@ -42,7 +42,7 @@
             <span class="spacer "></span>
 
             <div class="col-md-4 date">
-              <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+              <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):locale:weekStartsOn }}</h3>
             </div>
 
             <span class="spacer "></span>
@@ -84,6 +84,7 @@
           [viewDate]="viewDate"
           [events]="events"
           [refresh]="refresh"
+          [locale] = "locale"
           [activeDayIsOpen]="activeDayIsOpen"
           (dayClicked)="dayClicked($event.day)"
           (eventClicked)="handleEvent('Clicked', $event.event)"
@@ -94,6 +95,7 @@
           *ngSwitchCase="CalendarView.Week"
           [viewDate]="viewDate"
           [events]="events"
+          [locale] = "locale"
           [refresh]="refresh"
           (eventClicked)="handleEvent('Clicked', $event.event)"
           (eventTimesChanged)="eventTimesChanged($event)"
@@ -102,6 +104,7 @@
         <mwl-calendar-day-view
           *ngSwitchCase="CalendarView.Day"
           [viewDate]="viewDate"
+          [locale] = "locale"
           [events]="events"
           [refresh]="refresh"
           (eventClicked)="handleEvent('Clicked', $event.event)"

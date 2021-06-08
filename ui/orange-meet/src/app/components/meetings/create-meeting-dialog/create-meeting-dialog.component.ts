@@ -23,7 +23,6 @@ export class CreateMeetingDialogComponent implements OnInit {
 
   form: FormGroup = new FormGroup({
     name: new FormControl('', Validators.compose([Validators.required])),
-    description: new FormControl('', Validators.compose([Validators.required])),
     participants: new FormControl(''),
   });
 

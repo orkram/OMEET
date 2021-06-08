@@ -19,24 +19,23 @@ export class AuthorizeGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<any> | Promise<any> | boolean {
       if (this.jwtService.isAccessTokenExpired()) {
-        const k = this.jwtService.getNewToken()
+        this.jwtService.getNewToken()
           .pipe(
             catchError(_ => of([]))
           ).subscribe(
             res => {
+              console.log('Token refreshed');
               this.authStorageService.set('accessToken', res.accessToken);
               this.authStorageService.set('refreshToken', res.refreshToken);
+
             },
             _ => {
               console.log('Error while fetching new token');
               this.router.navigateByUrl('/login');
             },
-            () => {
-              window.location.reload();
-            }
+            () => {}
         );
-        this.router.navigateByUrl('/login');
-        return !!k;      // TODO wasn't tested
+        return this.router.navigateByUrl(this.router.url);
       } else {
         return true;
       }

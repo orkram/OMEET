@@ -10,18 +10,16 @@
   height: 100%;
   width: 100%;
   flex-wrap: nowrap;
-  align-items: stretch;
   background: #E5E5E5;
+  justify-content: center;
 }
 
 .login-main-image{
-  background: url("../../../assets/images/demo-logo.png");
+  content: url("../../../assets/images/demo-logo.png");
   background-size: contain;
   background-repeat: no-repeat;
   position: relative;
-  left: 20%;
-  top: 27%;
-  height: 300px;
+  align-content: center;
 }
 
 .login-content-box {
@@ -45,7 +43,11 @@
 }
 
 .images-holder{
-  flex: 0 0 55%;
+  height: 300px;
+  margin-top: 15em;
+  margin-right: 15em;
+  display: flex;
+  justify-content: center;
 }
 
 .camera-image{

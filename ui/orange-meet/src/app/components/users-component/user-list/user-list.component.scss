@@ -48,7 +48,7 @@
   border-radius: 10px;
   border-width: 2px;
   border-style: solid;
-  box-shadow: rgb(105 105 105 / 60%) 0px 2px 8px 0px;
+  box-shadow: rgb(105 105 105 / 60%) 0 2px 8px 0;
 }
 
 .mat-checkbox{
@@ -58,7 +58,6 @@
 
 .table-image{
   position: relative;
-  background: black;
   width: 45px;
   border-radius: 50%;
 }
