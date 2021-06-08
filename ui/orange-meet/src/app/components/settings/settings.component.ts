@@ -10,10 +10,6 @@ import {JWTTokenService} from '../../services/auth/JWTTokenService';
 export class SettingsComponent implements OnInit {
 
   constructor(private settings: SettingsService, private token: JWTTokenService) { }
-  availableDevices: string[] = [
-    'System default device',
-    'Alternative device 2',
-    'Alternative device 3'];
 
   micOn = false;
 
@@ -21,11 +17,12 @@ export class SettingsComponent implements OnInit {
 
   isPrivate = false;
 
-  message = 'Settings successfully saved!';
-
   displaySuccess = false;
 
   image: any;
+
+  raiseError = false;
+
 
   ngOnInit(): void {
     this.settings.getSettings(this.token.getUsername()).subscribe(
@@ -41,7 +38,18 @@ export class SettingsComponent implements OnInit {
   }
 
   onFileSelected(event: any): void{
-    this.image = event.target.files[0];
+    const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    console.log(event.target.files[0].size);
+    if (validImageTypes.includes(event.target.files[0].type) && event.target.files[0].size < 5000000){
+      this.raiseError = false;
+      this.image = event.target.files[0];
+      event.target.name = event.target.files[0].name;
+      console.log(event.target.files[0].type);
+    }
+    else {
+      this.raiseError = true;
+      event.target.name = event.target.files[0].name;
+    }
   }
 
 

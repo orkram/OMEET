@@ -25,7 +25,7 @@
         <div class="select-container">
           <mat-optgroup >
             <mat-form-field style="width:100%;">
-              <input #search autocomplete="off" placeholder="Search" aria-label="Search" matInput [formControl]="searchTextboxControl">
+              <input #search autocomplete="off" placeholder="{{ 'meeting.search' | translate}}" aria-label="Search" matInput [formControl]="searchTextboxControl">
               <button [disableRipple]="true" *ngIf="search.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch($event)">
                 <mat-icon >close</mat-icon>
               </button>

@@ -24,9 +24,21 @@ export class MeetingsService {
     });
     }
 
-    getAllMeetings(
+    updateMeeting(
+      id: string,
+      date: Date,
+      name: string,
       username: string
-    ): Observable<any>{
+    ): Observable<any> {
+      return this.http.put(`http://130.61.186.61:9000/api/v1/meetings/${id}`, {
+        date: this.datepipe.transform(date, 'yyyy-MM-dd HH:mm:ss'),
+        name,
+        ownerUserName: username
+      });
+    }
+
+    getAllMeetings(
+      username: string): Observable<any>{
       return this.http.get(`http://130.61.186.61:9000/api/v1/meetings/owner/${username}`);
     }
 

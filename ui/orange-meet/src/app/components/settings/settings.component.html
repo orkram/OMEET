@@ -17,7 +17,7 @@
       </div>
       <span class="change-picture-spacer"></span>
       <button type="button" mat-raised-button (click)="fileInput.click()">{{fileInput.name}}</button>
-      <input hidden (change)="onFileSelected($event)" #fileInput type="file" id="file" name="Choose File">
+      <input hidden (change)="onFileSelected($event)" #fileInput type="file" id="file" name="{{'settings.choose-file' | translate }}">
     </mat-list-item>
     <mat-list-item role="listitem">
       <div class="setting-text">
@@ -63,9 +63,13 @@
   <div class="bottom-bar" id="test">
     <span class="bottom-bar-spacer"></span>
     <div class="column">
-    <button class = "save-button" mat-raised-button color="primary" (click)="saveSettings()">
+    <button class = "save-button" mat-raised-button color="primary" [disabled]="raiseError"  (click)="saveSettings()">
       {{'settings.save-button' | translate }}
     </button>
+
+      <p  *ngIf="raiseError" class="error">
+        {{'settings.incorrect-format' | translate }}
+      </p>
     <p  *ngIf="displaySuccess" class="success">
       {{'settings.saved-success' | translate }}
     </p>

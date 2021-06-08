@@ -2,10 +2,18 @@ import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {endOfDay, isSameDay, isSameMonth, startOfDay} from 'date-fns';
 import {Subject} from 'rxjs';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView} from 'angular-calendar';
+import {
+  CalendarDateFormatter,
+  CalendarEvent,
+  CalendarEventAction,
+  CalendarEventTimesChangedEvent,
+  CalendarView,
+  DAYS_OF_WEEK
+} from 'angular-calendar';
 import {Router} from '@angular/router';
 import {MeetingsService} from '../../services/backend.api/meetings.service';
 import {JWTTokenService} from '../../services/auth/JWTTokenService';
+import {CustomDateFormatter} from '../../services/CustomDateFormatter';
 
 const colors: any = {
   red: {
@@ -25,7 +33,12 @@ const colors: any = {
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss']
+  styleUrls: ['./calendar.component.scss'],
+  providers: [{
+    provide: CalendarDateFormatter,
+    useClass: CustomDateFormatter
+  }
+  ]
 })
 export class CalendarComponent implements OnInit{
   // @ts-ignore
@@ -88,6 +101,12 @@ export class CalendarComponent implements OnInit{
 
   activeDayIsOpen = true;
 
+  locale = 'en';
+
+  weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
+
+  weekendDays: number[] = [DAYS_OF_WEEK.FRIDAY, DAYS_OF_WEEK.SATURDAY];
+
   constructor(
     private modal: NgbModal,
     private router: Router,
@@ -119,6 +138,10 @@ export class CalendarComponent implements OnInit{
       }
       return iEvent;
     });
+
+    console.log(event);
+    if (event.id) {
+      this.meetingsService.updateMeeting(event.id.toString(), newStart, event.title, this.tokenService.getUsername()).subscribe(); }
     this.handleEvent('Dropped or resized', event);
   }
 
