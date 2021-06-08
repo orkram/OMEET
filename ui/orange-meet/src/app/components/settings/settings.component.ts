@@ -25,6 +25,8 @@ export class SettingsComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+
     this.settings.getSettings(this.token.getUsername()).subscribe(
       next => {
         this.micOn = next.defaultMicOn;
