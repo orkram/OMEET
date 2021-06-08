@@ -2,6 +2,7 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {JWTTokenService} from '../services/auth/JWTTokenService';
 import {Router} from '@angular/router';
 import {SettingsService} from '../services/backend.api/SettingsService';
+import {UserService} from '../services/backend.api/UserService';
 
 declare var JitsiMeetExternalAPI: any;
 
@@ -17,14 +18,15 @@ export class JitsiViewComponent implements OnInit, AfterViewInit {
   options: any;
   api: any;
   user: any;
-
+  img: any;
   isAudioMuted = false;
   isVideoMuted = false;
 
   constructor(
     private router: Router,
     private token: JWTTokenService,
-    private settings: SettingsService
+    private settings: SettingsService,
+    private userService: UserService
   ) {
   }
 
@@ -36,6 +38,8 @@ export class JitsiViewComponent implements OnInit, AfterViewInit {
     this.user = {
       name: this.token.getUsername()
     };
+
+    this.userService.getUserImage(this.token.getUsername()).subscribe(res => this.img = res.imgURL);
   }
 
   ngAfterViewInit(): void {
@@ -66,11 +70,17 @@ export class JitsiViewComponent implements OnInit, AfterViewInit {
 
     this.settings.getSettings(this.token.getUsername()).subscribe(
       (next) => {
-       if (!next.defaultMicOn){
+
+        if (this.img){
+          console.log('Image set to: ' + this.img);
+          this.api.executeCommand('avatarUrl', this.img);
+        }
+
+        if (!next.defaultMicOn){
          this.api.executeCommand('toggleAudio');
        }
 
-       if (!next.defaultCamOn){
+        if (!next.defaultCamOn){
           this.api.executeCommand('toggleVideo');
         }
       },
