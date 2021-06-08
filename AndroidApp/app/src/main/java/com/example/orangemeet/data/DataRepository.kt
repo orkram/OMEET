@@ -1,5 +1,6 @@
 package com.example.orangemeet.data
 
+import android.graphics.Bitmap
 import com.example.orangemeet.data.model.LoggedInUser
 import com.example.orangemeet.data.model.Meeting
 import com.example.orangemeet.data.model.Result
@@ -78,5 +79,13 @@ object DataRepository {
 
     fun updateSettings(settingsJson : JSONObject) : Result<Nothing> {
         return dataSource.updateSettings(settingsJson)
+    }
+
+    fun getAvatar(user : User) : Result<Bitmap> {
+        return dataSource.getAvatar(user.imgUrl)
+    }
+
+    fun getUser(username : String) : Result<User> {
+        return dataSource.getUser(username)
     }
 }

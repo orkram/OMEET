@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.orangemeet.*
 import com.example.orangemeet.data.model.User
+import com.example.orangemeet.data.model.UserAvatarPair
 import com.example.orangemeet.ui.utils.UserUiUtils
 import com.example.orangemeet.utils.Util
 
@@ -80,19 +81,20 @@ class FindContactFragment : Fragment() {
         ).show()
     }
 
-    private fun createUserItem(user: User, inflater: LayoutInflater, evenView : Boolean) : View{
+    private fun createUserItem(userAvatarPair: UserAvatarPair, inflater: LayoutInflater, evenView : Boolean) : View{
         val userItem = UserUiUtils.createInviteView(
                 inflater,
                 contactsListView,
-                user,
-                Util.createTintedBackground(requireContext(), evenView)
+                userAvatarPair.user,
+                Util.createTintedBackground(requireContext(), evenView),
+                userAvatarPair.avatar
         )
 
         val inviteButton = userItem.findViewById<Button>(R.id.inviteButton)
         val sentText = userItem.findViewById<TextView>(R.id.sentText)
 
         inviteButton.setOnClickListener {
-            findContactViewModel.addContact(user.username){result ->
+            findContactViewModel.addContact(userAvatarPair.user.username){ result ->
                 if(result.success){
                     inviteButton.visibility = View.GONE
                     sentText.visibility = View.VISIBLE
@@ -105,14 +107,14 @@ class FindContactFragment : Fragment() {
         return userItem
     }
 
-    private fun displayUsers(users : List<User>, inflater: LayoutInflater){
+    private fun displayUsers(users : List<UserAvatarPair>, inflater: LayoutInflater){
         contactsListView.removeAllViews()
 
         notFoundPlaceholder.visibility = if (users.isEmpty()) View.VISIBLE else View.GONE
 
         var evenView = false
-        users.forEach {user ->
-            val userItem = createUserItem(user, inflater, evenView)
+        users.forEach {userAvatarPair ->
+            val userItem = createUserItem(userAvatarPair, inflater, evenView)
             contactsListView.addView(userItem)
             evenView = !evenView
         }

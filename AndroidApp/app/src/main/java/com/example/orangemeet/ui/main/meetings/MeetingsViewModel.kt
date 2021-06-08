@@ -9,6 +9,7 @@ import com.example.orangemeet.data.DataRepository
 import com.example.orangemeet.data.model.Result
 import com.example.orangemeet.data.model.Meeting
 import com.example.orangemeet.data.model.User
+import com.example.orangemeet.data.model.UserAvatarPair
 import com.example.orangemeet.ui.utils.ErrorListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,8 +20,8 @@ class MeetingsViewModel() : ViewModel() {
 
     private var errorListener : ErrorListener? = null
 
-    private val _meetingsParticipants = MutableLiveData<List<User>>()
-    val meetingsParticipants : LiveData<List<User>> = _meetingsParticipants
+    private val _meetingsParticipants = MutableLiveData<List<UserAvatarPair>>()
+    val meetingsParticipants : LiveData<List<UserAvatarPair>> = _meetingsParticipants
 
     private val _displayedMeetings = MutableLiveData<List<Meeting>>()
     val displayedMeetings : LiveData<List<Meeting>> = _displayedMeetings
@@ -75,7 +76,16 @@ class MeetingsViewModel() : ViewModel() {
             withContext(Dispatchers.IO){
                 val result = DataRepository.getMeetingParticipants(meeting)
                 if(result is Result.Success){
-                    _meetingsParticipants.postValue(result.data!!)
+                    val participants = result.data!!
+                    val participantsWithAvatars = mutableListOf<UserAvatarPair>()
+                    participants.forEach { participant ->
+                        val getAvatarResult = DataRepository.getAvatar(participant)
+                        if (getAvatarResult is Result.Success)
+                            participantsWithAvatars.add(UserAvatarPair(participant, getAvatarResult.data))
+                        else
+                            participantsWithAvatars.add(UserAvatarPair(participant, null))
+                    }
+                    _meetingsParticipants.postValue(participantsWithAvatars)
                 }else{
                     errorListener?.onError(R.string.get_meetings_participants_failed)
                 }

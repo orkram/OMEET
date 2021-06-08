@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.orangemeet.*
 import com.example.orangemeet.data.model.User
+import com.example.orangemeet.data.model.UserAvatarPair
 import com.example.orangemeet.ui.utils.UserUiUtils
 import com.example.orangemeet.utils.Util
 
@@ -61,8 +62,8 @@ class ContactsFragment : Fragment() {
         })
 
         contactsViewModel.displayedContacts.observe(viewLifecycleOwner,
-            Observer {contacts ->
-                displayContacts(contacts, inflater)
+            Observer {contactAvatarPairs ->
+                displayContacts(contactAvatarPairs, inflater)
                 loadContactsProgressBar.visibility = View.GONE
             })
 
@@ -86,19 +87,20 @@ class ContactsFragment : Fragment() {
         findNavController().navigate(R.id.nav_create_meeting, includedContactBundle)
     }
 
-    private fun createContactItem(contact : User, inflater: LayoutInflater, evenView : Boolean) : View{
+    private fun createContactItem(contactAvatarPair: UserAvatarPair, inflater: LayoutInflater, evenView : Boolean) : View{
 
         val contactView = UserUiUtils.createView(
-                inflater,
-                contactsListLayout,
-                contact,
-                Util.createTintedBackground(requireContext(), evenView)
+            inflater,
+            contactsListLayout,
+            contactAvatarPair.user,
+            Util.createTintedBackground(requireContext(), evenView),
+            contactAvatarPair.avatar
         )
 
         val callButton = contactView.findViewById<ImageButton>(R.id.callButton)
 
         callButton.setOnClickListener {
-            goCreateMeetingWithUser(contact)
+            goCreateMeetingWithUser(contactAvatarPair.user)
         }
 
         contactView.setOnLongClickListener {
@@ -106,7 +108,7 @@ class ContactsFragment : Fragment() {
                     .setTitle(R.string.delete_from_contacts)
                     .setMessage(R.string.delete_contact_dialog_message)
                     .setPositiveButton(R.string.yes) { dialog, which ->
-                        contactsViewModel.deleteContact(contact.username)
+                        contactsViewModel.deleteContact(contactAvatarPair.user.username)
                     }
                     .setNegativeButton(R.string.no) { dialog, which -> }
                     .show()
@@ -117,14 +119,14 @@ class ContactsFragment : Fragment() {
         return contactView
     }
 
-    private fun displayContacts(contacts : List<User>, inflater: LayoutInflater){
+    private fun displayContacts(contactAvatarPairs : List<UserAvatarPair>, inflater: LayoutInflater){
         contactsListLayout.removeAllViews()
 
-        notFoundPlaceholder.visibility = if (contacts.isEmpty()) View.VISIBLE else View.GONE
+        notFoundPlaceholder.visibility = if (contactAvatarPairs.isEmpty()) View.VISIBLE else View.GONE
 
         var evenView = false
-        contacts.forEach {contact ->
-            val contactView = createContactItem(contact, inflater, evenView)
+        contactAvatarPairs.forEach { contactAvatarPair ->
+            val contactView = createContactItem(contactAvatarPair, inflater, evenView)
             contactsListLayout.addView(contactView)
             evenView = !evenView
         }

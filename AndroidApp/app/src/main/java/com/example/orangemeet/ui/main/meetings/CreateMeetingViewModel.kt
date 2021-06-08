@@ -8,6 +8,7 @@ import com.example.orangemeet.R
 import com.example.orangemeet.data.DataRepository
 import com.example.orangemeet.data.model.Result
 import com.example.orangemeet.data.model.User
+import com.example.orangemeet.data.model.UserAvatarPair
 import com.example.orangemeet.ui.utils.ErrorListener
 import com.example.orangemeet.ui.utils.ResultInfo
 import kotlinx.coroutines.Dispatchers
@@ -22,8 +23,8 @@ class CreateMeetingViewModel : ViewModel() {
     private val _createMeetingResult = MutableLiveData<ResultInfo<Nothing>>()
     val createMeetingResult : LiveData<ResultInfo<Nothing>> = _createMeetingResult
 
-    private val _displayedContacts = MutableLiveData<List<User>>()
-    val displayedContacts : LiveData<List<User>> = _displayedContacts
+    private val _displayedContacts = MutableLiveData<List<UserAvatarPair>>()
+    val displayedContacts : LiveData<List<UserAvatarPair>> = _displayedContacts
 
     private val _pickedDate = MutableLiveData<Date>()
     val pickedDate : LiveData<Date> = _pickedDate
@@ -31,7 +32,7 @@ class CreateMeetingViewModel : ViewModel() {
     val checkedContacts = mutableListOf<User>()
 
     private var query : String = ""
-    private var contacts : List<User>? = null
+    private var contactsWithAvatars : List<UserAvatarPair>? = null
     private var includedContact : User? = null
 
     private val meetingCalendar = Calendar.getInstance()
@@ -77,14 +78,14 @@ class CreateMeetingViewModel : ViewModel() {
         _displayedContacts.value = filteredContacts()
     }
 
-    private fun filteredContacts() : List<User> {
-        if(contacts == null)
+    private fun filteredContacts() : List<UserAvatarPair> {
+        if(contactsWithAvatars == null)
             return emptyList()
 
-        val filteredContacts = contacts!!
-                .filter { contact -> contact.username.toLowerCase(Locale.ROOT).contains(query.toLowerCase(Locale.ROOT)) }
+        val filteredContacts = contactsWithAvatars!!
+                .filter { contact -> contact.user.username.toLowerCase(Locale.ROOT).contains(query.toLowerCase(Locale.ROOT)) }
         if(includedContact != null)
-                return filteredContacts.sortedBy { contact -> contact != includedContact}
+                return filteredContacts.sortedBy { contact -> contact.user != includedContact}
         else
             return filteredContacts
     }
@@ -119,7 +120,16 @@ class CreateMeetingViewModel : ViewModel() {
             withContext(Dispatchers.IO){
                 val result = DataRepository.getContacts()
                 if(result is Result.Success){
-                    contacts = result.data!!
+                    val contactsWithAvatars = mutableListOf<UserAvatarPair>()
+                    result.data!!.forEach { contact ->
+                        val getAvatarResult = DataRepository.getAvatar(contact)
+                        if (getAvatarResult is Result.Success) {
+                            contactsWithAvatars.add(UserAvatarPair(contact, getAvatarResult.data))
+                        } else {
+                            contactsWithAvatars.add(UserAvatarPair(contact, null))
+                        }
+                    }
+                    this@CreateMeetingViewModel.contactsWithAvatars = contactsWithAvatars
                     _displayedContacts.postValue(filteredContacts())
                 }else{
                     errorListener?.onError( R.string.get_contacts_fail)

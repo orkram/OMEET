@@ -8,12 +8,12 @@ import android.widget.*
 import androidx.annotation.StringRes
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.orangemeet.R
 import com.example.orangemeet.data.model.User
+import com.example.orangemeet.data.model.UserAvatarPair
 import com.example.orangemeet.ui.utils.UserUiUtils
 import com.example.orangemeet.utils.Util
 import com.google.android.material.textfield.TextInputEditText
@@ -101,9 +101,9 @@ class CreateMeetingFragment : Fragment() {
         })
 
         createMeetingViewModel.displayedContacts.observe(viewLifecycleOwner,
-                Observer {contacts ->
+                Observer {contactAvatarPairs ->
                     getContactsProgressBar.visibility = View.GONE;
-                    displayContacts(contacts)
+                    displayContacts(contactAvatarPairs)
                 })
 
         dateBox.setOnClickListener {
@@ -162,32 +162,33 @@ class CreateMeetingFragment : Fragment() {
         ).show()
     }
 
-    private fun createContactItem(contact : User, evenView : Boolean) : View {
+    private fun createContactItem(userAvatarPair : UserAvatarPair, evenView : Boolean) : View {
         val contactItem =
-                UserUiUtils.createCheckView(
-                        layoutInflater,
-                        contactsLayout,
-                        contact,
-                        Util.createTintedBackground(requireContext(), evenView)
-                )
+            UserUiUtils.createCheckView(
+                layoutInflater,
+                contactsLayout,
+                userAvatarPair.user,
+                Util.createTintedBackground(requireContext(), evenView),
+                userAvatarPair.avatar
+            )
 
         val checkBox = contactItem.findViewById<CheckBox>(R.id.checkBox)
 
-        checkBox.isChecked = createMeetingViewModel.isContactChecked(contact)
+        checkBox.isChecked = createMeetingViewModel.isContactChecked(userAvatarPair.user)
 
         checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            createMeetingViewModel.setContactChecked(contact, isChecked)
+            createMeetingViewModel.setContactChecked(userAvatarPair.user, isChecked)
         }
 
         return contactItem
     }
 
-    private fun displayContacts(contacts : List<User>){
+    private fun displayContacts(contacts : List<UserAvatarPair>){
         contactsLayout.removeAllViews()
 
         var evenView = false
-        contacts.forEach { contact ->
-            contactsLayout.addView(createContactItem(contact, evenView))
+        contacts.forEach { contactAvatarPair ->
+            contactsLayout.addView(createContactItem(contactAvatarPair, evenView))
             evenView = !evenView
         }
     }

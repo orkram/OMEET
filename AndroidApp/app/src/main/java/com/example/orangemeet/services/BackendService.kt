@@ -1,33 +1,46 @@
 package com.example.orangemeet.services
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import com.example.orangemeet.data.model.LoggedInUser
+import com.example.orangemeet.data.model.Meeting
 import com.example.orangemeet.data.model.Result
-import com.example.orangemeet.data.model.*
+import com.example.orangemeet.data.model.User
+import com.google.gson.*
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.io.IOException
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
-import com.example.orangemeet.data.model.User
-import com.google.gson.*
+
 
 class BackendService : DataSource {
 
     val backendUrl = "http://130.61.186.61:9000"
-    lateinit var retroBackendService: RetroBackendService
+    val minioUrl = "http://130.61.186.61:9001"
+    var retroBackendService : RetroBackendService
+    var retroMinioService : RetroMinioService
     private var loggedInUser : LoggedInUser? = null
 
-    private val gson: Gson = GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create()
+    private val backendGson: Gson = GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create()
 
     init {
-        val retrofit = Retrofit.Builder()
+        val retrofitBackend = Retrofit.Builder()
             .baseUrl(backendUrl)
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(GsonConverterFactory.create(backendGson))
             .build()
+        retroBackendService = retrofitBackend.create(RetroBackendService::class.java)
 
-        retroBackendService = retrofit.create(RetroBackendService::class.java)
+        val retrofitMinio = Retrofit.Builder()
+                .baseUrl(minioUrl)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build()
+        retroMinioService = retrofitMinio.create(RetroMinioService::class.java)
     }
 
     private fun getAuthorization() = "Bearer ${loggedInUser!!.accessToken}"
@@ -50,6 +63,7 @@ class BackendService : DataSource {
             requestMaker : () -> Call<T>,
             success : (response : Response<T>) -> Result<U>,
             error : (response : Response<T>) -> Result<U>) : Result<U> {
+
         var response = requestMaker().execute()
         if(response.isSuccessful){
             return success(response)
@@ -216,21 +230,30 @@ class BackendService : DataSource {
         return result
     }
 
-    fun getImageUrl(username : String) : Result<String> {
+    fun getImageUpdateUrl(username : String) : Result<String> {
         val result = requestWithAuthorizationHandling(
-                {retroBackendService.getImageUrl(username, getAuthorization())},
+                {retroMinioService.getImageUpdateUrl(username, getAuthorization())},
                 {response -> Result.Success(response.body()!!.get("imgUpdateUrl").asString) },
                 {response -> Result.Error(IOException("Error code: " + response.code().toString())) }
         )
         return result
     }
 
-    fun getUser(username: String) : Result<User> {
+    override fun getUser(username: String) : Result<User> {
         val result = requestWithAuthorizationHandling(
                 {retroBackendService.getUser(username, getAuthorization())},
                 {response -> Result.Success(response.body()!!) },
                 {response -> Result.Error(IOException("Error code: " + response.code().toString())) }
         )
         return result
+    }
+
+    override fun getAvatar(imgUrl : String) : Result<Bitmap> {
+        try {
+            val image = BitmapFactory.decodeStream(URL(imgUrl).openConnection().getInputStream())
+            return Result.Success(image)
+        } catch (ex : IOException) {
+            return Result.Error(IOException("Error downloading image: " + ex.message))
+        }
     }
 }
