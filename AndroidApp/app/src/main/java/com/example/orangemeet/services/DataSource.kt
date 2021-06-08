@@ -1,5 +1,6 @@
 package com.example.orangemeet.services
 
+import android.graphics.Bitmap
 import com.example.orangemeet.data.model.Result
 import com.example.orangemeet.data.model.LoggedInUser
 import com.example.orangemeet.data.model.Meeting
@@ -22,4 +23,6 @@ interface DataSource {
     fun getMeetingParticipants(meeting: Meeting) : Result<List<User>>
     fun getSettings() : Result<JSONObject>
     fun updateSettings(settingsJson: JSONObject): Result<Nothing>
+    fun getAvatar(imgUrl: String) : Result<Bitmap>
+    fun getUser(username: String) : Result<User>
 }

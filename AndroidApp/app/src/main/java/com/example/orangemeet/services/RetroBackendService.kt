@@ -45,4 +45,7 @@ interface RetroBackendService{
 
     @POST("api/v1/account/{username}/refresh-token")
     fun refreshAccessToken(@Path("username") username: String, @Body refreshTokenJson : JsonObject) : Call<JsonObject>
+
+    @GET("api/v1/users/{username}")
+    fun getUser(@Path("username") username: String, @Header("authorization") authorization : String) : Call<User>
 }

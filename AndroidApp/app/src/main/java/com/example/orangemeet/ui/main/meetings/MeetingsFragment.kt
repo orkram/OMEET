@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.orangemeet.*
 import com.example.orangemeet.data.model.Meeting
-import com.example.orangemeet.data.model.User
 import com.example.orangemeet.UserInfo
 import com.example.orangemeet.ui.utils.MeetingUiUtils
 import com.example.orangemeet.ui.utils.UserUiUtils
@@ -85,9 +84,14 @@ class MeetingsFragment : Fragment() {
 
         meetingsViewModel.meetingsParticipants.observe(viewLifecycleOwner,
                 Observer {participants ->
-                    participants.forEach{participant ->
-                        val contactView = UserUiUtils.createSmallView(inflater, meetingPopupParticipants, participant, null)
-                        meetingPopupParticipants.addView(contactView)
+                    participants.forEach{participantAvatarPair ->
+                        val contactItem = UserUiUtils.createSmallView(
+                            inflater,
+                            meetingPopupParticipants,
+                            participantAvatarPair.user,
+                            null,
+                            participantAvatarPair.avatar)
+                        meetingPopupParticipants.addView(contactItem)
                     }
                 })
 

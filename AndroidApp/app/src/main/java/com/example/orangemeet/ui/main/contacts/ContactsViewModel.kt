@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.orangemeet.R
 import com.example.orangemeet.data.DataRepository
 import com.example.orangemeet.data.model.Result
-import com.example.orangemeet.data.model.User
+import com.example.orangemeet.data.model.UserAvatarPair
 import com.example.orangemeet.ui.utils.ErrorListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,10 +18,10 @@ class ContactsViewModel() : ViewModel() {
 
     private var errorListener : ErrorListener? = null
 
-    private val _displayedContacts = MutableLiveData<List<User>>()
-    val displayedContacts : LiveData<List<User>> = _displayedContacts
+    private val _displayedContacts = MutableLiveData<List<UserAvatarPair>>()
+    val displayedContacts : LiveData<List<UserAvatarPair>> = _displayedContacts
 
-    private var contacts : List<User>? = null
+    private var contactsWithAvatars : List<UserAvatarPair>? = null
     private var query : String = ""
 
     fun setOnErrorListener(onError: (Int) -> Unit){
@@ -33,21 +33,22 @@ class ContactsViewModel() : ViewModel() {
     }
 
     fun updateQuery(query : String){
-        if(contacts != null){
+        if(contactsWithAvatars != null){
                 this.query = query
                 _displayedContacts.value = filteredContacts(query)
         }
     }
 
-    private fun filteredContacts(query: String) : List<User>{
-        if(contacts == null)
+    private fun filteredContacts(query: String) : List<UserAvatarPair>{
+        if(contactsWithAvatars == null)
             return emptyList()
 
-        val displayedContacts = contacts!!.filter  { contact ->
+        val displayedContacts = contactsWithAvatars!!.filter  { contactAvatarPair ->
             if(query.isEmpty())
                 true
             else
-                contact.username.toLowerCase(Locale.ROOT).contains(query.toString().toLowerCase(Locale.ROOT))
+                contactAvatarPair.user.username.toLowerCase(Locale.ROOT)
+                    .contains(query.toString().toLowerCase(Locale.ROOT))
         }
 
         return displayedContacts
@@ -58,7 +59,15 @@ class ContactsViewModel() : ViewModel() {
             withContext(Dispatchers.IO){
                 val result = DataRepository.getContacts()
                 if(result is Result.Success){
-                    contacts = result.data!!
+                    val contactsWithAvatars = mutableListOf<UserAvatarPair>()
+                    result.data!!.forEach { contact ->
+                        val getAvatarResult = DataRepository.getAvatar(contact)
+                        if (getAvatarResult is Result.Success)
+                            contactsWithAvatars.add(UserAvatarPair(contact, getAvatarResult.data))
+                        else
+                            contactsWithAvatars.add(UserAvatarPair(contact, null))
+                    }
+                    this@ContactsViewModel.contactsWithAvatars = contactsWithAvatars
                     _displayedContacts.postValue(filteredContacts(query))
                 }else{
                     errorListener?.onError(R.string.get_contacts_fail)
