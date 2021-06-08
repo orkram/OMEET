@@ -13,5 +13,7 @@ import android.os.Parcelable
 class LoggedInUser(val username: String,
                    val password : String,
                    val email: String,
+                   val firstname : String,
+                   val lastname : String,
                    var accessToken : String,
                    var refreshToken : String)

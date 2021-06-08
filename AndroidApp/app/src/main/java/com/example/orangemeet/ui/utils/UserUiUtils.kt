@@ -16,7 +16,7 @@ class UserUiUtils{
             val userNameTextView = view.findViewById<TextView>(R.id.contactUsername)
             val emailTextView = view.findViewById<TextView>(R.id.contactEmail)
             val box = view.findViewById<View>(R.id.box)
-            userNameTextView?.text = contact.username
+            userNameTextView?.text = contact.firstname + " " + contact.lastname
             emailTextView?.text = contact.email
             if(background != null)
                 box.background = background
@@ -27,7 +27,7 @@ class UserUiUtils{
 
         fun createSmallView(inflater : LayoutInflater, root : ViewGroup, contact: User, background: Drawable?, avatar : Bitmap?) : View {
             val view = inflater.inflate(R.layout.view_contact_details_small, root, false)
-            view.findViewById<TextView>(R.id.contactUsername).text = contact.username
+            view.findViewById<TextView>(R.id.contactUsername).text = contact.firstname + " " + contact.lastname
             if (avatar != null)
                 view.findViewById<ImageView>(R.id.contactAvatar).setImageBitmap(avatar)
             return view

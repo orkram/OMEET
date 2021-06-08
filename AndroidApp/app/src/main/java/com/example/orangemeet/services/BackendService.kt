@@ -101,8 +101,13 @@ class BackendService : DataSource {
             val loginResult = response.body()!!
             val accessToken = loginResult.get("accessToken").asString
             val refreshToken = loginResult.get("refreshToken").asString
-            val loggedInUser = LoggedInUser(username, password, "todo@email.com", accessToken, refreshToken)
-            this.loggedInUser = loggedInUser
+            loggedInUser = LoggedInUser(username, password, "null", "null", "null", accessToken, refreshToken)
+            val getUserResult = getUser(username)
+            if (getUserResult is Result.Success) {
+                val user = getUserResult.data!!
+                loggedInUser = LoggedInUser(username, password, user.email,
+                    user.firstname, user.lastname, accessToken, refreshToken)
+            }
             return Result.Success(loggedInUser)
         }else{
             return Result.Error(IOException("Error code: " + response.code().toString()))

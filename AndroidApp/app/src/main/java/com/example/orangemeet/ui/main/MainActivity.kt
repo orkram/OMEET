@@ -32,6 +32,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.example.orangemeet.R
 import com.example.orangemeet.UserInfo
+import com.example.orangemeet.data.DataRepository
 import com.example.orangemeet.ui.login.LoginActivity
 import com.example.orangemeet.ui.main.calling.CustomJitsiFragment
 import com.facebook.drawee.drawable.RoundedBitmapDrawable
@@ -110,9 +111,9 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
         val navController = navHostFragment.navController
         val headerView = navView.getHeaderView(0)
         val menuUsername : TextView = headerView.findViewById(R.id.menu_username)
-        menuUsername.text = UserInfo.userName
+        menuUsername.text = mainViewModel.getLoggedInUserUsername()
         val menuEmail : TextView = headerView.findViewById(R.id.menu_email)
-        menuEmail.text = UserInfo.userEmail
+        menuEmail.text = mainViewModel.getLoggedInUserEmail()
         val avatarView : ShapeableImageView = headerView.findViewById(R.id.avatar)
 
         mainViewModel.getAvatarResult.observe(this,

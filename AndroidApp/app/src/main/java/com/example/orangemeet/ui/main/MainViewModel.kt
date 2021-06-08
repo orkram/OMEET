@@ -32,6 +32,14 @@ class MainViewModel() : ViewModel() {
         }
     }
 
+    fun getLoggedInUserUsername() : String {
+        return DataRepository.loggedInUser!!.username
+    }
+
+    fun getLoggedInUserEmail() : String {
+        return DataRepository.loggedInUser!!.email
+    }
+
     fun getAvatar() {
         viewModelScope.launch {
             withContext(Dispatchers.IO){
