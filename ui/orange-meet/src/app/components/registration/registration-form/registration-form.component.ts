@@ -52,7 +52,7 @@ export class RegistrationFormComponent implements OnInit {
   }
 
   submit(): void {
-    this.successMessage = true;
+    this.successMessage = false;
     this.errorMessage = false;
     if (this.form.invalid) {
       return;
