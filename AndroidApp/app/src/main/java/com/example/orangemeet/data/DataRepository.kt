@@ -1,6 +1,7 @@
 package com.example.orangemeet.data
 
 import android.graphics.Bitmap
+import com.example.orangemeet.UserInfo
 import com.example.orangemeet.data.model.LoggedInUser
 import com.example.orangemeet.data.model.Meeting
 import com.example.orangemeet.data.model.Result
@@ -82,6 +83,7 @@ object DataRepository {
     }
 
     fun getAvatar(user : User) : Result<Bitmap> {
+        UserInfo.userImgUrl = user.imgUrl
         return dataSource.getAvatar(user.imgUrl)
     }
 
