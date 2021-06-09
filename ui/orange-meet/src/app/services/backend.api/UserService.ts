@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
 
 
 @Injectable()
@@ -55,14 +54,17 @@ export class UserService {
   }
 
   createConnection(username: string, friendName: string): Observable<any> {
-    return this.http.post(`http://130.61.186.61:9000/api/v1/contacts/add`, '', {
+    return this.http.get(`http://130.61.186.61:9000/api/v1/contacts/add`, {
+      headers: new HttpHeaders({
+         Accept: 'text/html, application/xhtml+xml, */*',
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }),
+        responseType: 'text',
       params: new HttpParams()
         .set('user-f', friendName)
-        .set('user-o', username),
-      responseType: 'blob'
-    }).pipe(
-      switchMap(response => this.readFile(response))
-    );
+        .set('user-o', username)
+    },
+      );
   }
 
   private readFile(blob: Blob): Observable<string> {

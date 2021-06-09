@@ -27,7 +27,7 @@ export class AuthorizeGuard implements CanActivate {
               console.log('Token refreshed');
               this.authStorageService.set('accessToken', res.accessToken);
               this.authStorageService.set('refreshToken', res.refreshToken);
-
+              window.location.reload();
             },
             _ => {
               console.log('Error while fetching new token');
