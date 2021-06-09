@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:orientation="vertical"
-    tools:context=".ui.main.MeetingsFragment">
+    tools:context=".ui.main.meetings.MeetingsFragment">
 
     <include
         android:id="@+id/notFoundPlaceholder"
@@ -68,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:layout_scrollFlags="scroll"
-            tools:context=".ui.main.ContactsFragment"
+            tools:context=".ui.main.contacts.ContactsFragment"
             style="@style/default_scrollview">
 
             <LinearLayout

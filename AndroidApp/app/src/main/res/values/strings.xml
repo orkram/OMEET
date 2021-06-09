@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Kaliber</string>
+    <string name="app_name" translatable="false">Kaliber</string>
     <string name="action_settings">Settings</string>
-    <string name="version">v 1.0</string>
+    <string name="version" translatable="false">v 1.0</string>
 
     <string name="menu_home">Strona główna</string>
     <string name="menu_contacts">Kontakty</string>
@@ -152,8 +152,8 @@
     <string name="action_sign_in">Zaloguj</string>
     <string name="action_register">Utwórz konto</string>
     <string name="welcome">"Witaj "</string>
-    <string name="invalid_username">Nieprawidłowa nazwa użytkownika</string>
-    <string name="invalid_password">Hasło musi mieć conajmniej 6 znaków</string>
+    <string name="username_must_not_be_empty">Nazwa użytkownika nie może być pusta</string>
+    <string name="password_must_not_be_empty">Hasło nie może być puste</string>
     <string name="login_failed">Nie udało się zalogować</string>
     <string name="menu_login">Logowanie</string>
     <string name="menu_register">Rejestracja</string>
@@ -201,6 +201,8 @@
     <string name="prompt_meeting_date">Data</string>
     <string name="meeting_time">Godzina</string>
     <string name="prompt_meeting_participants">Uczestnicy</string>
+    <string name="account_create_success">Pomyślnie utworzono konto</string>
+    <string name="avatar_load_failed">Nie udało się załadować zdjęcia profilowego</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -238,9 +240,12 @@
     <string name="create_meeting_success">Pomyślnie utworzono spotkanie</string>
     <string name="create_meeting_fail">Nie udało się utworzyć spotkania</string>
     <string name="get_meetings_fail">Nie udało się pobrać listy spotkań</string>
+    <string name="get_meetings_participants_failed">Nie udało się pobrać listy uczestników</string>
     <string name="get_users_fail">Nie udało się pobrać listy użytkowników</string>
     <string name="find_contact_error">Wprowadź przynajmniej 3 znaki, aby wyszukać</string>
     <string name="could_not_find">Nie udało się nic znaleźć</string>
+    <string name="get_settings_failed">Nie udało się pobrać ustawień</string>
+    <string name="update_settings_failed">Nie udało się zaktualizować ustawień</string>
 
 
 </resources>

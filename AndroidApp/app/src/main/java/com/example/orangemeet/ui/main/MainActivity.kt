@@ -7,15 +7,22 @@ package com.example.orangemeet.ui.main
 
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.icu.number.NumberFormatter.with
+import android.icu.number.NumberRangeFormatter.with
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -23,18 +30,24 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
-import com.android.volley.Response
-import com.example.orangemeet.services.BackendCommunication
 import com.example.orangemeet.R
 import com.example.orangemeet.UserInfo
+import com.example.orangemeet.data.DataRepository
 import com.example.orangemeet.ui.login.LoginActivity
+import com.example.orangemeet.ui.main.calling.CustomJitsiFragment
+import com.facebook.drawee.drawable.RoundedBitmapDrawable
 import com.facebook.react.modules.core.PermissionListener
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.shape.CornerSize
 import org.jitsi.meet.sdk.JitsiMeetActivityDelegate
 import org.jitsi.meet.sdk.JitsiMeetActivityInterface
+import java.io.ByteArrayOutputStream
 
 
 class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
+
+    private lateinit var mainViewModel : MainViewModel
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -44,7 +57,27 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        BackendCommunication.getSettings(applicationContext,
+        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+
+        mainViewModel.getSettingsResult.observe(this,
+                Observer {result ->
+                    if(result.success){
+                        val settingsJson = result.data!!
+                        val prefs = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+                        with (prefs.edit()) {
+                            putBoolean("start_with_audio", settingsJson.getBoolean("defaultMicOn"))
+                            putBoolean("start_with_video", settingsJson.getBoolean("defaultCamOn"))
+                            putBoolean("private_user", settingsJson.getBoolean("private"))
+                            apply()
+                        }
+                    }else{
+                        Toast.makeText(applicationContext, result.error!!, Toast.LENGTH_LONG).show()
+                    }
+                })
+
+        mainViewModel.getSettings()
+
+       /* BackendCommunication.getSettings(BackendRequestQueue.getInstance(applicationContext).requestQueue,
                 Response.Listener {settingsJson ->
                     val prefs = PreferenceManager.getDefaultSharedPreferences(applicationContext)
                     with (prefs.edit()) {
@@ -57,7 +90,7 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
                 Response.ErrorListener {
                     Toast.makeText(applicationContext, "Nie udało się wczytać ustawień", Toast.LENGTH_LONG).show()
                 })
-
+*/
 
 
 
@@ -68,7 +101,7 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
 
         val logoutButton = findViewById<Button>(R.id.logout)
         logoutButton.setOnClickListener {
-            goToLoginActivity()
+            logout()
         }
 
 
@@ -78,9 +111,22 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
         val navController = navHostFragment.navController
         val headerView = navView.getHeaderView(0)
         val menuUsername : TextView = headerView.findViewById(R.id.menu_username)
-        menuUsername.text = UserInfo.userName
+        menuUsername.text = mainViewModel.getLoggedInUserUsername()
         val menuEmail : TextView = headerView.findViewById(R.id.menu_email)
-        menuEmail.text = UserInfo.userEmail
+        menuEmail.text = mainViewModel.getLoggedInUserEmail()
+        val avatarView : ShapeableImageView = headerView.findViewById(R.id.avatar)
+
+        mainViewModel.getAvatarResult.observe(this,
+            Observer {result ->
+                if (result.success) {
+                    avatarView.setImageBitmap(result.data!!)
+                } else {
+                    Toast.makeText(this, result.error!!, Toast.LENGTH_SHORT).show()
+                }
+            })
+
+        mainViewModel.getAvatar()
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(setOf(
@@ -107,14 +153,11 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
         super.onResume()
     }
 
-    private fun goToLoginActivity(){
+    private fun logout(){
+        mainViewModel.logout()
         val intent = Intent(this, LoginActivity::class.java)
-        BackendCommunication.logout(
-            applicationContext
-        ) {
-            startActivity(intent)
-            finish()
-        }
+        startActivity(intent)
+        finish()
     }
 
     override fun onUserLeaveHint() {

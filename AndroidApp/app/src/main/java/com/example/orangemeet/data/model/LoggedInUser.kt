@@ -4,10 +4,16 @@
 
 package com.example.orangemeet.data.model
 
+import android.os.Parcel
+import android.os.Parcelable
+
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository
  */
-data class LoggedInUser(
-    val userId: String,
-    val displayName: String
-)
+class LoggedInUser(val username: String,
+                   val password : String,
+                   val email: String,
+                   val firstname : String,
+                   val lastname : String,
+                   var accessToken : String,
+                   var refreshToken : String)

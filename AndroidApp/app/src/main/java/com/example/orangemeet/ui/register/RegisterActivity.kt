@@ -10,91 +10,81 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.Response
-import com.example.orangemeet.services.BackendCommunication
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.orangemeet.R
 import com.example.orangemeet.utils.Util
 import com.google.android.material.textfield.TextInputEditText
 
 class RegisterActivity : AppCompatActivity() {
 
-    lateinit var passwordVisibilityButton : ImageButton
-    lateinit var passwordRepVisibilityButton : ImageButton
+    lateinit var registerViewModel: RegisterViewModel
+
     lateinit var password : TextInputEditText
     lateinit var repeatPassword : TextInputEditText
+
+    lateinit var passwordVisibilityBtn : ImageButton
+    lateinit var passwordRepeatVisibilityBtn : ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        passwordVisibilityButton = findViewById(R.id.passwordVisibilityButton)
-        passwordRepVisibilityButton = findViewById(R.id.passwordRepVisibilityButton)
-        val accCreateButton = findViewById<Button>(R.id.register)
+        registerViewModel = ViewModelProvider(this).get(RegisterViewModel::class.java)
+
+        //Text input fields
         val firstName = findViewById<EditText>(R.id.firstname)
         val lastName = findViewById<EditText>(R.id.lastname)
         val email = findViewById<EditText>(R.id.email)
         val username = findViewById<EditText>(R.id.username)
         password = findViewById(R.id.password)
-        password.setText("")
         repeatPassword = findViewById(R.id.password_repeat)
-        repeatPassword.setText("")
 
-        accCreateButton.setOnClickListener{
-            if(username.text.isEmpty() or email.text.isEmpty()
-            or password.text!!.isEmpty() or repeatPassword.text!!.isEmpty()){
-                Toast.makeText(applicationContext,
-                    R.string.fields_must_be_not_empty, Toast.LENGTH_LONG).show()
-                return@setOnClickListener
-            }
+        passwordVisibilityBtn = findViewById(R.id.passwordVisibilityBtn)
+        passwordRepeatVisibilityBtn = findViewById(R.id.passwordRepeatVisibilityBtn)
 
-            if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email.text).matches()){
-                Toast.makeText(applicationContext,
-                        R.string.email_not_correct, Toast.LENGTH_LONG).show()
-                return@setOnClickListener
-            }
+        val accountCreateBtn = findViewById<Button>(R.id.register)
 
-            if(password.text.toString() != repeatPassword.text.toString()){
-                Toast.makeText(applicationContext,
-                    R.string.passwords_dont_match, Toast.LENGTH_LONG).show()
-                return@setOnClickListener
-            }
+        registerViewModel.registerResult.observe(this,
+            Observer {result ->
+                if(result.success){
+                    showSuccessMessage()
+                    goToLoginActivity()
+                }else{
+                    accountCreateBtn.isEnabled = true
+                    showError(result.error!!)
+                }
+            })
 
-            if(password.length() < 8){
-                Toast.makeText(applicationContext, R.string.password_too_short, Toast.LENGTH_LONG).show()
-                return@setOnClickListener
-            }
+        accountCreateBtn.setOnClickListener{
+            accountCreateBtn.isEnabled = false
 
-            accCreateButton.isEnabled = false
-
-            BackendCommunication.register(this,
-                email.text.toString(),
+            registerViewModel.register(email.text.toString(),
                 firstName.text.toString(),
                 lastName.text.toString(),
                 "imgurl",
                 username.text.toString(),
                 password.text.toString(),
-                Response.Listener {
-                    goToLoginActivity()
-                },
-                Response.ErrorListener {
-                    accCreateButton.isEnabled = true
-                    Toast.makeText(
-                        applicationContext,
-                        R.string.registed_failed,
-                        Toast.LENGTH_LONG
-                    ).show()
-                })
-
+                repeatPassword.text.toString())
         }
     }
 
-    fun ShowHidePassword(view : View){
-        Util.showHidePassword(password, passwordVisibilityButton, this)
+    private fun showError(@StringRes error : Int){
+        Toast.makeText(this, error, Toast.LENGTH_LONG).show()
     }
 
-    fun ShowHideRepeatPassword(view : View){
-        Util.showHidePassword(repeatPassword, passwordRepVisibilityButton, this)
+    private fun showSuccessMessage(){
+        Toast.makeText(applicationContext, R.string.account_create_success, Toast.LENGTH_SHORT).show()
+    }
+
+    fun showHidePassword(view : View){
+        Util.showHidePassword(password, passwordVisibilityBtn, this)
+    }
+
+    fun showHideRepeatPassword(view : View){
+        Util.showHidePassword(repeatPassword, passwordRepeatVisibilityBtn, this)
     }
 
     private fun goToLoginActivity(){
