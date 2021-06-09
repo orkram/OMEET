@@ -15,7 +15,7 @@ export class MeetingsService {
     filter = '', sortOrder = true,
     pageNumber = 0, pageSize = 6): Observable<any> {
 
-    return this.http.get(`http://130.61.186.61:9000/api/v1/meetings/owner/${username}/page`, {
+    return this.http.get(`http://130.61.186.61:9000/api/v1/meetings/participants/user/${username}/page`, {
       params: new HttpParams()
         .set('query', filter)
         .set('meetingNameSortAscending', 'false')
