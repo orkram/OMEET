@@ -22,7 +22,7 @@ export class SettingsService {
    const r = JSON.stringify( {
       isDefaultCamOn: cameraOn,
       isDefaultMicOn: micOn,
-      private: isPrivate
+      isPrivate
     });
    return JSON.parse(r);
 }
