@@ -59,7 +59,9 @@
             <span style="margin: 5px"></span>
             <div class="meeting-title">
               {{ 'meetings.invited-participants'| translate }}
-              {{detail.meeting.participants}}
+              <mat-chip-list>
+                <mat-chip class="chip" color="gray" *ngFor="let n of detail.meeting.participants" selected> {{n}} </mat-chip>
+              </mat-chip-list>
             </div>
           </div>
 
