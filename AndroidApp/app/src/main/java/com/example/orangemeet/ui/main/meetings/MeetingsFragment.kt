@@ -1,3 +1,6 @@
+//Autorzy kodu źródłowego: Konrad Stręk, Michał Skrok
+//Kod został utworzony w ramach kursu Projekt Zespołowy
+//na Politechnice Wrocławskiej
 package com.example.orangemeet.ui.main.meetings
 
 import android.os.Bundle
@@ -11,6 +14,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.orangemeet.*
 import com.example.orangemeet.data.model.Meeting
 import com.example.orangemeet.UserInfo
+import com.example.orangemeet.data.DataRepository
+import com.example.orangemeet.data.model.Result
 import com.example.orangemeet.ui.utils.MeetingUiUtils
 import com.example.orangemeet.ui.utils.UserUiUtils
 import com.example.orangemeet.utils.Util
@@ -128,7 +133,10 @@ class MeetingsFragment : Fragment() {
         meetingItem.setOnClickListener {
             val owner = meeting.owner
             val username = meetingPopupOwner.findViewById<TextView>(R.id.contactUsername)
-            username.text = owner.username
+            username.text = owner.firstname + " " + owner.lastname
+            //val getAvatarResult = DataRepository.getAvatar(owner)
+            //if(getAvatarResult is Result.Success)
+                //username.findViewById<ImageView>(R.id.contactAvatar).setImageBitmap(getAvatarResult.data)
 
             meetingPopupName.text = meeting.name
             meetingPopupDateTime.text = SimpleDateFormat("dd-MM-yyyy    kk:mm").format(meeting.date)

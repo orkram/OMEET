@@ -1,3 +1,6 @@
+//Autorzy kodu źródłowego: Konrad Stręk, Michał Skrok
+//Kod został utworzony w ramach kursu Projekt Zespołowy
+//na Politechnice Wrocławskiej
 package com.example.orangemeet.ui.main
 
 import android.graphics.Bitmap
@@ -31,6 +34,7 @@ class MainViewModel() : ViewModel() {
             }
         }
     }
+
 
     fun getLoggedInUserUsername() : String {
         return DataRepository.loggedInUser!!.username

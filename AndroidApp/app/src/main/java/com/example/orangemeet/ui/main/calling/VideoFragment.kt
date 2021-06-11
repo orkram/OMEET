@@ -1,3 +1,6 @@
+//Autorzy kodu źródłowego: Konrad Stręk, Michał Skrok
+//Kod został utworzony w ramach kursu Projekt Zespołowy
+//na Politechnice Wrocławskiej
 package com.example.orangemeet.ui.main.calling
 
 import android.os.Bundle
@@ -14,6 +17,7 @@ import com.example.orangemeet.R
 import com.example.orangemeet.UserInfo
 import com.example.orangemeet.ui.main.MainActivity
 import com.example.orangemeet.utils.Util
+import com.facebook.react.ReactInstanceManager
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import org.jitsi.meet.sdk.JitsiMeetUserInfo
 import java.net.URL
@@ -42,7 +46,6 @@ class VideoFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1_VIDEO)
             param2 = it.getString(ARG_PARAM2_VIDEO)
         }
-
 
 
     }
@@ -109,7 +112,7 @@ class VideoFragment : Fragment() {
         if (!UserInfo.conferenceId.isEmpty()) {
             val userData = JitsiMeetUserInfo()
             userData.setDisplayName(UserInfo.userName)
-            userData.avatar = URL(UserInfo.userImgUrl)
+            //userData.avatar = URL(UserInfo.userImgUrl)
 
 
             val colorScheme = Bundle()
