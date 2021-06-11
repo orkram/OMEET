@@ -64,7 +64,7 @@
 		"back-login": "Back to login",
 		"complete-field": "Complete filed",
 		"create-account": "Create account",
-		"error": "Failed to create new user for given inputs.",
+		"error": "User with given username or email already exists.",
 		"incorrect-format-error": "",
 		"lsatname": "Last name",
 		"name": "First name",

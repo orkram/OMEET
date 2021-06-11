@@ -64,7 +64,7 @@
 		"back-login": "Powrót do logowania",
 		"complete-field": "Pole nie może być puste",
 		"create-account": "Utworz konto",
-		"error": "Nie udało się utworzyć nowego użytkownika dla podanych danych wejściowych.",
+		"error": "Użytkownik dla podanego username lub email już istnieje",
 		"incorrect-format-error": "Nieprawidłowy format",
 		"lsatname": "Nazwisko",
 		"name": "Imię",

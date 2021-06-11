@@ -14,7 +14,7 @@ export class RegistrationFormComponent implements OnInit {
 
   form: FormGroup = new FormGroup({
     username: new FormControl('', Validators.compose([Validators.required])),
-    email: new FormControl('', Validators.compose([Validators.required, Validators.email])),
+    email: new FormControl('', Validators.compose([Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])),
     password: new FormControl('', Validators.compose([Validators.required, Validators.minLength(8)])),
     repeat: new FormControl('', [Validators.required, this.matchValues('password')]),
     firstname: new FormControl('', Validators.compose([Validators.required])),
@@ -52,6 +52,8 @@ export class RegistrationFormComponent implements OnInit {
   }
 
   submit(): void {
+    this.successMessage = false;
+    this.errorMessage = false;
     if (this.form.invalid) {
       return;
     } else {
@@ -63,6 +65,25 @@ export class RegistrationFormComponent implements OnInit {
               this.errorMessage = true;
             },
           () => {
+            this.form.reset();
+            this.form.get('username')?.clearValidators();
+            this.form.get('username')?.updateValueAndValidity();
+
+            this.form.get('email')?.clearValidators();
+            this.form.get('email')?.updateValueAndValidity();
+
+            this.form.get('password')?.clearValidators();
+            this.form.get('password')?.updateValueAndValidity();
+
+            this.form.get('repeat')?.clearValidators();
+            this.form.get('repeat')?.updateValueAndValidity();
+
+            this.form.get('firstname')?.clearValidators();
+            this.form.get('firstname')?.updateValueAndValidity();
+
+            this.form.get('lastname')?.clearValidators();
+            this.form.get('lastname')?.updateValueAndValidity();
+
             this.successMessage = true;
             // this.router.navigateByUrl('/login');
           }
