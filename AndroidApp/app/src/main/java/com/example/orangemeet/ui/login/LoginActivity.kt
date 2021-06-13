@@ -71,6 +71,8 @@ class LoginActivity : AppCompatActivity() {
                 }else{
                     progressBar.visibility = View.GONE
                     showLoginFailed(loginResult.error!!)
+                    loginButton.isEnabled = true
+                    registerButton.isEnabled = true
                 }
             })
 
@@ -99,6 +101,9 @@ class LoginActivity : AppCompatActivity() {
         loginButton.setOnClickListener {
             if(loginViewModel.loginFormState.value == null)
                 return@setOnClickListener
+
+            loginButton.isEnabled = false
+            registerButton.isEnabled = false
 
             if(loginViewModel.loginFormState.value!!.isDataValid){
                 login()
