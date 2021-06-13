@@ -73,7 +73,9 @@ class MeetingsViewModel() : ViewModel() {
                     meetings = result.data!!
                     _displayedMeetings.postValue(filteredMeetings())
                 }else{
-                    errorListener?.onError(R.string.get_meetings_fail)
+                    withContext(Dispatchers.Main){
+                        errorListener?.onError(R.string.get_meetings_fail)
+                    }
                 }
             }
         }
@@ -97,7 +99,9 @@ class MeetingsViewModel() : ViewModel() {
                     }
                     _meetingsParticipants.postValue(participantsWithAvatars)
                 }else{
-                    errorListener?.onError(R.string.get_meetings_participants_failed)
+                    withContext(Dispatchers.Main) {
+                        errorListener?.onError(R.string.get_meetings_participants_failed)
+                    }
                 }
             }
         }

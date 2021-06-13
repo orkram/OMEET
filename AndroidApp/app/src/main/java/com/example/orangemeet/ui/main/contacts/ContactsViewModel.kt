@@ -73,7 +73,9 @@ class ContactsViewModel() : ViewModel() {
                     this@ContactsViewModel.contactsWithAvatars = contactsWithAvatars
                     _displayedContacts.postValue(filteredContacts(query))
                 }else{
-                    errorListener?.onError(R.string.get_contacts_fail)
+                    withContext(Dispatchers.Main) {
+                        errorListener?.onError(R.string.get_contacts_fail)
+                    }
                 }
             }
         }
@@ -86,7 +88,9 @@ class ContactsViewModel() : ViewModel() {
                 if(result is Result.Success) {
                     refreshContacts()
                 }else{
-                    errorListener?.onError(R.string.contact_delete_fail)
+                    withContext(Dispatchers.Main) {
+                        errorListener?.onError(R.string.contact_delete_fail)
+                    }
                 }
             }
         }

@@ -135,7 +135,9 @@ class CreateMeetingViewModel : ViewModel() {
                     this@CreateMeetingViewModel.contactsWithAvatars = contactsWithAvatars
                     _displayedContacts.postValue(filteredContacts())
                 }else{
-                    errorListener?.onError( R.string.get_contacts_fail)
+                    withContext(Dispatchers.Main) {
+                        errorListener?.onError( R.string.get_contacts_fail)
+                    }
                 }
             }
         }

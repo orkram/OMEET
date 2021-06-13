@@ -70,7 +70,9 @@ class FindContactViewModel() : ViewModel() {
                         _displayedUsers.postValue(filteredUsers())
                     }else{ }
                 }else{
-                    errorListener?.onError(R.string.get_contacts_fail)
+                    withContext(Dispatchers.Main) {
+                        errorListener?.onError(R.string.get_contacts_fail)
+                    }
                 }
             }
         }
@@ -94,7 +96,9 @@ class FindContactViewModel() : ViewModel() {
                         _displayedUsers.postValue(filteredUsers())
                     else{ }
                 }else{
-                    errorListener?.onError(R.string.get_users_fail)
+                    withContext(Dispatchers.Main) {
+                        errorListener?.onError(R.string.get_users_fail)
+                    }
                 }
             }
         }
