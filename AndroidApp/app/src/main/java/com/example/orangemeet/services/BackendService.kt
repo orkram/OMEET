@@ -17,6 +17,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.io.IOException
+import java.lang.Error
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
@@ -49,15 +50,19 @@ class BackendService : DataSource {
     private fun getAuthorization() = "Bearer ${loggedInUser!!.accessToken}"
 
     private fun refreshAccessToken() : Boolean{
-        val response = retroBackendService.refreshAccessToken(
-                loggedInUser!!.username,
-                JsonObject().apply {
-                    addProperty("refreshToken", loggedInUser!!.refreshToken)
-                }).execute()
-        if(response.isSuccessful) {
-            loggedInUser!!.accessToken = response.body()!!.get("accessToken").asString
-            return true
-        }else{
+        try {
+            val response = retroBackendService.refreshAccessToken(
+                    loggedInUser!!.username,
+                    JsonObject().apply {
+                        addProperty("refreshToken", loggedInUser!!.refreshToken)
+                    }).execute()
+            if(response.isSuccessful) {
+                loggedInUser!!.accessToken = response.body()!!.get("accessToken").asString
+                return true
+            }else{
+                return false
+            }
+        } catch (ex : java.net.ConnectException) {
             return false
         }
     }
@@ -67,28 +72,32 @@ class BackendService : DataSource {
             success : (response : Response<T>) -> Result<U>,
             error : (response : Response<T>) -> Result<U>) : Result<U> {
 
-        var response = requestMaker().execute()
-        if(response.isSuccessful){
-            return success(response)
-        }else{
-            if(response.code() == 401){
-                val refreshSuccess = refreshAccessToken()
-                if(refreshSuccess){
-                    response = requestMaker().execute()
-                    if(response.isSuccessful)
-                        return success(response)
-                    else{
-                        val result = login(loggedInUser!!.username, loggedInUser!!.password)
-                        if(result is Result.Success){
-                            response = requestMaker().execute()
-                            if(response.isSuccessful)
-                                return success(response)
+        try{
+            var response = requestMaker().execute()
+            if(response.isSuccessful){
+                return success(response)
+            }else{
+                if(response.code() == 401){
+                    val refreshSuccess = refreshAccessToken()
+                    if(refreshSuccess){
+                        response = requestMaker().execute()
+                        if(response.isSuccessful)
+                            return success(response)
+                        else{
+                            val result = login(loggedInUser!!.username, loggedInUser!!.password)
+                            if(result is Result.Success){
+                                response = requestMaker().execute()
+                                if(response.isSuccessful)
+                                    return success(response)
+                            }
+                            return error(response)
                         }
-                        return error(response)
                     }
                 }
+                return error(response)
             }
-            return error(response)
+        }catch (ex : java.net.ConnectException) {
+            return Result.Error(ex)
         }
     }
 
@@ -99,26 +108,32 @@ class BackendService : DataSource {
 
         val request = retroBackendService.login(loginJson)
 
-        val response = request.execute()
-        if(response.isSuccessful){
-            val loginResult = response.body()!!
-            val accessToken = loginResult.get("accessToken").asString
-            val refreshToken = loginResult.get("refreshToken").asString
-            loggedInUser = LoggedInUser(username, password, "null", "null", "null", accessToken, refreshToken)
-            val getUserResult = getUser(username)
-            if (getUserResult is Result.Success) {
-                val user = getUserResult.data!!
-                loggedInUser = LoggedInUser(username, password, user.email,
-                    user.firstname, user.lastname, accessToken, refreshToken)
+        try {
+            val response = request.execute()
+            if(response.isSuccessful){
+                val loginResult = response.body()!!
+                val accessToken = loginResult.get("accessToken").asString
+                val refreshToken = loginResult.get("refreshToken").asString
+                loggedInUser = LoggedInUser(username, password, "null", "null", "null", accessToken, refreshToken)
+                val getUserResult = getUser(username)
+                if (getUserResult is Result.Success) {
+                    val user = getUserResult.data!!
+                    loggedInUser = LoggedInUser(username, password, user.email,
+                            user.firstname, user.lastname, accessToken, refreshToken)
+                }
+                return Result.Success(loggedInUser)
+            }else{
+                return Result.Error(IOException("Error code: " + response.code().toString()))
             }
-            return Result.Success(loggedInUser)
-        }else{
-            return Result.Error(IOException("Error code: " + response.code().toString()))
+        }catch (ex : java.net.ConnectException) {
+            return Result.Error(ex)
         }
     }
 
     override fun logout(username : String) {
-        val response = retroBackendService.logout(username).execute()
+        try{
+            val response = retroBackendService.logout(username).execute()
+        } catch (ex : java.net.ConnectException) {}
     }
 
     override fun register(
@@ -137,11 +152,15 @@ class BackendService : DataSource {
         registerJson.addProperty("userName", username)
         registerJson.addProperty("password", password)
 
-        val response = retroBackendService.register(registerJson).execute()
-        if(response.isSuccessful){
-            return Result.Success(null)
-        }else
-            return Result.Error(IOException("Error code: " + response.code().toString()))
+        try {
+            val response = retroBackendService.register(registerJson).execute()
+            if(response.isSuccessful){
+                return Result.Success(null)
+            }else
+                return Result.Error(IOException("Error code: " + response.code().toString()))
+        } catch (ex : java.net.ConnectException) {
+            return Result.Error(ex)
+        }
     }
 
     override fun getContacts(): Result<List<User>> {
