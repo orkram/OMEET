@@ -27,6 +27,7 @@ class MainViewModel() : ViewModel() {
     private val _getAvatarResult = MutableLiveData<ResultInfo<Bitmap>>()
     val getAvatarResult : LiveData<ResultInfo<Bitmap>> = _getAvatarResult
 
+
     fun logout(){
         viewModelScope.launch {
             withContext(Dispatchers.IO){

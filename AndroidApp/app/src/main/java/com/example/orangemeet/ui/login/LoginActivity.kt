@@ -4,6 +4,7 @@
 
 package com.example.orangemeet.ui.login
 
+import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -67,6 +68,7 @@ class LoginActivity : AppCompatActivity() {
                     val loggedInUser = loginResult.data!!
                     UserInfo.userName = loggedInUser.username
                     UserInfo.userEmail = loggedInUser.email
+                    setUserCredentials(loggedInUser.username, loggedInUser.password)
                     goToMainActivity()
                 }else{
                     progressBar.visibility = View.GONE
@@ -112,6 +114,15 @@ class LoginActivity : AppCompatActivity() {
 
         registerButton.setOnClickListener {
             goToRegisterActivity()
+        }
+    }
+
+    private fun setUserCredentials(username : String, password : String) {
+        val sp = getSharedPreferences("login", Context.MODE_PRIVATE)
+        with(sp.edit()){
+            putString("username", username)
+            putString("password", password)
+            apply()
         }
     }
 

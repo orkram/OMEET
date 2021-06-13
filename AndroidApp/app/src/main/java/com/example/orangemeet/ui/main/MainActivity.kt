@@ -5,7 +5,9 @@
 package com.example.orangemeet.ui.main
 
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.icu.number.NumberFormatter.with
@@ -77,23 +79,6 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
 
         mainViewModel.getSettings()
 
-       /* BackendCommunication.getSettings(BackendRequestQueue.getInstance(applicationContext).requestQueue,
-                Response.Listener {settingsJson ->
-                    val prefs = PreferenceManager.getDefaultSharedPreferences(applicationContext)
-                    with (prefs.edit()) {
-                        putBoolean("start_with_audio", settingsJson.getBoolean("defaultMicOn"))
-                        putBoolean("start_with_video", settingsJson.getBoolean("defaultCamOn"))
-                        putBoolean("private_user", settingsJson.getBoolean("private"))
-                        apply()
-                    }
-                },
-                Response.ErrorListener {
-                    Toast.makeText(applicationContext, "Nie udało się wczytać ustawień", Toast.LENGTH_LONG).show()
-                })
-*/
-
-
-
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -153,11 +138,25 @@ class MainActivity : AppCompatActivity(), JitsiMeetActivityInterface {
         super.onResume()
     }
 
-    private fun logout(){
-        mainViewModel.logout()
+    private fun goToLoginActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun clearUserCredentials() {
+        val sp = getSharedPreferences("login", Context.MODE_PRIVATE)
+        with(sp.edit()) {
+            putString("username", null)
+            putString("password", null)
+            apply()
+        }
+    }
+
+    private fun logout(){
+        mainViewModel.logout()
+        clearUserCredentials()
+        goToLoginActivity()
     }
 
     override fun onUserLeaveHint() {
