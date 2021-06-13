@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="#8D000000"
     android:clickable="true"
     android:focusable="auto"
-    android:translationZ="4dp"
-    tools:showIn="@layout/fragment_meetings">
+    android:translationZ="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -114,6 +114,7 @@
                     android:id="@+id/participantsList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
                     android:orientation="vertical" />
             </androidx.core.widget.NestedScrollView>
 
