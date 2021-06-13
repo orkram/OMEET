@@ -38,6 +38,18 @@ data class User(
             parcel.readString()!!,
             parcel.readString()!!)
 
+    override fun equals(other: Any?): Boolean {
+        if(!(other is User))
+            return false
+
+        val otherUser = other as User
+        return this.username == otherUser.username &&
+                this.email == otherUser.email &&
+                this.firstname == otherUser.firstname &&
+                this.lastname == otherUser.lastname
+        //Imgurl can be different
+    }
+
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(username)
         parcel.writeString(email)

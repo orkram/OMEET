@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.*
 import androidx.annotation.StringRes
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,8 +15,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.orangemeet.*
 import com.example.orangemeet.data.model.Meeting
 import com.example.orangemeet.UserInfo
-import com.example.orangemeet.data.DataRepository
-import com.example.orangemeet.data.model.Result
 import com.example.orangemeet.ui.utils.MeetingUiUtils
 import com.example.orangemeet.ui.utils.UserUiUtils
 import com.example.orangemeet.utils.Util
@@ -35,6 +34,7 @@ class MeetingsFragment : Fragment() {
     lateinit var meetingPopupName : TextView
     lateinit var meetingPopupDateTime : TextView
     lateinit var meetingPopupButton: Button
+    lateinit var meetingPopupOwnerAvatar : ImageView
     lateinit var notFoundPlaceholder : View
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -66,6 +66,7 @@ class MeetingsFragment : Fragment() {
         meetingPopupName = meetingPopup.findViewById(R.id.meetingName)
         meetingPopupDateTime = meetingPopup.findViewById(R.id.meetingDateTime)
         meetingPopupButton = meetingPopup.findViewById(R.id.joinMeetingButton)
+        meetingPopupOwnerAvatar = meetingPopupOwner.findViewById(R.id.contactAvatar)
         meetingPopup.setOnClickListener { meetingPopup.visibility = View.GONE }
 
         meetingsListView = view.findViewById(R.id.meetingsList)
@@ -99,6 +100,14 @@ class MeetingsFragment : Fragment() {
                         meetingPopupParticipants.addView(contactItem)
                     }
                 })
+
+        meetingsViewModel.ownerAvatar.observe(viewLifecycleOwner,
+            Observer {avatar ->
+                if (avatar == null)
+                    meetingPopupOwnerAvatar.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.all_account_circle, requireContext().theme))
+                else
+                    meetingPopupOwnerAvatar.setImageBitmap(avatar)
+            })
 
         meetingsViewModel.setOnErrorListener { error ->
             showError(error)
@@ -134,9 +143,7 @@ class MeetingsFragment : Fragment() {
             val owner = meeting.owner
             val username = meetingPopupOwner.findViewById<TextView>(R.id.contactUsername)
             username.text = owner.firstname + " " + owner.lastname
-            //val getAvatarResult = DataRepository.getAvatar(owner)
-            //if(getAvatarResult is Result.Success)
-                //username.findViewById<ImageView>(R.id.contactAvatar).setImageBitmap(getAvatarResult.data)
+            meetingsViewModel.getAvatar(owner)
 
             meetingPopupName.text = meeting.name
             meetingPopupDateTime.text = SimpleDateFormat("dd-MM-yyyy    kk:mm").format(meeting.date)

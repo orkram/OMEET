@@ -19,7 +19,7 @@
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-            app:srcCompat="@drawable/main_account_circle" />
+            app:srcCompat="@drawable/all_account_circle" />
 
         <LinearLayout
             android:layout_width="wrap_content"

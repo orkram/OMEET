@@ -3,6 +3,8 @@
 //na Politechnice Wrocławskiej
 package com.example.orangemeet.ui.main.meetings
 
+import android.graphics.Bitmap
+import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -28,6 +30,9 @@ class MeetingsViewModel() : ViewModel() {
 
     private val _displayedMeetings = MutableLiveData<List<Meeting>>()
     val displayedMeetings : LiveData<List<Meeting>> = _displayedMeetings
+
+    private val _ownerAvatar = MutableLiveData<Bitmap?>()
+    val ownerAvatar : LiveData<Bitmap?> = _ownerAvatar
 
     private var query : String = ""
     private var meetings : List<Meeting>? = null
@@ -82,16 +87,30 @@ class MeetingsViewModel() : ViewModel() {
                     val participants = result.data!!
                     val participantsWithAvatars = mutableListOf<UserAvatarPair>()
                     participants.forEach { participant ->
-                        val getAvatarResult = DataRepository.getAvatar(participant)
-                        if (getAvatarResult is Result.Success)
-                            participantsWithAvatars.add(UserAvatarPair(participant, getAvatarResult.data))
-                        else
-                            participantsWithAvatars.add(UserAvatarPair(participant, null))
+                        if (participant != meeting.owner) {
+                            val getAvatarResult = DataRepository.getAvatar(participant)
+                            if (getAvatarResult is Result.Success)
+                                participantsWithAvatars.add(UserAvatarPair(participant, getAvatarResult.data))
+                            else
+                                participantsWithAvatars.add(UserAvatarPair(participant, null))
+                        }
                     }
                     _meetingsParticipants.postValue(participantsWithAvatars)
                 }else{
                     errorListener?.onError(R.string.get_meetings_participants_failed)
                 }
+            }
+        }
+    }
+
+    fun getAvatar(user : User) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO){
+                val getAvatarResult = DataRepository.getAvatar(user)
+                if(getAvatarResult is Result.Success)
+                    _ownerAvatar.postValue(getAvatarResult.data!!)
+                else
+                    _ownerAvatar.postValue(null)
             }
         }
     }
