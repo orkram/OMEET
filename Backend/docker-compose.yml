@@ -1,3 +1,6 @@
+# Autorzy kodu źródłowego: Bartosz Panuś
+# Kod został utworzony w ramach kursu Projekt Zespołowy
+# na Politechnice Wrocławskiej
 version: '3'
 
 services:
@@ -41,12 +44,13 @@ services:
       POSTGRES_DB_URL: jdbc:postgresql://postgresqldb:5432/kaliber_db
       POSTGRES_DB_USERNAME: postgres
       POSTGRES_DB_PASSWORD: postgres
+
       #email
-      MAIL_SERVICE_ENABLE: "false"
+      MAIL_SERVICE_ENABLE: "true"
       MAIL_SERVICE_HOST: smtp.gmail.com
       MAIL_SERVICE_PORT: 587
       MAIL_SERVICE_USERNAME: bp.qneds.test@gmail.com
-      MAIL_SERVICE_HOST_PASSWORD: ""
+      MAIL_SERVICE_HOST_PASSWORD: "mango swiersz sztorm"
 
       SERVICE_KEYCLOAK_SWAGGER_CLIENT: orange-backend
       SERVICE_KEYCLOAK_SWAGGER_CLIENT_SECRET: 86d2938e-2474-4f2f-b936-cae6c875fad1
@@ -54,6 +58,12 @@ services:
       SERVICE_KEYCLOAK_FRONT_CLIENT_SWAGGER: a6c73d18-cdfa-49e3-bfb9-9d4f2640c1cf
       DB_ON_LAUNCH_MODE: update
       #DB_ON_LAUNCH_MODE: create-drop
+
+      #Minio
+      MINIO_SERVICE_IP: 130.61.186.61
+      MINIO_SERVICE_PORT: 9001
+      MINIO_SERVICE_SECRET_KEY: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+      MINIO_SERVICE_ACCESS_KEY: "AKIAIOSFODNN7EXAMPLE"
 
     ports:
       - "9000:9000"
@@ -92,6 +102,18 @@ services:
     ports:
       - "8080:80"
     networks: 
+      - internal
+
+  minio:
+    container_name: minio
+    image: minio/minio
+    ports:
+      - "9001:9000"
+    command: server /data
+    environment:
+      MINIO_ACCESS_KEY: "AKIAIOSFODNN7EXAMPLE"
+      MINIO_SECRET_KEY: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+    networks:
       - internal
 
 networks: 

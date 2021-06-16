@@ -1,3 +1,6 @@
+//Autorzy kodu źródłowego: Bartosz Panuś
+//Kod został utworzony w ramach kursu Projekt Zespołowy
+//na Politechnice Wrocławskiej
 package com.orange.OrangeCommunicatorBackend.api.v1.users.support;
 
 import com.orange.OrangeCommunicatorBackend.api.v1.users.requestBody.UserUpdateRequestBody;
@@ -11,9 +14,9 @@ import java.util.List;
 @Component
 public class UserMapper {
 
-    public UserResponseBody toUserResponseBody(User user){
+    public UserResponseBody toUserResponseBody(User user, String url){
         return new UserResponseBody(user.getUserName(),user.getEMail(), user.getFirstName(),
-                user.getLastName(), user.getImgUrl());
+                user.getLastName(), url);
     }
 
     public User toUser(User user, UserUpdateRequestBody userUpdateRequestBody){

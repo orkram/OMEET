@@ -1,4 +1,6 @@
+com\orange\OrangeCommunicatorBackend\api\v1\users\responseBody\UpdateAvatarResponseBody.class
 com\orange\OrangeCommunicatorBackend\api\v1\account\requestBody\AccountLoginRequestBody.class
+com\orange\OrangeCommunicatorBackend\generalServicies\MinioService.class
 com\orange\OrangeCommunicatorBackend\api\v1\users\settings\SettingsService.class
 com\orange\OrangeCommunicatorBackend\api\v1\meetings\support\MeetingsMapper.class
 com\orange\OrangeCommunicatorBackend\dbRepositories\SettingsRepository.class
@@ -34,6 +36,7 @@ com\orange\OrangeCommunicatorBackend\config\KeycloakConfig.class
 com\orange\OrangeCommunicatorBackend\api\v1\contacts\support\exceptions\EmailNotSentException.class
 com\orange\OrangeCommunicatorBackend\api\v1\meetings\participants\support\ParticipantsSupport$2.class
 com\orange\OrangeCommunicatorBackend\api\v1\users\settings\responseBody\SettingsResponseBody.class
+com\orange\OrangeCommunicatorBackend\api\v1\users\support\UserSupport$2.class
 com\orange\OrangeCommunicatorBackend\config\SpringFoxConfig.class
 com\orange\OrangeCommunicatorBackend\api\v1\meetings\participants\ParticipantsService.class
 com\orange\OrangeCommunicatorBackend\OrangeCommunicatorBackendApplication.class

@@ -1,3 +1,6 @@
+//Autorzy kodu źródłowego: Bartosz Panuś
+//Kod został utworzony w ramach kursu Projekt Zespołowy
+//na Politechnice Wrocławskiej
 package com.orange.OrangeCommunicatorBackend.api.v1.meetings;
 
 import com.orange.OrangeCommunicatorBackend.api.v1.meetings.requestBody.NewMeetingRequestBody;

@@ -1,3 +1,6 @@
+//Autorzy kodu źródłowego: Bartosz Panuś
+//Kod został utworzony w ramach kursu Projekt Zespołowy
+//na Politechnice Wrocławskiej
 package com.orange.OrangeCommunicatorBackend.api.v1.meetings.participants;
 
 import com.orange.OrangeCommunicatorBackend.api.v1.meetings.responseBody.MeetingResponseBody;
@@ -107,9 +110,11 @@ public class ParticipantsApi {
                          @ApiParam(value = "The sort type by meeting's id.")
                          @RequestParam(name="idSortAscending", defaultValue="true") boolean idAsc,
                          @ApiParam(value = "The sort type by meeting's date.")
-                         @RequestParam(name="meetingDateSortAscending", defaultValue="true") boolean dateAsc) {
+                         @RequestParam(name="meetingDateSortAscending", defaultValue="true") boolean dateAsc,
+                         @ApiParam(value = "Optionally get avatar.")
+                         @RequestParam(name="getAvatar", defaultValue="true") boolean isGettingAvatar) {
         List<MeetingResponseBody> responseBodies = participantsService.findMeetings(username, query,
-                mNameAsc, idAsc, dateAsc);
+                mNameAsc, idAsc, dateAsc, isGettingAvatar);
         return ResponseEntity.status(HttpStatus.OK).body(responseBodies);
     }
 
@@ -129,9 +134,11 @@ public class ParticipantsApi {
                                   @ApiParam(value = "The sort type by meeting's id.")
                                   @RequestParam(name="idSortAscending", defaultValue="true") boolean idAsc,
                                   @ApiParam(value = "The sort type by meeting's date.")
-                                  @RequestParam(name="meetingDateSortAscending", defaultValue="true") boolean dateAsc) {
+                                  @RequestParam(name="meetingDateSortAscending", defaultValue="true") boolean dateAsc,
+                                  @ApiParam(value = "Optionally get avatar.")
+                                  @RequestParam(name="getAvatar", defaultValue="true") boolean isGettingAvatar) {
         MeetingsPageResponseBody responseBodies =
-                participantsService.fingMeetingsPaginated(username, page, size, mNameAsc, query, idAsc, dateAsc);
+                participantsService.fingMeetingsPaginated(username, page, size, mNameAsc, query, idAsc, dateAsc, isGettingAvatar);
         return ResponseEntity.status(HttpStatus.OK).body(responseBodies);
     }
 

@@ -1,3 +1,6 @@
+//Autorzy kodu źródłowego: Bartosz Panuś
+//Kod został utworzony w ramach kursu Projekt Zespołowy
+//na Politechnice Wrocławskiej
 package com.orange.OrangeCommunicatorBackend.api.v1.contacts;
 
 import com.orange.OrangeCommunicatorBackend.api.v1.contacts.support.AddErrorEnum;
@@ -198,7 +201,7 @@ public class ContactsService {
             query.add("");
         }
 
-        Specification<User> spec = userSupport.nameContains(query);
+        Specification<User> spec = userSupport.nameContainsInFriendsList(query);
         List<User> users = userRepository.findAll(spec, sort);
 
         List<ListOfFriends> l1 = listOfFriendsRepository.findByUserOwn(u);
@@ -215,8 +218,9 @@ public class ContactsService {
             if(usernamesList.contains(user.getUserName()))
                 finalUsersList.add(user);
         }
-        List<UserResponseBody>  usersResponse = finalUsersList.stream().map(us -> userSupport.processAvatar(us, isGettingAvatar)).
-                map(userMapper::toUserResponseBody).collect(Collectors.toList());
+        List<UserResponseBody>  usersResponse = finalUsersList.stream()
+                .map(us -> userMapper.toUserResponseBody(us, userSupport.processAvatar(us, isGettingAvatar)))
+                .collect(Collectors.toList());
         return usersResponse;
     }
 

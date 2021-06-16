@@ -1,8 +1,12 @@
+//Autorzy kodu źródłowego: Bartosz Panuś
+//Kod został utworzony w ramach kursu Projekt Zespołowy
+//na Politechnice Wrocławskiej
 package com.orange.OrangeCommunicatorBackend.api.v1.users.support;
 
-import com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody.UserResponseBody;
+import com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody.UpdateAvatarResponseBody;
 import com.orange.OrangeCommunicatorBackend.dbEntities.Settings;
 import com.orange.OrangeCommunicatorBackend.dbEntities.User;
+import com.orange.OrangeCommunicatorBackend.generalServicies.MinioService;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -21,6 +25,11 @@ public class UserSupport {
     private static final String emailColName = "eMail";
     private static final String privColName = "isPrivate";
 
+    private final MinioService minioService;
+
+    public UserSupport(MinioService minioService) {
+        this.minioService = minioService;
+    }
 
     public Sort getSort(boolean fNameAscending,
                         boolean lNameAscending, boolean uNameAscending, boolean emailAsc){
@@ -72,12 +81,39 @@ public class UserSupport {
         return spec;
     }
 
-    public User processAvatar(User user, boolean isToProcess) {
+    public Specification<User> nameContainsInFriendsList(List<String> texts){
 
+        Specification<User> spec = new Specification<User>() {
+            @Override
+            public Predicate toPredicate(Root<User> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicates = new ArrayList<>();
+
+                Join<User, Settings> j = root.join("settings");
+
+
+
+                for(String text : texts){
+                    predicates.add(criteriaBuilder.or(criteriaBuilder.like(root.get(userColName), "%" + text.toLowerCase(Locale.ROOT) + "%"),
+                            criteriaBuilder.or(criteriaBuilder.like(root.get(nameColName), "%" + text + "%"),
+                            criteriaBuilder.or(criteriaBuilder.like(root.get(surnameColName), "%" + text + "%")))));
+                }
+
+                return criteriaBuilder.or(predicates.toArray(new Predicate[0]));
+            }
+        };
+        return spec;
+    }
+
+    public String processAvatar(User user, boolean isToProcess) {
+
+        String url = null;
         if(isToProcess)
-            user.setImgUrl(null);
-        return  user;
+            url = minioService.avatarGetUrl(user.getUserName());
+        return url;
     }
 
 
+    public UpdateAvatarResponseBody toUpdateAvatarResponseBody(String userName, String url) {
+        return new UpdateAvatarResponseBody(userName, url);
+    }
 }

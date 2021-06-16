@@ -1,3 +1,7 @@
+# Autorzy kodu źródłowego: Bartosz Panuś
+# Kod został utworzony w ramach kursu Projekt Zespołowy
+# na Politechnice Wrocławskiej
+
 # application configuration
 server:
   port: 9000
@@ -80,6 +84,12 @@ swagger:
     #client-id: orange-backend
     #secret: 8377ed9c-abf2-43f8-a712-4c8a93a1b784 #server
     #secret: 9a612258-970b-4896-b368-58865914fefe #localhost
+
+minio:
+  ip: ${MINIO_SERVICE_IP}
+  port: ${MINIO_SERVICE_PORT}
+  secret-key: ${MINIO_SERVICE_SECRET_KEY}
+  access-key: ${MINIO_SERVICE_ACCESS_KEY}
 
 logging:
   level:

@@ -1,3 +1,6 @@
+//Autorzy kodu źródłowego: Bartosz Panuś
+//Kod został utworzony w ramach kursu Projekt Zespołowy
+//na Politechnice Wrocławskiej
 package com.orange.OrangeCommunicatorBackend.api.v1.meetings.participants;
 
 import com.orange.OrangeCommunicatorBackend.api.v1.meetings.participants.support.ParticipantsMapper;
@@ -94,8 +97,9 @@ public class ParticipantsService {
         Specification<User> spec = participantsSupport.specificationForUsers(query, usernames);
 
         List<User> users = userRepository.findAll(spec, sort);
-        List<UserResponseBody>  responseBodies = users.stream().map(u -> userSupport.processAvatar(u, isGettingAvatar))
-                .map(userMapper::toUserResponseBody).collect(Collectors.toList());
+        List<UserResponseBody>  responseBodies = users.stream()
+                .map(u -> userMapper.toUserResponseBody(u, userSupport.processAvatar(u, isGettingAvatar)))
+                .collect(Collectors.toList());
         return responseBodies;
     }
 
@@ -125,14 +129,18 @@ public class ParticipantsService {
         PageRequest pageRequest = PageRequest.of(page - 1, size, sort);
         Specification<User> spec = participantsSupport.specificationForUsers(query, usernames);
         Page<User> pageOfUsers = userRepository.findAll(spec, pageRequest);
-        List<UserResponseBody>  usersResponse = pageOfUsers.get().map(u -> userSupport.processAvatar(u, isGettingAvatar))
-                .map(userMapper::toUserResponseBody).collect(Collectors.toList());
+        List<UserResponseBody>  usersResponse = pageOfUsers.get()
+                .map(u -> userMapper.toUserResponseBody(u, userSupport.processAvatar(u, isGettingAvatar)))
+                .collect(Collectors.toList());
+
+
         return userMapper.toUserFoundPaged(usersResponse, pageOfUsers.getTotalElements(), pageOfUsers.getTotalPages());
 
     }
 
 
-    public List<MeetingResponseBody> findMeetings(String username, List<String> query, boolean mNameAsc, boolean idAsc, boolean dateAsc) {
+    public List<MeetingResponseBody> findMeetings(String username, List<String> query, boolean mNameAsc,
+                                                  boolean idAsc, boolean dateAsc, boolean isGettingAvatar) {
         username = username.toLowerCase(Locale.ROOT);
 
 
@@ -148,11 +156,12 @@ public class ParticipantsService {
         Specification<Meeting> spec = participantsSupport.specificationForMeetings(query, meetingsIds);
         List<Meeting> meetings = meetingRepository.findAll(spec, sort);
 
-        return meetings.stream().map(meetingsMapper::toMeetingResponseBody).collect(Collectors.toList());
+        return meetings.stream().map(meeting -> meetingsMapper.toMeetingResponseBody(meeting, isGettingAvatar))
+                .collect(Collectors.toList());
     }
 
     public MeetingsPageResponseBody fingMeetingsPaginated(String username, int page, int size,
-                                                          boolean mNameAsc, List<String> query, boolean idAsc, boolean dateAsc) {
+                                                          boolean mNameAsc, List<String> query, boolean idAsc, boolean dateAsc, boolean isGettingAvatar) {
         username = username.toLowerCase(Locale.ROOT);
 
         User user = userRepository.findById(username)
@@ -178,7 +187,7 @@ public class ParticipantsService {
 
         Page<Meeting> pageOfMeetings = meetingRepository.findAll(spec, pageRequest);
         List<MeetingResponseBody> meetingResponseBodies = pageOfMeetings.get().
-                map(meetingsMapper::toMeetingResponseBody).collect(Collectors.toList());
+                map(meeting -> meetingsMapper.toMeetingResponseBody(meeting, isGettingAvatar)).collect(Collectors.toList());
         return meetingsMapper.toMeetingsPageResponseBody(meetingResponseBodies,
                 pageOfMeetings.getTotalPages(), pageOfMeetings.getTotalElements());
     }
