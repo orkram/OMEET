@@ -4,6 +4,7 @@
 package com.example.orangemeet.ui.main.calling
 
 import android.os.Bundle
+import android.provider.ContactsContract
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import androidx.fragment.app.replace
 import androidx.preference.PreferenceManager
 import com.example.orangemeet.R
 import com.example.orangemeet.UserInfo
+import com.example.orangemeet.data.DataRepository
 import com.example.orangemeet.ui.main.MainActivity
 import com.example.orangemeet.utils.Util
 import com.facebook.react.ReactInstanceManager
@@ -111,7 +113,7 @@ class VideoFragment : Fragment() {
 
         if (!UserInfo.conferenceId.isEmpty()) {
             val userData = JitsiMeetUserInfo()
-            userData.setDisplayName(UserInfo.userName)
+            userData.setDisplayName(DataRepository.loggedInUser!!.firstname + " " + DataRepository.loggedInUser!!.lastname)
             //userData.avatar = URL(UserInfo.userImgUrl)
 
 
