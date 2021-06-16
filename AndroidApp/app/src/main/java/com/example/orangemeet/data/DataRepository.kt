@@ -86,6 +86,10 @@ object DataRepository {
     }
 
     fun getAvatar(user : User) : Result<Bitmap> {
+        return dataSource.getAvatar(user.imgUrl)
+    }
+
+    fun getLoggedInAvatar(user : User) : Result<Bitmap> {
         UserInfo.userImgUrl = user.imgUrl
         return dataSource.getAvatar(user.imgUrl)
     }

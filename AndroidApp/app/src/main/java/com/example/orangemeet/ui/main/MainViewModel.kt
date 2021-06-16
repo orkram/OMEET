@@ -51,7 +51,7 @@ class MainViewModel() : ViewModel() {
                 val getUserResult = DataRepository.getUser(DataRepository.loggedInUser!!.username)
                 if (getUserResult is Result.Success) {
                     val getAvatarResult =
-                        DataRepository.getAvatar(getUserResult.data!!)
+                        DataRepository.getLoggedInAvatar(getUserResult.data!!)
                     if(getAvatarResult is Result.Success){
                         _getAvatarResult.postValue(ResultInfo(true, getAvatarResult.data, null))
                     }else{

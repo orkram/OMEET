@@ -114,7 +114,7 @@ class VideoFragment : Fragment() {
         if (!UserInfo.conferenceId.isEmpty()) {
             val userData = JitsiMeetUserInfo()
             userData.setDisplayName(DataRepository.loggedInUser!!.firstname + " " + DataRepository.loggedInUser!!.lastname)
-            //userData.avatar = URL(UserInfo.userImgUrl)
+            userData.avatar = URL(UserInfo.userImgUrl)
 
 
             val colorScheme = Bundle()
