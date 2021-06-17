@@ -1,3 +1,6 @@
+//Autorzy kodu źródłowego: Bartosz Panuś
+//Kod został utworzony w ramach kursu Projekt Zespołowy
+//na Politechnice Wrocławskiej
 package com.orange.OrangeCommunicatorBackend.api.v1.meetings;
 
 import com.orange.OrangeCommunicatorBackend.api.v1.meetings.participants.ParticipantsService;
@@ -89,7 +92,7 @@ public class MeetingsService {
             participantsService.create(meeting.getIdMeeting(), u);
         }
 
-        return meetingsMapper.toMeetingResponseBody(meeting);
+        return meetingsMapper.toMeetingResponseBody(meeting, false);
 
     }
 
@@ -97,7 +100,7 @@ public class MeetingsService {
         Meeting meeting = meetingRepository.findById(id)
                 .orElseThrow(MeetingsExceptionSupplier.meetingNotFoundException(id));
         userSupport.processAvatar(meeting.getUser(), isGettingAvatar);
-        return meetingsMapper.toMeetingResponseBody(meeting);
+        return meetingsMapper.toMeetingResponseBody(meeting, isGettingAvatar);
     }
 
     public void delete(Long id) {
@@ -123,7 +126,7 @@ public class MeetingsService {
         User newOwner = userRepository.findById(updateMeetingRequestBody.getOwnerUserName())
                 .orElseThrow(UserExceptionSupplier.userNotFoundException(updateMeetingRequestBody.getOwnerUserName()));
         meetingRepository.save(meetingsMapper.toMeeting(meeting, updateMeetingRequestBody, newOwner));
-        return meetingsMapper.toMeetingResponseBody(meeting);
+        return meetingsMapper.toMeetingResponseBody(meeting, false);
     }
 
     public List<MeetingResponseBody> getOwnersMeeting(String username, List<String> query, boolean mNameAsc,
@@ -141,12 +144,8 @@ public class MeetingsService {
         Specification<Meeting> spec = meetingSupport.nameContains(query, user);
 
         List<Meeting> meetings = meetingRepository.findAll(spec, sort);
-        List<MeetingResponseBody>  responseBodies = meetings.stream().map(m ->
-            {
-                userSupport.processAvatar(m.getUser(), isGettingAvatar);
-                return m;
-            })
-                .map(meetingsMapper::toMeetingResponseBody).collect(Collectors.toList());
+        List<MeetingResponseBody>  responseBodies = meetings.stream().
+                map(meeting -> meetingsMapper.toMeetingResponseBody(meeting, isGettingAvatar)).collect(Collectors.toList());
         return responseBodies;
 
 
@@ -177,12 +176,8 @@ public class MeetingsService {
         PageRequest pageRequest = PageRequest.of(pageNr - 1, size, sort);
 
         Page<Meeting> page = meetingRepository.findAll(spec, pageRequest);
-        List<MeetingResponseBody> meetings = page.get().map(m ->
-            {
-                userSupport.processAvatar(m.getUser(), isGettingAvatar);
-                return m;
-            })
-                .map(meetingsMapper::toMeetingResponseBody).collect(Collectors.toList());
+        List<MeetingResponseBody> meetings = page.get().
+                map(meeting -> meetingsMapper.toMeetingResponseBody(meeting, isGettingAvatar)).collect(Collectors.toList());
         return meetingsMapper.toMeetingsPageResponseBody(meetings, page.getTotalPages(), page.getTotalElements());
     }
 }

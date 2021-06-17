@@ -1,7 +1,11 @@
+//Autorzy kodu źródłowego: Bartosz Panuś
+//Kod został utworzony w ramach kursu Projekt Zespołowy
+//na Politechnice Wrocławskiej
 package com.orange.OrangeCommunicatorBackend.api.v1.users;
 
 import com.orange.OrangeCommunicatorBackend.api.v1.users.requestBody.UserUpdateRequestBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody.FoundUsersPageResponseBody;
+import com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody.UpdateAvatarResponseBody;
 import com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody.UserResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -85,6 +89,14 @@ public class UsersApi {
                                                              @RequestParam(name="getAvatar", defaultValue="true") boolean isGettingAvatar){
         List<UserResponseBody> resp = userService.findUsers(query, fNameAsc, lNameAsc, uNameAsc, emailAsc, isGettingAvatar);
         return ResponseEntity.status(HttpStatus.OK).body(resp);
+    }
+
+    @GetMapping(path="/{username}/avatar/update")
+    @ApiOperation("Get URL to update avatar")
+    public ResponseEntity<UpdateAvatarResponseBody> updateAvatar(@ApiParam(value = "The username of user for which avatar should be updated.", required = true)
+                                                         @PathVariable String username){
+        UpdateAvatarResponseBody responseBody = userService.getAvatarUpdateUrl(username);
+        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
 

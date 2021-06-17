@@ -1,3 +1,6 @@
+//Autorzy kodu źródłowego: Bartosz Panuś
+//Kod został utworzony w ramach kursu Projekt Zespołowy
+//na Politechnice Wrocławskiej
 package com.orange.OrangeCommunicatorBackend.api.v1.users.responseBody;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -41,4 +44,5 @@ public class UserResponseBody {
     public String getImgURL() {
         return imgUrl;
     }
+
 }

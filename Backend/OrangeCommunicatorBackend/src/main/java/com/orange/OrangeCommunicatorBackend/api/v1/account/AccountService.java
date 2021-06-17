@@ -1,3 +1,6 @@
+//Autorzy kodu źródłowego: Bartosz Panuś
+//Kod został utworzony w ramach kursu Projekt Zespołowy
+//na Politechnice Wrocławskiej
 package com.orange.OrangeCommunicatorBackend.api.v1.account;
 
 import com.orange.OrangeCommunicatorBackend.api.v1.account.requestBody.AccountChangePasswordRequestBody;
@@ -102,7 +105,7 @@ public class AccountService {
 
     public AccountRegisterResponseBody register(AccountRegisterRequestBody accountRegisterRequestBody){
         accountRegisterRequestBody.setUserName(accountRegisterRequestBody.getUserName().toLowerCase(Locale.ROOT));
-        if(accountRegisterRequestBody.getImgURL().equals("")){
+        if(accountRegisterRequestBody.getImgURL() != null && accountRegisterRequestBody.getImgURL().equals("")){
             accountRegisterRequestBody.setImgURL(null);
         }
 
@@ -137,7 +140,7 @@ public class AccountService {
                     Settings settings = settingsMapper.createDefaultSettings(u);
                     settingsRepository.save(settings);
 
-                    //sendConfirm(u);
+                    sendConfirm(u);
 
 
                 } catch (Exception e) {
